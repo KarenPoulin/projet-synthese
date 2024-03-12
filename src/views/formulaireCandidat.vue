@@ -3,7 +3,7 @@
       <div class="flex justify-between items-center mb-4">
         <h2 class="text-lg font-bold">{{ editing ? 'Modifier le candidat' : 'Ajouter un candidat' }}</h2>
         <div v-if="editing">
-          <p>{{ candidate.firstName }} {{ candidate.lastName }} - {{ candidate.poste }}</p>
+          <p>{{ candidate.firstName }} {{ candidate.lastName }} - {{ candidate.position }}</p>
         </div>
       </div>
       <form @submit.prevent="submitForm">
@@ -16,8 +16,8 @@
           <input type="text" id="lastName" v-model="form.lastName" class="w-full border-gray-300 rounded-md p-2">
         </div>
         <div class="mb-4">
-          <label for="poste" class="block mb-1">Poste</label>
-          <input type="text" id="poste" v-model="form.poste" class="w-full border-gray-300 rounded-md p-2">
+          <label for="posistion" class="block mb-1">Poste</label>
+          <input type="text" id="position" v-model="form.position" class="w-full border-gray-300 rounded-md p-2">
         </div>
         <div class="mb-4">
           <label for="description" class="block mb-1">Courte présentation</label>
