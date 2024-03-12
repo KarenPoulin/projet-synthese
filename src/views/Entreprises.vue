@@ -1,6 +1,6 @@
 <template>
     <main>
-      <h1><img src="/src/assets/img/logo.png" alt="logo" class="h-28"></h1>
+      <h1>Entreprises</h1>
     </main>
   </template>
   
