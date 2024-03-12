@@ -128,7 +128,7 @@
       console.error(error);
     }
   }
-}
+},
 
       cancelForm() {
         
