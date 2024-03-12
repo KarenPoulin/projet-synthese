@@ -1,5 +1,5 @@
 <template>
-    <h1>Men boutons d'actions</h1>
+    <h1>Mes boutons d'actions</h1>
 </template>
 
 <script setup>
