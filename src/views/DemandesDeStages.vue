@@ -1,10 +1,10 @@
 <template>
     <main>
-      <h1>Demande de stages</h1>
+      <detailUneDemandeEtOffre/>
     </main>
   </template>
   
   <script setup>
-  
+  import detailUneDemandeEtOffre from '@/components/detailUneDemandeEtOffre.vue';
   </script>
   
