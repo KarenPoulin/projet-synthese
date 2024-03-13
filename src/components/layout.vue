@@ -1,7 +1,9 @@
 <template>
     <Sidebar />
     <MenuActions />
-    <RouterView />
+    <div class="p-20 bg-neutral-100">
+        <RouterView />
+    </div>
 </template>
 
 <script setup>
