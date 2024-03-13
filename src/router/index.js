@@ -7,6 +7,7 @@ import OffresDeStages from '../views/OffresDeStages.vue'
 import Candidats from '../views/Candidats.vue'
 import Entreprises from '../views/Entreprises.vue'
 import formulaireCandidat from '../views/formulaireCandidat.vue'
+import FormulaireDO from '../views/FormulaireDO.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -49,7 +50,13 @@ const router = createRouter({
           path:'formulaireCandidat',
           name:'formulaireCandidat',
           component: formulaireCandidat
+        },
+        {
+          path:'formulairedo',
+          name:'formulairedo',
+          component: FormulaireDO
         }
+        
       ]
     }
   ]

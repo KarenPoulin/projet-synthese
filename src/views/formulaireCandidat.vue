@@ -60,6 +60,8 @@
   </template>
   
   <script>
+  import { reactive, computed, onMounted } from 'vue';
+  
   export default {
     props: {
       candidateId: {
@@ -67,94 +69,94 @@
         required: false
       }
     },
-    data() {
-      return {
-        editing: false,
-        form: {
-          firstName: '',
-          lastName: '',
-          position: '',
-          description: '',
-          address: '',
-          phone: '',
-          city: '',
-          email: '',
-          province: '',
-          postalCode: ''
-        },
-        candidate: {},
-        provinces: [
-          { _id: '1', value: 'Alberta' },
-          { _id: '2', value: 'Colombie-Britannique' },
-          { _id: '3', value: 'Manitoba' },
-          { _id: '4', value: 'Nouveau-Brunswick' },
-          { _id: '5', value: 'Terre-Neuve-et-Labrador' },
-          { _id: '6', value: 'Nouvelle-Écosse' },
-          { _id: '7', value: 'Ontario' },
-          { _id: '8', value: 'Île-du-Prince-Édouard' },
-          { _id: '9', value: 'Québec' },
-          { _id: '10', value: 'Saskatchewan' }
-        ]
-      };
-    },
-    methods: {
-        methods: {
-  async fetchCandidate() {
-    try {
-      const response = await fetch(`https://api-4.fly.dev/api/candidates/${this.candidateId}`);
-      if (!response.ok) {
-        throw new Error('Impossible de récupérer les détails du candidat');
-      }
-      this.candidate = await response.json();
-    } catch (error) {
-      console.error(error);
-    }
-  },
-  async submitForm() {
-    try {
-      const url = this.editing ? `https://api-4.fly.dev/api/candidates/${this.candidateId}` : 'https://api-4.fly.dev/api/candidates';
-      const method = this.editing ? 'PUT' : 'POST';
-      const response = await fetch(url, {
-        method: method,
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(this.form)
-      });
-      if (!response.ok) {
-        throw new Error('Échec de la soumission du formulaire');
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  }
-},
+    setup(props) {
+      const form = reactive({
+        firstName: '',
+        lastName: '',
+        position: '',
+        description: '',
+        address: '',
+        phone: '',
+        city: '',
+        email: '',
+        province: '',
+        postalCode: ''
 
-      cancelForm() {
-        
-        this.editing = false;
-        this.form = {
-          firstName: '',
-          lastName: '',
-          position: '',
-          description: '',
-          address: '',
-          phone: '',
-          city: '',
-          email: '',
-          province: '',
-          postalCode: ''
-        };
-      }
-    },
-    mounted() {
-      if (this.candidateId) {
-        this.editing = true;
-        this.fetchCandidate();
-      }
+      });
+  
+      const editing = computed(() => !!props.candidateId);
+  
+      const candidate = reactive({});
+  
+      const provinces = [
+        { _id: '1', value: 'Alberta' },
+        { _id: '2', value: 'Colombie-Britannique' },
+        { _id: '3', value: 'Manitoba' },
+        { _id: '4', value: 'Nouveau-Brunswick' },
+        { _id: '5', value: 'Terre-Neuve-et-Labrador' },
+        { _id: '6', value: 'Nouvelle-Écosse' },
+        { _id: '7', value: 'Ontario' },
+        { _id: '8', value: 'Île-du-Prince-Édouard' },
+        { _id: '9', value: 'Québec' },
+        { _id: '10', value: 'Saskatchewan' }
+      ];
+  
+      const fetchCandidate = async () => {
+        try {
+          const response = await fetch(`https://api-4.fly.dev/api/candidates/${props.candidateId}`);
+          if (!response.ok) {
+            throw new Error('Impossible de récupérer les détails du candidat');
+          }
+          candidate = await response.json();
+        } catch (error) {
+          console.error(error);
+        }
+      };
+  
+      const submitForm = async () => {
+        try {
+          const url = editing.value ? `https://api-4.fly.dev/api/candidates/${props.candidateId}` : 'https://api-4.fly.dev/api/candidates';
+          const method = editing.value ? 'PUT' : 'POST';
+          const response = await fetch(url, {
+            method: method,
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(form)
+          });
+          if (!response.ok) {
+            throw new Error('Échec de la soumission du formulaire');
+          }
+        } catch (error) {
+          console.error(error);
+        }
+      };
+  
+      const cancelForm = () => {
+        form.firstName = '';
+        form.lastName = '';
+        form.position = '';
+        form.description = '';
+        form.address = '';
+        form.phone = '';
+        form.city = '';
+        form.email = '';
+        form.province = '';
+        form.postalCode = '';
+
+      };
+  
+      onMounted(() => {
+        if (props.candidateId) {
+          fetchCandidate();
+        }
+      });
+  
+      return { form, editing, candidate, provinces, fetchCandidate, submitForm, cancelForm };
     }
   };
   </script>
+  
   
   <style scoped>
   
