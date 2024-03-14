@@ -19,7 +19,7 @@
         @click="cancelForm">Annuler</button>
       <button type="submit"
         class="btn-primary focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 inline-flex"
-        > 
+        :disabled="!isFormValid"> 
         <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
           width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
           <path fill-rule="evenodd"
@@ -89,7 +89,7 @@
           @click="cancelForm">Annuler</button>
         <button type="submit"
           class="btn-primary focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 inline-flex"
-          > 
+          :disabled="!isFormValid"> 
           <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
             width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
             <path fill-rule="evenodd"
@@ -114,7 +114,7 @@ export default {
   },
   setup(props) {
     const form = reactive({
-      fullName: '', // Champ pour le nom complet
+      fullName: '', 
       position: '',
       description: '',
       address: '',
@@ -142,7 +142,7 @@ export default {
       { _id: '10', value: 'Saskatchewan' }
     ];
 
-    // Validation du formulaire
+
     const isFullNameValid = computed(() => !!form.fullName.trim());
     const isPositionValid = computed(() => !!form.position.trim());
     const isDescriptionValid = computed(() => !!form.description.trim());
@@ -153,7 +153,7 @@ export default {
     const isProvinceValid = computed(() => !!form.province.trim());
     const isPostalCodeValid = computed(() => !!form.postalCode.trim());
 
-    // Combinez toutes les validations
+ 
     const isFormValid = computed(() =>
       isFullNameValid.value &&
       isPositionValid.value &&
