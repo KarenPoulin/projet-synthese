@@ -103,159 +103,156 @@
 </template>
 
 <script>
-  import {
-    reactive,
-    computed,
-    onMounted
-  } from 'vue';
+import { reactive, computed, onMounted } from 'vue';
 
-  export default {
-    props: {
-      candidateId: {
-        type: String,
-        required: false
-      }
-    },
-    setup(props) {
-      const form = reactive({
-        fullName: '', 
-        position: '',
-        description: '',
-        address: '',
-        phone: '',
-        city: '',
-        email: '',
-        province: '',
-        postalCode: ''
-      });
-
-      const editing = computed(() => !!props.candidateId);
-
-      const candidate = reactive({});
-
-      const provinces = [{
-          _id: '1',
-          value: 'Alberta'
-        },
-        {
-          _id: '2',
-          value: 'Colombie-Britannique'
-        },
-        {
-          _id: '3',
-          value: 'Manitoba'
-        },
-        {
-          _id: '4',
-          value: 'Nouveau-Brunswick'
-        },
-        {
-          _id: '5',
-          value: 'Terre-Neuve-et-Labrador'
-        },
-        {
-          _id: '6',
-          value: 'Nouvelle-Écosse'
-        },
-        {
-          _id: '7',
-          value: 'Ontario'
-        },
-        {
-          _id: '8',
-          value: 'Île-du-Prince-Édouard'
-        },
-        {
-          _id: '9',
-          value: 'Québec'
-        },
-        {
-          _id: '10',
-          value: 'Saskatchewan'
-        }
-      ];
-
-      
-
-      const fetchCandidate = async () => {
-        try {
-          const response = await fetch(`https://api-4.fly.dev/api/candidates/${props.candidateId}`);
-          if (!response.ok) {
-            throw new Error('Impossible de récupérer les détails du candidat');
-          }
-          candidate = await response.json();
-
-          
-          form.fullName = `${candidate.firstName} ${candidate.lastName}`;
-        } catch (error) {
-          console.error(error);
-        }
-      };
-
-      const submitForm = async () => {
-        
-        const [firstName, lastName] = form.fullName.split(' ');
-        try {
-          const url = editing.value ? `https://api-4.fly.dev/api/candidates/${props.candidateId}` :
-            'https://api-4.fly.dev/api/candidates';
-          const method = editing.value ? 'PUT' : 'POST';
-          const response = await fetch(url, {
-            method: method,
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-              firstName: firstName,
-              lastName: lastName,
-              position: form.position,
-              description: form.description,
-              address: form.address,
-              phone: form.phone,
-              city: form.city,
-              email: form.email,
-              province: form.province,
-              postalCode: form.postalCode
-            })
-          });
-          if (!response.ok) {
-            throw new Error('Échec de la soumission du formulaire');
-          }
-        } catch (error) {
-          console.error(error);
-        }
-      };
-
-      const cancelForm = () => {
-        form.fullName = '';
-        form.position = '';
-        form.description = '';
-        form.address = '';
-        form.phone = '';
-        form.city = '';
-        form.email = '';
-        form.province = '';
-        form.postalCode = '';
-      };
-
-      onMounted(() => {
-        if (props.candidateId) {
-          fetchCandidate();
-        }
-      });
-
-      return {
-        form,
-        editing,
-        candidate,
-        provinces,
-        fetchCandidate,
-        submitForm,
-        cancelForm,
-       
-      };
+export default {
+  props: {
+    candidateId: {
+      type: String,
+      required: false
     }
-  };
+  },
+  setup(props) {
+    const form = reactive({
+      fullName: '', // Champ pour le nom complet
+      position: '',
+      description: '',
+      address: '',
+      phone: '',
+      city: '',
+      email: '',
+      province: '',
+      postalCode: ''
+    });
+
+    const editing = computed(() => !!props.candidateId);
+
+    const candidate = reactive({});
+
+    const provinces = [
+      { _id: '1', value: 'Alberta' },
+      { _id: '2', value: 'Colombie-Britannique' },
+      { _id: '3', value: 'Manitoba' },
+      { _id: '4', value: 'Nouveau-Brunswick' },
+      { _id: '5', value: 'Terre-Neuve-et-Labrador' },
+      { _id: '6', value: 'Nouvelle-Écosse' },
+      { _id: '7', value: 'Ontario' },
+      { _id: '8', value: 'Île-du-Prince-Édouard' },
+      { _id: '9', value: 'Québec' },
+      { _id: '10', value: 'Saskatchewan' }
+    ];
+
+    // Validation du formulaire
+    const isFullNameValid = computed(() => !!form.fullName.trim());
+    const isPositionValid = computed(() => !!form.position.trim());
+    const isDescriptionValid = computed(() => !!form.description.trim());
+    const isAddressValid = computed(() => !!form.address.trim());
+    const isPhoneValid = computed(() => !!form.phone.trim());
+    const isCityValid = computed(() => !!form.city.trim());
+    const isEmailValid = computed(() => !!form.email.trim());
+    const isProvinceValid = computed(() => !!form.province.trim());
+    const isPostalCodeValid = computed(() => !!form.postalCode.trim());
+
+    // Combinez toutes les validations
+    const isFormValid = computed(() =>
+      isFullNameValid.value &&
+      isPositionValid.value &&
+      isDescriptionValid.value &&
+      isAddressValid.value &&
+      isPhoneValid.value &&
+      isCityValid.value &&
+      isEmailValid.value &&
+      isProvinceValid.value &&
+      isPostalCodeValid.value
+    );
+
+    const fetchCandidate = async () => {
+      try {
+        const response = await fetch(`https://api-4.fly.dev/api/candidates/${props.candidateId}`);
+        if (!response.ok) {
+          throw new Error('Impossible de récupérer les détails du candidat');
+        }
+        candidate = await response.json();
+
+        form.fullName = `${candidate.firstName} ${candidate.lastName}`;
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    const submitForm = async () => {
+      const [firstName, lastName] = form.fullName.split(' ');
+      try {
+        const url = editing.value ? `https://api-4.fly.dev/api/candidates/${props.candidateId}` :
+          'https://api-4.fly.dev/api/candidates';
+        const method = editing.value ? 'PUT' : 'POST';
+        const response = await fetch(url, {
+          method: method,
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            firstName: firstName,
+            lastName: lastName,
+            position: form.position,
+            description: form.description,
+            address: form.address,
+            phone: form.phone,
+            city: form.city,
+            email: form.email,
+            province: form.province,
+            postalCode: form.postalCode
+          })
+        });
+        if (!response.ok) {
+          throw new Error('Échec de la soumission du formulaire');
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    const cancelForm = () => {
+      form.fullName = '';
+      form.position = '';
+      form.description = '';
+      form.address = '';
+      form.phone = '';
+      form.city = '';
+      form.email = '';
+      form.province = '';
+      form.postalCode = '';
+    };
+
+    onMounted(() => {
+      if (props.candidateId) {
+        fetchCandidate();
+      }
+    });
+
+    return {
+      form,
+      editing,
+      candidate,
+      provinces,
+      fetchCandidate,
+      submitForm,
+      cancelForm,
+      isFullNameValid,
+      isPositionValid,
+      isDescriptionValid,
+      isAddressValid,
+      isPhoneValid,
+      isCityValid,
+      isEmailValid,
+      isProvinceValid,
+      isPostalCodeValid,
+      isFormValid
+    };
+  }
+};
 </script>
+
 
 
 <style scoped>
