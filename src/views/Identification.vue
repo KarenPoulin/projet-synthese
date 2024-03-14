@@ -14,7 +14,7 @@
           <form @submit.prevent="acceder">
             <div class="flex flex-col mb-10">
               <input type="text" id="nomEtPrenom" v-model="nomEtPrenom" placeholder="Votre nom et prénom" @input="validerNomEtPrenom" minlength="2" maxlength="50" class="border-teal-500 border-solid border-2 p-3 w-3/4">
-              <span v-if="!nomEtPrenomValid" class="text-red-500">{{ nomEtPrenomErreur}}.</span>
+              <span v-if="!nomEtPrenomValid" class="text-red-500">{{ nomEtPrenomErreur}}</span>
             </div>
             <div class="flex flex-col mb-10">
               <input type="email" id="courriel" v-model="courriel" placeholder="Votre courriel" @input="validerCourriel" minlength="2" maxlength="100" class="border-teal-500 border-solid border-2 p-3 w-3/4">
@@ -79,6 +79,7 @@ const acceder = () => {
   nomEtPrenomErreur.value = '';
   courrielErreur.value = '';
 
+  validerNomEtPrenom();
   validerCourriel();
 
   if (!nomEtPrenom.value || !courriel.value || !nomEtPrenomValid.value || !courrielValid.value) {
