@@ -1,65 +1,87 @@
 <template>
-    <main class="ficheDetaillee">
-      <div class="ficheDetaillee__conteneur-titres">
-        <div class="ficheDetaillee__bloc-style"></div>
-        <div class="ficheDetaillee__titres">
-            <span class="ficheDetaillee__sous-titre">Demande de stage</span>
-            <h1 class="ficheDetaillee__titre">Développeur web front-end</h1>
-        </div>
+  <main class="ficheDetaillee">
+    <div class="ficheDetaillee__conteneur-titres">
+      <div class="ficheDetaillee__bloc-style"></div>
+      <div class="ficheDetaillee__titres">
+        <span class="ficheDetaillee__sous-titre">Demande de stage</span>
+        <h1 class="ficheDetaillee__titre">Développeur web front-end</h1>
       </div>
+    </div>
+    <div class="ficheDetaillee__conteneur-icônes-mode">
+      <i class="ficheDetaillee__icône-consulter fas fa-eye"></i>
+      <i class="ficheDetaillee__icône-editer fas fa-edit" @click="redirectionPageEdition"></i>
+      <i class="ficheDetaillee__icône-supprimer fas fa-trash" @click="modalSuppressionOuverture"></i>
+    </div>
+    <div class="ficheDetaillee__card">
+      <div class="ficheDetaillee__conteneur-informations">
+        <h2 class="ficheDetaillee__nom-personne">Nom de la personne</h2>
+        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit...</p>
 
-        <!-- Bloc pour les icônes de mode (consulter, éditer, supprimer) -->
-        <div class="ficheDetaillee__conteneur-icônes-mode">
-          <i class="ficheDetaillee__icône-consulter fas fa-eye"></i>
-          <i class="ficheDetaillee__icône-editer fas fa-edit"></i>
-          <i class="ficheDetaillee__icône-supprimer fas fa-trash"></i>
-        </div>
-  
-      <div class="ficheDetaillee__card">
-        <!-- Bloc pour les informations -->
-        <div class="ficheDetaillee__conteneur-informations">
-          <h2 class="ficheDetaillee__nom-personne">Nom de la personne</h2>
-          <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit...</p>
-  
-          <div class="ficheDetaillee__conteneur-informations-générales">
-              <div class="ficheDetaillee__bloc-style"></div>
-              <div class="ficheDetaillee__conteneur-information">
+        <div class="ficheDetaillee__conteneur-informations-générales">
+          <div class="ficheDetaillee__conteneur-information">
+            <div class="ficheDetaillee__bloc-style"></div>
+            <div class="ficheDetaillee__infos">
               <h3 class="ficheDetaillee__titre-info">Programme de formation</h3>
               <span class="ficheDetaillee__contenu-info">Développement web</span>
             </div>
           </div>
-  
-          <div class="ficheDetaillee__conteneur-informations-specifiques">
-            <h2 class="ficheDetaillee__titre-info-stage">Information sur le stage recherché</h2>
-            <div class="ficheDetaillee__conteneur-information">
-              <div class="ficheDetaillee__bloc-style"></div>
-              <div class="ficheDetaillee__infos">
-                <h3 class="ficheDetaillee__titre-info">Type de stage</h3>
-                <span class="ficheDetaillee__contenu-info">Temps plein</span>
-              </div>
+        </div>
+
+        <div class="ficheDetaillee__conteneur-informations-specifiques">
+          <h2 class="ficheDetaillee__titre-info-stage">Information sur le stage recherché</h2>
+          <div class="ficheDetaillee__conteneur-information">
+            <div class="ficheDetaillee__bloc-style"></div>
+            <div class="ficheDetaillee__infos">
+              <h3 class="ficheDetaillee__titre-info">Type de stage</h3>
+              <span class="ficheDetaillee__contenu-info">Temps plein</span>
             </div>
-            </div>
-          </div>
-  
-          <div class="ficheDetaillee__conteneur-informations-supplementaires">
-            <h2 class="ficheDetaillee__titre-info-supplementaire">Informations supplémentaires</h2>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit...</p>
-  
-            <!-- Bouton avec une icône -->
-            <button type="button" class="ficheDetaillee__bouton-cta">
-              <i class="ficheDetaillee__icône fas fa-cloud-download-alt"></i>
-              Acheter maintenant
-            </button>
           </div>
         </div>
-    </main>
-  </template>
-  
-  <script setup>
-  // Aucun besoin de script pour le moment
-  </script>
+      </div>
+      <div class="ficheDetaillee__conteneur-informations-supplementaires">
+        <h2 class="ficheDetaillee__titre-info-supplementaire">Informations supplémentaires</h2>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit...</p>
+        <button type="button" class="ficheDetaillee__bouton-cta text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+          <i class="ficheDetaillee__icône fas fa-cloud-download-alt"></i>
+          Télécharger le C.V.
+        </button>
+      </div>
+      <modalSuppression :etatDuModal="etatDuModal" @confirmationSuppression="suppressionConfirmee"></modalSuppression>
+    </div>
+  </main>
+</template>
+
+<script setup>
+import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+import modalSuppression from './modalSuppression.vue';
+
+const identifiant = ref(null)
+const route = useRouter()
+
+onMounted(() => {
+  identifiant.value = route.params.id;
+})
+
+const redirectionPageEdition = () => {
+  const editIdentifiant = `/edit-page?id=${identifiant.value}`;
+  route.push(editIdentifiant)
+}
+
+const etatDuModal = ref(false)
+
+const suppressionConfirmee = () => {
+  etatDuModal.value = false
+  console.log("faux")
+}
+
+const modalSuppressionOuverture = () => {
+  etatDuModal.value = true
+  console.log("true")
+}
+</script>
     
-  <style scoped>
+<style scoped>
 
   .ficheDetaillee {
     max-width: 600px;
@@ -73,8 +95,8 @@
   }
   
   .ficheDetaillee__bloc-style {
-    width: 20px;
-    height: 60px;
+    width: 10px;
+    height: 55px;
     background-color: #3498db;
   }
   
@@ -120,48 +142,34 @@
   }
 
   .ficheDetaillee__conteneur-informations-générales{
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
   }
 
   .ficheDetaillee__conteneur-information {
-  }
-
-  .ficheDetaillee__conteneur-informations-générales 
-  .ficheDetaillee__bloc-style {
-    width: 5px;
-    height: 30px;
-    background-color: #3498db;
-  }
-
-  .ficheDetaillee__conteneur-informations-specifiques{
-  }
-  
-  .ficheDetaillee__titre-info-stage{
-  }
-
-  .ficheDetaillee__conteneur-information{
     display: flex;
+  }
 
-  }
-  .ficheDetaillee__infos{
-  }
-  .ficheDetaillee__conteneur-informations-specifiques 
+  .ficheDetaillee__conteneur-informations
   .ficheDetaillee__bloc-style {
-    width: 5px;
-    height: 30px;
+    width: 10px;
+    height: 55px;
     background-color: #3498db;
   }
-  
-  .ficheDetaillee__titre-info {
+
+  .ficheDetaillee__infos{
+
+  }
+
+  .ficheDetaillee__titre-info{
     color: #3498db;
     font-size: 18px;
   }
-  
+
+  .ficheDetaillee__contenu-info{
+
+  }
   .ficheDetaillee__conteneur-informations-supplementaires {
   }
 
   .ficheDetaillee__bouton-cta{
   }
-  </style>  
+  </style> 
