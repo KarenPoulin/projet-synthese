@@ -30,6 +30,7 @@
 
 <script setup>
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 const nomEtPrenom = ref('');
 const courriel = ref('');
@@ -37,6 +38,7 @@ const nomEtPrenomValid = ref(true);
 const courrielValid = ref(true);
 const nomEtPrenomErreur = ref('');
 const courrielErreur = ref('');
+const router = useRouter();
 
 const validerNomEtPrenom = () => {
   nomEtPrenomErreur.value = '';
@@ -85,6 +87,8 @@ const acceder = () => {
   if (!nomEtPrenom.value || !courriel.value || !nomEtPrenomValid.value || !courrielValid.value) {
     return;
   }
+
+  router.push('/app/tableaudebord');
 }
 </script>
   
