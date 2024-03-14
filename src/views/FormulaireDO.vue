@@ -15,13 +15,13 @@
               alt="Image de disquette">Sauvegarder</button>
         </div>
 
-        <label for="titre" class="block mb-2">Titre: </label>
-        <input id="titre" v-model="titre" type="text" class="border border-gray-300 p-2 w-full mb-6">
-        <span v-if="champsFormulaire.titre !== ''" class="pt-2 text-xs text-red-700">{{ champsFormulaire.titre }}</span>
+        <label for="title" class="block mb-2">Titre: </label>
+        <input id="title" v-model="title" type="text" class="border border-gray-300 p-2 w-full mb-6">
+      
 
 <!-- 
-        <label for="entreprises" class="block mb-2">Entreprise: </label>
-        <Select id="entreprises" v-model="entreprises" type="text" class="border border-gray-300 p-2 w-full mb-6">
+        <label for="enterprise" class="block mb-2">Entreprise: </label>
+        <Select id="enterprise" v-model="enterprise" type="text" class="border border-gray-300 p-2 w-full mb-6">
           <option>1</option>
           <option>2</option>
           <option>3</option>
@@ -37,8 +37,8 @@
 
 
 
-        <label for="presentation" class="block mb-2">Présensention</label>
-        <textarea id="presentation" v-model="presentation" class="border border-gray-300 p-2 w-full mb-6"></textarea>
+        <label for="description" class="block mb-2">Présensention</label>
+        <textarea id="description" v-model="description" class="border border-gray-300 p-2 w-full mb-6"></textarea>
        
 
 
@@ -48,8 +48,8 @@
         
 
 
-   <!--        <label for="exigences" class="block mb-2">Exigences</label>
-          <textarea id="exigences" v-model="exigences" class="border border-gray-300 p-2 w-full mb-6"></textarea> -->
+   <!--        <label for="requiredSkills" class="block mb-2">Exigences</label>
+          <textarea id="requiredSkills" v-model="requiredSkills" class="border border-gray-300 p-2 w-full mb-6"></textarea> -->
        
 
 
@@ -58,8 +58,8 @@
  
 
 
-          <label for="secteurActivite" class="block mb-2">Secteur d'activité</label>
-          <Select id="secteurActivite" v-model="secteurActivite" type="text"
+          <label for="activitySector" class="block mb-2">Secteur d'activité</label>
+          <Select id="activitySector" v-model="activitySector" type="text"
             class="border border-gray-300 p-2 w-full mb-6">
             <option value="option1"></option>
             <option value="option2">Technologie de l'information</option>
@@ -76,8 +76,8 @@
 
         </div>
 
-        <label for="ville" class="block mb-2">Ville</label>
-        <input id="ville" v-model="ville" class="border border-gray-300 p-2 w-full mb-6"></input>
+        <label for="city" class="block mb-2">Ville</label>
+        <input id="city" v-model="city" class="border border-gray-300 p-2 w-full mb-6"></input>
 
 
 
@@ -93,14 +93,14 @@
        
       </div>
 
-      <label for="competences" class="block mb-2">Compétences</label>
-      <textarea id="competences" v-model="competences" class="border border-gray-300 p-2 w-full mb-6"></textarea>
+      <label for="skills" class="block mb-2">Compétences</label>
+      <textarea id="skills" v-model="skills" class="border border-gray-300 p-2 w-full mb-6"></textarea>
      
 
 
       <h2 class="p-2 w-full mb-6">Information sur le stage</h2>
-      <label for="typeStage" class="block mb-2">Type de stage</label>
-      <select id="typeStage" v-model="typeStage" class="border border-gray-300 p-2 w-full mb-6">
+      <label for="intershipType" class="block mb-2">Type de stage</label>
+      <select id="intershipType" v-model="intershipType" class="border border-gray-300 p-2 w-full mb-6">
         <option value="option1"></option>
         <option value="option2">Temps plein</option>
         <option value="option3">Temps partiel</option>
@@ -108,17 +108,17 @@
   
 
 
-      <label for="dateDebut" class="block mb-2">Date de début</label>
-      <input id="dateDebut" v-model="dateDebut" type="date" class="border border-gray-300 p-2 w-full mb-6">
+      <label for="startDate" class="block mb-2">Date de début</label>
+      <input id="startDate" v-model="startDate" type="date" class="border border-gray-300 p-2 w-full mb-6">
       
 
 
-      <label for="heuresSemaine" class="block mb-2">Nombre d'heures par semaine</label>
-      <input id="heuresSemaine" v-model="heuresSemaine" type="number" class="border border-gray-300 p-2 w-full mb-6">
+      <label for="weeklyWorkHours" class="block mb-2">Nombre d'heures par semaine</label>
+      <input id="weeklyWorkHours" v-model="weeklyWorkHours" type="number" class="border border-gray-300 p-2 w-full mb-6">
 
 
-      <label for="dateFin" class="block mb-2">Date de fin</label>
-      <input id="dateFin" v-model="dateFin" type="date" class="border border-gray-300 p-2 w-full mb-6">
+      <label for="endDate" class="block mb-2">Date de fin</label>
+      <input id="endDate" v-model="endDate" type="date" class="border border-gray-300 p-2 w-full mb-6">
  
 
 
@@ -132,8 +132,8 @@
 
 
 
-      <label for="infoSupplementaire" class="p-2 w-full mb-2">Information supplémentaire</label>
-      <textarea id="infoSupplementaire" v-model="infoSupplementaire"
+      <label for="additionalInformatione" class="p-2 w-full mb-2">Information supplémentaire</label>
+      <textarea id="additionalInformation" v-model="additionalInformation"
         class="border border-gray-300 p-2 w-full mb-6"></textarea>
  
 
@@ -156,7 +156,33 @@
 import { reactive, ref } from 'vue';
 // Création des variables requises pour la validation du formulaire
 
-const informationFormulaire = reactive({
+const formFields = reactive({
+  title: '',
+  nomComplet: '',
+  description: '',
+  programme: '',
+  etablissement: '',
+  activitySector: '', 
+  city: '',
+  region: '',
+  skills: '',
+  internshipType: '',
+  startDate: '',
+  weeklyWorkHourse: '',
+  endDate: '',
+  aDiscuter: '',
+  remunere: '',
+  nonRemunere: '',
+  additionalInformation: ''
+});
+
+const errorMessage = reactive({
+  empty: 'Le champ ne peut pas être vide',
+  minCharacters: 'Le champ doit avoir au moins 5 caractères',
+  maxCharacters: 'Le champ ne peut pas dépasser 100 caractères',
+});
+
+const fieldsToValidate = reactive({
   titre: '',
   entreprise: '',
   nomComplet: '',
@@ -178,87 +204,59 @@ const informationFormulaire = reactive({
   infoSupplementaire: ''
 });
 
-const erreurMessage = reactive({
-  vide: 'Le champ ne peut pas être vide',
-  minCaracteres: 'Le champ doit avoir au moins 5 caractères',
-  maxCaracteres: 'Le champ ne peut pas dépasser 100 caractères',
-  choixAFaire: '',
-  unChoixSeulement: ''
-});
-
-const champsFormulaire = reactive({
-  titre: '',
-  entreprise: '',
-  nomComplet: '',
-  presentation: '',
-  programme: '',
-  exigences: '',
-  etablissement: '',
-  secteurActivite: '',
-  ville: '',
-  region: '',
-  competences: '',
-  typeStage: '',
-  dateDebut: '',
-  heuresSemaine: '',
-  dateFin: '',
-  aDiscuter: '',
-  remunere: '',
-  nonRemunere: '',
-  infoSupplementaire: ''
-});
-
-let formulaireValide = ref(false)
+let validRequestForm = ref(false)
 
 // Fonction pour valider les champs de type input 
 
-function validationChampInput(input, nomInput) {
+function validateInput(input, inputName) {
   if (input === '') {
-    informationFormulaire[nomInput] = erreurMessage.vide;
+    formFields[inputName] = errorMessage.vide;
     return;
   }
   if (input.length < 5) {
-    informationFormulaire[nomInput] = erreurMessage.minCaracteres;
+    formFields[inputName] = errorMessage.minCharacters;
     return;
   }
   if (input.length > 100) {
-    informationFormulaire[nomInput] = erreurMessage.maxCaracteres;
+    formFields[inputName] = errorMessage.maxCharacters;
     return;
   }
-  informationFormulaire[nomInput] = '';
+  formFields[inputName] = '';
 }
 
 // Fonction pour soumettre le formulaire 
 
-const soumettreFormulaireDO = () => {
+const submitResquest = () => {
   event.preventDefault();
-  validationChampInput(champsFormulaire.titre, 'titre');
-  validationChampInput(champsFormulaire.nomComplet, 'nomComplet');
-  validationChampInput(champsFormulaire.presentation, 'presentation');
-  validationChampInput(champsFormulaire.programme, 'programme');
-  validationChampInput(champsFormulaire.etablissement, 'etablissement');
-  validationChampInput(champsFormulaire.ville, 'ville');
-  validationChampInput(champsFormulaire.competences, 'competences');
-  validationChampInput(champsFormulaire.exigences, 'exigences');
-  validationChampInput(champsFormulaire.infoSupplementaire, 'infoSupplementaire');
+  validateInput(formFields.title, 'title');
+  validateInput(formFields.nomComplet, 'nomComplet');
+  validateInput(formFields.presentation, 'presentation');
+  validateInput(formFields.programme, 'programme');
+  validateInput(formFields.etablissement, 'etablissement');
+  validateInput(formFields.city, 'city');
+  validateInput(formFields.skills, 'skills');
+  validateInput(formFields.additionalInformation, 'additionalInformation');
 
   if (
-    informationFormulaire.titre === '' && 
-    informationFormulaire.nomComplet === '' && 
-    informationFormulaire.presentation === '' && 
-    informationFormulaire.presentation === '' &&
-    informationFormulaire.programme === '' && 
-    informationFormulaire.etablissement === '' &&
-    informationFormulaire.ville === '' && 
-    informationFormulaire.competences === '' && 
-    informationFormulaire.exigences === '' &&
-    informationFormulaire.infoSupplementaire === ''  
+    fieldsToValidate.title === '' && 
+    fieldsToValidate.nomComplet === '' && 
+    fieldsToValidate.description=== '' && 
+    fieldsToValidate.programme === '' && 
+    fieldsToValidate.etablissement === '' &&
+    fieldsToValidate.city=== '' && 
+    fieldsToValidate.skills === '' && 
+    fieldsToValidate.additionalInformation === ''  
      ) {
-      formulaireValide = true;
+      fvalidRequestForm = true;
      } else {
-      formulaireValide = false;
+      validRequestForm = false;
      }
 };
+
+// Fonction pour annuler le formulaire 
+const cancelRequest = () => {
+      
+    };
 
 </script>
 
