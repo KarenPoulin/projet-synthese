@@ -60,12 +60,12 @@ const validerCourriel = () => {
   if (!courriel.value) {
     courrielErreur.value = 'Veuillez entrer votre courriel.';
     courrielValid.value = false;
-  } else if (!emailRegex.test(courriel.value)) {
-    courrielErreur.value = 'Veuillez entrer une adresse courriel valide.';
-    courrielValid.value = false;
   } else if (courriel.value.length < 2 || courriel.value.length > 100) {
     courrielErreur.value = 'Le courriel doit contenir entre 2 et 100 caractères.';
     courrielValid.value = false;
+  } else if (!emailRegex.test(courriel.value)) {
+    courrielErreur.value = 'Veuillez entrer une adresse courriel valide.';
+    courrielValid.value = false; 
   } else {
     courrielValid.value = true;
   }
