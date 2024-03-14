@@ -17,15 +17,16 @@
 
         <label for="titre" class="block mb-2">Titre: </label>
         <input id="titre" v-model="titre" type="text" class="border border-gray-300 p-2 w-full mb-6">
-        <span v-if="!formulaireValide" class="text-red-700">{{ erreurFormulaire }}</span>
+        <span v-if="champsFormulaire.titre !== ''" class="pt-2 text-xs text-red-700">{{ champsFormulaire.titre }}</span>
 
+<!-- 
         <label for="entreprises" class="block mb-2">Entreprise: </label>
         <Select id="entreprises" v-model="entreprises" type="text" class="border border-gray-300 p-2 w-full mb-6">
           <option>1</option>
           <option>2</option>
           <option>3</option>
-        </select>
-        <span v-if="!formulaireValide" class="text-red-700">{{ erreurFormulaire }}</span>
+        </select> -->
+
       </div>
 
 
@@ -33,28 +34,28 @@
       <div>
         <label for="nomComplet" class="block mb-2">Nom et prénom</label>
         <input id="nomComplet" v-model="nomComplet" class="border border-gray-300 p-2 w-full mb-6"></input>
-        <span v-if="!formulaireValide" class="text-red-700">{{ erreurFormulaire }}</span>
+
 
 
         <label for="presentation" class="block mb-2">Présensention</label>
         <textarea id="presentation" v-model="presentation" class="border border-gray-300 p-2 w-full mb-6"></textarea>
-        <span v-if="!formulaireValide" class="text-red-700">{{ erreurFormulaire }}</span>
+       
 
 
         <div>
           <label for="programme" class="block mb-2">Programme de formation</label>
           <input id="programme" v-model="programme" type="text" class="border border-gray-300 p-2 w-full mb-6">
-          <span v-if="!formulaireValide" class="text-red-700">{{ erreurFormulaire }}</span>
+        
 
 
-          <label for="exigences" class="block mb-2">Exigences</label>
-          <textarea id="exigences" v-model="exigences" class="border border-gray-300 p-2 w-full mb-6"></textarea>
-          <span v-if="!formulaireValide" class="text-red-700">{{ erreurFormulaire }}</span>
+   <!--        <label for="exigences" class="block mb-2">Exigences</label>
+          <textarea id="exigences" v-model="exigences" class="border border-gray-300 p-2 w-full mb-6"></textarea> -->
+       
 
 
           <label for="etablissement" class="block mb-2">Établissement scolaire</label>
           <input id="etablissement" v-model="etablissement" type="text" class="border border-gray-300 p-2 w-full mb-6">
-          <span v-if="!formulaireValide" class="text-red-700">{{ erreurFormulaire }}</span>
+ 
 
 
           <label for="secteurActivite" class="block mb-2">Secteur d'activité</label>
@@ -72,12 +73,12 @@
             <option value="option10">Énergie</option>
             <option value="option11">Commerce au détail</option>
           </select>
-          <span v-if="!formulaireValide" class="text-red-700">{{ erreurFormulaire }}</span>
+
         </div>
 
         <label for="ville" class="block mb-2">Ville</label>
         <input id="ville" v-model="ville" class="border border-gray-300 p-2 w-full mb-6"></input>
-        <span v-if="!formulaireValide" class="text-red-700">{{ erreurFormulaire }}</span>
+
 
 
         <label for="region" class="block mb-2">Région</label>
@@ -89,12 +90,12 @@
           <option value="option5">Sherbrooke</option>
           <option value="option6">Gatineau</option>
         </select>
-        <span v-if="!formulaireValide" class="text-red-700">{{ erreurFormulaire }}</span>
+       
       </div>
 
       <label for="competences" class="block mb-2">Compétences</label>
       <textarea id="competences" v-model="competences" class="border border-gray-300 p-2 w-full mb-6"></textarea>
-      <span v-if="!formulaireValide" class="text-red-700">{{ erreurFormulaire }}</span>
+     
 
 
       <h2 class="p-2 w-full mb-6">Information sur le stage</h2>
@@ -104,22 +105,21 @@
         <option value="option2">Temps plein</option>
         <option value="option3">Temps partiel</option>
       </select>
-      <span v-if="!formulaireValide" class="text-red-700">{{ erreurFormulaire }}</span>
+  
 
 
       <label for="dateDebut" class="block mb-2">Date de début</label>
       <input id="dateDebut" v-model="dateDebut" type="date" class="border border-gray-300 p-2 w-full mb-6">
-      <span v-if="!formulaireValide" class="text-red-700">{{ erreurFormulaire }}</span>
+      
 
 
       <label for="heuresSemaine" class="block mb-2">Nombre d'heures par semaine</label>
       <input id="heuresSemaine" v-model="heuresSemaine" type="number" class="border border-gray-300 p-2 w-full mb-6">
-      <span v-if="!formulaireValide" class="text-red-700">{{ erreurFormulaire }}</span>
 
 
       <label for="dateFin" class="block mb-2">Date de fin</label>
       <input id="dateFin" v-model="dateFin" type="date" class="border border-gray-300 p-2 w-full mb-6">
-      <span v-if="!formulaireValide" class="text-red-700">{{ erreurFormulaire }}</span>
+ 
 
 
       <h2 class="p-2 w-full mb-2">Rémumération</h2>
@@ -129,13 +129,13 @@
       <label for="remunere">Stage rémunéré</label><br>
       <input id="nonRemunere" v-model="nonRemunere" type="checkbox" class="mr-2">
       <label for="nonRemunere">Stage non rémunéré</label><br>
-      <span v-if="!formulaireValide" class="text-red-700">{{ erreurFormulaire }}</span>
+
 
 
       <label for="infoSupplementaire" class="p-2 w-full mb-2">Information supplémentaire</label>
       <textarea id="infoSupplementaire" v-model="infoSupplementaire"
         class="border border-gray-300 p-2 w-full mb-6"></textarea>
-        <span v-if="!formulaireValide" class="text-red-700">{{ erreurFormulaire }}</span>
+ 
 
 
       <input
@@ -153,90 +153,112 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-// Création des variables réactives 
-const titre = ref('');
-const nomComplet = ref('');
-const presentation = ref('');
-const programme = ref('');
-const etablissement = ref('');
-const secteurActivite = ref('');
-const ville = ref('');
-const region = ref('');
-const competences = ref('');
-const typeStage = ref('');
-const dateDebut = ref('');
-const heuresSemaine = ref('');
-const dateFin = ref('');
-const aDiscuter = ref('');
-const remunere = ref('');
-const nonRemunere = ref('');
-const infoSupplementaire = ref('');
-const formulaireValide = ref(true);
-const erreurFormulaire = ref('')
+import { reactive, ref } from 'vue';
+// Création des variables requises pour la validation du formulaire
 
+const informationFormulaire = reactive({
+  titre: '',
+  entreprise: '',
+  nomComplet: '',
+  presentation: '',
+  programme: '',
+  exigences: '',
+  etablissement: '',
+  secteurActivite: '',
+  ville: '',
+  region: '',
+  competences: '',
+  typeStage: '',
+  dateDebut: '',
+  heuresSemaine: '',
+  dateFin: '',
+  aDiscuter: '',
+  remunere: '',
+  nonRemunere: '',
+  infoSupplementaire: ''
+});
 
+const erreurMessage = reactive({
+  vide: 'Le champ ne peut pas être vide',
+  minCaracteres: 'Le champ doit avoir au moins 5 caractères',
+  maxCaracteres: 'Le champ ne peut pas dépasser 100 caractères',
+  choixAFaire: '',
+  unChoixSeulement: ''
+});
 
+const champsFormulaire = reactive({
+  titre: '',
+  entreprise: '',
+  nomComplet: '',
+  presentation: '',
+  programme: '',
+  exigences: '',
+  etablissement: '',
+  secteurActivite: '',
+  ville: '',
+  region: '',
+  competences: '',
+  typeStage: '',
+  dateDebut: '',
+  heuresSemaine: '',
+  dateFin: '',
+  aDiscuter: '',
+  remunere: '',
+  nonRemunere: '',
+  infoSupplementaire: ''
+});
 
-//Fonction pour valider les champs du formulaire
-const soumettreFormulaireDO = () => {
-  if (
-    // Vérification des champs obligatoires
-    titre.value.trim() === '' ||
-    nomComplet.value.trim() === '' ||
-    presentation.value.trim() === '' ||
-    programme.value.trim() === '' ||
-    competences.value.trim() === '' ||
-    etablissement.value.trim() === '' ||
-    ville.value.trim() === '' ||
-    dateDebut.value === '' ||
-    heuresSemaine.value === '' ||
-    dateFin.value === '' ||
-    secteurActivite.value === 'option1' ||
-    region.value === 'option1'
-  ) {
-    formulaireValide.value = false;
-    erreurFormulaire.value = "Le champ est obligatoire.";
-  } else if (
-    // Vérification de la longueur des champs
-    titre.value.trim() !== '' && (titre.value.length < 5 || titre.value.length > 100) ||
-    nomComplet.value.trim() !== '' && (nomComplet.value.length < 5 || nomComplet.value.length > 100) ||
-    presentation.value.trim() !== '' && (presentation.value.length < 5 || presentation.value.length > 100) ||
-    programme.value.trim() !== '' && (programme.value.length < 5 || programme.value.length > 100) ||
-    competences.value.trim() !== '' && (competences.value.length < 5 || competences.value.length > 100) ||
-    etablissement.value.trim() !== '' && (etablissement.value.length < 5 || etablissement.value.length > 100) ||
-    ville.value.trim() !== '' && (ville.value.length < 5 || ville.value.length > 100) ||
-    competences.value.trim() !== '' && (competences.value.length < 5 || competences.value.length > 100) ||
-    !/^\d+$/.test(heuresSemaine.value)
-  ) {
-    formulaireValide.value = false;
-    erreurFormulaire.value = "Le champ doit avoir entre 5 et 100 caractères.";
-    if (!/^\d+$/.test(heuresSemaine.value)) {
-      erreurFormulaire.value = "Seuls les chiffres sont autorisés dans ce champs.";
-    }
-  } else if (
-    (aDiscuter.value && (remunere.value || nonRemunere.value)) ||
-    (remunere.value && (aDiscuter.value || nonRemunere.value)) ||
-    (nonRemunere.value && (aDiscuter.value || remunere.value))
-  ) {
-    formulaireValide.value = false;
-    erreurFormulaire.value = "Veuillez sélectionner une seule option de rémunération.";
-  } else {
-    formulaireValide.value = true;
-    erreurFormulaire.value = '';
+let formulaireValide = ref(false)
+
+// Fonction pour valider les champs de type input 
+
+function validationChampInput(input, nomInput) {
+  if (input === '') {
+    informationFormulaire[nomInput] = erreurMessage.vide;
+    return;
   }
+  if (input.length < 5) {
+    informationFormulaire[nomInput] = erreurMessage.minCaracteres;
+    return;
+  }
+  if (input.length > 100) {
+    informationFormulaire[nomInput] = erreurMessage.maxCaracteres;
+    return;
+  }
+  informationFormulaire[nomInput] = '';
 }
 
+// Fonction pour soumettre le formulaire 
 
+const soumettreFormulaireDO = () => {
+  event.preventDefault();
+  validationChampInput(champsFormulaire.titre, 'titre');
+  validationChampInput(champsFormulaire.nomComplet, 'nomComplet');
+  validationChampInput(champsFormulaire.presentation, 'presentation');
+  validationChampInput(champsFormulaire.programme, 'programme');
+  validationChampInput(champsFormulaire.etablissement, 'etablissement');
+  validationChampInput(champsFormulaire.ville, 'ville');
+  validationChampInput(champsFormulaire.competences, 'competences');
+  validationChampInput(champsFormulaire.exigences, 'exigences');
+  validationChampInput(champsFormulaire.infoSupplementaire, 'infoSupplementaire');
 
-
-
-
-
-
-
-
-
+  if (
+    informationFormulaire.titre === '' && 
+    informationFormulaire.nomComplet === '' && 
+    informationFormulaire.presentation === '' && 
+    informationFormulaire.presentation === '' &&
+    informationFormulaire.programme === '' && 
+    informationFormulaire.etablissement === '' &&
+    informationFormulaire.ville === '' && 
+    informationFormulaire.competences === '' && 
+    informationFormulaire.exigences === '' &&
+    informationFormulaire.infoSupplementaire === ''  
+     ) {
+      formulaireValide = true;
+     } else {
+      formulaireValide = false;
+     }
+};
 
 </script>
 
