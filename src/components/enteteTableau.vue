@@ -1,7 +1,7 @@
 <template>
     <tr>
         <th>
-            <p class="mr-6 pb-1 text-left text-neutral-800 border-neutral-800 border-b-4">Profil</p>
+            <p class="mr-6 pb-1 text-left text-neutral-800 border-neutral-800 border-b-4">{{ isDemandes ? 'Profil' : 'Poste'}}</p>
         </th>
 <!--             <th class="text-left">Poste</th> -->
         <th v-if="isDemandes && isTableauDeBord">

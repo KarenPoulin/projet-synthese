@@ -1,7 +1,10 @@
 <template>
     <tr class="border-b-4 border-neutral-200">
         <td class="">
-            <div class="my-5 pl-4 flex flex-row items-center border-l-4" :class="{ 'border-neutral-500': !isActive, 'border-yellow-600': isDemandes, 'border-red-800/[0.85]': !isDemandes}">
+            <div class="my-5 pl-4 flex flex-row items-center border-l-4" 
+                :class="{ 'border-neutral-500': !isActive,  
+                        'border-yellow-600': isActive && isDemandes, 
+                        'border-red-800/[0.85]': isActive && !isDemandes}">
                 <div v-if="isDemandes && isActive" class="p-3 bg-yellow-600/[.5] rounded-lg">
                     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-mortarboard-fill text-yellow-800" viewBox="0 0 16 16">
                         <path d="M8.211 2.047a.5.5 0 0 0-.422 0l-7.5 3.5a.5.5 0 0 0 .025.917l7.5 3a.5.5 0 0 0 .372 0L14 7.14V13a1 1 0 0 0-1 1v2h3v-2a1 1 0 0 0-1-1V6.739l.686-.275a.5.5 0 0 0 .025-.917z"/>
