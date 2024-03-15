@@ -142,16 +142,39 @@ export default {
       { _id: '10', value: 'Saskatchewan' }
     ];
 
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const postalCodeRegex = /^[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d$/;
+    const phoneRegex = /^\d{10}$/;
 
+    const formatPostalCode = (input) => {
+      input = input.toUpperCase();
+
+      if (!/\s/.test(input.charAt(3))) {
+        input = input.slice(0, 3) + ' ' + input.slice(3);
+      }
+
+      return input;
+    };
+
+    const validateCanadianPhoneNumber = (input) => {
+      const sanitizedInput = input.replace(/-/g, '');
+      const formattedInput = '1' + sanitizedInput;
+      const regexPattern = /^1\d{9}$/;
+      return regexPattern.test(formattedInput);
+    };
+
+    
+    const validateEmail = (email) => emailRegex.test(email);
+    const validatePostalCode = (postalCode) => postalCodeRegex.test(postalCode);
+    const isEmailValid = computed(() => validateEmail(form.email));
+    const isPostalCodeValid = computed(() => validatePostalCode(form.postalCode));
+    const isPhoneValid = computed(() => validateCanadianPhoneNumber(form.phone));
     const isFullNameValid = computed(() => !!form.fullName.trim());
     const isPositionValid = computed(() => !!form.position.trim());
     const isDescriptionValid = computed(() => !!form.description.trim());
     const isAddressValid = computed(() => !!form.address.trim());
-    const isPhoneValid = computed(() => !!form.phone.trim());
     const isCityValid = computed(() => !!form.city.trim());
-    const isEmailValid = computed(() => !!form.email.trim());
     const isProvinceValid = computed(() => !!form.province.trim());
-    const isPostalCodeValid = computed(() => !!form.postalCode.trim());
 
  
     const isFormValid = computed(() =>
@@ -159,11 +182,11 @@ export default {
       isPositionValid.value &&
       isDescriptionValid.value &&
       isAddressValid.value &&
-      isPhoneValid.value &&
       isCityValid.value &&
       isEmailValid.value &&
       isProvinceValid.value &&
-      isPostalCodeValid.value
+      isPostalCodeValid.value &&
+      isPhoneValid.value
     );
 
     const fetchCandidate = async () => {
@@ -201,7 +224,7 @@ export default {
             city: form.city,
             email: form.email,
             province: form.province,
-            postalCode: form.postalCode
+            postalCode: formatPostalCode(form.postalCode)
           })
         });
         if (!response.ok) {
