@@ -329,4 +329,11 @@ export default {
     grid-template-columns: 1fr 1fr;
     gap: 2rem;
   }
+
+  @media (max-width: 768px) {
+    .block_info-perso-all {
+      display: flex;
+      flex-direction: column;
+    }
+  }
 </style>
