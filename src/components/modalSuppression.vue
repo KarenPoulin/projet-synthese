@@ -1,7 +1,7 @@
 <template>
-  <div :class="{ 'modal': true, 'modal--visible': etatDuModal }">
+  <div>
     <div class="modal-content">
-      <span class="close" @click="modalSuppressionFermeture">&times;</span>
+      <span class="close" @click="modalFermetureIcone">&times;</span>
       <p>Voulez-vous vraiment supprimer cette entrée ?</p>
       <button @click="annulerSuppression">Annuler</button>
       <button @click="confirmerSuppression">Supprimer</button>
@@ -13,25 +13,25 @@
 import { defineProps, defineEmits } from 'vue'
 
 const { etatDuModal } = defineProps(['etatDuModal'])
-const { emit } = defineEmits(['suppressionAnnulee', 'confirmationSuppression'])
+const  emit  = defineEmits(['suppressionAnnuleeIcone', 'suppressionAnnulee', 'confirmationSuppression'])
 
-const modalSuppressionFermeture = () => {
-  emit('suppressionAnnulee')
+const modalFermetureIcone = () => {
+  emit('suppressionAnnuleeIcone')
 }
 
 const annulerSuppression = () => {
-  modalSuppressionFermeture();
+  modalFermetureIcone();
+  emit('suppressionAnnulee')
 }
 
 const confirmerSuppression = () => {
-  modalSuppressionFermeture();
+  modalFermetureIcone();
   emit('confirmationSuppression')
 }
 </script>
 
 <style scoped>
 .modal {
-  display: none;
   position: fixed;
   z-index: 1;
   left: 0;
@@ -40,10 +40,6 @@ const confirmerSuppression = () => {
   height: 100%;
   overflow: auto;
   background-color: rgba(0, 0, 0, 0.4);
-}
-
-.modal--visible {
-  display: block;
 }
 
 .modal-content {

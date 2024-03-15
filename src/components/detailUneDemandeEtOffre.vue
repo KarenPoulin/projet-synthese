@@ -10,7 +10,13 @@
     <div class="ficheDetaillee__conteneur-icônes-mode">
       <i class="ficheDetaillee__icône-consulter fas fa-eye"></i>
       <i class="ficheDetaillee__icône-editer fas fa-edit" @click="redirectionPageEdition"></i>
-      <i class="ficheDetaillee__icône-supprimer fas fa-trash" @click="modalSuppressionOuverture"></i>
+      <i class="ficheDetaillee__icône-supprimer fas fa-trash" @click="toggleModal"></i>
+      <modalSuppression v-if="etatDuModal" 
+      @suppressionAnnuleeIcone="annulerSuppressionIcone" 
+      @suppressionAnnulee="annulerSuppression" 
+      @confirmationSuppression="suppressionConfirmee">
+      </modalSuppression>
+
     </div>
     <div class="ficheDetaillee__card">
       <div class="ficheDetaillee__conteneur-informations">
@@ -46,7 +52,6 @@
           Télécharger le C.V.
         </button>
       </div>
-      <modalSuppression :etatDuModal="etatDuModal" @confirmationSuppression="suppressionConfirmee"></modalSuppression>
     </div>
   </main>
 </template>
@@ -58,30 +63,42 @@ import modalSuppression from './modalSuppression.vue';
 
 const identifiant = ref(null)
 const route = useRouter()
-
-onMounted(() => {
-  identifiant.value = route.params.id;
-})
-
-const redirectionPageEdition = () => {
-  const editIdentifiant = `/edit-page?id=${identifiant.value}`;
-  route.push(editIdentifiant)
-}
-
 const etatDuModal = ref(false)
 
-const suppressionConfirmee = () => {
-  etatDuModal.value = false
-  console.log("faux")
+// onMounted(() => {
+//   identifiant.value = route.params.id;
+// })
+
+// const redirectionPageEdition = () => {
+//   const editIdentifiant = `/edit-page?id=${identifiant.value}`;
+//   route.push(editIdentifiant)
+// }
+
+const annulerSuppressionIcone = () => {
+  etatDuModal.value = false;
+  console.log(etatDuModal.value)
 }
 
-const modalSuppressionOuverture = () => {
-  etatDuModal.value = true
-  console.log("true")
+const annulerSuppression = () => {
+  etatDuModal.value = false;
+  console.log(etatDuModal.value)
+}
+
+const suppressionConfirmee = () => {
+  etatDuModal.value = false;
+  console.log(etatDuModal.value)
+}
+
+const toggleModal = () => {
+  etatDuModal.value = !etatDuModal.value;
 }
 </script>
     
 <style scoped>
+
+.test{
+  background-color: white;
+}
 
   .ficheDetaillee {
     max-width: 600px;
