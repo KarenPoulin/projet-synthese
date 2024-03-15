@@ -13,11 +13,11 @@
           <p class="w-3/4 mb-24">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eveniet maiores neque eum quia! Quisquam, nisi voluptate.</p>
           <form @submit.prevent="acceder">
             <div class="flex flex-col mb-10">
-              <input type="text" id="nomEtPrenom" v-model="nomEtPrenom" placeholder="Votre nom et prénom" @input="validerNomEtPrenom" minlength="5" maxlength="50" class="border-teal-500 border-solid border-2 p-3 w-3/4">
-              <span v-if="!nomEtPrenomValid" class="text-red-500">{{ nomEtPrenomErreur}}.</span>
+              <input type="text" id="nomEtPrenom" v-model="nomEtPrenom" placeholder="Votre nom et prénom" @input="validerNomEtPrenom" minlength="2" maxlength="50" class="border-teal-500 border-solid border-2 p-3 w-3/4">
+              <span v-if="!nomEtPrenomValid" class="text-red-500">{{ nomEtPrenomErreur}}</span>
             </div>
             <div class="flex flex-col mb-10">
-              <input type="email" id="courriel" v-model="courriel" placeholder="Votre courriel" @input="validerCourriel" minlength="5" maxlength="50" class="border-teal-500 border-solid border-2 p-3 w-3/4">
+              <input type="email" id="courriel" v-model="courriel" placeholder="Votre courriel" @input="validerCourriel" minlength="2" maxlength="100" class="border-teal-500 border-solid border-2 p-3 w-3/4">
               <span v-if="!courrielValid" class="text-red-500">{{ courrielErreur }}</span>
             </div>
             <button type="submit" class="bg-teal-500 border rounded p-5 text-white">Accéder maintenant</button>
@@ -30,6 +30,7 @@
 
 <script setup>
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 const nomEtPrenom = ref('');
 const courriel = ref('');
@@ -37,6 +38,7 @@ const nomEtPrenomValid = ref(true);
 const courrielValid = ref(true);
 const nomEtPrenomErreur = ref('');
 const courrielErreur = ref('');
+const router = useRouter();
 
 const validerNomEtPrenom = () => {
   nomEtPrenomErreur.value = '';
@@ -44,8 +46,8 @@ const validerNomEtPrenom = () => {
   if (!nomEtPrenom.value) {
     nomEtPrenomErreur.value = 'Veuillez entrer votre nom et prénom.';
     nomEtPrenomValid.value = false;
-  } else if (nomEtPrenom.value.length < 5 || nomEtPrenom.value.length > 50) {
-    nomEtPrenomErreur.value = 'Le nom et prénom doivent contenir entre 5 et 50 caractères.';
+  } else if (nomEtPrenom.value.length < 2 || nomEtPrenom.value.length > 50) {
+    nomEtPrenomErreur.value = 'Le nom et prénom doivent contenir entre 2 et 50 caractères.';
     nomEtPrenomValid.value = false;
   } else {
     nomEtPrenomValid.value = true;
@@ -55,15 +57,22 @@ const validerNomEtPrenom = () => {
 const validerCourriel = () => {
   courrielErreur.value = '';
 
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
   if (!courriel.value) {
     courrielErreur.value = 'Veuillez entrer votre courriel.';
     courrielValid.value = false;
-  } else if (courriel.value.length < 5 || courriel.value.length > 50) {
-    courrielErreur.value = 'Le courriel doit contenir entre 5 et 50 caractères.';
+  } else if (courriel.value.length < 2 || courriel.value.length > 100) {
+    courrielErreur.value = 'Le courriel doit contenir entre 2 et 100 caractères.';
     courrielValid.value = false;
+  } else if (!emailRegex.test(courriel.value)) {
+    courrielErreur.value = 'Veuillez entrer une adresse courriel valide.';
+    courrielValid.value = false; 
   } else {
     courrielValid.value = true;
   }
+
+  console.log("Adresse courriel valide", courrielValid.value);
 }
 
 
@@ -72,9 +81,14 @@ const acceder = () => {
   nomEtPrenomErreur.value = '';
   courrielErreur.value = '';
 
-  if (!nomEtPrenom.value || !courriel.value) {
+  validerNomEtPrenom();
+  validerCourriel();
+
+  if (!nomEtPrenom.value || !courriel.value || !nomEtPrenomValid.value || !courrielValid.value) {
     return;
   }
+
+  router.push('/app/tableaudebord');
 }
 </script>
   
