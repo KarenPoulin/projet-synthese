@@ -3,6 +3,10 @@
     <div class="modal-content">
       <span class="close" @click="modalFermetureIcone">&times;</span>
       <p>Voulez-vous vraiment supprimer cette entrée ?</p>
+      <div class="donnees">
+        <h4>{{ title }}</h4>
+        <h4>{{ firstName }} {{ lastName }}</h4>
+      </div>
       <button @click="annulerSuppression">Annuler</button>
       <button @click="confirmerSuppression">Supprimer</button>
     </div>
@@ -12,7 +16,7 @@
 <script setup>
 import { defineProps, defineEmits } from 'vue'
 
-const { etatDuModal } = defineProps(['etatDuModal'])
+const { etatDuModal, title, firstName, lastName } = defineProps(['etatDuModal', 'title', 'firstName', 'lastName'])
 const  emit  = defineEmits(['suppressionAnnuleeIcone', 'suppressionAnnulee', 'confirmationSuppression'])
 
 const modalFermetureIcone = () => {
