@@ -1,8 +1,8 @@
 <template>
   <main>
     <!-- Entête -->
-    <h1>Ajouter une demande</h1>
-    <h1>Offre de stage</h1>
+    <h1>{{ isRequest ? 'Ajouter une demande' : 'Ajouter une offre' }}</h1>
+
 
 
     <!-- Formulaire  -->
@@ -10,8 +10,10 @@
 
       <div class="max-w-2xl mx-auto mt-10">
         <div class="flex justify-end">
-          <button class="bg-neutral-300  text-white px-4 py-2 m-1 rounded" @click="cancelRequest">Annuler</button>
-          <button class="bg-teal-500  text-white px-4 py-2 m-1 rounded">Sauvegarder</button>
+          <button class="bg-neutral-300 text-white px-4 py-2 m-1 rounded" @click="resetForm">Annuler</button>
+          <button
+            :class="isRequest ? 'bg-teal-500 text-white px-4 py-2 m-1 rounded' : 'bg-red-800 text-white px-4 py-2 m-1 rounded'"
+            @click="cancelRequest">Sauvegarder</button>
         </div>
 
         <label for="title" class="block mb-2">Titre: </label>
@@ -19,60 +21,69 @@
           class="border border-gray-300 p-2 w-full mb-6">
         <span v-if="fieldsToValidate.title !== ''" class="pt-2 text-xs text-red-700">{{ fieldsToValidate.title }}</span>
 
-
-
-        <!-- 
-        <label for="enterprise" class="block mb-2">Entreprise: </label>
-        <Select id="enterprise" v-model="enterprise" type="text" class="border border-gray-300 p-2 w-full mb-6">
-          <option>1</option>
-          <option>2</option>
-          <option>3</option>
-        </select> -->
-
+        <div v-if="!isRequest">
+          <label for="enterprise" class="block mb-2">Entreprise: </label>
+          <Select id="enterprise" v-model="enterprise" type="text" class="border border-gray-300 p-2 w-full mb-6">
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+          </select>
+        </div>
       </div>
 
 
 
       <div>
-        <label for="nomComplet" class="block mb-2">Nom et prénom</label>
-        <input id="nomComplet" v-model="formFieldsLinkedWithApi.nomComplet" @input="validateInput('nomComplet')"
-          class="border border-gray-300 p-2 w-full mb-6"></input>
-        <span v-if="fieldsToValidate.nomComplet !== ''" class="pt-2 text-xs text-red-700">{{ fieldsToValidate.nomComplet
-          }}</span>
+        <div v-if="isRequest">
+          <label for="nomComplet" class="block mb-2">Nom et prénom</label>
+          <input id="nomComplet" v-model="formFieldsLinkedWithApi.nomComplet" @input="validateInput('nomComplet')"
+            class="border border-gray-300 p-2 w-full mb-6"></input>
+          <span v-if="fieldsToValidate.nomComplet !== ''" class="pt-2 text-xs text-red-700">{{
+      fieldsToValidate.nomComplet
+    }}</span>
+        </div>
 
 
-
-        <label for="description" class="block mb-2">Présensention</label>
-        <textarea id="description" v-model="formFieldsLinkedWithApi.description" @input="validateInput('description')"
-          class="border border-gray-300 p-2 w-full mb-6"></textarea>
-        <span v-if="fieldsToValidate.description !== ''" class="pt-2 text-xs text-red-700">{{
+        <div v-if="isRequest">
+          <label for="description" class="block mb-2">Présensention</label>
+          <textarea id="description" v-if="isRequest" v-model="formFieldsLinkedWithApi.description"
+            @input="validateInput('description')" class="border border-gray-300 p-2 w-full mb-6"></textarea>
+          <span v-if="fieldsToValidate.description !== ''" class="pt-2 text-xs text-red-700">{{
       fieldsToValidate.description }}</span>
+        </div>
       </div>
 
 
       <div>
+        <div v-if="isRequest"></div>
         <label for="programme" class="block mb-2">Programme de formation</label>
         <input id="programme" v-model="formFieldsLinkedWithApi.programme" @input="validateInput('programme')"
           type="text" class="border border-gray-300 p-2 w-full mb-6">
         <span v-if="fieldsToValidate.programme !== ''" class="pt-2 text-xs text-red-700">{{
       fieldsToValidate.programme }}</span>
+      </div>
+
+
+      <div v-if="!isRequest">
+        <label for="requiredSkills" class="block mb-2">Exigences</label>
+        <textarea id="requiredSkills" v-model="requiredSkills"
+          class="border border-gray-300 p-2 w-full mb-6"></textarea> =
+      </div>
 
 
 
-        <!--        <label for="requiredSkills" class="block mb-2">Exigences</label>
-          <textarea id="requiredSkills" v-model="requiredSkills" class="border border-gray-300 p-2 w-full mb-6"></textarea> -->
 
-
-
+      <div v-if="isRequest">
         <label for="etablissement" class="block mb-2">Établissement scolaire</label>
-        <input id="etablissement" v-model="formFieldsLinkedWithApi.etablissement"
+        <input id="etablissement" v-if="isRequest" v-model="formFieldsLinkedWithApi.etablissement"
           @input="validateInput('etablissement')" type="text" class="border border-gray-300 p-2 w-full mb-6">
         <span v-if="fieldsToValidate.etablissement !== ''" class="pt-2 text-xs text-red-700">{{
       fieldsToValidate.etablissement }}</span>
+      </div>
 
-
+      <div v-if="isRequest">
         <label for="region" class="block mb-2">Secteur d'activité</label>
-        <select id="activitySector" v-model="formFieldsLinkedWithApi.activitySector"
+        <select id="activitySector" v-if="isRequest" v-model="formFieldsLinkedWithApi.activitySector"
           @change="validateSelect(formFieldsLinkedWithApi.activitySector, 'activitySector')"
           class="border border-gray-300 p-2 w-full mb-6">
           <option value="">Sélectionner une option</option>
@@ -89,18 +100,19 @@
         </select>
         <span v-if="fieldsToValidate.activitySector !== ''" class="pt-2 text-xs text-red-700">{{
       fieldsToValidate.activitySector }}</span>
+      </div>
 
-
+      <div v-if="isRequest">
         <label for="city" class="block mb-2">Ville</label>
-        <input id="city" v-model="formFieldsLinkedWithApi.city" @input="validateInput('city')"
+        <input id="city" v-if="isRequest" v-model="formFieldsLinkedWithApi.city" @input="validateInput('city')"
           class="border border-gray-300 p-2 w-full mb-6"></input>
         <span v-if="fieldsToValidate.city !== ''" class="pt-2 text-xs text-red-700">{{ fieldsToValidate.city }}</span>
+      </div>
 
 
-
-
+      <div v-if="isRequest">
         <label for="region" class="block mb-2">Région</label>
-        <Select id="region" v-model="formFieldsLinkedWithApi.region"
+        <Select id="region" v-if="isRequest" v-model="formFieldsLinkedWithApi.region"
           @change="validateSelect(formFieldsLinkedWithApi.region, 'region')" type="text"
           class="border border-gray-300 p-2 w-full mb-6">
           <option value="option1"></option>
@@ -114,11 +126,14 @@
       fieldsToValidate.region }}</span>
       </div>
 
-      <label for="skills" class="block mb-2">Compétences</label>
-      <textarea id="skills " v-model="formFieldsLinkedWithApi.skills" @input="validateInput('skills')"
-        class="border border-gray-300 p-2 w-full mb-6"></textarea>
-      <span v-if="fieldsToValidate.skills !== ''" class="pt-2 text-xs text-red-700">{{ fieldsToValidate.skills
-        }}</span>
+
+      <div v-if="isRequest">
+        <label for="skills" class="block mb-2">Compétences</label>
+        <textarea id="skills" v-if="isRequest" v-model="formFieldsLinkedWithApi.skills" @input="validateInput('skills')"
+          class="border border-gray-300 p-2 w-full mb-6"></textarea>
+        <span v-if="fieldsToValidate.skills !== ''" class="pt-2 text-xs text-red-700">{{ fieldsToValidate.skills
+          }}</span>
+      </div>
 
 
 
@@ -139,7 +154,8 @@
 
       <label for="startDate" class="block mb-2">Date de début</label>
       <input id="startDate" v-model="formFieldsLinkedWithApi.startDate"
-        @input="validateDate(formFieldsLinkedWithApi.startDate , 'startDate')" type="date" class="border border-gray-300 p-2 w-full mb-6">
+        @input="validateDate(formFieldsLinkedWithApi.startDate, 'startDate')" type="date"
+        class="border border-gray-300 p-2 w-full mb-6">
       <span v-if="fieldsToValidate.startDate !== ''" class="pt-2 text-xs text-red-700">{{
       fieldsToValidate.startDate }}</span>
 
@@ -147,29 +163,29 @@
 
       <label for="weeklyWorkHours" class="block mb-2">Nombre d'heures par semaine</label>
       <input id="weeklyWorkHours" v-model="formFieldsLinkedWithApi.weeklyWorkHours"
-        @input="validateNumber(formFieldsLinkedWithApi.weeklyWorkHours , 'weeklyWorkHours')" type="number"
+        @input="validateNumber(formFieldsLinkedWithApi.weeklyWorkHours, 'weeklyWorkHours')" type="number"
         class="border border-gray-300 p-2 w-full mb-6">
       <span v-if="fieldsToValidate.weeklyWorkHours !== ''" class="pt-2 text-xs text-red-700">{{
-      fieldsToValidate.weeklyWorkHours}}</span>
+      fieldsToValidate.weeklyWorkHours }}</span>
 
 
 
       <label for="endDate" class="block mb-2">Date de fin</label>
       <input id="endDate" v-model="formFieldsLinkedWithApi.endDate"
-        @input="validateDate(formFieldsLinkedWithApi.endDate , 'endDate')" type="date" class="border border-gray-300 p-2 w-full mb-6">
-        <span v-if="fieldsToValidate.endDate !== ''" class="pt-2 text-xs text-red-700">{{
+        @input="validateDate(formFieldsLinkedWithApi.endDate, 'endDate')" type="date"
+        class="border border-gray-300 p-2 w-full mb-6">
+      <span v-if="fieldsToValidate.endDate !== ''" class="pt-2 text-xs text-red-700">{{
       fieldsToValidate.endDate }}</span>
 
 
-
-<label class="block mb-2">Rémunération</label>
-<input id="discretionary" v-model="formFieldsLinkedWithApi.paid" value="DISCRETIONARY" type="radio" class="mr-2">
-<label for="discretionary">À discuter</label><br>
-<input id="paid" v-model="formFieldsLinkedWithApi.paid" value="PAID" type="radio" class="mr-2">
-<label for="paid">Stage rémunéré</label><br>
-<input id="unpaid" v-model="formFieldsLinkedWithApi.paid" value="UNPAID" type="radio" class="mr-2">
-<label for="unpaid">Stage non rémunéré</label><br>
-<span v-if="fieldsToValidate.paid !== ''" class="pt-2 text-xs text-red-700">{{ fieldsToValidate.paid }}</span>
+      <label class="block mb-2">Rémunération</label>
+      <input id="discretionary" v-model="formFieldsLinkedWithApi.paid" value="DISCRETIONARY" type="radio" class="mr-2">
+      <label for="discretionary">À discuter</label><br>
+      <input id="paid" v-model="formFieldsLinkedWithApi.paid" value="PAID" type="radio" class="mr-2">
+      <label for="paid">Stage rémunéré</label><br>
+      <input id="unpaid" v-model="formFieldsLinkedWithApi.paid" value="UNPAID" type="radio" class="mr-2">
+      <label for="unpaid">Stage non rémunéré</label><br>
+      <span v-if="fieldsToValidate.paid !== ''" class="pt-2 text-xs text-red-700">{{ fieldsToValidate.paid }}</span>
 
 
 
@@ -186,8 +202,10 @@
 
 
       <div class="flex justify-end">
-        <button class="bg-neutral-300 text-white px-4 py-2 m-1 rounded">Annuler</button>
-        <button class="bg-teal-500 text-white px-4 py-2 m-1 rounded" @click="cancelRequest">Sauvegarder</button>
+        <button class="bg-neutral-300 text-white px-4 py-2 m-1 rounded" @click="resetForm">Annuler</button>
+        <button
+          :class="isRequest ? 'bg-teal-500 text-white px-4 py-2 m-1 rounded' : 'bg-red-800 text-white px-4 py-2 m-1 rounded'"
+          @click="cancelRequest">Sauvegarder</button>
       </div>
 
     </form>
@@ -196,6 +214,9 @@
 
 <script setup>
 import { reactive, ref } from 'vue';
+// Variable pour déterminer si c'est une demande ou une offre 
+let isRequest = true;
+
 // Création des variables requises pour la validation du formulaire
 
 const formFieldsLinkedWithApi = reactive({
@@ -212,9 +233,9 @@ const formFieldsLinkedWithApi = reactive({
   startDate: '',
   weeklyWorkHours: '',
   endDate: '',
-  discretionary:'',
-  paid:'',
-  unpaid:'',
+  discretionary: '',
+  paid: '',
+  unpaid: '',
   additionalInformation: ''
 });
 
@@ -224,8 +245,9 @@ const errorMessage = reactive({
   maxCharacters: 'Le champ ne peut pas dépasser 300 caractères',
   option: 'Le champ doit avoir une option valide',
   date: 'Le champ doit avoir une date valide.',
-  pastDate:'La date ne doit pas être dans le passé.',
-  number: 'Le champ doit avoir une nombre valide.',
+  pastDate: 'La date ne doit pas être dans le passé.',
+  endDate: 'La date de fin ne peut pas être avant la date de début.',
+  number: 'Le champ doit avoir une nombre positif valide.',
   checkbox: 'Le champ doit avoir au moins un choix.'
 });
 
@@ -243,9 +265,9 @@ const fieldsToValidate = reactive({
   startDate: '',
   weeklyWorkHours: '',
   endDate: '',
-  discretionary:'',
-  paid:'',
-  unpaid:'',
+  discretionary: '',
+  paid: '',
+  unpaid: '',
   additionalInformation: ''
 });
 
@@ -264,7 +286,6 @@ function validateInput(input, field) {
   }
 
   fieldsToValidate[field] = '';
-
   return '';
 }
 
@@ -275,34 +296,53 @@ function validateSelect(select, field) {
   }
 
   fieldsToValidate[field] = '';
-
   return '';
+
 }
 
 // Fonction pour valider les champs de type date
 function validateDate(input, field) {
   const selectedDate = new Date(input);
+  const startDate = new Date(formFieldsLinkedWithApi.startDate);
   const currentDate = new Date();
   currentDate.setHours(0, 0, 0, 0);
+
   if (input === "") {
     fieldsToValidate[field] = errorMessage.date;
-    return;
+    return errorMessage.date;
   } else if (selectedDate <= currentDate) {
     fieldsToValidate[field] = errorMessage.pastDate;
+    return errorMessage.pastDate;
+  } else if (selectedDate < startDate) {
+    fieldsToValidate[field] = errorMessage.endDate;
+    return errorMessage.endDate;
   } else {
     fieldsToValidate[field] = "";
+    return "";
   }
 }
 
+
+
+
 // Fonction pour valider les champs de type nombre
 function validateNumber(input, field) {
+  input = String(input);
   if (input.trim() === "") {
-    return errorMessage.number
-  } 
-  fieldsToValidate[field] = '';
-
-  return '';
+    fieldsToValidate[field] = errorMessage.empty;
+    return errorMessage.empty;
+  }
+  if (isNaN(parseFloat(input)) || parseFloat(input) < 0) {
+    fieldsToValidate[field] = errorMessage.number;
+    return errorMessage.number;
+  }
+  fieldsToValidate[field] = "";
+  return "";
 }
+
+
+
+
 
 
 // Fonction pour valider les champs de type checkbox
@@ -310,13 +350,13 @@ function validatePaid(value) {
   if (value !== 'DISCRETIONARY' && value !== 'PAID' && value !== 'UNPAID') {
     return errorMessage.checkbox;
   }
+  fieldsToValidate[field] = '';
   return '';
 }
 
 // Fonction pour soumettre le formulaire 
-
-const submitRequest = () => {
-/*   event.preventDefault(); */
+const submitRequest = (e) => {
+  e.preventDefault();
   fieldsToValidate.title = validateInput(formFieldsLinkedWithApi.title, 'title');
   fieldsToValidate.nomComplet = validateInput(formFieldsLinkedWithApi.nomComplet, 'nomComplet');
   fieldsToValidate.description = validateInput(formFieldsLinkedWithApi.description, 'description');
@@ -328,35 +368,32 @@ const submitRequest = () => {
   fieldsToValidate.region = validateSelect(formFieldsLinkedWithApi.region, 'region');
   fieldsToValidate.internshipType = validateSelect(formFieldsLinkedWithApi.internshipType, 'internshipType');
   fieldsToValidate.startDate = validateDate(formFieldsLinkedWithApi.startDate, 'startDate');
-  fieldsToValidate.startend =  validateDate(formFieldsLinkedWithApi.endDate, 'endDate');
+  fieldsToValidate.endDate = validateDate(formFieldsLinkedWithApi.endDate, 'endDate');
   fieldsToValidate.weeklyWorkHours = validateNumber(formFieldsLinkedWithApi.weeklyWorkHours, 'weeklyWorkHours');
   fieldsToValidate.paid = validatePaid(formFieldsLinkedWithApi.paid);
+  fieldsToValidate.additionalInformation = validatePaid(formFieldsLinkedWithApi.additionalInformation);
 
   isFormValid.value = Object.values(fieldsToValidate).every(value => value === '');
+  if (isFormValid.value) {
+    for (let key in fieldsToValidate) {
+      fieldsToValidate[key] = '';
+    }
+  }
 };
 
-// Fonction pour annuler la saisie du formulaire
-const cancelRequest = () => {
-  // Réinitialiser les champs du formulaire
-  formFieldsLinkedWithApi.title = '';
-  formFieldsLinkedWithApi.nomComplet = '';
-  formFieldsLinkedWithApi.description = '';
-  formFieldsLinkedWithApi.programme = '';
-  formFieldsLinkedWithApi.etablissement = '';
-  formFieldsLinkedWithApi.activitySector = '';
-  formFieldsLinkedWithApi.city = '';
-  formFieldsLinkedWithApi.region = '';
-  formFieldsLinkedWithApi.skills = '';
-  formFieldsLinkedWithApi.internshipType = '';
-  formFieldsLinkedWithApi.startDate = '';
-  formFieldsLinkedWithApi.weeklyWorkHours = '';
-  formFieldsLinkedWithApi.endDate = '';
-  formFieldsLinkedWithApi.paid = '';
-  formFieldsLinkedWithApi.unpaid = '';
-  formFieldsLinkedWithApi.additionalInformation = '';
 
-  isFormValid.value = false;
+
+
+// Fonction pour réinitialiser le formulaire
+const resetForm = () => {
+  for (let key in formFieldsLinkedWithApi) {
+    formFieldsLinkedWithApi[key] = '';
+  }
+  for (let key in fieldsToValidate) {
+    fieldsToValidate[key] = '';
+  }
 };
+
 
 
 
