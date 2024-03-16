@@ -4,7 +4,7 @@
       <div class="ficheDetaillee__bloc-style"></div>
       <div class="ficheDetaillee__titres">
         <span class="ficheDetaillee__sous-titre">Demande de stage</span>
-        <h1 class="ficheDetaillee__titre">Développeur web front-end</h1>
+        <h1 class="ficheDetaillee__titre">{{  }}</h1>
       </div>
     </div>
     <div class="ficheDetaillee__conteneur-icônes-mode">
@@ -60,19 +60,21 @@
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import modalSuppression from './modalSuppression.vue';
+// Importer et configurer les donnees get par id de l'api.
 
 const identifiant = ref(null)
 const route = useRouter()
 const etatDuModal = ref(false)
 
-// onMounted(() => {
-//   identifiant.value = route.params.id;
-// })
+onMounted(() => {
+  identifiant.value = route.params.id;
+  // Appel de la fonction avec le identifiant à l'intérieur
+})
 
-// const redirectionPageEdition = () => {
-//   const editIdentifiant = `/edit-page?id=${identifiant.value}`;
-//   route.push(editIdentifiant)
-// }
+const redirectionPageEdition = () => {
+  // const editIdentifiant = `/edit-page?id=${identifiant.value}`;
+  // route.push(editIdentifiant)
+}
 
 const annulerSuppressionIcone = () => {
   etatDuModal.value = false;
