@@ -1,5 +1,5 @@
 <template>
-  <main>
+  <main class="xl:h-screen xl:overflow-hidden">
     <div>
       <h1><img src="/src/assets/img/logo.png" alt="logo" class="h-24"></h1>
     </div>
