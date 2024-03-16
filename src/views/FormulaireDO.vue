@@ -73,7 +73,7 @@
 
         <label for="region" class="block mb-2">Secteur d'activité</label>
         <select id="activitySector" v-model="formFieldsLinkedWithApi.activitySector"
-          @onchange="validateSelect(formFieldsLinkedWithApi.activitySector, 'activitySector')"
+          @change="validateSelect(formFieldsLinkedWithApi.activitySector, 'activitySector')"
           class="border border-gray-300 p-2 w-full mb-6">
           <option value="">Sélectionner une option</option>
           <option value="Technologie de l'information">Technologie de l'information</option>
@@ -100,8 +100,9 @@
 
 
         <label for="region" class="block mb-2">Région</label>
-        <Select id="region"  v-model="formFieldsLinkedWithApi.region"
-          @onchange="validateSelect(formFieldsLinkedWithApi.region, 'region')" type="text" class="border border-gray-300 p-2 w-full mb-6">
+        <Select id="region" v-model="formFieldsLinkedWithApi.region"
+          @change="validateSelect(formFieldsLinkedWithApi.region, 'region')" type="text"
+          class="border border-gray-300 p-2 w-full mb-6">
           <option value="option1"></option>
           <option value="option2">Québec</option>
           <option value="option3">Trois-Rivière</option>
@@ -112,7 +113,7 @@
         <span v-if="fieldsToValidate.region !== ''" class="pt-2 text-xs text-red-700">{{
       fieldsToValidate.region }}</span>
       </div>
-      
+
       <label for="skills" class="block mb-2">Compétences</label>
       <textarea id="skills " v-model="formFieldsLinkedWithApi.skills" @input="validateInput('skills')"
         class="border border-gray-300 p-2 w-full mb-6"></textarea>
@@ -123,46 +124,58 @@
 
       <h2 class="p-2 w-full mb-6">Information sur le stage</h2>
       <label for="intershipType" class="block mb-2">Type de stage</label>
-      <select id="intershipType"  v-model="formFieldsLinkedWithApi.internshipType"
-          @onchange="validateSelect(formFieldsLinkedWithApi.internshipType, 'nternshipType')" type="text" class="border border-gray-300 p-2 w-full mb-6">class="border border-gray-300 p-2 w-full mb-6">
+      <select id="intershipType" v-model="formFieldsLinkedWithApi.internshipType"
+        @change="validateSelect(formFieldsLinkedWithApi.internshipType, 'nternshipType')" type="text"
+        class="border border-gray-300 p-2 w-full mb-6">class="border border-gray-300 p-2 w-full mb-6">
         <option value="option1"></option>
         <option value="option2">Temps plein</option>
         <option value="option3">Temps partiel</option>
       </select>
       <span v-if="fieldsToValidate.internshipType !== ''" class="pt-2 text-xs text-red-700">{{
       fieldsToValidate.internshipType }}</span>
-  
+
 
 
 
       <label for="startDate" class="block mb-2">Date de début</label>
-      <input id="startDate" v-model="startDate" type="date" class="border border-gray-300 p-2 w-full mb-6">
+      <input id="startDate" v-model="formFieldsLinkedWithApi.startDate"
+        @input="validateDate(formFieldsLinkedWithApi.startDate , 'startDate')" type="date" class="border border-gray-300 p-2 w-full mb-6">
+      <span v-if="fieldsToValidate.startDate !== ''" class="pt-2 text-xs text-red-700">{{
+      fieldsToValidate.startDate }}</span>
 
 
 
-      <!--       <label for="weeklyWorkHours" class="block mb-2">Nombre d'heures par semaine</label>
-      <input id="weeklyWorkHours" v-model="weeklyWorkHours" type="number"
-        class="border border-gray-300 p-2 w-full mb-6"> -->
+      <label for="weeklyWorkHours" class="block mb-2">Nombre d'heures par semaine</label>
+      <input id="weeklyWorkHours" v-model="formFieldsLinkedWithApi.weeklyWorkHours"
+        @input="validateNumber(formFieldsLinkedWithApi.weeklyWorkHours , 'weeklyWorkHours')" type="number"
+        class="border border-gray-300 p-2 w-full mb-6">
+      <span v-if="fieldsToValidate.weeklyWorkHours !== ''" class="pt-2 text-xs text-red-700">{{
+      fieldsToValidate.weeklyWorkHours}}</span>
 
 
 
       <label for="endDate" class="block mb-2">Date de fin</label>
-      <input id="endDate" v-model="endDate" type="date" class="border border-gray-300 p-2 w-full mb-6">
+      <input id="endDate" v-model="formFieldsLinkedWithApi.endDate"
+        @input="validateDate(formFieldsLinkedWithApi.endDate , 'endDate')" type="date" class="border border-gray-300 p-2 w-full mb-6">
+        <span v-if="fieldsToValidate.endDate !== ''" class="pt-2 text-xs text-red-700">{{
+      fieldsToValidate.endDate }}</span>
 
 
 
-      <h2 class="p-2 w-full mb-2">Rémumération</h2>
-      <input id="aDiscuter" v-model="aDiscuter" type="checkbox" class="mr-2">
-      <label for="aDiscuter">À discuter</label><br>
-      <input id="remunere" v-model="remunere" type="checkbox" class="mr-2">
-      <label for="remunere">Stage rémunéré</label><br>
-      <input id="nonRemunere" v-model="nonRemunere" type="checkbox" class="mr-2">
-      <label for="nonRemunere">Stage non rémunéré</label><br>
+<label class="block mb-2">Rémunération</label>
+<input id="discretionary" v-model="formFieldsLinkedWithApi.paid" value="DISCRETIONARY" type="radio" class="mr-2">
+<label for="discretionary">À discuter</label><br>
+<input id="paid" v-model="formFieldsLinkedWithApi.paid" value="PAID" type="radio" class="mr-2">
+<label for="paid">Stage rémunéré</label><br>
+<input id="unpaid" v-model="formFieldsLinkedWithApi.paid" value="UNPAID" type="radio" class="mr-2">
+<label for="unpaid">Stage non rémunéré</label><br>
+<span v-if="fieldsToValidate.paid !== ''" class="pt-2 text-xs text-red-700">{{ fieldsToValidate.paid }}</span>
+
 
 
 
       <label for="additionalInformation" class="p-2 w-full mb-2">Information supplémentaire</label>
-      <textarea class="border border-gray-300 p-2 w-full mb-6"></textarea>
+      <textarea id="additionalInformation" class="border border-gray-300 p-2 w-full mb-6"></textarea>
 
 
 
@@ -199,9 +212,9 @@ const formFieldsLinkedWithApi = reactive({
   startDate: '',
   weeklyWorkHours: '',
   endDate: '',
-  aDiscuter: '',
-  remunere: '',
-  nonRemunere: '',
+  discretionary:'',
+  paid:'',
+  unpaid:'',
   additionalInformation: ''
 });
 
@@ -209,7 +222,11 @@ const errorMessage = reactive({
   empty: 'Le champ ne peut pas être vide',
   minCharacters: 'Le champ doit avoir au moins 5 caractères',
   maxCharacters: 'Le champ ne peut pas dépasser 300 caractères',
-  option: 'Le champ doit avoir une option valide'
+  option: 'Le champ doit avoir une option valide',
+  date: 'Le champ doit avoir une date valide.',
+  pastDate:'La date ne doit pas être dans le passé.',
+  number: 'Le champ doit avoir une nombre valide.',
+  checkbox: 'Le champ doit avoir au moins un choix.'
 });
 
 const fieldsToValidate = reactive({
@@ -226,9 +243,9 @@ const fieldsToValidate = reactive({
   startDate: '',
   weeklyWorkHours: '',
   endDate: '',
-  aDiscuter: '',
-  remunere: '',
-  nonRemunere: '',
+  discretionary:'',
+  paid:'',
+  unpaid:'',
   additionalInformation: ''
 });
 
@@ -246,7 +263,6 @@ function validateInput(input, field) {
     return errorMessage.maxCharacters;
   }
 
-  // Réinitialiser le message d'erreur du champ si la validation réussit
   fieldsToValidate[field] = '';
 
   return '';
@@ -264,14 +280,43 @@ function validateSelect(select, field) {
 }
 
 // Fonction pour valider les champs de type date
-// Fonction pour valider les champs de type nombre
-// Fonction pour valider les champs de type checkbox
+function validateDate(input, field) {
+  const selectedDate = new Date(input);
+  const currentDate = new Date();
+  currentDate.setHours(0, 0, 0, 0);
+  if (input === "") {
+    fieldsToValidate[field] = errorMessage.date;
+    return;
+  } else if (selectedDate <= currentDate) {
+    fieldsToValidate[field] = errorMessage.pastDate;
+  } else {
+    fieldsToValidate[field] = "";
+  }
+}
 
+// Fonction pour valider les champs de type nombre
+function validateNumber(input, field) {
+  if (input.trim() === "") {
+    return errorMessage.number
+  } 
+  fieldsToValidate[field] = '';
+
+  return '';
+}
+
+
+// Fonction pour valider les champs de type checkbox
+function validatePaid(value) {
+  if (value !== 'DISCRETIONARY' && value !== 'PAID' && value !== 'UNPAID') {
+    return errorMessage.checkbox;
+  }
+  return '';
+}
 
 // Fonction pour soumettre le formulaire 
 
 const submitRequest = () => {
-  event.preventDefault();
+/*   event.preventDefault(); */
   fieldsToValidate.title = validateInput(formFieldsLinkedWithApi.title, 'title');
   fieldsToValidate.nomComplet = validateInput(formFieldsLinkedWithApi.nomComplet, 'nomComplet');
   fieldsToValidate.description = validateInput(formFieldsLinkedWithApi.description, 'description');
@@ -281,12 +326,16 @@ const submitRequest = () => {
   fieldsToValidate.skills = validateInput(formFieldsLinkedWithApi.skills, 'skills');
   fieldsToValidate.activitySector = validateSelect(formFieldsLinkedWithApi.activitySector, 'activitySector');
   fieldsToValidate.region = validateSelect(formFieldsLinkedWithApi.region, 'region');
-   fieldsToValidate.internshipType = validateSelect(formFieldsLinkedWithApi.internshipType, 'internshipType');
+  fieldsToValidate.internshipType = validateSelect(formFieldsLinkedWithApi.internshipType, 'internshipType');
+  fieldsToValidate.startDate = validateDate(formFieldsLinkedWithApi.startDate, 'startDate');
+  fieldsToValidate.startend =  validateDate(formFieldsLinkedWithApi.endDate, 'endDate');
+  fieldsToValidate.weeklyWorkHours = validateNumber(formFieldsLinkedWithApi.weeklyWorkHours, 'weeklyWorkHours');
+  fieldsToValidate.paid = validatePaid(formFieldsLinkedWithApi.paid);
 
   isFormValid.value = Object.values(fieldsToValidate).every(value => value === '');
 };
 
-// Fonction  sur le bouton annuler du formulaire 
+// Fonction pour annuler la saisie du formulaire
 const cancelRequest = () => {
   // Réinitialiser les champs du formulaire
   formFieldsLinkedWithApi.title = '';
@@ -294,20 +343,20 @@ const cancelRequest = () => {
   formFieldsLinkedWithApi.description = '';
   formFieldsLinkedWithApi.programme = '';
   formFieldsLinkedWithApi.etablissement = '';
+  formFieldsLinkedWithApi.activitySector = '';
   formFieldsLinkedWithApi.city = '';
+  formFieldsLinkedWithApi.region = '';
   formFieldsLinkedWithApi.skills = '';
+  formFieldsLinkedWithApi.internshipType = '';
+  formFieldsLinkedWithApi.startDate = '';
+  formFieldsLinkedWithApi.weeklyWorkHours = '';
+  formFieldsLinkedWithApi.endDate = '';
+  formFieldsLinkedWithApi.paid = '';
+  formFieldsLinkedWithApi.unpaid = '';
   formFieldsLinkedWithApi.additionalInformation = '';
 
-  // Réinitialiser les messages d'erreur
-  for (let field in fieldsToValidate) {
-    fieldsToValidate[field] = '';
-  }
+  isFormValid.value = false;
 };
-
-
-
-
-
 
 
 
