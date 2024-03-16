@@ -52,7 +52,12 @@
       fieldsToValidate.description }}</span>
         </div>
       </div>
-
+      
+      <div v-if="!isRequest">
+        <h2>Description de la tâche</h2>
+        <textarea id="taskDescription" v-model="taskDescription"
+          class="border border-gray-300 p-2 w-full mb-6"></textarea> =
+      </div>
 
       <div>
         <div v-if="isRequest"></div>
@@ -136,69 +141,87 @@
       </div>
 
 
-
-      <h2 class="p-2 w-full mb-6">Information sur le stage</h2>
-      <label for="intershipType" class="block mb-2">Type de stage</label>
-      <select id="intershipType" v-model="formFieldsLinkedWithApi.internshipType"
-        @change="validateSelect(formFieldsLinkedWithApi.internshipType, 'nternshipType')" type="text"
-        class="border border-gray-300 p-2 w-full mb-6">class="border border-gray-300 p-2 w-full mb-6">
-        <option value="option1"></option>
-        <option value="option2">Temps plein</option>
-        <option value="option3">Temps partiel</option>
-      </select>
-      <span v-if="fieldsToValidate.internshipType !== ''" class="pt-2 text-xs text-red-700">{{
+      <div>
+        <h2 class="p-2 w-full mb-6">Information sur le stage</h2>
+        <label for="intershipType" class="block mb-2">Type de stage</label>
+        <select id="intershipType" v-model="formFieldsLinkedWithApi.internshipType"
+          @change="validateSelect(formFieldsLinkedWithApi.internshipType, 'nternshipType')" type="text"
+          class="border border-gray-300 p-2 w-full mb-6">class="border border-gray-300 p-2 w-full mb-6">
+          <option value="option1"></option>
+          <option value="option2">Temps plein</option>
+          <option value="option3">Temps partiel</option>
+        </select>
+        <span v-if="fieldsToValidate.internshipType !== ''" class="pt-2 text-xs text-red-700">{{
       fieldsToValidate.internshipType }}</span>
+      </div>
 
 
 
-
-      <label for="startDate" class="block mb-2">Date de début</label>
-      <input id="startDate" v-model="formFieldsLinkedWithApi.startDate"
-        @input="validateDate(formFieldsLinkedWithApi.startDate, 'startDate')" type="date"
-        class="border border-gray-300 p-2 w-full mb-6">
-      <span v-if="fieldsToValidate.startDate !== ''" class="pt-2 text-xs text-red-700">{{
+      <div>
+        <label for="startDate" class="block mb-2">Date de début</label>
+        <input id="startDate" v-model="formFieldsLinkedWithApi.startDate"
+          @input="validateDate(formFieldsLinkedWithApi.startDate, 'startDate')" type="date"
+          class="border border-gray-300 p-2 w-full mb-6">
+        <span v-if="fieldsToValidate.startDate !== ''" class="pt-2 text-xs text-red-700">{{
       fieldsToValidate.startDate }}</span>
+      </div>
 
 
-
-      <label for="weeklyWorkHours" class="block mb-2">Nombre d'heures par semaine</label>
-      <input id="weeklyWorkHours" v-model="formFieldsLinkedWithApi.weeklyWorkHours"
-        @input="validateNumber(formFieldsLinkedWithApi.weeklyWorkHours, 'weeklyWorkHours')" type="number"
-        class="border border-gray-300 p-2 w-full mb-6">
-      <span v-if="fieldsToValidate.weeklyWorkHours !== ''" class="pt-2 text-xs text-red-700">{{
+      <div>
+        <label for="weeklyWorkHours" class="block mb-2">Nombre d'heures par semaine</label>
+        <input id="weeklyWorkHours" v-model="formFieldsLinkedWithApi.weeklyWorkHours"
+          @input="validateNumber(formFieldsLinkedWithApi.weeklyWorkHours, 'weeklyWorkHours')" type="number"
+          class="border border-gray-300 p-2 w-full mb-6">
+        <span v-if="fieldsToValidate.weeklyWorkHours !== ''" class="pt-2 text-xs text-red-700">{{
       fieldsToValidate.weeklyWorkHours }}</span>
+      </div>
 
 
-
-      <label for="endDate" class="block mb-2">Date de fin</label>
-      <input id="endDate" v-model="formFieldsLinkedWithApi.endDate"
-        @input="validateDate(formFieldsLinkedWithApi.endDate, 'endDate')" type="date"
-        class="border border-gray-300 p-2 w-full mb-6">
-      <span v-if="fieldsToValidate.endDate !== ''" class="pt-2 text-xs text-red-700">{{
+      <div>
+        <label for="endDate" class="block mb-2">Date de fin</label>
+        <input id="endDate" v-model="formFieldsLinkedWithApi.endDate"
+          @input="validateDate(formFieldsLinkedWithApi.endDate, 'endDate')" type="date"
+          class="border border-gray-300 p-2 w-full mb-6">
+        <span v-if="fieldsToValidate.endDate !== ''" class="pt-2 text-xs text-red-700">{{
       fieldsToValidate.endDate }}</span>
+      </div>
 
-
-      <label class="block mb-2">Rémunération</label>
-      <input id="discretionary" v-model="formFieldsLinkedWithApi.paid" value="DISCRETIONARY" type="radio" class="mr-2">
-      <label for="discretionary">À discuter</label><br>
-      <input id="paid" v-model="formFieldsLinkedWithApi.paid" value="PAID" type="radio" class="mr-2">
-      <label for="paid">Stage rémunéré</label><br>
-      <input id="unpaid" v-model="formFieldsLinkedWithApi.paid" value="UNPAID" type="radio" class="mr-2">
-      <label for="unpaid">Stage non rémunéré</label><br>
-      <span v-if="fieldsToValidate.paid !== ''" class="pt-2 text-xs text-red-700">{{ fieldsToValidate.paid }}</span>
-
-
-
-
-      <label for="additionalInformation" class="p-2 w-full mb-2">Information supplémentaire</label>
-      <textarea id="additionalInformation" class="border border-gray-300 p-2 w-full mb-6"></textarea>
+      <div>
+        <label class="block mb-2">Rémunération</label>
+        <input id="discretionary" v-model="formFieldsLinkedWithApi.paid" value="DISCRETIONARY" type="radio"
+          class="mr-2">
+        <label for="discretionary">À discuter</label><br>
+        <input id="paid" v-model="formFieldsLinkedWithApi.paid" value="PAID" type="radio" class="mr-2">
+        <label for="paid">Stage rémunéré</label><br>
+        <input id="unpaid" v-model="formFieldsLinkedWithApi.paid" value="UNPAID" type="radio" class="mr-2">
+        <label for="unpaid">Stage non rémunéré</label><br>
+        <span v-if="fieldsToValidate.paid !== ''" class="pt-2 text-xs text-red-700">{{ fieldsToValidate.paid }}</span>
+      </div>
 
 
 
+      <div>
+        <label for="additionalInformation" class="p-2 w-full mb-2">Information supplémentaire</label>
+        <textarea id="additionalInformation" v-model="formFieldsLinkedWithApi.additionalInformation"
+          class="border border-gray-300 p-2 w-full mb-6"></textarea>
+        <span v-if="fieldsToValidate.additionalInformation !== ''" class="pt-2 text-xs text-red-700">{{
+      fieldsToValidate.additionalInformation }}</span>
+      </div>
 
-      <input
-        class="block w-full text-sm text-neutral-950 border border-neutrla-300 rounded-lg cursor-pointer bg-neutral-100 bg-neutral-100 bg-neutral-300"
-        aria-describedby="file_input_help" id="file_input" type="file">
+
+
+      <div>
+        <div class="relative w-full">
+          <input class="absolute inset-0 opacity-0 w-full h-full cursor-pointer" aria-describedby="file_input_help"
+            id="file_input" type="file">
+          <label for="file_input"
+            class="block w-full text-sm text-neutral-950 border border-neutral-300 rounded-lg cursor-pointer bg-neutral-100 hover:bg-neutral-200 focus:bg-neutral-200 py-2 px-4">
+            Choisir un fichier
+          </label>
+        </div>
+
+      </div>
+
 
 
       <div class="flex justify-end">
@@ -233,9 +256,7 @@ const formFieldsLinkedWithApi = reactive({
   startDate: '',
   weeklyWorkHours: '',
   endDate: '',
-  discretionary: '',
   paid: '',
-  unpaid: '',
   additionalInformation: ''
 });
 
@@ -253,9 +274,12 @@ const errorMessage = reactive({
 
 const fieldsToValidate = reactive({
   title: '',
+  enterprise:'',
+  taskDescription:'',
   nomComplet: '',
   description: '',
   programme: '',
+  requiredSkills:'',
   etablissement: '',
   activitySector: '',
   city: '',
@@ -265,9 +289,7 @@ const fieldsToValidate = reactive({
   startDate: '',
   weeklyWorkHours: '',
   endDate: '',
-  discretionary: '',
   paid: '',
-  unpaid: '',
   additionalInformation: ''
 });
 
@@ -371,7 +393,7 @@ const submitRequest = (e) => {
   fieldsToValidate.endDate = validateDate(formFieldsLinkedWithApi.endDate, 'endDate');
   fieldsToValidate.weeklyWorkHours = validateNumber(formFieldsLinkedWithApi.weeklyWorkHours, 'weeklyWorkHours');
   fieldsToValidate.paid = validatePaid(formFieldsLinkedWithApi.paid);
-  fieldsToValidate.additionalInformation = validatePaid(formFieldsLinkedWithApi.additionalInformation);
+  fieldsToValidate.additionalInformation = validateInput(formFieldsLinkedWithApi.additionalInformation);
 
   isFormValid.value = Object.values(fieldsToValidate).every(value => value === '');
   if (isFormValid.value) {
@@ -385,7 +407,10 @@ const submitRequest = (e) => {
 
 
 // Fonction pour réinitialiser le formulaire
-const resetForm = () => {
+// Fonction pour réinitialiser le formulaire
+const resetForm = (e) => {
+  e.preventDefault();
+  formFieldsLinkedWithApi.additionalInformation = '';
   for (let key in formFieldsLinkedWithApi) {
     formFieldsLinkedWithApi[key] = '';
   }
@@ -393,6 +418,8 @@ const resetForm = () => {
     fieldsToValidate[key] = '';
   }
 };
+
+
 
 
 
