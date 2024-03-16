@@ -1,14 +1,14 @@
 <template>
-  <main>
+  <div class="bg-neutral-300 p-0 m-0">
     <!-- Entête -->
-    <h1>{{ isRequest ? 'Ajouter une demande' : 'Ajouter une offre' }}</h1>
+    <h1 class="formulaireDO--titre ">{{ isRequest ? 'Demande de stage' : 'Offre de stage' }}</h1>
 
 
 
     <!-- Formulaire  -->
-    <form class="max-w-2xl mx-auto mt-10" @submit="submitRequest">
+    <form class="max-w-7xl mx-auto mt-10" @submit="submitRequest">
 
-      <div class="max-w-2xl mx-auto mt-10">
+      <div >
         <div class="flex justify-end">
           <button class="bg-neutral-300 text-white px-4 py-2 m-1 rounded" @click="resetForm">Annuler</button>
           <button
@@ -16,10 +16,12 @@
             @click="cancelRequest">Sauvegarder</button>
         </div>
 
+        <div class="flex justify-start items-center my-5">
         <label for="title" class="block mb-2">Titre: </label>
         <input id="title" v-model="formFieldsLinkedWithApi.title" @input="validateInput('title')" type="text"
           class="border border-gray-300 p-2 w-full mb-6">
         <span v-if="fieldsToValidate.title !== ''" class="pt-2 text-xs text-red-700">{{ fieldsToValidate.title }}</span>
+      </div>
 
         <div v-if="!isRequest">
           <label for="enterprise" class="block mb-2">Entreprise: </label>
@@ -33,7 +35,7 @@
 
 
 
-      <div>
+      <div class="bg-neutral-100 max-w-7xl p-20">
         <div v-if="isRequest">
           <label for="nomComplet" class="block mb-2">Nom et prénom</label>
           <input id="nomComplet" v-model="formFieldsLinkedWithApi.nomComplet" @input="validateInput('nomComplet')"
@@ -51,8 +53,8 @@
           <span v-if="fieldsToValidate.description !== ''" class="pt-2 text-xs text-red-700">{{
       fieldsToValidate.description }}</span>
         </div>
-      </div>
-      
+ 
+
       <div v-if="!isRequest">
         <h2>Description de la tâche</h2>
         <textarea id="taskDescription" v-model="taskDescription"
@@ -141,8 +143,10 @@
       </div>
 
 
+
+      <h2 class="my-5">Information sur le stage</h2>
+
       <div>
-        <h2 class="p-2 w-full mb-6">Information sur le stage</h2>
         <label for="intershipType" class="block mb-2">Type de stage</label>
         <select id="intershipType" v-model="formFieldsLinkedWithApi.internshipType"
           @change="validateSelect(formFieldsLinkedWithApi.internshipType, 'nternshipType')" type="text"
@@ -154,6 +158,7 @@
         <span v-if="fieldsToValidate.internshipType !== ''" class="pt-2 text-xs text-red-700">{{
       fieldsToValidate.internshipType }}</span>
       </div>
+
 
 
 
@@ -188,20 +193,20 @@
 
       <div>
         <label class="block mb-2">Rémunération</label>
-        <input id="discretionary" v-model="formFieldsLinkedWithApi.paid" value="DISCRETIONARY" type="radio"
+        <input id="discretionary" v-model="formFieldsLinkedWithApi.paid" value="DISCRETIONARY" type="checkbox"
           class="mr-2">
         <label for="discretionary">À discuter</label><br>
-        <input id="paid" v-model="formFieldsLinkedWithApi.paid" value="PAID" type="radio" class="mr-2">
+        <input id="paid" v-model="formFieldsLinkedWithApi.paid" value="PAID" type="checkbox" class="mr-2">
         <label for="paid">Stage rémunéré</label><br>
-        <input id="unpaid" v-model="formFieldsLinkedWithApi.paid" value="UNPAID" type="radio" class="mr-2">
+        <input id="unpaid" v-model="formFieldsLinkedWithApi.paid" value="UNPAID" type="checkbox" class="mr-2">
         <label for="unpaid">Stage non rémunéré</label><br>
         <span v-if="fieldsToValidate.paid !== ''" class="pt-2 text-xs text-red-700">{{ fieldsToValidate.paid }}</span>
       </div>
 
 
 
-      <div>
-        <label for="additionalInformation" class="p-2 w-full mb-2">Information supplémentaire</label>
+      <div class="my-5">
+        <label for="additionalInformation">Information supplémentaire</label>
         <textarea id="additionalInformation" v-model="formFieldsLinkedWithApi.additionalInformation"
           class="border border-gray-300 p-2 w-full mb-6"></textarea>
         <span v-if="fieldsToValidate.additionalInformation !== ''" class="pt-2 text-xs text-red-700">{{
@@ -210,7 +215,7 @@
 
 
 
-      <div>
+      <div class="my-5">
         <div class="relative w-full">
           <input class="absolute inset-0 opacity-0 w-full h-full cursor-pointer" aria-describedby="file_input_help"
             id="file_input" type="file">
@@ -224,19 +229,26 @@
 
 
 
-      <div class="flex justify-end">
+      <div class="flex justify-end my-5 pb-10">
         <button class="bg-neutral-300 text-white px-4 py-2 m-1 rounded" @click="resetForm">Annuler</button>
         <button
           :class="isRequest ? 'bg-teal-500 text-white px-4 py-2 m-1 rounded' : 'bg-red-800 text-white px-4 py-2 m-1 rounded'"
           @click="cancelRequest">Sauvegarder</button>
       </div>
 
+    </div>
+
     </form>
-  </main>
+  </div>
+
 </template>
 
 <script setup>
 import { reactive, ref } from 'vue';
+
+//Variable pour déterminer si c'est un ajout ou une modification 
+let isAdding = true;
+
 // Variable pour déterminer si c'est une demande ou une offre 
 let isRequest = true;
 
@@ -244,9 +256,12 @@ let isRequest = true;
 
 const formFieldsLinkedWithApi = reactive({
   title: '',
+  enterprise: '',
+  taskDescription: '',
   nomComplet: '',
   description: '',
   programme: '',
+  requiredSkills: '',
   etablissement: '',
   activitySector: '',
   city: '',
@@ -274,12 +289,12 @@ const errorMessage = reactive({
 
 const fieldsToValidate = reactive({
   title: '',
-  enterprise:'',
-  taskDescription:'',
+  enterprise: '',
+  taskDescription: '',
   nomComplet: '',
   description: '',
   programme: '',
-  requiredSkills:'',
+  requiredSkills: '',
   etablissement: '',
   activitySector: '',
   city: '',
@@ -364,9 +379,6 @@ function validateNumber(input, field) {
 
 
 
-
-
-
 // Fonction pour valider les champs de type checkbox
 function validatePaid(value) {
   if (value !== 'DISCRETIONARY' && value !== 'PAID' && value !== 'UNPAID') {
@@ -377,7 +389,7 @@ function validatePaid(value) {
 }
 
 // Fonction pour soumettre le formulaire 
-const submitRequest = (e) => {
+const submitForm = (e) => {
   e.preventDefault();
   fieldsToValidate.title = validateInput(formFieldsLinkedWithApi.title, 'title');
   fieldsToValidate.nomComplet = validateInput(formFieldsLinkedWithApi.nomComplet, 'nomComplet');
@@ -394,6 +406,10 @@ const submitRequest = (e) => {
   fieldsToValidate.weeklyWorkHours = validateNumber(formFieldsLinkedWithApi.weeklyWorkHours, 'weeklyWorkHours');
   fieldsToValidate.paid = validatePaid(formFieldsLinkedWithApi.paid);
   fieldsToValidate.additionalInformation = validateInput(formFieldsLinkedWithApi.additionalInformation);
+  fieldsToValidate.enterprise = validateSelect(formFieldsLinkedWithApi.enterprise, 'enterprise');
+  fieldsToValidate.taskDescription = validateInput(formFieldsLinkedWithApi.taskDescription, 'taskDescription');
+  fieldsToValidate.requiredSkills = validateInput(formFieldsLinkedWithApi.requiredSkills, 'requiredSkills');
+
 
   isFormValid.value = Object.values(fieldsToValidate).every(value => value === '');
   if (isFormValid.value) {
@@ -405,8 +421,6 @@ const submitRequest = (e) => {
 
 
 
-
-// Fonction pour réinitialiser le formulaire
 // Fonction pour réinitialiser le formulaire
 const resetForm = (e) => {
   e.preventDefault();
@@ -420,10 +434,30 @@ const resetForm = (e) => {
 };
 
 
-
-
-
-
 </script>
 
-<style></style>
+<style>
+.formulaireDO--titre {
+  font-family: Open Sans;
+  font-weight: bold;
+  font-size: xx-large;
+  padding: 20px;
+  color: rgb(115 115 115);
+}
+
+label {
+  font-family: Open Sans;
+  font-weight: bold;
+  font-size: medium;
+  color: rgb(115 115 115);
+}
+
+h2 {
+  font-family: Open Sans;
+  font-weight: bold;
+  font-size: medium;
+  color: rgb(115 115 115);
+  font-size: large;
+
+}
+</style>
