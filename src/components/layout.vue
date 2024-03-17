@@ -1,23 +1,22 @@
 <template>
   <div class="relative flex min-h-screen bg-neutral-100 ">
-   
+
     <!-- Side Bar -->
     <div>
-      
+
       <Sidebar />
 
-      <!-- Contenu de la page -->
+    <!-- Contenu de la page -->
       <RouterView />
     </div>
 
-     <!-- Barre de navigation -->
+    <!-- Barre de navigation -->
     <div class="flex-1">
-    <MenuActions />
+      <MenuActions />
     </div>
 
   </div>
 </template>
-
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
 import Sidebar from './sidebar.vue';

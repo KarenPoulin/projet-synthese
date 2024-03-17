@@ -2,13 +2,15 @@
 <nav class="flex items-center justify-between bg-white p-4 shadow">
   <!-- Icône Menu -->
   <div>
-    <svg class="h-6 w-6 text-gray-500" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path fill-rule="evenodd" clip-rule="evenodd" d="M4 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2zm0 5h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2zm0 5h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2z" fill="currentColor" />
-    </svg>
+   
+<svg class="h-6 w-6 text-gray-500" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Icône "bars-sort" -->
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M5 4h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2zm0 6h6a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2zm0 6h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2z" fill="currentColor" />
+</svg>
   </div>
 
   <!-- Boutons d'actions -->
-  <div class="flex items-center space-x-3">
+  <div class="flex-grow flex items-center space-x-3 px-60">
     <!-- Bouton "Ajouter une offre de stage" -->
     <button class="ripple inline-block rounded border border-red-800 bg-white px-2 py-1 text-center text-xs font-medium leading-6 text-red-800 shadow transition hover:bg-red-50 hover:shadow-lg focus:outline-none">
       <svg class="mr-1 inline-block h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
