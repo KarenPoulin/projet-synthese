@@ -15,7 +15,7 @@
         
   
 <!--Bouton Tableau de Bord-->
-<a href="/tableaudebord" class="w-full flex items-center gap-x-1.5 group select-none">
+<a href="/app/tableaudebord" class="w-full flex items-center gap-x-1.5 group select-none">
     <div class="w-1 rounded-xl h-12 bg-transparent transition-colors duration-200 relative overflow-hidden">
         <div class="absolute top-0 right-0 bg-teal-500 transition-all duration-300 group-hover:translate-y-0 translate-y-0" style="width: 0.75rem; height: 102%;"></div>
     </div>
@@ -27,7 +27,7 @@
 </a>
 
 <!--Bouton Demandes de stages-->
-<a href="/demandesdestages" class="w-full flex items-center gap-x-1.5 group select-none">
+<a href="/app/demandesdestages" class="w-full flex items-center gap-x-1.5 group select-none">
             <div class="w-1 rounded-xl h-12 bg-transparent transition-colors duration-200 relative overflow-hidden">
                 <div class="absolute top-0 left-0 w-full h-[102%] translate-y-full group-hover:translate-y-0 bg-yellow-600 transition-all duration-300"></div>
             </div>
@@ -40,7 +40,7 @@
 </a>
 
 <!--Bouton Offres-->
-<a href="/offresdestages" class="w-full flex items-center gap-x-1.5 group select-none">
+<a href="/app/offresdestages" class="w-full flex items-center gap-x-1.5 group select-none">
             <div class="w-1 rounded-xl h-12 bg-transparent transition-colors duration-200 relative overflow-hidden">
                 <div class="absolute top-0 left-0 w-full h-[102%] translate-y-full group-hover:translate-y-0 bg-red-800 transition-all duration-300"></div>
             </div>
@@ -52,7 +52,7 @@
             </div>
 </a>
 <!--Bouton Candidats-->
-<a href="/candidats" class="w-full flex items-center gap-x-1.5 group select-none">
+<a href="/app/candidats" class="w-full flex items-center gap-x-1.5 group select-none">
             <div class="w-1 rounded-xl h-12 bg-transparent transition-colors duration-200 relative overflow-hidden">
                 <div class="absolute top-0 left-0 w-full h-[102%] translate-y-full group-hover:translate-y-0 bg-fuchsia-800 transition-all duration-300"></div>
             </div>
@@ -64,7 +64,7 @@
             </div>
 </a>
 <!--Entreprises-->
-<a href="/entreprises" class="w-full flex items-center gap-x-1.5 group select-none">
+<a href="/app/entreprises" class="w-full flex items-center gap-x-1.5 group select-none">
             <div class="w-1 rounded-xl h-12 bg-transparent transition-colors duration-200 relative overflow-hidden">
                 <div class="absolute top-0 left-0 w-full h-[102%] translate-y-full group-hover:translate-y-0 bg-blue-400 transition-all duration-300"></div>
             </div>

@@ -6,7 +6,7 @@
     </div>
 
     <!-- Contenu principal -->
-    <div class="bg-neutral-100 ">
+    <div class="bg-neutral-100 flex">
       <!-- Sidebar -->
       <Sidebar />
 
