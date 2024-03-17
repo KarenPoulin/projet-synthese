@@ -1,18 +1,20 @@
 <template>
-  <div>
-    <!-- Barre de navigation -->
-    <div class="">
-    <MenuActions />
-    </div>
-
-    <!-- Contenu principal -->
-    <div class="bg-neutral-100 flex">
-      <!-- Sidebar -->
+  <div class="relative flex min-h-screen bg-neutral-100 ">
+   
+    <!-- Side Bar -->
+    <div>
+      
       <Sidebar />
 
       <!-- Contenu de la page -->
       <RouterView />
     </div>
+
+     <!-- Barre de navigation -->
+    <div class="flex-1">
+    <MenuActions />
+    </div>
+
   </div>
 </template>
 
