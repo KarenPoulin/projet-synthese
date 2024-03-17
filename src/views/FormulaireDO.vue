@@ -1,13 +1,12 @@
 <template>
   <div class="bg-neutral-100 w-full mx-auto">
     <!-------------------- Entête -------------------->
-    <!--    <h1 class="text-4xl font-bold text-neutral-500 m-10 p-5">{{ isRequest ? 'Ajouter une demande de stage' : 'Offre de stage' }}</h1> -->
+       <h1 class="text-4xl font-bold text-neutral-500 m-10 p-5">{{ isRequest ? 'Ajouter une demande de stage' : 'Offre de stage' }}</h1>
 
 
 
     <!-------------------- Formulaire  ---------------------->
     <form class="m-[25px]">
-
       <div>
         <div class="flex justify-end items-center px-2">
           <button class="bg-neutral-300 text-white px-4 py-2 m-1 rounded hover:bg-neutral-400"
