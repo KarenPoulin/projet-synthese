@@ -1,9 +1,19 @@
 <template>
-    <Sidebar />
+  <div>
+    <!-- Barre de navigation -->
+    <div class="">
     <MenuActions />
-    <div class="p-20 bg-neutral-100">
-        <RouterView />
     </div>
+
+    <!-- Contenu principal -->
+    <div class="bg-neutral-100 ">
+      <!-- Sidebar -->
+      <Sidebar />
+
+      <!-- Contenu de la page -->
+      <RouterView />
+    </div>
+  </div>
 </template>
 
 <script setup>
