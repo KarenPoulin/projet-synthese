@@ -34,62 +34,69 @@
 
       <div class="nom_poste mb-4">
         <label for="fullName" class="block mb-1">Nom et prénom </label>
-        <input type="text" id="fullName" v-model="form.fullName" class="w-full border-gray-300 rounded-md p-2">
-        <span v-if="fullNameError" class="text-red-500">{{ fullNameError }}</span>
+        <input type="text" id="fullName" v-model="form.fullName" @input="validateFullName"
+          class="w-full border-gray-300 rounded-md p-2">
+        <span v-if="!isFullNameValid" class="text-red-500">{{ fullNameError }}</span>
       </div>
       <div class="nom_poste mb-4">
         <label for="posistion" class="block mb-1">Poste</label>
-        <input type="text" id="position" v-model="form.position" class="w-full border-gray-300 rounded-md p-2">
-        <span v-if="positionError" class="text-red-500">{{ positionError }}</span>
+        <input type="text" id="position" v-model="form.position" @input="validatePosition"
+          class="w-full border-gray-300 rounded-md p-2">
+        <span v-if="!isPositionValid" class="text-red-500">{{ positionError }}</span>
       </div>
       <div class="block_info-perso my-9">
         <div class="mb-4">
           <label for="description" class="block mb-4">
             <h2 class="text-neutral-500 text-lg font-bold">Courte présentation</h2>
           </label>
-          <textarea id="description" v-model="form.description"
+          <textarea id="description" v-model="form.description" @input="validateDescription"
             class="block  w-full border-gray-300 rounded-md p-2"></textarea>
-          <span v-if="descriptionError" class="text-red-500">{{ descriptionError }}</span>
+          <span v-if="!isDescriptionValid" class="text-red-500">{{ descriptionError }}</span>
         </div>
         <h3 class=" text-neutral-500  my-8 m">Information personnelle</h3>
         <div class="block_info-perso-all">
           <div class="block_info-perso-adresse">
             <div class="mb-4 input_barre-modifier">
               <label for="address" class="block mb-1">Adresse</label>
-              <input type="text" id="address" v-model="form.address" class="w-full border-gray-300 rounded-md p-2">
-              <span v-if="addressError" class="text-red-500">{{ addressError }}</span>
+              <input type="text" id="address" v-model="form.address" @input="validateAddress"
+                class="w-full border-gray-300 rounded-md p-2">
+              <span v-if="!isAddressValid" class="text-red-500">{{ addressError }}</span>
             </div>
             <div class="mb-4 input_barre-modifier">
               <label for="city" class="block mb-1">Ville</label>
-              <input type="text" id="city" v-model="form.city" class="w-full border-gray-300 rounded-md p-2">
-              <span v-if="cityError" class="text-red-500">{{ cityError }}</span>
+              <input type="text" id="city" v-model="form.city" @input="validateCity"
+                class="w-full border-gray-300 rounded-md p-2">
+              <span v-if="!isCityValid" class="text-red-500">{{ cityError }}</span>
             </div>
             <div class="mb-4 input_barre-modifier">
               <label for="province" class="block mb-1">Province</label>
-              <select id="province" v-model="form.province" class="w-full border-gray-300 rounded-md p-2">
+              <select id="province" v-model="form.province" @input="validateProvince"
+                class="w-full border-gray-300 rounded-md p-2">
                 <option value="" disabled selected>Choisissez une province</option>
                 <option v-for="province in provinces" :value="province.value" :key="province._id">{{ province.value }}
                 </option>
               </select>
-              <span v-if="provinceError" class="text-red-500">{{ provinceError }}</span>
+              <span v-if="!isProvinceValid" class="text-red-500">{{ provinceError }}</span>
             </div>
             <div class="mb-4 input_barre-modifier">
               <label for="postalCode" class="block mb-1">Code postal</label>
-              <input type="text" id="postalCode" v-model="form.postalCode"
+              <input type="text" id="postalCode" v-model="form.postalCode" @input="validatePostalCode"
                 class="w-full border-gray-300 rounded-md p-2">
-              <span v-if="postalCodeError" class="text-red-500">{{ postalCodeError }}</span>
+              <span v-if="!isPostalCodeValid" class="text-red-500">{{ postalCodeError }}</span>
             </div>
           </div>
           <div class="block_info-perso-contact">
             <div class="mb-4 input_barre-modifier">
               <label for="phone" class="block mb-1">Téléphone</label>
-              <input type="text" id="phone" v-model="form.phone" class="w-full border-gray-300 rounded-md p-2">
-              <span v-if="phoneError" class="text-red-500">{{ phoneError }}</span>
+              <input type="text" id="phone" v-model="form.phone" @input="validatePhone"
+                class="w-full border-gray-300 rounded-md p-2">
+              <span v-if="!isPhoneValid" class="text-red-500">{{ phoneError }}</span>
             </div>
             <div class="mb-4 input_barre-modifier">
               <label for="email" class="block mb-1">Courriel</label>
-              <input type="email" id="email" v-model="form.email" class="w-full border-gray-300 rounded-md p-2">
-              <span v-if="emailError" class="text-red-500">{{ emailError }}</span>
+              <input type="email" id="email" v-model="form.email" @input="validateEmail"
+                class="w-full border-gray-300 rounded-md p-2">
+              <span v-if="!isEmailValid" class="text-red-500">{{ emailError }}</span>
             </div>
           </div>
         </div>
@@ -143,73 +150,25 @@
         postalCode: ''
       });
 
+      const provinces = ref([]);
+
+      const fetchProvinces = async () => {
+      try {
+        const response = await fetch('https://api-4.fly.dev/provinces');
+        if (!response.ok) {
+          throw new Error('Impossible de récupérer les provinces');
+        }
+        provinces.value = await response.json();
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    onMounted(fetchProvinces);
+
       const editing = computed(() => !!props.candidateId);
 
-      const candidate = reactive({});
-
-      const provinces = [{
-          _id: '1',
-          value: 'Alberta'
-        },
-        {
-          _id: '2',
-          value: 'Colombie-Britannique'
-        },
-        {
-          _id: '3',
-          value: 'Manitoba'
-        },
-        {
-          _id: '4',
-          value: 'Nouveau-Brunswick'
-        },
-        {
-          _id: '5',
-          value: 'Terre-Neuve-et-Labrador'
-        },
-        {
-          _id: '6',
-          value: 'Nouvelle-Écosse'
-        },
-        {
-          _id: '7',
-          value: 'Ontario'
-        },
-        {
-          _id: '8',
-          value: 'Île-du-Prince-Édouard'
-        },
-        {
-          _id: '9',
-          value: 'Québec'
-        },
-        {
-          _id: '10',
-          value: 'Saskatchewan'
-        }
-      ];
-
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      const postalCodeRegex = /^[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d$/;
-      const phoneRegex = /^\d{10}$/;
-
-      const formatPostalCode = (input) => {
-        input = input.toUpperCase();
-
-        if (!/\s/.test(input.charAt(3))) {
-          input = input.slice(0, 3) + ' ' + input.slice(3);
-        }
-
-        return input;
-      };
-
-      const validateCanadianPhoneNumber = (input) => {
-        const sanitizedInput = input.replace(/-/g, '');
-        const formattedInput = '1' + sanitizedInput;
-        const regexPattern = /^1\d{9}$/;
-        return regexPattern.test(formattedInput);
-      };
-
+      
 
       const fullNameError = ref('');
       const positionError = ref('');
@@ -236,40 +195,67 @@
       const validateFullName = () => {
         fullNameError.value = '';
 
-        if (!form.fullName.trim()) {
-          fullNameError.value = 'Veuillez entrer votre nom complet.';
+        const fullNameTrimmed = form.fullName.trim();
+        const fullNameWords = fullNameTrimmed.split(' ');
+
+        if (fullNameWords.length !== 2) {
+          fullNameError.value = 'Le nom complet doit contenir exactement deux mots.';
           return false;
         }
+
+        if (fullNameTrimmed.length < 3 || fullNameTrimmed.length > 50) {
+          fullNameError.value = 'Le nom complet doit contenir entre 3 et 50 caractères.';
+          return false;
+        }
+
         return true;
       };
 
       const validatePosition = () => {
         positionError.value = '';
 
-        if (!form.position.trim()) {
-          positionError.value = 'Veuillez entrer votre poste.';
+        const positionTrimmed = form.position.trim();
+
+        if (positionTrimmed.length < 3 || positionTrimmed.length > 50) {
+          positionError.value = 'Le poste doit contenir entre 3 et 50 caractères.';
           return false;
         }
+
         return true;
       };
 
       const validateDescription = () => {
         descriptionError.value = '';
 
-        if (!form.description.trim()) {
-          descriptionError.value = 'Veuillez entrer une courte présentation.';
+        const descriptionTrimmed = form.description.trim();
+
+        if (descriptionTrimmed.length < 3 || descriptionTrimmed.length > 250) {
+          descriptionError.value = 'La description doit contenir entre 3 et 250 caractères.';
           return false;
         }
+
         return true;
       };
 
       const validateAddress = () => {
         addressError.value = '';
 
-        if (!form.address.trim()) {
+        const addressTrimmed = form.address.trim();
+
+        if (!addressTrimmed) {
           addressError.value = 'Veuillez entrer votre adresse.';
           return false;
         }
+
+
+        const containsNumber = /\d/.test(addressTrimmed);
+        const containsWord = /[a-zA-Z]/.test(addressTrimmed);
+
+        if (!containsNumber || !containsWord) {
+          addressError.value = 'L\'adresse doit contenir à la fois un nombre et un mot.';
+          return false;
+        }
+
         return true;
       };
 
@@ -279,23 +265,28 @@
         if (!form.phone.trim()) {
           phoneError.value = 'Veuillez entrer votre numéro de téléphone.';
           return false;
-        } else if (!validateCanadianPhoneNumber(form.phone)) {
+        } else if (!isPhoneValid(form.phone)) {
           phoneError.value = 'Veuillez entrer un numéro de téléphone valide.';
           return false;
-
         }
         return true;
       };
 
       const validateCity = () => {
-
-
         cityError.value = '';
 
-        if (!form.city.trim()) {
+        const cityTrimmed = form.city.trim();
+
+        if (!cityTrimmed) {
           cityError.value = 'Veuillez entrer votre ville.';
           return false;
         }
+
+        if (cityTrimmed.length < 3 || cityTrimmed.length > 50) {
+          cityError.value = 'La ville doit contenir entre 3 et 50 caractères.';
+          return false;
+        }
+
         return true;
       };
 
@@ -328,30 +319,29 @@
         if (!form.postalCode.trim()) {
           postalCodeError.value = 'Veuillez entrer votre code postal.';
           return false;
-        } else if (!isCanadianPostalCodeValid(form.postalCode)) {
+        } else if (!isPostalCodeValid(form.postalCode)) {
           postalCodeError.value = 'Veuillez entrer un code postal valide.';
           return false;
         }
         return true;
       };
 
-      const isCanadianPhoneNumberValid = (phone) => {
+      const isPhoneValid = (phone) => {
         const phoneRegex = /^\d{10}$/;
         return phoneRegex.test(phone);
       };
 
-      
+
       const isEmailValid = (email) => {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return emailRegex.test(email);
       };
 
-     
-      const isCanadianPostalCodeValid = (postalCode) => {
+
+      const isPostalCodeValid = (postalCode) => {
         const postalCodeRegex = /^[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d$/;
         return postalCodeRegex.test(postalCode);
       };
-
 
 
       const isFormValid = computed(() => {
@@ -366,53 +356,6 @@
           !postalCodeError.value;
       });
 
-
-      const fetchCandidate = async () => {
-        try {
-          const response = await fetch(`https://api-4.fly.dev/api/candidates/${props.candidateId}`);
-          if (!response.ok) {
-            throw new Error('Impossible de récupérer les détails du candidat');
-          }
-          candidate = await response.json();
-
-          form.fullName = `${candidate.firstName} ${candidate.lastName}`;
-        } catch (error) {
-          console.error(error);
-        }
-      };
-
-      const submitForm = async () => {
-        const [firstName, lastName] = form.fullName.split(' ');
-        try {
-          const url = editing.value ? `https://api-4.fly.dev/api/candidates/${props.candidateId}` :
-            'https://api-4.fly.dev/api/candidates';
-          const method = editing.value ? 'PUT' : 'POST';
-          const response = await fetch(url, {
-            method: method,
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-              firstName: firstName,
-              lastName: lastName,
-              position: form.position,
-              description: form.description,
-              address: form.address,
-              phone: form.phone,
-              city: form.city,
-              email: form.email,
-              province: form.province,
-              postalCode: formatPostalCode(form.postalCode)
-            })
-          });
-          if (!response.ok) {
-            throw new Error('Échec de la soumission du formulaire');
-          }
-        } catch (error) {
-          console.error(error);
-        }
-      };
-
       const cancelForm = () => {
         form.fullName = '';
         form.position = '';
@@ -425,36 +368,79 @@
         form.postalCode = '';
       };
 
-      onMounted(() => {
-        if (props.candidateId) {
-          fetchCandidate();
+      const fetchCandidate = async () => {
+      try {
+        const response = await fetch(`https://api-4.fly.dev/candidates/${props.candidateId}`);
+        if (!response.ok) {
+          throw new Error('Impossible de récupérer les détails du candidat');
         }
-      });
+        candidate = await response.json();
 
+        form.fullName = `${candidate.firstName} ${candidate.lastName}`;
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    const submitForm = async () => {
+      const [firstName, lastName] = form.fullName.split(' ');
+      try {
+        const url = editing.value ? `https://api-4.fly.dev/candidates/${props.candidateId}` :
+          'https://api-4.fly.dev/candidates';
+        const method = editing.value ? 'PUT' : 'POST';
+        const response = await fetch(url, {
+          method: method,
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            firstName: firstName,
+            lastName: lastName,
+            position: form.position,
+            description: form.description,
+            address: form.address,
+            phone: form.phone,
+            city: form.city,
+            email: form.email,
+            province: form.province,
+            postalCode: formatPostalCode(form.postalCode)
+          })
+        });
+        if (!response.ok) {
+          throw new Error('Échec de la soumission du formulaire');
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    
+   
+    onMounted(() => {
+      if (props.candidateId) {
+        fetchCandidate();
+      }
+    });
+    
       return {
-  form,
-  editing,
-  candidate,
-  provinces,
-  fetchCandidate,
-  submitForm,
-  cancelForm,
-  isFormValid,
-  fullNameError,
-  positionError,
-  descriptionError,
-  addressError,
-  phoneError,
-  cityError,
-  emailError,
-  provinceError,
-  postalCodeError
-};
+        form,
+        editing,
+        provinces,
+        submitForm,
+        cancelForm,
+        isFormValid,
+        fullNameError,
+        positionError,
+        descriptionError,
+        addressError,
+        phoneError,
+        cityError,
+        emailError,
+        provinceError,
+        postalCodeError
+      };
     }
   };
 </script>
-
-
 
 <style scoped>
   .titre_barre {
