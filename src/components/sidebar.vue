@@ -1,5 +1,5 @@
 <template>
-    <aside class="w-60 bg-white min-h-full h-screen flex flex-col items-center pb-2 space-y-7">
+    <aside class=" bg-white min-h-full flex flex-col items-center pb-2 space-y-7">
 
     <!-- Logo -->
 

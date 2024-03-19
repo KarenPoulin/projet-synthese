@@ -1,7 +1,5 @@
 <template>
-    <main>
       <detailUneDemandeEtOffre/>
-    </main>
   </template>
   
   <script setup>

@@ -1,21 +1,28 @@
 <template>
-  <div class="relative flex min-h-screen bg-neutral-100 ">
+  <div class="relative grid grid-cols-12 bg-neutral-100 ">
 
-    <!-- Side Bar -->
-    <div>
+    <Sidebar class="col-span-2" />
 
-      <Sidebar />
-
-    <!-- Contenu de la page -->
-      <RouterView />
-    </div>
-
-    <!-- Barre de navigation -->
-    <div class="flex-1">
-      <MenuActions />
+    <div class="col-span-10">
+      <MenuActions class="h-24" />
+      <main class="px-20 py-20">
+        <RouterView />
+      </main>
     </div>
 
   </div>
+<!--   <div class="relative flex w-screen bg-neutral-100 ">
+
+    <Sidebar class="w-[20%]" />
+
+    <div class="w-full">
+      <MenuActions class="h-24" />
+      <main class="px-20 py-20">
+        <RouterView />
+      </main>
+    </div>
+
+  </div> -->
 </template>
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'

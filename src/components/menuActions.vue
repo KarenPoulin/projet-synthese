@@ -10,7 +10,7 @@
   </div>
 
   <!-- Boutons d'actions -->
-  <div class="flex-grow flex items-center space-x-3 px-60">
+  <div class="flex-grow flex items-center space-x-3">
     <!-- Bouton "Ajouter une offre de stage" -->
     <button class="ripple inline-block rounded border border-red-800 bg-white px-2 py-1 text-center text-xs font-medium leading-6 text-red-800 shadow transition hover:bg-red-50 hover:shadow-lg focus:outline-none">
       <svg class="mr-1 inline-block h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
