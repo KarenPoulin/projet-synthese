@@ -36,13 +36,13 @@
         <label for="fullName" class="block mb-1">Nom et prénom </label>
         <input type="text" id="fullName" v-model="form.fullName" @input="validateFullName"
           class="w-full border-gray-300 rounded-md p-2">
-        <span v-if="!isFullNameValid" class="text-red-500">{{ fullNameError }}</span>
+        <span  class="text-red-500">{{ fullNameError }}</span>
       </div>
       <div class="nom_poste mb-4">
         <label for="position" class="block mb-1">Poste</label>
         <input type="text" id="position" v-model="form.position" @input="validatePosition"
           class="w-full border-gray-300 rounded-md p-2">
-        <span v-if="!isPositionValid" class="text-red-500">{{ positionError }}</span>
+        <span  class="text-red-500">{{ positionError }}</span>
       </div>
       <div class="block_info-perso my-9">
         <div class="mb-4">
@@ -51,7 +51,7 @@
           </label>
           <textarea id="description" v-model="form.description" @input="validateDescription"
             class="block  w-full border-gray-300 rounded-md p-2"></textarea>
-          <span v-if="!isDescriptionValid" class="text-red-500">{{ descriptionError }}</span>
+          <span  class="text-red-500">{{ descriptionError }}</span>
         </div>
         <h3 class=" text-neutral-500  my-8 m">Information personnelle</h3>
         <div class="block_info-perso-all">
