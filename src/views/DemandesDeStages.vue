@@ -1,8 +1,10 @@
 <template>
-      <detailUneDemandeEtOffre/>
+      <ficheDetailler
+      
+      />
   </template>
   
   <script setup>
-  import detailUneDemandeEtOffre from '@/components/detailUneDemandeEtOffre.vue';
+    import ficheDetailler from '@/components/ficheDetailler.vue';
   </script>
   

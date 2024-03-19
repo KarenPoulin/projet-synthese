@@ -14,25 +14,32 @@
 </template>
 
 <script setup>
-import { defineProps, defineEmits } from 'vue'
+import { defineProps, defineEmits } from 'vue';
 
-const { etatDuModal, title, firstName, lastName } = defineProps(['etatDuModal', 'title', 'firstName', 'lastName'])
-const  emit  = defineEmits(['suppressionAnnuleeIcone', 'suppressionAnnulee', 'confirmationSuppression'])
+const props = defineProps({
+  etatDuModal: Boolean,
+  title: String,
+  firstName: String,
+  lastName: String
+});
+
+const emits = defineEmits(['suppressionAnnuleeIcone', 'suppressionAnnulee', 'confirmationSuppression']);
 
 const modalFermetureIcone = () => {
-  emit('suppressionAnnuleeIcone')
-}
+  emits('suppressionAnnuleeIcone');
+};
 
 const annulerSuppression = () => {
   modalFermetureIcone();
-  emit('suppressionAnnulee')
-}
+  emits('suppressionAnnulee');
+};
 
 const confirmerSuppression = () => {
   modalFermetureIcone();
-  emit('confirmationSuppression')
-}
+  emits('confirmationSuppression');
+};
 </script>
+
 
 <style scoped>
 
