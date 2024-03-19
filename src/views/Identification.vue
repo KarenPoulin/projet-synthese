@@ -31,7 +31,7 @@
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { useAdminStore } from '../stores/admin.js';
+import { useAdminStore } from '@/stores/admin'; 
 
 const nomEtPrenom = ref('');
 const courriel = ref('');
@@ -40,7 +40,6 @@ const courrielValid = ref(true);
 const nomEtPrenomErreur = ref('');
 const courrielErreur = ref('');
 const router = useRouter();
-const adminStore = useAdminStore();
 
 const validerNomEtPrenom = () => {
   nomEtPrenomErreur.value = '';
@@ -87,9 +86,10 @@ const acceder = () => {
   validerCourriel();
 
   if (!nomEtPrenom.value || !courriel.value || !nomEtPrenomValid.value || !courrielValid.value) {
-    adminStore.nomEtPrenom = nomEtPrenom.value;
     return;
   }
+
+  useAdminStore().setNomEtPrenom(nomEtPrenom.value);
 
   router.push('/app/tableaudebord');
 }
