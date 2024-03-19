@@ -45,8 +45,8 @@
   <!-- Carte utilisateur -->
   <div class="flex items-center space-x-4">
     <div>
-      <p class="text-xs text-black">John Doe</p>
-      <p class="text-xs text-neutral-500">Amin</p>
+      <p class="text-xs text-black">{{ adminStore.nomEtPrenom }}</p>
+      <p class="text-xs text-neutral-500">Admin</p>
     </div>
     <!-- Photo de profil -->
     <img src="../assets/icons/candidate-48.png" alt="Photo de profil" class="h-8 w-8 rounded-full bg-gray-300" />
@@ -64,5 +64,8 @@
 </template>
 
 <script setup>
+import { useAdminStore } from '../stores/admin.js';
+
+const adminStore = useAdminStore();
 
 </script>
