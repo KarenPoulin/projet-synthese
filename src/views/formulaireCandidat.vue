@@ -15,11 +15,11 @@
     </div>
     <form @submit.prevent="submitForm">
       <div class="flex justify-end my-10">
-        <a href="/app/candidats">
+        <RouterLink to="/app/Candidats">
           <button type="button"
             class="btn-secondary mr-2 text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
             @click="cancelForm">Annuler</button>
-        </a>
+        </RouterLink>
         <button type="submit"
           class="btn-primary focus:outline-none text-white bg-fuchsia-800  hover:bg-fuchsia-900 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 inline-flex"
           :disabled="!isFormValid">
@@ -70,7 +70,7 @@
             </div>
             <div class="mb-4 input_barre-modifier">
               <label for="province" class="block mb-1">Province</label>
-              <select id="province" v-model="form.province" @input="validateProvince"
+              <select id="province" v-model="form.province" @change="validateProvince"
                 class="w-full border-gray-300 rounded-md p-2">
                 <option value="" disabled  selected>Choisissez une province</option>
                 <option v-for="province in provinces" :value="province.value" :key="province._id">{{ province.value }}
