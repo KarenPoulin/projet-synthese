@@ -5,7 +5,7 @@
         {{ editing ? '' : 'Ajouter un Candidat' }}</h1>
       <div v-if="editing">
         <div class="titre_barre-modifier">
-          <div class="titre_modifier">
+          <div class="titre_modifer">
             <p class="text-neutral-500">Candidat</p>
             <h1 class="text-neutral-500">{{ candidate.firstName }} {{ candidate.lastName }}</h1>
             <p class="poste text-neutral-500">{{ candidate.position }}</p>
@@ -17,11 +17,11 @@
       <div class="flex justify-end my-10">
         <a href="/app/candidats">
           <button type="button"
-            class="btn-secondary mr-2  text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
+            class="btn-secondary mr-2 text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
             @click="cancelForm">Annuler</button>
         </a>
         <button type="submit"
-          class="btn-primary focus:outline-none text-white   bg-fuchsia-800  hover:bg-fuchsia-900  focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 inline-flex"
+          class="btn-primary focus:outline-none text-white bg-fuchsia-800  hover:bg-fuchsia-900 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 inline-flex"
           :disabled="!isFormValid">
           <svg class="w-6 h-6 text-gray-100 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
             width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
@@ -39,7 +39,7 @@
         <span v-if="!isFullNameValid" class="text-red-500">{{ fullNameError }}</span>
       </div>
       <div class="nom_poste mb-4">
-        <label for="posistion" class="block mb-1">Poste</label>
+        <label for="position" class="block mb-1">Poste</label>
         <input type="text" id="position" v-model="form.position" @input="validatePosition"
           class="w-full border-gray-300 rounded-md p-2">
         <span v-if="!isPositionValid" class="text-red-500">{{ positionError }}</span>
@@ -72,7 +72,7 @@
               <label for="province" class="block mb-1">Province</label>
               <select id="province" v-model="form.province" @input="validateProvince"
                 class="w-full border-gray-300 rounded-md p-2">
-                <option value="" disabled selected>Choisissez une province</option>
+                <option value="" disabled  selected>Choisissez une province</option>
                 <option v-for="province in provinces" :value="province.value" :key="province._id">{{ province.value }}
                 </option>
               </select>
@@ -147,28 +147,27 @@
         city: '',
         email: '',
         province: '',
-        postalCode: ''
+        postalCode: '',
+        skills:['skill1', 'skill2', 'skill3']
       });
 
       const provinces = ref([]);
 
       const fetchProvinces = async () => {
-      try {
-        const response = await fetch('https://api-4.fly.dev/provinces');
-        if (!response.ok) {
-          throw new Error('Impossible de récupérer les provinces');
+        try {
+          const response = await fetch('https://api-4.fly.dev/provinces');
+          if (!response.ok) {
+            throw new Error('Impossible de récupérer les provinces');
+          }
+          provinces.value = await response.json();
+        } catch (error) {
+          console.error(error);
         }
-        provinces.value = await response.json();
-      } catch (error) {
-        console.error(error);
-      }
-    };
+      };
 
-    onMounted(fetchProvinces);
+      onMounted(fetchProvinces);
 
       const editing = computed(() => !!props.candidateId);
-
-      
 
       const fullNameError = ref('');
       const positionError = ref('');
@@ -179,18 +178,6 @@
       const emailError = ref('');
       const provinceError = ref('');
       const postalCodeError = ref('');
-
-      const validateForm = () => {
-        validateFullName();
-        validatePosition();
-        validateDescription();
-        validateAddress();
-        validatePhone();
-        validateCity();
-        validateEmail();
-        validateProvince();
-        validatePostalCode();
-      };
 
       const validateFullName = () => {
         fullNameError.value = '';
@@ -247,7 +234,6 @@
           return false;
         }
 
-
         const containsNumber = /\d/.test(addressTrimmed);
         const containsWord = /[a-zA-Z]/.test(addressTrimmed);
 
@@ -290,6 +276,15 @@
         return true;
       };
 
+      const validateSkills = () => {
+        
+        return true;
+      };
+
+      const formatPostalCode = (postalCode) => {
+        return postalCode.trim().toUpperCase();
+      };
+
       const validateEmail = () => {
         emailError.value = '';
 
@@ -304,14 +299,14 @@
       };
 
       const validateProvince = () => {
-        provinceError.value = '';
+    provinceError.value = '';
 
-        if (!form.province.trim()) {
-          provinceError.value = 'Veuillez sélectionner une province.';
-          return false;
-        }
-        return true;
-      };
+    if (!form.province) {
+        provinceError.value = 'Veuillez sélectionner une province.';
+        return false;
+    }
+    return true;
+};
 
       const validatePostalCode = () => {
         postalCodeError.value = '';
@@ -331,29 +326,33 @@
         return phoneRegex.test(phone);
       };
 
-
       const isEmailValid = (email) => {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return emailRegex.test(email);
       };
-
 
       const isPostalCodeValid = (postalCode) => {
         const postalCodeRegex = /^[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d$/;
         return postalCodeRegex.test(postalCode);
       };
 
-
       const isFormValid = computed(() => {
         return !fullNameError.value &&
-          !positionError.value &&
           !descriptionError.value &&
           !addressError.value &&
           !phoneError.value &&
           !cityError.value &&
           !emailError.value &&
           !provinceError.value &&
-          !postalCodeError.value;
+          !postalCodeError.value &&
+          validateFullName() &&
+          validateDescription() &&
+          validateAddress() &&
+          validatePhone() &&
+          validateCity() &&
+          validateEmail() &&          
+          validatePostalCode() &&
+          validateSkills();
       });
 
       const cancelForm = () => {
@@ -369,58 +368,57 @@
       };
 
       const fetchCandidate = async () => {
-      try {
-        const response = await fetch(`https://api-4.fly.dev/candidates/${props.candidateId}`);
-        if (!response.ok) {
-          throw new Error('Impossible de récupérer les détails du candidat');
-        }
-        candidate = await response.json();
+        try {
+          const response = await fetch(`https://api-4.fly.dev/candidates/${props.candidateId}`);
+          if (!response.ok) {
+            throw new Error('Impossible de récupérer les détails du candidat');
+          }
+          const candidate = await response.json();
 
-        form.fullName = `${candidate.firstName} ${candidate.lastName}`;
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    const submitForm = async () => {
-      const [firstName, lastName] = form.fullName.split(' ');
-      try {
-        const url = editing.value ? `https://api-4.fly.dev/candidates/${props.candidateId}` :
-          'https://api-4.fly.dev/candidates';
-        const method = editing.value ? 'PUT' : 'POST';
-        const response = await fetch(url, {
-          method: method,
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            firstName: firstName,
-            lastName: lastName,
-            position: form.position,
-            description: form.description,
-            address: form.address,
-            phone: form.phone,
-            city: form.city,
-            email: form.email,
-            province: form.province,
-            postalCode: formatPostalCode(form.postalCode)
-          })
-        });
-        if (!response.ok) {
-          throw new Error('Échec de la soumission du formulaire');
+          form.fullName = `${candidate.firstName} ${candidate.lastName}`;
+        } catch (error) {
+          console.error(error);
         }
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    
-   
-    onMounted(() => {
-      if (props.candidateId) {
-        fetchCandidate();
-      }
-    });
-    
+      };
+
+      const submitForm = async () => {
+        const [firstName, lastName] = form.fullName.split(' ');
+        try {
+          const url = editing.value ? `https://api-4.fly.dev/candidates/${props.candidateId}` :
+            'https://api-4.fly.dev/candidates';
+          const method = editing.value ? 'PUT' : 'POST';
+          const response = await fetch(url, {
+            method: method,
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              firstName: firstName,
+              lastName: lastName,
+              description: form.description,
+              address: form.address,
+              phone: form.phone,
+              city: form.city,
+              email: form.email,
+              province: form.province,
+              postalCode: formatPostalCode(form.postalCode),
+              skills: form.skills
+            })
+          });
+          if (!response.ok) {
+            throw new Error('Échec de la soumission du formulaire');
+          }
+        } catch (error) {
+          console.error(error);
+        }
+      };
+
+      onMounted(() => {
+        if (props.candidateId) {
+          fetchCandidate();
+        }
+      });
+
       return {
         form,
         editing,
@@ -436,7 +434,18 @@
         cityError,
         emailError,
         provinceError,
-        postalCodeError
+        postalCodeError,
+        validateFullName,
+        validatePosition,
+        validateDescription,
+        validateAddress,
+        validatePhone,
+        validateCity,
+        validateEmail,
+        validateProvince,
+        validatePostalCode,
+        validateSkills
+
       };
     }
   };
