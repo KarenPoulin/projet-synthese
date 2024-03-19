@@ -246,17 +246,22 @@
       };
 
       const validatePhone = () => {
-        phoneError.value = '';
+  phoneError.value = '';
 
-        if (!form.phone.trim()) {
-          phoneError.value = 'Veuillez entrer votre numéro de téléphone.';
-          return false;
-        } else if (!isPhoneValid(form.phone)) {
-          phoneError.value = 'Veuillez entrer un numéro de téléphone valide.';
-          return false;
-        }
-        return true;
-      };
+  const phoneTrimmed = form.phone.trim();
+
+  const phoneRegex = /^\d{3}-\d{3}-\d{4}$/;
+
+  if (!phoneTrimmed) {
+    phoneError.value = 'Veuillez entrer votre numéro de téléphone.';
+    return false;
+  } else if (!phoneRegex.test(phoneTrimmed)) {
+    phoneError.value = 'Veuillez entrer un numéro de téléphone valide au format 514-555-5555.';
+    return false;
+  }
+
+  return true;
+};
 
       const validateCity = () => {
         cityError.value = '';
