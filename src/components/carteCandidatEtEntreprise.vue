@@ -1,14 +1,14 @@
 <template>
-    <div v-if="isCandidat" class="bg-white pl-5 pr-12 pt-5 pb-5">
+    <div v-if="isCandidat" v-for="candidate in candidates" :key="candidate._id" class="bg-white pl-5 pr-12 pt-5 pb-5">
         <div class="flex items-center">
             <div class="bg-fuchsia-800 w-24 h-24 flex justify-center items-center">
                 <img src="/src/assets/icons/candidate-48.png" alt="candidat" class="w-20">
             </div>
             <div class="ml-5">
-                <h1 class="text-xl font-bold">Plume Latraverse</h1>
-                <p class="text-sm mb-3 text-neutral-500">UX Designer</p>
-                <p class="text-sm text-neutral-500">plume@latraverse.com</p>
-                <p class="text-sm text-neutral-500">819 999 9999</p>
+                <h1 class="text-xl font-bold">{{candidate.firstName}} {{ candidate.lastName }}</h1>
+                <p class="text-sm mb-3 text-neutral-500">{{ candidate.description }}</p>
+                <p class="text-sm text-neutral-500">{{ candidate.email }}</p>
+                <p class="text-sm text-neutral-500">{{ candidate.phone }}</p>
             </div>
         </div>
     </div>
@@ -31,9 +31,11 @@
 </template>
 
 <script setup>
-    const props = defineProps({
+const props = defineProps({
         isCandidat: Boolean,
         isEntreprise: Boolean,
-    })
+})
+
+
 
 </script>
