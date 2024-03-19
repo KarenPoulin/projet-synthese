@@ -286,16 +286,16 @@
               fieldsToValidate.additionalInformation }}</span>
         </div>
 
-        <div v-if="isRequest" class="m-2 p-5 flex justify-around items-center">
+        <div v-if="isRequest" class="m-2  flex justify-between items-center">
 
           <div class="w-1/2 flex items-center">
             <input class="h-10 border border-gray-300 py-3 w-full rounded  hover:bg-teal-100  focus:bg-white">
             <button
-              class="h-10 bg-neutral-300 text-white px-5 py-1 rounded hover:bg-neutral-400 text-center">Parcourir</button>
+              class="h-10 bg-neutral-300 text-white px-4 py-1 rounded hover:bg-neutral-400 text-center">Parcourir</button>
           </div>
 
 
-          <button class="bg-teal-500 text-white px-4 py-2 m-1 rounded hover:bg-teal-600  focus:bg-white"><i
+          <button class="bg-teal-500 text-white p-2 m-1 rounded hover:bg-teal-600  focus:bg-white"><i
               class="fa-solid fa-cloud-arrow-down p-1"></i>Télécharger le C.V. </button>
         </div>
 
