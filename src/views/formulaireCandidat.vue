@@ -70,10 +70,10 @@
             </div>
             <div class="mb-4 input_barre-modifier">
               <label for="province" class="block mb-1">Province</label>
-              <select id="province" v-model="form.province" @change="validateProvince"
+              <select id="province" v-model="form.provinceId" @change="validateProvince"
                 class="w-full border-gray-300 rounded-md p-2">
                 <option value="" disabled  selected>Choisissez une province</option>
-                <option v-for="province in provinces" :value="province.value" :key="province._id">{{ province.value }}
+                <option v-for="province in provinces" :value="province._id" :key="province._id">{{ province.value }}
                 </option>
               </select>
               <span v-if="!isProvinceValid" class="text-red-500">{{ provinceError }}</span>
@@ -146,7 +146,7 @@
         phone: '',
         city: '',
         email: '',
-        province: '',
+        provinceId: '',
         postalCode: '',
         skills:['skill1', 'skill2', 'skill3']
       });
@@ -306,7 +306,7 @@
       const validateProvince = () => {
     provinceError.value = '';
 
-    if (!form.province) {
+    if (!form.provinceId) {
         provinceError.value = 'Veuillez sélectionner une province.';
         return false;
     }
@@ -396,7 +396,7 @@
               "phone": form.phone,
               "city": form.city,
               "skills": form.skills,
-              "province": form.province,
+              "province": form.provinceId,
               "postalCode": formatPostalCode(form.postalCode),
               
             })
