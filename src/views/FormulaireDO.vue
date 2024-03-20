@@ -22,7 +22,7 @@
           <div class="flex items-baseline mt-5">
             <label for="title" class="text-base text-center font-bold text-neutral-500 block mr-4">Titre: </label>
             <input id="title" v-model="formFieldsLinkedWithApi.title"
-              @change="validateInput(formFieldsLinkedWithApi.title, 'title')" type="text"
+              @input="validateInput(formFieldsLinkedWithApi.title, 'title')" type="text"
               class="border border-gray-300 p-2 w-full rounded hover:bg-teal-100 focus:bg-white"
               :class="{ 'hover:bg-teal-100': isRequest, 'hover:bg-red-100': !isRequest }">
 
@@ -39,7 +39,6 @@
               @change="validateSelect(formFieldsLinkedWithApi.enterprise, 'enterprise')" type="text"
               class="border border-gray-300 p-2 w-full rounded  focus:bg-white"
               :class="{ 'hover:bg-teal-100': isRequest, 'hover:bg-red-100': !isRequest }">
-              <option></option>
               <option>Entreprise 1</option>
               <option>Entreprise 2</option>
             </select>
@@ -56,7 +55,7 @@
         <div v-if="isRequest" class="m-2">
           <label for="nomComplet" class="text-sm font-bold text-neutral-500  block">Nom et prénom</label>
           <input id="title" v-model="formFieldsLinkedWithApi.nomComplet"
-            @change="validateInput(formFieldsLinkedWithApi.nomComplet, 'nomComplet')" type="text"
+          @input="validateInput(formFieldsLinkedWithApi.nomComplet, 'nomComplet')" type="text"
             class="border border-gray-300 w-full rounded focus:bg-white"
             :class="{ 'hover:bg-teal-100': isRequest, 'hover:bg-red-100': !isRequest }">
           <span v-if="fieldsToValidate.nomComplet !== ''" class="p-2 text-xs font-semibold text-red-700">{{
@@ -91,7 +90,7 @@
             <div class="h-full w-1.5 bg-neutral-800 absolute inset-y-0 left-0"></div>
             <label for="programme" class="text-sm font-bold text-neutral-500 block ml-3">Programme de formation</label>
             <input id="programme" v-model="formFieldsLinkedWithApi.programme"
-              @change="validateInput(formFieldsLinkedWithApi.programme, 'programme')" type="text"
+            @input="validateInput(formFieldsLinkedWithApi.programme, 'programme')" type="text"
               class="border border-gray-300 p-2 w-full rounded mt-1 ml-3   focus:bg-white"
               :class="{ 'hover:bg-teal-100': isRequest, 'hover:bg-red-100': !isRequest }">
             <span v-if="fieldsToValidate.programme !== ''" class="text-xs font-semibold text-red-700 p-2">{{
@@ -104,7 +103,7 @@
             <label for="etablissement" class="text-sm font-bold text-neutral-500 block ml-3 ">Établissement
               scolaire</label>
             <input id="etablissement" v-model="formFieldsLinkedWithApi.etablissement"
-              @change="validateInput(formFieldsLinkedWithApi.etablissement, 'etablissement')" type="text"
+            @input="validateInput(formFieldsLinkedWithApi.etablissement, 'etablissement')" type="text"
               class="border border-gray-300 p-2 w-full rounded mt-1 ml-3  focus:bg-white"
               :class="{ 'hover:bg-teal-100': isRequest, 'hover:bg-red-100': !isRequest }">
             <span v-if="fieldsToValidate.etablissement !== ''" class="text-xs font-semibold text-red-700 p-2">{{
@@ -117,7 +116,7 @@
             <label for="activitySector" class="text-sm font-bold text-neutral-500 block ml-3   focus:bg-white"
               :class="{ 'hover:bg-teal-100': isRequest, 'hover:bg-red-100': !isRequest }">Secteur
               d'activité</label>
-            <select id="activitySector" placeholder="Veuillez sélectionner un choix"
+            <select id="activitySector" 
               v-model="formFieldsLinkedWithApi.activitySector"
               @change="validateSelect(formFieldsLinkedWithApi.activitySector, 'activitySector')"
               class="border border-gray-300 p-2 w-full rounded mt-1 ml-3 focus:bg-white"
@@ -141,7 +140,7 @@
             <div class="h-full w-1.5 bg-neutral-800 absolute inset-y-0 left-0"></div>
             <label for="city" class="text-sm font-bold text-neutral-500 block ml-3 ">Ville</label>
             <input id="city" v-model="formFieldsLinkedWithApi.city"
-              @change="validateInput(formFieldsLinkedWithApi.city, 'city')" type="text"
+              @input="validateInput(formFieldsLinkedWithApi.city, 'city')" type="text"
               class="border border-gray-300 p-2 w-full rounded mt-1 ml-3 focus:bg-white"
               :class="{ 'hover:bg-teal-100': isRequest, 'hover:bg-red-100': !isRequest }">
             <span v-if="fieldsToValidate.city !== ''" class="p-2 text-xs font-semibold text-red-700">{{
