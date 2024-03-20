@@ -321,6 +321,8 @@
         return true;
       };
 
+      
+
       const validatePostalCode = () => {
         postalCodeError.value = '';
 
