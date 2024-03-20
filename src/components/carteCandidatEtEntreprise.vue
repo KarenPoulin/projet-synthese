@@ -16,7 +16,7 @@
     <div v-if="isEntreprise" v-for="enterprise in enterprises" :key="enterprise._id" class="bg-white p-16 hover:bg-blue-100">
         <div class="flex items-center">
             <div>
-                <img :src="enterprise.image" :alt="enterprise.name" class="w-32">
+                <img src="../assets/img/enterprises.png" alt="logo-entreprises" class="w-32">
             </div>
             <div class="ml-16">
                 <h1 class="text-xl font-bold">{{ enterprise.name }}</h1>
