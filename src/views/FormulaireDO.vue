@@ -1,7 +1,7 @@
 <template>
   <div class="bg-neutral-100 w-full mx-auto">
     <!-------------------- Entête -------------------->
-    <!--     <h1 class="text-4xl font-bold text-neutral-500 m-10 p-5">{{ isRequest ? 'Ajouter une demande de stage' : 'Offre de stage' }}</h1> -->
+        <h1 class="text-4xl font-bold text-neutral-500 m-10 p-5">{{ isRequest ? 'Ajouter une demande de stage' : 'Offre de stage' }}</h1>
 
 
 
@@ -13,7 +13,8 @@
             @click="resetForm">Annuler</button>
           <button
             :class="isRequest ? 'bg-teal-500 text-white px-4 py-2 m-1 rounded hover:bg-teal-600' : 'bg-red-800 text-white px-4 py-2 m-1 rounded hover:bg-red-900'"
-            @click="submitForm">{{ isAdding ? 'Sauvegarder' : 'Mettre à jour' }}</button>
+            @click="submitForm"><i class="fa-solid fa-floppy-disk p-1"></i>{{ isAdding ? 'Sauvegarder' : 'Mettre à jour'
+            }}</button>
 
         </div>
 
@@ -21,7 +22,7 @@
           <div class="flex items-baseline mt-5">
             <label for="title" class="text-base text-center font-bold text-neutral-500 block mr-4">Titre: </label>
             <input id="title" v-model="formFieldsLinkedWithApi.title"
-              @change="validateInput(formFieldsLinkedWithApi.title, 'title')" type="text"
+              @input="validateInput(formFieldsLinkedWithApi.title, 'title')" type="text"
               class="border border-gray-300 p-2 w-full rounded hover:bg-teal-100 focus:bg-white"
               :class="{ 'hover:bg-teal-100': isRequest, 'hover:bg-red-100': !isRequest }">
 
@@ -38,7 +39,6 @@
               @change="validateSelect(formFieldsLinkedWithApi.enterprise, 'enterprise')" type="text"
               class="border border-gray-300 p-2 w-full rounded  focus:bg-white"
               :class="{ 'hover:bg-teal-100': isRequest, 'hover:bg-red-100': !isRequest }">
-              <option></option>
               <option>Entreprise 1</option>
               <option>Entreprise 2</option>
             </select>
@@ -55,7 +55,7 @@
         <div v-if="isRequest" class="m-2">
           <label for="nomComplet" class="text-sm font-bold text-neutral-500  block">Nom et prénom</label>
           <input id="title" v-model="formFieldsLinkedWithApi.nomComplet"
-            @change="validateInput(formFieldsLinkedWithApi.nomComplet, 'nomComplet')" type="text"
+          @input="validateInput(formFieldsLinkedWithApi.nomComplet, 'nomComplet')" type="text"
             class="border border-gray-300 w-full rounded focus:bg-white"
             :class="{ 'hover:bg-teal-100': isRequest, 'hover:bg-red-100': !isRequest }">
           <span v-if="fieldsToValidate.nomComplet !== ''" class="p-2 text-xs font-semibold text-red-700">{{
@@ -90,7 +90,7 @@
             <div class="h-full w-1.5 bg-neutral-800 absolute inset-y-0 left-0"></div>
             <label for="programme" class="text-sm font-bold text-neutral-500 block ml-3">Programme de formation</label>
             <input id="programme" v-model="formFieldsLinkedWithApi.programme"
-              @change="validateInput(formFieldsLinkedWithApi.programme, 'programme')" type="text"
+            @input="validateInput(formFieldsLinkedWithApi.programme, 'programme')" type="text"
               class="border border-gray-300 p-2 w-full rounded mt-1 ml-3   focus:bg-white"
               :class="{ 'hover:bg-teal-100': isRequest, 'hover:bg-red-100': !isRequest }">
             <span v-if="fieldsToValidate.programme !== ''" class="text-xs font-semibold text-red-700 p-2">{{
@@ -103,7 +103,7 @@
             <label for="etablissement" class="text-sm font-bold text-neutral-500 block ml-3 ">Établissement
               scolaire</label>
             <input id="etablissement" v-model="formFieldsLinkedWithApi.etablissement"
-              @change="validateInput(formFieldsLinkedWithApi.etablissement, 'etablissement')" type="text"
+            @input="validateInput(formFieldsLinkedWithApi.etablissement, 'etablissement')" type="text"
               class="border border-gray-300 p-2 w-full rounded mt-1 ml-3  focus:bg-white"
               :class="{ 'hover:bg-teal-100': isRequest, 'hover:bg-red-100': !isRequest }">
             <span v-if="fieldsToValidate.etablissement !== ''" class="text-xs font-semibold text-red-700 p-2">{{
@@ -116,7 +116,8 @@
             <label for="activitySector" class="text-sm font-bold text-neutral-500 block ml-3   focus:bg-white"
               :class="{ 'hover:bg-teal-100': isRequest, 'hover:bg-red-100': !isRequest }">Secteur
               d'activité</label>
-            <select id="activitySector" v-model="formFieldsLinkedWithApi.activitySector"
+            <select id="activitySector" 
+              v-model="formFieldsLinkedWithApi.activitySector"
               @change="validateSelect(formFieldsLinkedWithApi.activitySector, 'activitySector')"
               class="border border-gray-300 p-2 w-full rounded mt-1 ml-3 focus:bg-white"
               :class="{ 'hover:bg-teal-100': isRequest, 'hover:bg-red-100': !isRequest }">
@@ -139,7 +140,7 @@
             <div class="h-full w-1.5 bg-neutral-800 absolute inset-y-0 left-0"></div>
             <label for="city" class="text-sm font-bold text-neutral-500 block ml-3 ">Ville</label>
             <input id="city" v-model="formFieldsLinkedWithApi.city"
-              @change="validateInput(formFieldsLinkedWithApi.city, 'city')" type="text"
+              @input="validateInput(formFieldsLinkedWithApi.city, 'city')" type="text"
               class="border border-gray-300 p-2 w-full rounded mt-1 ml-3 focus:bg-white"
               :class="{ 'hover:bg-teal-100': isRequest, 'hover:bg-red-100': !isRequest }">
             <span v-if="fieldsToValidate.city !== ''" class="p-2 text-xs font-semibold text-red-700">{{
@@ -284,10 +285,17 @@
               fieldsToValidate.additionalInformation }}</span>
         </div>
 
-        <div v-if="isRequest" class="m-2">
-          <input
-            class=" block w-full text-sm text-neutral-950-text-color border border-neutral-300-border-color rounded-lg cursor-pointer bg-neutral-100-color dark:text-neutral-100-dark-text-color focus:outline-none dark:bg-neutral-300-background-color dark:bg-neutral-300-background-color dark:placeholder-neutral-950-dark-placeholder-color"
-            id="file_input" type="file">
+        <div v-if="isRequest" class="m-2  flex justify-between items-center">
+
+          <div class="w-1/2 flex items-center">
+            <input class="h-10 border border-gray-300 py-3 w-full rounded  hover:bg-teal-100  focus:bg-white">
+            <button
+              class="h-10 bg-neutral-300 text-white px-4 py-1 rounded hover:bg-neutral-400 text-center">Parcourir</button>
+          </div>
+
+
+          <button class="bg-teal-500 text-white p-2 m-1 rounded hover:bg-teal-600  focus:bg-white"><i
+              class="fa-solid fa-cloud-arrow-down p-1"></i>Télécharger le C.V. </button>
         </div>
 
 
@@ -297,7 +305,8 @@
             @click="resetForm">Annuler</button>
           <button
             :class="isRequest ? 'bg-teal-500 text-white px-4 py-2 m-1 rounded hover:bg-teal-600' : 'bg-red-800 text-white px-4 py-2 m-1 rounded hover:bg-red-900'"
-            @click="submitForm">{{ isAdding ? 'Sauvegarder' : 'Mettre à jour' }}</button>
+            @click="submitForm"><i class="fa-solid fa-floppy-disk p-1"></i>{{ isAdding ? 'Sauvegarder' : 'Mettre à jour'
+            }}</button>
 
         </div>
 
@@ -349,7 +358,9 @@ const errorMessage = reactive({
   pastDate: 'La date ne doit pas être dans le passé.',
   endDate: 'La date de fin ne peut pas être avant la date de début.',
   number: 'Le champ doit avoir une nombre positif valide.',
-  radio: 'Le champ doit avoir au moins un choix.'
+  radio: 'Le champ doit avoir au moins un choix.',
+  letterOnly: 'Le champ doit comporter que des lettres minuscule ou majuscules.',
+  maxHours: "Le nombre d'heures maximum est de 40."
 });
 
 const fieldsToValidate = reactive({
@@ -377,6 +388,7 @@ let isFormValid = ref(false);
 
 // Fonction pour valider les champs de type input
 function validateInput(input, field) {
+
   if (input.trim() === "") {
     fieldsToValidate[field] = errorMessage.empty;
     return errorMessage.empty;
@@ -389,6 +401,8 @@ function validateInput(input, field) {
     fieldsToValidate[field] = errorMessage.maxCharacters;
     return errorMessage.maxCharacters;
   }
+
+
   fieldsToValidate[field] = "";
   return '';
 }
@@ -439,13 +453,17 @@ function validateNumber(input, field) {
   if (isNaN(parseFloat(input)) || parseFloat(input) < 0) {
     fieldsToValidate[field] = errorMessage.number;
     return errorMessage.number;
-  } fieldsToValidate[field] = "";
+  }
+  if (parseFloat(input) > 40) {
+    fieldsToValidate[field] = errorMessage.maxHours;
+    return errorMessage.maxHours;
+  }
+  fieldsToValidate[field] = "";
   return '';
 }
 
 
 
-// Fonction pour valider les champs de type radio
 // Fonction pour valider les champs de type radio
 function validatePaid(value) {
   if (value !== 'DISCRETIONARY' && value !== 'PAID' && value !== 'UNPAID') {
@@ -507,4 +525,9 @@ const resetForm = (e) => {
 
 </script>
 
-<style scoped></style>
+<style scoped>
+saveIcon {
+  width: 1px;
+  height: 1px;
+}
+</style>
