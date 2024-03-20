@@ -45,7 +45,7 @@
   <!-- Carte utilisateur -->
   <div class="flex items-center space-x-4">
     <div>
-      <p class="text-xs text-black">{{ adminStore.nomEtPrenom }}</p>
+      <p class="text-xs text-black">{{ adminStore.state.nomEtPrenom }}</p>
       <p class="text-xs text-neutral-500">Admin</p>
     </div>
     <!-- Photo de profil -->
@@ -64,8 +64,7 @@
 </template>
 
 <script setup>
-import { useAdminStore } from '../stores/admin.js';
+import { useAdminStore } from '@/stores/admin';
 
 const adminStore = useAdminStore();
-
 </script>

@@ -31,11 +31,26 @@
 </template>
 
 <script setup>
+import { onMounted, ref } from 'vue';
+import axios from 'axios';
+
+
 const props = defineProps({
         isCandidat: Boolean,
         isEntreprise: Boolean,
 })
 
+const candidates = ref([]);
+
+const getCandidates = () => {
+    return axios.get("https://api-4.fly.dev/candidates")
+    .then((res) => candidates.value = res.data)
+    .catch((error) => console.log(error))
+}
+
+onMounted(() => {
+    getCandidates();
+})
 
 
 </script>
