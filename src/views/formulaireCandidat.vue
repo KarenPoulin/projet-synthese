@@ -326,10 +326,7 @@
         return true;
       };
 
-      const isPhoneValid = (phone) => {
-        const phoneRegex = /^\d{10}$/;
-        return phoneRegex.test(phone);
-      };
+     
 
       const isEmailValid = (email) => {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -391,16 +388,17 @@
               'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-              firstName: firstName,
-              lastName: lastName,
-              description: form.description,
-              address: form.address,
-              phone: form.phone,
-              city: form.city,
-              email: form.email,
-              province: form.province,
-              postalCode: formatPostalCode(form.postalCode),
-              skills: form.skills
+              "description":form.description ,
+              "email": form.email,
+              "firstName": firstName,
+              "lastName": lastName,              
+              "address": form.address,
+              "phone": form.phone,
+              "city": form.city,
+              "skills": form.skills,
+              "province": form.province,
+              "postalCode": formatPostalCode(form.postalCode),
+              
             })
           });
           if (!response.ok) {
