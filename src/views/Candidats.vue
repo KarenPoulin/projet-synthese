@@ -10,8 +10,10 @@
           <carteCandidatEtEntreprise :isCandidat="true"/>
           <carteCandidatEtEntreprise :isCandidat="true"/>
           <carteCandidatEtEntreprise :isCandidat="true"/> -->
-          <template v-for="candidat in allCandidatesResults" :key="candidat._id">
-              <carteCandidatEtEntreprise :candidate="candidat" :isCandidat="true"/>
+          <template v-if="allCandidatesResults" v-for="candidat in allCandidatesResults" :key="candidat._id">
+              <RouterLink :to="{name:'fichedetailcandidat', params:{id: candidat._id}}">
+                <carteCandidatEtEntreprise :candidate="candidat" :isCandidat="true"/>
+              </RouterLink>
           </template>
         </div>
       </div>
@@ -24,7 +26,8 @@
 
   const {allCandidatesResults, getAllCandidates} = useAllCandidates();
 
-  onMounted(() => {
-    getAllCandidates();
+  onMounted(async () => {
+    await getAllCandidates();
+    console.log(allCandidatesResults);
   })
   </script>

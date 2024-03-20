@@ -21,3 +21,20 @@ export function useAllEnterprises() {
         getAllEnterprises
     }
 }
+
+
+// https://api-4.fly.dev/enterprises/65f8e7c27e8a7a318bf937cf
+export function useEnterprise() {
+    const enterpriseResult = ref(null);
+
+    const getEnterpriseById = (id) => {
+        return axios.get(`${baseUrl}enterprises/${id}`)
+        .then((res) => enterpriseResult.value = res.data)
+        .catch((error) => console.log(error))
+    }
+
+    return {
+        enterpriseResult,
+        getEnterpriseById
+    }
+}

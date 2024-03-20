@@ -9,6 +9,8 @@ import Entreprises from '../views/Entreprises.vue'
 import formulaireCandidat from '../views/formulaireCandidat.vue'
 import FormulaireDO from '../views/FormulaireDO.vue'
 import Erreur from '../views/Erreur.vue'
+import FicheDetailCandidatEntreprise from '@/views/FicheDetailCandidatEntreprise.vue'
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -56,9 +58,23 @@ const router = createRouter({
           path:'formulairedo',
           name:'formulairedo',
           component: FormulaireDO
+        },
+        {
+          path:'fichedetailcandidat/:id',
+          name:'fichedetailcandidat',
+          component: FicheDetailCandidatEntreprise
+        },
+        {
+          path:'fichedetailentreprise/:id',
+          name:'fichedetailentreprise',
+          component: FicheDetailCandidatEntreprise
         }
         
       ]
+    },
+    {
+      path: '/:pathMatch(.*)*',
+      component: Erreur
     }
   ]
 })

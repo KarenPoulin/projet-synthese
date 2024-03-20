@@ -21,3 +21,21 @@ export function useAllCandidates() {
         getAllCandidates
     }
 }
+
+
+
+// https://api-4.fly.dev/candidates/65f8e7c27e8a7a318bf937cf
+export function useCandidate() {
+    const candidateResult = ref(null);
+
+    const getCandidateById = (id) => {
+        return axios.get(`${baseUrl}candidates/${id}`)
+        .then((res) => candidateResult.value = res.data)
+        .catch((error) => console.log(error))
+    }
+
+    return {
+        candidateResult,
+        getCandidateById
+    }
+}

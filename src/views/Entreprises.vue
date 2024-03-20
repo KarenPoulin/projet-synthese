@@ -6,8 +6,10 @@
 <!--           <carteCandidatEtEntreprise :isEntreprise="true"/>
           <carteCandidatEtEntreprise :isEntreprise="true"/>
           <carteCandidatEtEntreprise :isEntreprise="true"/> -->
-          <template v-for="enterprise in allEnterprisesResults" :key="enterprise._id">
-              <carteCandidatEtEntreprise :enterprise="enterprise" :isEntreprise="true"/>
+          <template v-if="allEnterprisesResults" v-for="enterprise in allEnterprisesResults" :key="enterprise._id">
+            <RouterLink :to="{name:'fichedetailentreprise', params:{id: enterprise._id}}">
+                <carteCandidatEtEntreprise :enterprise="enterprise" :isEntreprise="true"/>
+              </RouterLink>
           </template>
         </div>
       </div>
@@ -20,8 +22,8 @@ import { useAllEnterprises } from '@/composables/entreprises';
 
 const {allEnterprisesResults, getAllEnterprises} = useAllEnterprises();
 
-onMounted(() => {
-  getAllEnterprises();
+onMounted(async () => {
+  await getAllEnterprises();
   console.log(allEnterprisesResults);
 })
 
