@@ -36,13 +36,13 @@
         <label for="fullName" class="block mb-1">Nom et prénom </label>
         <input type="text" id="fullName" v-model="form.fullName" @input="validateFullName"
           class="w-full border-gray-300 rounded-md p-2">
-        <span  class="text-red-500">{{ fullNameError }}</span>
+        <span class="text-red-500">{{ fullNameError }}</span>
       </div>
       <div class="nom_poste mb-4">
         <label for="position" class="block mb-1">Poste</label>
         <input type="text" id="position" v-model="form.position" @input="validatePosition"
           class="w-full border-gray-300 rounded-md p-2">
-        <span  class="text-red-500">{{ positionError }}</span>
+        <span class="text-red-500">{{ positionError }}</span>
       </div>
       <div class="block_info-perso my-9">
         <div class="mb-4">
@@ -51,7 +51,7 @@
           </label>
           <textarea id="description" v-model="form.description" @input="validateDescription"
             class="block  w-full border-gray-300 rounded-md p-2"></textarea>
-          <span  class="text-red-500">{{ descriptionError }}</span>
+          <span class="text-red-500">{{ descriptionError }}</span>
         </div>
         <h3 class=" text-neutral-500  my-8 m">Information personnelle</h3>
         <div class="block_info-perso-all">
@@ -72,7 +72,7 @@
               <label for="province" class="block mb-1">Province</label>
               <select id="province" v-model="form.provinceId" @change="validateProvince"
                 class="w-full border-gray-300 rounded-md p-2">
-                <option value="" disabled  selected>Choisissez une province</option>
+                <option value="" disabled selected>Choisissez une province</option>
                 <option v-for="province in provinces" :value="province._id" :key="province._id">{{ province.value }}
                 </option>
               </select>
@@ -102,11 +102,11 @@
         </div>
       </div>
       <div class="flex justify-end">
-        <a href="/app/candidats">
+        <router-link to="/app/candidats">
           <button type="button"
             class="btn-secondary mr-2 text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
             @click="cancelForm">Annuler</button>
-        </a>
+        </router-link>
         <button type="submit"
           class="btn-primary focus:outline-none text-white bg-fuchsia-800  hover:bg-fuchsia-900 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 inline-flex"
           :disabled="!isFormValid">
@@ -130,6 +130,15 @@
     ref
   } from 'vue';
 
+  import {
+    RouterLink
+  } from 'vue-router';
+
+  import 
+    axios
+   from 'axios';
+
+
   export default {
     props: {
       candidateId: {
@@ -147,19 +156,17 @@
         city: '',
         email: '',
         provinceId: '',
+        provinceValue: '',
         postalCode: '',
-        skills:['skill1', 'skill2', 'skill3']
+        skills: ['vue.js', 'angular', 'react']
       });
 
       const provinces = ref([]);
 
       const fetchProvinces = async () => {
         try {
-          const response = await fetch('https://api-4.fly.dev/provinces');
-          if (!response.ok) {
-            throw new Error('Impossible de récupérer les provinces');
-          }
-          provinces.value = await response.json();
+          const response = await axios.get('https://api-4.fly.dev/provinces');
+          provinces.value = response.data;
         } catch (error) {
           console.error(error);
         }
@@ -246,22 +253,22 @@
       };
 
       const validatePhone = () => {
-  phoneError.value = '';
+        phoneError.value = '';
 
-  const phoneTrimmed = form.phone.trim();
+        const phoneTrimmed = form.phone.trim();
 
-  const phoneRegex = /^\d{3}-\d{3}-\d{4}$/;
+        const phoneRegex = /^\d{3}-\d{3}-\d{4}$/;
 
-  if (!phoneTrimmed) {
-    phoneError.value = 'Veuillez entrer votre numéro de téléphone.';
-    return false;
-  } else if (!phoneRegex.test(phoneTrimmed)) {
-    phoneError.value = 'Veuillez entrer un numéro de téléphone valide au format 514-555-5555.';
-    return false;
-  }
+        if (!phoneTrimmed) {
+          phoneError.value = 'Veuillez entrer votre numéro de téléphone.';
+          return false;
+        } else if (!phoneRegex.test(phoneTrimmed)) {
+          phoneError.value = 'Veuillez entrer un numéro de téléphone valide au format 514-555-5555.';
+          return false;
+        }
 
-  return true;
-};
+        return true;
+      };
 
       const validateCity = () => {
         cityError.value = '';
@@ -282,13 +289,14 @@
       };
 
       const validateSkills = () => {
-        
+
         return true;
       };
 
       const formatPostalCode = (postalCode) => {
-        return postalCode.trim().toUpperCase();
-      };
+  const formattedPostalCode = postalCode.trim().toUpperCase();
+  return formattedPostalCode.substring(0, 3) + " " + formattedPostalCode.substring(3);
+};
 
       const validateEmail = () => {
         emailError.value = '';
@@ -304,14 +312,14 @@
       };
 
       const validateProvince = () => {
-    provinceError.value = '';
+        provinceError.value = '';
 
-    if (!form.provinceId) {
-        provinceError.value = 'Veuillez sélectionner une province.';
-        return false;
-    }
-    return true;
-};
+        if (!form.provinceId) {
+          provinceError.value = 'Veuillez sélectionner une province.';
+          return false;
+        }
+        return true;
+      };
 
       const validatePostalCode = () => {
         postalCodeError.value = '';
@@ -326,7 +334,7 @@
         return true;
       };
 
-     
+
 
       const isEmailValid = (email) => {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -346,8 +354,8 @@
           !cityError.value &&
           !emailError.value &&
           !provinceError.value &&
-          !postalCodeError.value ;
-          
+          !postalCodeError.value;
+
       });
 
       const cancelForm = () => {
@@ -364,51 +372,86 @@
 
       const fetchCandidate = async () => {
         try {
-          const response = await fetch(`https://api-4.fly.dev/candidates/${props.candidateId}`);
-          if (!response.ok) {
-            throw new Error('Impossible de récupérer les détails du candidat');
-          }
-          const candidate = await response.json();
+          const response = await axios.get(`https://api-4.fly.dev/candidates/${props.candidateId}`);
+          const candidate = response.data;
 
-          form.fullName = `${candidate.firstName} ${candidate.lastName}`;
+          form.fullName = `${candidate.firstName} ${candidate.lastName}`;          
+          form.description = candidate.description;
+          form.address = candidate.address;
+          form.phone = candidate.phone;
+          form.city = candidate.city;
+          form.email = candidate.email;
+          form.provinceId = candidate.province._id;
+          form.postalCode = candidate.postalCode;
+          form.skills = candidate.skills;
         } catch (error) {
           console.error(error);
         }
-      };
+      }
 
       const submitForm = async () => {
-        const [firstName, lastName] = form.fullName.split(' ');
-        try {
-          const url = editing.value ? `https://api-4.fly.dev/candidates/${props.candidateId}` :
-            'https://api-4.fly.dev/candidates';
-          const method = editing.value ? 'PUT' : 'POST';
-          const response = await fetch(url, {
-            method: method,
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-              "description":form.description ,
-              "email": form.email,
-              "firstName": firstName,
-              "lastName": lastName,              
-              "address": form.address,
-              "phone": form.phone,
-              "city": form.city,
-              "skills": form.skills,
-              "province": form.provinceId,
-              "postalCode": formatPostalCode(form.postalCode),
-              
-            })
-          });
-          if (!response.ok) {
-            throw new Error('Échec de la soumission du formulaire');
+
+        validateFullName();
+        
+        validateDescription();
+        validateAddress();
+        validatePhone();
+        validateCity();
+        validateEmail();
+        validateProvince();
+        validatePostalCode();
+
+        if (
+          validateFullName() &&
+      
+          validateDescription() &&
+          validateAddress() &&
+          validatePhone() &&
+          validateCity() &&
+          validateEmail() &&
+          validateProvince() &&
+          validatePostalCode()
+        ) {
+          const [firstName, lastName] = form.fullName.split(' ');
+          
+          const selectedProvince = provinces.value.find(province => province._id === form.provinceId);
+
+          if (!selectedProvince) {
+            throw new Error('Province non trouvée');
           }
-        } catch (error) {
-          console.error(error);
+
+          try {
+            const url = editing.value ? `https://api-4.fly.dev/candidates/${props.candidateId}` :
+              'https://api-4.fly.dev/candidates';
+            const method = editing.value ? 'put' : 'post';
+            const response = await axios({
+              method: method,
+              url: url,
+              data: {
+                description: form.description,
+                email: form.email,
+                firstName: firstName,
+                lastName: lastName,
+                address: form.address,
+                phone: form.phone,
+                city: form.city,
+                skills: form.skills,
+                province: {
+                  _id: form.provinceId,
+                  value: selectedProvince.value
+                },
+                postalCode: formatPostalCode(form.postalCode),
+              }
+            });
+
+            if (!response.data.success) {
+              throw new Error('Échec de la soumission du formulaire');
+            }
+          } catch (error) {
+            console.error(error);
+          }
         }
       };
-
       onMounted(() => {
         if (props.candidateId) {
           fetchCandidate();
@@ -423,7 +466,6 @@
         cancelForm,
         isFormValid,
         fullNameError,
-        positionError,
         descriptionError,
         addressError,
         phoneError,
@@ -432,7 +474,6 @@
         provinceError,
         postalCodeError,
         validateFullName,
-        validatePosition,
         validateDescription,
         validateAddress,
         validatePhone,
@@ -440,7 +481,9 @@
         validateEmail,
         validateProvince,
         validatePostalCode,
-        validateSkills
+        validateSkills,
+        formatPostalCode,
+
 
       };
     }
