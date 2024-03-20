@@ -1,5 +1,5 @@
 <template>
-    <div v-if="isCandidat" v-for="candidate in candidates" :key="candidate._id" class="bg-white p-5">
+    <div v-if="isCandidat" v-for="candidate in candidates" :key="candidate._id" class="bg-white p-5 hover:bg-fuchsia-100 ">
         <div class="flex items-center">
             <div class="bg-fuchsia-800 w-24 h-24 flex justify-center items-center">
                 <img src="/src/assets/icons/candidate-48.png" alt="candidat" class="w-20">
@@ -13,7 +13,7 @@
         </div>
     </div>
     
-    <div v-if="isEntreprise" v-for="enterprise in enterprises" :key="enterprise._id" class="bg-white p-16">
+    <div v-if="isEntreprise" v-for="enterprise in enterprises" :key="enterprise._id" class="bg-white p-16 hover:bg-blue-100">
         <div class="flex items-center">
             <div>
                 <img :src="enterprise.image" :alt="enterprise.name" class="w-32">
