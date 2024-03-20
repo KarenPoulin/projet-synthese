@@ -349,15 +349,8 @@
           !cityError.value &&
           !emailError.value &&
           !provinceError.value &&
-          !postalCodeError.value &&
-          validateFullName() &&
-          validateDescription() &&
-          validateAddress() &&
-          validatePhone() &&
-          validateCity() &&
-          validateEmail() &&          
-          validatePostalCode() &&
-          validateSkills();
+          !postalCodeError.value ;
+          
       });
 
       const cancelForm = () => {
