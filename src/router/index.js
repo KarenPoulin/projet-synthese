@@ -8,6 +8,7 @@ import Candidats from '../views/Candidats.vue'
 import Entreprises from '../views/Entreprises.vue'
 import formulaireCandidat from '../views/formulaireCandidat.vue'
 import FormulaireDO from '../views/FormulaireDO.vue'
+import Erreur from '../views/Erreur.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
