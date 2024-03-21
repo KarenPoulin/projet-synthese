@@ -15,20 +15,25 @@
   <div class="flex-grow flex items-center space-x-3 p-2 mx-40 ">
     
 <!-- Bouton "Ajouter une offre de stage" -->
+   <RouterLink to="/app/formulaireoffre">
     <button class="ripple inline-block rounded border border-red-800 bg-white px-2 py-1 text-center text-xs font-medium leading-6 text-red-800 shadow transition hover:bg-red-50 hover:shadow-lg focus:outline-none">
       <svg class="mr-1 inline-block h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
       </svg>
       Ajouter une offre de stage
     </button>
+  </RouterLink>
 
    <!-- Bouton "Ajouter une demande de stage" -->
+    <RouterLink to="/app/formulairedemande">
     <button class="ripple inline-block rounded border border-yellow-600 bg-white px-2 py-1 text-center text-xs font-medium leading-6 text-yellow-600 shadow transition hover:bg-yellow-50 hover:shadow-lg focus:outline-none">
       <svg class="mr-1 inline-block h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
       </svg>
       Ajouter une demande de stage
     </button>
+  </RouterLink>
+
        <!-- Bouton "Ajouter une entreprise" -->
     <button class="ripple inline-block rounded border border-blue-400 bg-white px-2 py-1 text-center text-xs font-medium leading-6 text-blue-400 shadow transition hover:bg-blue-50 hover:shadow-lg focus:outline-none">
       <svg class="mr-1 inline-block h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -61,6 +66,7 @@
 
 <script setup>
 import { useAdminStore } from '@/stores/admin';
+import { RouterLink } from 'vue-router'
 
 const adminStore = useAdminStore();
 </script>
