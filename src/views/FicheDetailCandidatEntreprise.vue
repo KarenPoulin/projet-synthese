@@ -7,9 +7,9 @@
                 {{ candidateResult.lastName }}</h1>
             <h2 class="bg-white text-neutral-500 font-semibold text-lg w-60 text-center p-2">Développeur Front-End</h2>
         </div>
-        <div class="bg-white p-16">
-            <h3 class="text-3xl text-fuchsia-800 font-bold mb-12">Courte présentation</h3>
-            <p class="text-neutral-500 text-sm mb-16">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus quidem,
+        <div class="bg-white p-16 rounded-xl">
+            <h3 class="text-3xl text-fuchsia-800 font-bold mb-10">Courte présentation</h3>
+            <p class="text-neutral-500 text-sm mb-14">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus quidem,
                 nam reprehenderit hic dolores iste minima laboriosam. Nam maiores hic blanditiis necessitatibus
                 suscipit, quod minima nostrum perspiciatis, odit iusto quas! Quasi magni veniam, repudiandae minus
                 similique nihil facere voluptatum beatae ducimus neque et culpa id, deleniti dicta, dolorem saepe ab
@@ -30,7 +30,7 @@
                         <h5 class="text-md font-bold text-neutral-500 mb-3">Province</h5>
                         <p :class="{'text-neutral-500 text-sm': isCandidate}">{{ candidateResult.province.value }}</p>
                     </div>
-                    <div class="titre_barre2 mb-5">
+                    <div class="titre_barre2">
                         <h5 class="text-md font-bold text-neutral-500 mb-3">Code postal</h5>
                         <p :class="{'text-neutral-500 text-sm': isCandidate}">{{ candidateResult.postalCode }}</p>
                     </div>
@@ -49,7 +49,55 @@
         </div>
     </template>
     <template v-else-if="!isCandidate && enterpriseResult">
-        <h2 :class="{'text-teal-600': !isCandidate}">{{ enterpriseResult.name }}</h2>
+        <div class="flex mb-20">
+            <img src="../assets/img/enterprises.png" alt="logo-entreprises" class="w-40">
+            <div class="titre_barre3">
+                <p class="text-neutral-500 text-sm font-semibold">Entreprise</p>
+                <h1 :class="{'text-neutral-500 text-3xl font-bold': !isCandidate}">{{ enterpriseResult.name }}</h1>
+            </div>
+        </div>
+        <div class="bg-white p-16 rounded-xl">
+            <h3 class="text-3xl text-blue-400 font-bold mb-10">Courte présentation</h3>
+            <p class="text-neutral-500 text-sm mb-12">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus quidem,
+                nam reprehenderit hic dolores iste minima laboriosam. Nam maiores hic blanditiis necessitatibus
+                suscipit, quod minima nostrum perspiciatis, odit iusto quas! Quasi magni veniam, repudiandae minus
+                similique nihil facere voluptatum beatae ducimus neque et culpa id, deleniti dicta, dolorem saepe ab
+                itaque dolorum! Magni a quae voluptatem illum, minima dolorem eum labore asperiores neque impedit
+                suscipit amet esse nostrum delectus excepturi.</p>
+            <h4 class="text-md text-blue-400 font-bold mb-5">Personne contact</h4>
+            <p class="text-xl font-bold text-neutral-500 mb-8">Pierre Boivin</p>
+            <h4 class="text-md text-blue-400 font-bold mb-10">Informations de contact</h4>
+            <div class="grid grid-cols-2">
+                <div>
+                    <div class="titre_barre2 mb-5">                                                          
+                        <h5 class="text-md font-bold text-neutral-500 mb-3">Adresse</h5>
+                        <p :class="{'text-neutral-500 text-sm': !isCandidate}">{{ enterpriseResult.address }}</p>
+                    </div>
+                    <div class="titre_barre2 mb-5">
+                        <h5 class="text-md font-bold text-neutral-500 mb-3">Ville</h5>
+                        <p :class="{'text-neutral-500 text-sm': !isCandidate}">{{ enterpriseResult.city }}</p>
+                    </div>
+                    <div class="titre_barre2 mb-5">
+                        <h5 class="text-md font-bold text-neutral-500 mb-3">Province</h5>
+                        <p :class="{'text-neutral-500 text-sm': !isCandidate}">{{ enterpriseResult.province.value }}</p>
+                    </div>
+                    <div class="titre_barre2">
+                        <h5 class="text-md font-bold text-neutral-500 mb-3">Code postal</h5>
+                        <p :class="{'text-neutral-500 text-sm': !isCandidate}">{{ enterpriseResult.postalCode }}</p>
+                    </div>
+                </div>
+                <div>
+                    <div class="titre_barre2 mb-5">
+                        <h5 class="text-md font-bold text-neutral-500 mb-3">Téléphone</h5>
+                        <p :class="{'text-neutral-500 text-sm': !isCandidate}">{{ enterpriseResult.phone }}</p>
+                    </div>
+                    <div class="titre_barre2">
+                        <h5 class="text-md font-bold text-neutral-500 mb-3">Courriel</h5>
+                        <p :class="{'text-neutral-500 text-sm': !isCandidate}">{{ enterpriseResult.email }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </template>
     <template v-else>
         <p>Loading...</p>
@@ -140,5 +188,22 @@
         width: 8px;
         height: 55px;
         background-color: rgb(115, 115, 115);
+    }
+
+    .titre_barre3 {
+        position: relative;
+        padding-left: 24px;
+        margin-left: 36px;
+    }
+
+    .titre_barre3::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 0;
+        transform: translateY(-50%);
+        width: 8px;
+        height: 100px;
+        background-color: rgb(118, 169, 250);
     }
 </style>
