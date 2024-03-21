@@ -23,7 +23,7 @@
             <label for="title" class="text-base text-center font-bold text-neutral-500 block mr-4">Titre: </label>
             <input id="title" v-model="formFieldsLinkedWithApi.title"
               @input="validateInput(formFieldsLinkedWithApi.title, 'title')" type="text"
-              class="border border-gray-300 p-2 w-full rounded hover:bg-teal-100 focus:bg-white"
+              class="border border-gray-300 p-2 w-full rounded focus:bg-white"
               :class="{ 'hover:bg-teal-100': isRequest, 'hover:bg-red-100': !isRequest }">
 
           </div>
@@ -65,7 +65,7 @@
 
 
         <div v-if="isRequest" class="m-2">
-          <label for="description" class="text-sm font-bold text-neutral-500  block">Présensention</label>
+          <label for="description" class="text-sm font-bold text-neutral-500  block">Présentation</label>
           <textarea id="description" v-if="isRequest" v-model="formFieldsLinkedWithApi.description"
             @change="validateInput(formFieldsLinkedWithApi.description, 'description')"
             class="border border-gray-300 p-2 w-full rounded  focus:bg-white"
@@ -324,7 +324,7 @@ import { reactive, ref } from 'vue';
 let isAdding = ref(true);
 
 // Variable pour déterminer si c'est une demande ou une offre 
-let isRequest = ref(true);
+let isRequest = ref(false);
 
 // Création des variables requises pour la validation du formulaire
 
