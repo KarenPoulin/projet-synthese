@@ -1,5 +1,5 @@
 <template>
-  <main class="ficheDetaillee">
+  <div class="ficheDetaillee">
     <div class="ficheDetaillee__conteneur-titres-principaux">
       <div class="ficheDetaillee__bloc-style" 
         :class="{
@@ -13,6 +13,10 @@
         <span class="ficheDetaillee__sous-titre">{{ sousTitre }}</span>
         <h1 class="ficheDetaillee__titre">{{ mainTitre }}</h1>
       </div>
+    </div>
+
+    <div class="ficheDetaillee__conteneur-icônes-mode"> 
+      <i class="ficheDetaillee__icône-supprimer fas fa-trash"></i>
     </div>
 
     <div class="ficheDetaillee__card">
@@ -30,12 +34,6 @@
         <p>{{ ficheDescription }}</p> 
       </div>
 
-      <div class="ficheDetaillee__conteneur-icônes-mode">
-      <i class="ficheDetaillee__icône-consulter fa fa-check"></i>
-      <i class="ficheDetaillee__icône-editer fas fa-edit" @click="emitRedirectionPageEdition"></i>
-      <i class="ficheDetaillee__icône-supprimer fas fa-trash" @click="emitToggleModal"></i>
-      <slot></slot>
-      </div>
 
         <div class="ficheDetaillee__conteneur-informations-générales" v-if="isPageDetaillerDemandeDeStage">
           
@@ -223,7 +221,7 @@
       </div>
       </div>
     </div>
-</main>
+  </div>
 </template>
 
 
@@ -231,51 +229,11 @@
 import { defineProps } from 'vue';
 
 const props = defineProps({
-  sousTitre: String,
-  mainTitre: String,
-  ficheTitreOne: String,
-  ficheTitreTwo: String,
-  ficheDescription: String,
-  programmeDeFormation: String,
-  secteurDeActiviter: String,
-  competence: String,
-  etablissementEnseignement: String,
-  ville: String,
-  region: String,
-  diplomeDemandees: String,
-  exigencesText: String,
-  adresse: String,
-  province: String,
-  codePostal: String,
-  telephone: String,
-  courriel: String,
-  typeDeStage: String,
-  nombreHeures: String,
-  remuneration: String,
-  dateDeDebut: String,
-  dateDeFin: String,
   informationsSupplémentairesText: String,
   isPageDetaillerDemandeDeStage: Boolean,
   isPageDetaillerDemandeOffre: Boolean,
   isPageDetaillerCandidat: Boolean,
 });
-// Définition des émetteurs pour les icônes
-const emits = defineEmits([
-  'redirectionPageEdition',
-  'toggleModal',
-  'annulerSuppressionIcone',
-  'annulerSuppression'
-]);
-
-// Émetteur pour rediriger icone edition vers une autre page
-const emitRedirectionPageEdition = () => {
-  emits('redirectionPageEdition');
-}
-
-// Émetteur pour activer/désactiver le modal
-const emitToggleModal = () => {
-  emits('toggleModal');
-}
 </script>
 
 
@@ -300,13 +258,11 @@ const emitToggleModal = () => {
 }
 
 .ficheDetaillee {
-  border: 2px solid red;
   max-width: 1100px;
   margin: auto;
 }
 
 .ficheDetaillee__conteneur-titres-principaux {
-  border: 2px solid blue;
   margin-bottom: 100px;
   display: flex;
 }
