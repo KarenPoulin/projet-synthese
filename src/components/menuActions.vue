@@ -1,6 +1,7 @@
 <template>
 
-<nav class="flex items-center justify-between bg-white p-1 shadow ml-0.5 h-14">
+
+<nav class="flex items-center justify-between bg-white p-2 shadow h-14">
   <!-- Icône Menu -->
   <div class="sm:w-auto">
    
