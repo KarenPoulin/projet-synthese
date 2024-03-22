@@ -58,8 +58,6 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue';
-import axios from 'axios';
 
 
 const props = defineProps({
