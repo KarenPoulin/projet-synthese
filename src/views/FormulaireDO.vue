@@ -35,7 +35,7 @@
         <div v-if="!isRequest">
           <div class="flex items-baseline mt-5">
             <label for="enterprise" class="text-base font-bold text-neutral-500 block mr-4">Entreprise: </label>
-            <Select id="enterprise" v-model="formFieldsLinkedWithApi.enterprise"
+            <select id="enterprise" v-model="formFieldsLinkedWithApi.enterprise"
               @change="validateSelect(formFieldsLinkedWithApi.enterprise, 'enterprise')" type="text"
               class="border border-gray-300 p-2 w-full rounded  focus:bg-white"
               :class="{ 'hover:bg-teal-100': isRequest, 'hover:bg-red-100': !isRequest }">
@@ -317,17 +317,22 @@
 </template>
 
 <script setup>
-import { reactive, ref, onMounted } from 'vue';
+import { reactive, ref, onMounted, watch} from 'vue';
+import { useRouter } from 'vue-router';
 
 // Function pour créer les routes vers le formulaireDO à partir de la navigation et des listes demandes et offres
 onMounted(() => {
-  const urlString = window.location.href;
-  if (urlString.includes('formulairedemande')) {
-    isRequest.value = true;
-  } else if (urlString.includes('formulaireoffre')) {
-    isRequest.value = false;
-  }
+  watch(() => router.currentRoute.value.path, (newPath) => {
+    if(newPath.includes('formulairedemande')){
+      isRequest.value = true;
+    } else if(newPath.includes('formulaireoffre')){
+      isRequest.value = false;
+    }
+  });
 })
+
+const router = useRouter();
+
 
 
 //Variable pour déterminer si c'est un ajout ou une modification 

@@ -66,7 +66,8 @@
 
 <script setup>
 import { useAdminStore } from '@/stores/admin';
-import { RouterLink } from 'vue-router'
+import { RouterLink } from 'vue-router';
+
 
 const adminStore = useAdminStore();
 </script>
