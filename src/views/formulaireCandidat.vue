@@ -35,13 +35,13 @@
       </div>
 
       <div class="nom_poste mb-4">
-        <label for="fullName" class="block mb-1">Nom et prénom </label>
+        <label for="fullName" class="block mb-1  text-neutral-500 font-bold">Nom et prénom </label>
         <input type="text" id="fullName" v-model="form.fullName" @input="validateFullName"
           class="w-full border-gray-300 rounded-md p-2">
         <span class="text-red-500">{{ fullNameError }}</span>
       </div>
       <div class="nom_poste mb-4">
-        <label for="position" class="block mb-1">Poste</label>
+        <label for="position" class="block mb-1  text-neutral-500 font-bold">Poste</label>
         <input type="text" id="position" v-model="form.position" @input="validatePosition"
           class="w-full border-gray-300 rounded-md p-2">
         <span class="text-red-500">{{ positionError }}</span>
@@ -49,29 +49,29 @@
       <div class="block_info-perso my-9">
         <div class="mb-4">
           <label for="description" class="block mb-4">
-            <h2 class="text-neutral-500 text-lg font-bold">Courte présentation</h2>
+            <h2 class="text-teal-500 text-lg font-bold">Courte présentation</h2>
           </label>
           <textarea id="description" v-model="form.description" @input="validateDescription"
             class="block  w-full border-gray-300 rounded-md p-2"></textarea>
           <span class="text-red-500">{{ descriptionError }}</span>
         </div>
-        <h3 class=" text-neutral-500  my-8 m">Information personnelle</h3>
+        <h3 class="  my-8 text-teal-500  font-bold">Information personnelle</h3>
         <div class="block_info-perso-all">
           <div class="block_info-perso-adresse">
             <div class="mb-4 input_barre-modifier">
-              <label for="address" class="block mb-1">Adresse</label>
+              <label for="address" class="block mb-1 text-neutral-500 font-bold">Adresse</label>
               <input type="text" id="address" v-model="form.address" @input="validateAddress"
                 class="w-full border-gray-300 rounded-md p-2">
               <span v-if="!isAddressValid" class="text-red-500">{{ addressError }}</span>
             </div>
             <div class="mb-4 input_barre-modifier">
-              <label for="city" class="block mb-1">Ville</label>
+              <label for="city" class="block mb-1  text-neutral-500 font-bold">Ville</label>
               <input type="text" id="city" v-model="form.city" @input="validateCity"
                 class="w-full border-gray-300 rounded-md p-2">
               <span v-if="!isCityValid" class="text-red-500">{{ cityError }}</span>
             </div>
             <div class="mb-4 input_barre-modifier">
-              <label for="province" class="block mb-1">Province</label>
+              <label for="province" class="block mb-1  text-neutral-500 font-bold">Province</label>
               <select id="province" v-model="form.provinceId" @change="validateProvince"
                 class="w-full border-gray-300 rounded-md p-2">
                 <option value="" disabled selected>Choisissez une province</option>
@@ -81,7 +81,7 @@
               <span v-if="!isProvinceValid" class="text-red-500">{{ provinceError }}</span>
             </div>
             <div class="mb-4 input_barre-modifier">
-              <label for="postalCode" class="block mb-1">Code postal</label>
+              <label for="postalCode" class="block mb-1  text-neutral-500 font-bold">Code postal</label>
               <input type="text" id="postalCode" v-model="form.postalCode" @input="validatePostalCode"
                 class="w-full border-gray-300 rounded-md p-2">
               <span v-if="!isPostalCodeValid" class="text-red-500">{{ postalCodeError }}</span>
@@ -89,13 +89,13 @@
           </div>
           <div class="block_info-perso-contact">
             <div class="mb-4 input_barre-modifier">
-              <label for="phone" class="block mb-1">Téléphone</label>
+              <label for="phone" class="block mb-1  text-neutral-500 font-bold">Téléphone</label>
               <input type="text" id="phone" v-model="form.phone" @input="validatePhone"
                 class="w-full border-gray-300 rounded-md p-2">
               <span v-if="!isPhoneValid" class="text-red-500">{{ phoneError }}</span>
             </div>
             <div class="mb-4 input_barre-modifier">
-              <label for="email" class="block mb-1">Courriel</label>
+              <label for="email" class="block mb-1  text-neutral-500 font-bold">Courriel</label>
               <input type="email" id="email" v-model="form.email" @input="validateEmail"
                 class="w-full border-gray-300 rounded-md p-2">
               <span v-if="!isEmailValid" class="text-red-500">{{ emailError }}</span>
@@ -542,7 +542,7 @@
     transform: translateY(-50%);
     width: 4px;
     height: 70px;
-    background-color: rgb(1, 26, 56);
+    background-color:rgb(115 115 115);
   }
 
   .titre_modifer {

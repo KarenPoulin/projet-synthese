@@ -1,7 +1,7 @@
 <template>
   <div class="bg-neutral-100 w-full mx-auto">
     <!-------------------- Entête -------------------->
-        <h1 class="text-4xl font-bold text-neutral-500 m-10 p-5">{{ isRequest ? 'Ajouter une demande de stage' : 'Offre de stage' }}</h1>
+     <h1 class="text-4xl font-bold text-neutral-500 m-10 p-5">{{ isRequest ? 'Ajouter une demande de stage' : 'Offre de stage' }}</h1>
 
 
 
@@ -35,7 +35,7 @@
         <div v-if="!isRequest">
           <div class="flex items-baseline mt-5">
             <label for="enterprise" class="text-base font-bold text-neutral-500 block mr-4">Entreprise: </label>
-            <Select id="enterprise" v-model="formFieldsLinkedWithApi.enterprise"
+            <select id="enterprise" v-model="formFieldsLinkedWithApi.enterprise"
               @change="validateSelect(formFieldsLinkedWithApi.enterprise, 'enterprise')" type="text"
               class="border border-gray-300 p-2 w-full rounded  focus:bg-white"
               :class="{ 'hover:bg-teal-100': isRequest, 'hover:bg-red-100': !isRequest }">
@@ -55,7 +55,7 @@
         <div v-if="isRequest" class="m-2">
           <label for="nomComplet" class="text-sm font-bold text-neutral-500  block">Nom et prénom</label>
           <input id="title" v-model="formFieldsLinkedWithApi.nomComplet"
-          @input="validateInput(formFieldsLinkedWithApi.nomComplet, 'nomComplet')" type="text"
+            @input="validateInput(formFieldsLinkedWithApi.nomComplet, 'nomComplet')" type="text"
             class="border border-gray-300 w-full rounded focus:bg-white"
             :class="{ 'hover:bg-teal-100': isRequest, 'hover:bg-red-100': !isRequest }">
           <span v-if="fieldsToValidate.nomComplet !== ''" class="p-2 text-xs font-semibold text-red-700">{{
@@ -90,7 +90,7 @@
             <div class="h-full w-1.5 bg-neutral-800 absolute inset-y-0 left-0"></div>
             <label for="programme" class="text-sm font-bold text-neutral-500 block ml-3">Programme de formation</label>
             <input id="programme" v-model="formFieldsLinkedWithApi.programme"
-            @input="validateInput(formFieldsLinkedWithApi.programme, 'programme')" type="text"
+              @input="validateInput(formFieldsLinkedWithApi.programme, 'programme')" type="text"
               class="border border-gray-300 p-2 w-full rounded mt-1 ml-3   focus:bg-white"
               :class="{ 'hover:bg-teal-100': isRequest, 'hover:bg-red-100': !isRequest }">
             <span v-if="fieldsToValidate.programme !== ''" class="text-xs font-semibold text-red-700 p-2">{{
@@ -103,7 +103,7 @@
             <label for="etablissement" class="text-sm font-bold text-neutral-500 block ml-3 ">Établissement
               scolaire</label>
             <input id="etablissement" v-model="formFieldsLinkedWithApi.etablissement"
-            @input="validateInput(formFieldsLinkedWithApi.etablissement, 'etablissement')" type="text"
+              @input="validateInput(formFieldsLinkedWithApi.etablissement, 'etablissement')" type="text"
               class="border border-gray-300 p-2 w-full rounded mt-1 ml-3  focus:bg-white"
               :class="{ 'hover:bg-teal-100': isRequest, 'hover:bg-red-100': !isRequest }">
             <span v-if="fieldsToValidate.etablissement !== ''" class="text-xs font-semibold text-red-700 p-2">{{
@@ -116,8 +116,7 @@
             <label for="activitySector" class="text-sm font-bold text-neutral-500 block ml-3   focus:bg-white"
               :class="{ 'hover:bg-teal-100': isRequest, 'hover:bg-red-100': !isRequest }">Secteur
               d'activité</label>
-            <select id="activitySector" 
-              v-model="formFieldsLinkedWithApi.activitySector"
+            <select id="activitySector" v-model="formFieldsLinkedWithApi.activitySector"
               @change="validateSelect(formFieldsLinkedWithApi.activitySector, 'activitySector')"
               class="border border-gray-300 p-2 w-full rounded mt-1 ml-3 focus:bg-white"
               :class="{ 'hover:bg-teal-100': isRequest, 'hover:bg-red-100': !isRequest }">
@@ -318,16 +317,33 @@
 </template>
 
 <script setup>
-import { reactive, ref } from 'vue';
+import { reactive, ref, onMounted, watch} from 'vue';
+import { useRouter } from 'vue-router';
+
+// Function pour créer les routes vers le formulaireDO à partir de la navigation et des listes demandes et offres
+onMounted(() => {
+  watch(() => router.currentRoute.value.path, (newPath) => {
+    if(newPath.includes('formulairedemande')){
+      isRequest.value = true;
+    } else if(newPath.includes('formulaireoffre')){
+      isRequest.value = false;
+    }
+  });
+})
+
+const router = useRouter();
+
+
 
 //Variable pour déterminer si c'est un ajout ou une modification 
 let isAdding = ref(true);
 
+
 // Variable pour déterminer si c'est une demande ou une offre 
-let isRequest = ref(false);
+let isRequest = ref(true);
+
 
 // Création des variables requises pour la validation du formulaire
-
 const formFieldsLinkedWithApi = reactive({
   title: '',
   enterprise: '',

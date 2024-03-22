@@ -1,73 +1,57 @@
-<template  v-if="allCandidatesResults" v-for="candidat in allCandidatesResults" :key="candidat._id">
+<template>
+  <h1>Demande de stage</h1>
+  <div class="flex">
+    <RouterLink class="my-3  bg-teal-500 text-white px-4 py-2  rounded hover:bg-teal-600" to="/app/formulairedemande">
+      Ajouter une demande</RouterLink>
+  </div>
 
-
-  <!-- <div class="ficheDetaillee__conteneur-icônes-mode"> 
-  <RouterLink :to="{name:'formulairedo', params:{id: candidat._id}}">
+  <RouterLink to="/app/formulaireDo"
+    class="bg-fuchsia-800 hover:bg-fuchsia-900 text-white text-sm font-bold p-4 rounded-xl mb-16">
+    <i class="ficheDetaillee__icône-consulter fa fa-check"></i>
+  </RouterLink>
+  <RouterLink to="/app/formulaireDo"
+    class="bg-fuchsia-800 hover:bg-fuchsia-900 text-white text-sm font-bold p-4 rounded-xl mb-16">
     <i class="ficheDetaillee__icône-editer fas fa-edit"></i>
   </RouterLink>
-  <i class="ficheDetaillee__icône-supprimer fas fa-trash" @click="toggleModalSuppression"></i>
-      <modalSuppression 
-      :etatDuModal="etatDuModal"
-      :title="title"
-      :firstName="firstName"
-      :lastName="lastName"
-      @confirmationSuppression="confirmationSuppression"
-      @suppressionAnnulee="suppressionAnnulee"/>
-  </div> -->
 
-  <!-- ATTENTION, les allo ne sont que des exemples pour linstant le temps que je finisse mon code -->
-  <entetePageDetailDemandeEtOffre
-    :isEnteteDemandeDeStage="true"
-    :isEnteteDemandeOffre="false"
-    enteteDemandeStage="allo" 
-    enteteDemandeOffre="allo">
-  </entetePageDetailDemandeEtOffre>
-  <fichePageDetailDemandeEtOffre
-    :isPageDetaillerDemandeDeStage="true"
-    :isPageDetaillerDemandeOffre="false"
-    ficheDemandeStage="allo"
-    ficheDemandeOffre="allo"
-    ficheDemandeStageEtOffre="allo">
-    </fichePageDetailDemandeEtOffre>
+  <ficheDetailler sousTitre="allo" mainTitre="allo" ficheTitreOne="allo" ficheTitreTwo="allo" ficheDescription="allo"
+    @emitRedirectionPageEdition="" @emitToggleModal="toggleModal" programmeDeFormation="allo" secteurDeActiviter="allo"
+    competence="allo" etablissementEnseignement="allo" ville="allo" region="allo" diplomeDemandees="allo"
+    exigencesText="allo" adresse="allo" province="allo" codePostal="allo" telephone="allo" courriel=""
+    typeDeStage="allo" nombreHeures="allo" remuneration="allo" dateDeDebut="allo" dateDeFin="allo"
+    informationsSupplémentairesText="allo" :isPageDetaillerDemandeDeStage="true" :isPageDetaillerDemandeOffre="false"
+    :isPageDetaillerCandidat="false">
+    <modalSuppression :etatDuModal="true" @suppressionAnnuleeIcone="annulerSuppressionIcone"
+      @suppressionAnnulee="annulerSuppression" @confirmationSuppression="suppressionConfirmee" title="title"
+      firstName="firstName" lastName="lastName" />
+  </ficheDetailler>
 </template>
 
 <script setup>
-import { RouterLink } from 'vue-router';
-import { onMounted, ref } from 'vue';
-import { useRoute } from 'vue-router';
-import fichePageDetailDemandeEtOffre from '@/components/fichePageDetailDemandeEtOffre.vue';
-import entetePageDetailDemandeEtOffre from '@/components/entetePageDetailDemandeEtOffre.vue'
-import { useCandidate } from '@/composables/candidats';
-import { useEnterprise } from '@/composables/entreprises';
+import ficheDetailler from '@/components/ficheDetailler.vue';
+import modalSuppression from '@/components/modalSuppression.vue';
+import { ref } from 'vue'
+import { RouterLink } from 'vue-router'
 
-    const route = useRoute();
+const etatDuModal = ref(false)
 
-    const isPageDetaillerDemandeDeStage = ref(true);
+const annulerSuppressionIcone = () => {
+  etatDuModal.value = false;
+  console.log(etatDuModal.value)
+}
 
-    const {candidateResult, getCandidateById } = useCandidate();
-    let candidateId = ref(null);
+const annulerSuppression = () => {
+  etatDuModal.value = false;
+  console.log(etatDuModal.value)
+}
 
-    const { enterpriseResult, getEnterpriseById } = useEnterprise();
-    let enterpriseId = ref(null);
+const suppressionConfirmee = () => {
+  etatDuModal.value = false;
+  // Information de lapi pour la suppression
+  console.log(etatDuModal.value)
+}
 
-    onMounted(async () => {
-
-        // aller valider si candidat ou entreprise dans l'url
-        const urlString = window.location.href;
-
-        if (urlString.includes('candidat')) {
-          isPageDetaillerDemandeDeStage.value = true;
-            candidateId = route.params.id;
-            await getCandidateById(candidateId);
-            console.log(candidateResult);
-
-        } else if (urlString.includes('entreprise')) {
-          isPageDetaillerDemandeDeStage.value = false;
-            enterpriseId = route.params.id;
-            await getEnterpriseById(enterpriseId);
-            console.log(enterpriseResult);
-        }
-
-
-    });
+const toggleModal = () => {
+  etatDuModal.value = !etatDuModal.value;
+}
 </script>
