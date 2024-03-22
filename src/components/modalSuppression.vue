@@ -1,7 +1,6 @@
 <template>
   <div>
     <div class="modal-content">
-      <img src="../assets/icons/detail-close-24.png" alt="" class="close" @click="modalFermetureIcone">
       <p>Voulez-vous vraiment supprimer cette entrée ?</p>
       <div class="donnees">
         <h4>{{ title }}</h4>
@@ -23,11 +22,7 @@ const props = defineProps({
   lastName: String
 });
 
-const emits = defineEmits(['suppressionAnnuleeIcone', 'suppressionAnnulee', 'confirmationSuppression']);
-
-const modalFermetureIcone = () => {
-  emits('suppressionAnnuleeIcone');
-};
+const emits = defineEmits(['suppressionAnnulee', 'confirmationSuppression', 'modalSuppressionOuvert']);
 
 const annulerSuppression = () => {
   modalFermetureIcone();

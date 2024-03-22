@@ -1,239 +1,203 @@
 <template>
-  <div class="ficheDetaillee">
-    <div class="ficheDetaillee__conteneur-titres-principaux">
-      <div class="ficheDetaillee__bloc-style" 
-        :class="{
-          'colorBgBlue': isPageDetaillerDemandeDeStage, 
-          'colorBgRed': isPageDetaillerDemandeOffre, 
-          'colorBgPurple': isPageDetaillerCandidat
-        }">
-        </div>
+    <!-- <div class="ficheDetaillee__conteneur-icônes-mode"> 
+      <i class="ficheDetaillee__icône-supprimer fas fa-trash" @click="toggleModalSuppression"</i>
+      <modalSuppression 
+      :etatDuModal="etatDuModal"
+      :title="title"
+      :firstName="firstName"
+      :lastName="lastName"
+      @confirmationSuppression="confirmationSuppression"
+      @suppressionAnnulee="suppressionAnnulee"
+      />
+    </div> -->
 
-      <div class="ficheDetaillee__titre">
-        <span class="ficheDetaillee__sous-titre">{{ sousTitre }}</span>
-        <h1 class="ficheDetaillee__titre">{{ mainTitre }}</h1>
-      </div>
-    </div>
-
-    <div class="ficheDetaillee__conteneur-icônes-mode"> 
-      <i class="ficheDetaillee__icône-supprimer fas fa-trash"></i>
-    </div>
-
-    <div class="ficheDetaillee__card">
+    <div class="ficheDetaillee__card"  v-if="isFicheDetailDemandeDeStage || isFicheDetailDemandeOffre">
       <div class="ficheDetaillee__conteneur-informations">
 
       <div class="ficheDetaillee__conteneur-titre" >
         <h2 class="ficheDetaillee__nom-personne"  
           :class="{
-            'colorBlue': isPageDetaillerDemandeDeStage, 
-            'colorRed': isPageDetaillerDemandeOffre, 
-            'colorPurple': isPageDetaillerCandidat
-          }">
+            'colorBlue': isFicheDetailDemandeDeStage, 
+            'colorRed': isFicheDetailDemandeOffre }">
           {{ ficheTitreOne }} {{ ficheTitreTwo }}
         </h2>
         <p>{{ ficheDescription }}</p> 
       </div>
 
 
-        <div class="ficheDetaillee__conteneur-informations-générales" v-if="isPageDetaillerDemandeDeStage">
+        <div class="ficheDetaillee__conteneur-informations-générales" v-if="isFicheDetailDemandeDeStage">
+
+          <div class="ficheDetaillee__conteneur-titre">
+          <h2 class="ficheDetaillee__titre-info-stage" :class="{'colorBlue':  isFicheDetailDemandeDeStage}">
+           Informations sur le stage 
+          </h2>
+          </div>
           
           <div class="ficheDetaillee__conteneur-information">
             <div class="ficheDetaillee__bloc-style"></div>
             <div class="ficheDetaillee__infos">
               <h3 class="ficheDetaillee__titre-info">Programme de formation</h3>
-              <span class="ficheDetaillee__contenu-info">{{ programmeDeFormation }}</span>
+              <span class="ficheDetaillee__contenu-info">{{ ficheDemandeStage.programmeDeFormation }}</span>
             </div>
           </div>
           <div class="ficheDetaillee__conteneur-information">
             <div class="ficheDetaillee__bloc-style"></div>
             <div class="ficheDetaillee__infos">
               <h3 class="ficheDetaillee__titre-info">Secteur d'activité</h3>
-              <span class="ficheDetaillee__contenu-info">{{ secteurDeActiviter }}</span>
+              <span class="ficheDetaillee__contenu-info">{{ ficheDemandeStage.secteurDeActiviter }}</span>
             </div>
           </div>
           <div class="ficheDetaillee__conteneur-information">
             <div class="ficheDetaillee__bloc-style"></div>
             <div class="ficheDetaillee__infos">
               <h3 class="ficheDetaillee__titre-info">Compétences</h3>
-              <span class="ficheDetaillee__contenu-info">{{ competence }}</span>
+              <span class="ficheDetaillee__contenu-info">{{ ficheDemandeStage.competence }}</span>
             </div>
           </div>
           <div class="ficheDetaillee__conteneur-information">
             <div class="ficheDetaillee__bloc-style"></div>
             <div class="ficheDetaillee__infos">
               <h3 class="ficheDetaillee__titre-info">Établissement d'enseignement</h3>
-              <span class="ficheDetaillee__contenu-info">{{ etablissementEnseignement }}</span>
+              <span class="ficheDetaillee__contenu-info">{{ ficheDemandeStage.etablissementEnseignement }}</span>
             </div>
           </div>
           <div class="ficheDetaillee__conteneur-information">
             <div class="ficheDetaillee__bloc-style"></div>
             <div class="ficheDetaillee__infos">
               <h3 class="ficheDetaillee__titre-info">Ville</h3>
-              <span class="ficheDetaillee__contenu-info">{{ ville }}</span>
+              <span class="ficheDetaillee__contenu-info">{{ ficheDemandeStage.ville }}</span>
             </div>
           </div>
           <div class="ficheDetaillee__conteneur-information">
             <div class="ficheDetaillee__bloc-style"></div>
             <div class="ficheDetaillee__infos">
               <h3 class="ficheDetaillee__titre-info">Région</h3>
-              <span class="ficheDetaillee__contenu-info">{{ region }}</span>
+              <span class="ficheDetaillee__contenu-info">{{ ficheDemandeStage.region }}</span>
             </div>
+          </div>
+          <div class="ficheDetaillee__conteneur-informations-supplementaires">
+            <button type="button" class="ficheDetaillee__bouton-cta">
+             <i class="ficheDetaillee__icône fas fa-cloud-download-alt"></i>
+            <span>
+             Télécharger le C.V.
+            </span>
+            </button>
           </div>
         </div>
 
-        <div class="ficheDetaillee__conteneur-informations-générales" v-if="!isPageDetaillerDemandeDeStage && !isPageDetaillerCandidat">
-          <div class="ficheDetaillee__conteneur-information">
-            <div class="ficheDetaillee__bloc-style"></div>
-            <div class="ficheDetaillee__infos">
-              <h3 class="ficheDetaillee__titre-info">Formation demandées</h3>
-              <span class="ficheDetaillee__contenu-info">{{ diplomeDemandees }}</span>
-            </div>
-          </div>
+<div class="ficheDetaillee__conteneur-titre" v-if="isFicheDetailDemandeOffre">
 
-          <div class="ficheDetaillee__conteneur-information">
-            <div class="ficheDetaillee__bloc-style"></div>
-            <div class="ficheDetaillee__infos">
-              <h3 class="ficheDetaillee__titre-info">Exigences</h3>
-              <span class="ficheDetaillee__contenu-info">{{ exigencesText }}</span>
-            </div>
-          </div>
-        </div>
+<div class="ficheDetaillee__conteneur-information">
+  <div class="ficheDetaillee__bloc-style"></div>
+  <div class="ficheDetaillee__infos">
+    <h3 class="ficheDetaillee__titre-info">Formation demandees</h3>
+    <span class="ficheDetaillee__contenu-info">{{ ficheDemandeOffre.programmeDeFormation }}</span>
+  </div>
+</div>
+<div class="ficheDetaillee__conteneur-information">
+  <div class="ficheDetaillee__bloc-style"></div>
+  <div class="ficheDetaillee__infos">
+    <h3 class="ficheDetaillee__titre-info">Exigences</h3>
+    <span class="ficheDetaillee__contenu-info">{{ ficheDemandeOffre.secteurDeActiviter }}</span>
+  </div>
+</div>
+        
 
-        <div class="ficheDetaillee__conteneur-informations-générales" v-if="isPageDetaillerCandidat">
-          <div class="ficheDetaillee__conteneur-information">
-            <div class="ficheDetaillee__bloc-style"></div>
-            <div class="ficheDetaillee__infos">
-              <h3 class="ficheDetaillee__titre-info">Adresse</h3>
-              <span class="ficheDetaillee__contenu-info">{{ adresse }}</span>
-            </div>
-          </div>
-          <div class="ficheDetaillee__conteneur-information">
-            <div class="ficheDetaillee__bloc-style"></div>
-            <div class="ficheDetaillee__infos">
-              <h3 class="ficheDetaillee__titre-info">Ville</h3>
-              <span class="ficheDetaillee__contenu-info">{{ ville }}</span>
-            </div>
-          </div>
-          <div class="ficheDetaillee__conteneur-information">
-            <div class="ficheDetaillee__bloc-style"></div>
-            <div class="ficheDetaillee__infos">
-              <h3 class="ficheDetaillee__titre-info">Province</h3>
-              <span class="ficheDetaillee__contenu-info">{{ province }}</span>
-            </div>
-          </div>
-          <div class="ficheDetaillee__conteneur-information">
-            <div class="ficheDetaillee__bloc-style"></div>
-            <div class="ficheDetaillee__infos">
-              <h3 class="ficheDetaillee__titre-info">Code postal</h3>
-              <span class="ficheDetaillee__contenu-info">{{ codePostal }}</span>
-            </div>
-          </div>
-          <div class="ficheDetaillee__conteneur-information">
-            <div class="ficheDetaillee__bloc-style"></div>
-            <div class="ficheDetaillee__infos">
-              <h3 class="ficheDetaillee__titre-info">Telephone</h3>
-              <span class="ficheDetaillee__contenu-info">{{ telephone }}</span>
-            </div>
-          </div>
-          <div class="ficheDetaillee__conteneur-information">
-            <div class="ficheDetaillee__bloc-style"></div>
-            <div class="ficheDetaillee__infos">
-              <h3 class="ficheDetaillee__titre-info">Courriel</h3>
-              <span class="ficheDetaillee__contenu-info">{{ courriel }}</span>
-            </div>
-          </div>
-        </div>
+      <div class="ficheDetaillee__conteneur-informations-specifiques" v-if="isFicheDetailDemandeDeStage || isFicheDetailDemandeOffre"> 
 
-        <div class="ficheDetaillee__conteneur-titre" v-if="isPageDetaillerDemandeDeStage">
-          <h2 class="ficheDetaillee__titre-info-stage" :class="{'colorBlue': isPageDetaillerDemandeDeStage }">
-           Informations sur le stage 
+        <div class="ficheDetaillee__conteneur-titre" v-if="isFicheDetailDemandeDeStage">
+          <h2 class="ficheDetaillee__titre-info-stage" :class="{'colorRed': isFicheDetailDemandeDeStage}">
+           Informations sur le stage
           </h2>
         </div>
 
-        <div class="ficheDetaillee__conteneur-titre" v-if="isPageDetaillerDemandeOffre">
-          <h2 class="ficheDetaillee__titre-info-stage" :class="{'colorRed': isPageDetaillerDemandeOffre}">
+        <div class="ficheDetaillee__conteneur-titre" v-if="isFicheDetailDemandeOffre">
+          <h2 class="ficheDetaillee__titre-info-stage" :class="{'colorRed': isFicheDetailDemandeOffre}">
            Informations sur le stage recherché
           </h2>
         </div>
 
-      <div class="ficheDetaillee__conteneur-titre" v-if="isPageDetaillerCandidat">
-        <h2 class="ficheDetaillee__titre-info-stage" :class="{'colorPurple': isPageDetaillerCandidat}">
-          Informations personnelles
-        </h2>
-      </div>
-
-      <div class="ficheDetaillee__conteneur-informations-specifiques" v-if="isPageDetaillerDemandeDeStage || isPageDetaillerDemandeOffre"> 
           <div class="ficheDetaillee__conteneur-information">
             <div class="ficheDetaillee__bloc-style"></div>
             <div class="ficheDetaillee__infos">
               <h3 class="ficheDetaillee__titre-info">Type de stage</h3>
-              <span class="ficheDetaillee__contenu-info">{{ typeDeStage }}</span>
+              <span class="ficheDetaillee__contenu-info">{{ ficheDemandeStageEtOffre.typeDeStage }}</span>
             </div>
           </div>
           <div class="ficheDetaillee__conteneur-information">
             <div class="ficheDetaillee__bloc-style"></div>
             <div class="ficheDetaillee__infos">
               <h3 class="ficheDetaillee__titre-info">Nombre d'heures par semaine</h3>
-              <span class="ficheDetaillee__contenu-info">{{ nombreHeures }}</span>
+              <span class="ficheDetaillee__contenu-info">{{ ficheDemandeStageEtOffre.nombreHeures }}</span>
             </div>
           </div>
           <div class="ficheDetaillee__conteneur-information">
             <div class="ficheDetaillee__bloc-style"></div>
             <div class="ficheDetaillee__infos">
               <h3 class="ficheDetaillee__titre-info">Rémunération</h3>
-              <span class="ficheDetaillee__contenu-info">{{ remuneration }}</span>
+              <span class="ficheDetaillee__contenu-info">{{ ficheDemandeStageEtOffre.remuneration }}</span>
             </div>
           </div>
           <div class="ficheDetaillee__conteneur-information">
             <div class="ficheDetaillee__bloc-style"></div>
             <div class="ficheDetaillee__infos">
               <h3 class="ficheDetaillee__titre-info">Date de début</h3>
-              <span class="ficheDetaillee__contenu-info">{{ dateDeDebut }}</span>
+              <span class="ficheDetaillee__contenu-info">{{ ficheDemandeStageEtOffre.dateDeDebut }}</span>
             </div>
           </div>
           <div class="ficheDetaillee__conteneur-information">
             <div class="ficheDetaillee__bloc-style"></div>
             <div class="ficheDetaillee__infos">
               <h3 class="ficheDetaillee__titre-info">Date de fin</h3>
-              <span class="ficheDetaillee__contenu-info">{{ dateDeFin }}</span>
+              <span class="ficheDetaillee__contenu-info">{{ ficheDemandeStageEtOffre.dateDeFin }}</span>
             </div> 
           </div>
         </div>
 
 
-      <div class="ficheDetaillee__conteneur-titre" v-if="isPageDetaillerDemandeDeStage || isPageDetaillerDemandeOffre">
+      <div class="ficheDetaillee__conteneur-titre" v-if=" isFicheDetailDemandeDeStage || isFicheDetailDemandeOffre">
         <h2 class="ficheDetaillee__titre-info-supplementaire" 
           :class="{
-            'colorBlue': isPageDetaillerDemandeDeStage,
-            'colorRed': isPageDetaillerDemandeOffre}">
+            'colorBlue': isFicheDetailDemandeDeStage,
+            'colorRed': isFicheDetailDemandeOffre}">
           Informations supplémentaires
         </h2>
-        <p> {{ informationsSupplémentairesText }} </p> 
-      </div>
-
-      <div class="ficheDetaillee__conteneur-informations-supplementaires" v-if="isPageDetaillerDemandeDeStage">
-        <button type="button" class="ficheDetaillee__bouton-cta">
-          <i class="ficheDetaillee__icône fas fa-cloud-download-alt"></i>
-          <span>
-            Télécharger le C.V.
-          </span>
-        </button>
+        <p> {{ informationsSupplémentairesText.ficheDemandeStageEtOffre }} </p> 
       </div>
       </div>
     </div>
-  </div>
+    </div>
 </template>
 
 
 <script setup>
+// import modalSuppression from './modalSuppression.vue';
 import { defineProps } from 'vue';
 
 const props = defineProps({
-  informationsSupplémentairesText: String,
-  isPageDetaillerDemandeDeStage: Boolean,
-  isPageDetaillerDemandeOffre: Boolean,
-  isPageDetaillerCandidat: Boolean,
+  isFicheDetailDemandeDeStage: Boolean,
+  isFicheDetailDemandeOffre: Boolean,
+  ficheDemandeStage: Object,
+  ficheDemandeOffre: Object,
+  ficheDemandeStageEtOffre: Object
+  // etatDuModal: Boolean
 });
+
+// const emits = defineEmits(['suppressionAnnulee', 'confirmationSuppression', 'toggleModalSuppression']);
+
+
+// const confirmationSuppression = () => {
+//   emits('confirmationSuppression');
+// };
+
+// const suppressionAnnulee = () => {
+//   emits('suppressionAnnulee');
+// };
+
+// const toggleModalSuppression = () => {
+//   emits('toggleModalSuppression');
+// };
+
 </script>
 
 
