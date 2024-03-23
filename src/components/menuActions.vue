@@ -81,11 +81,12 @@
       <!-- Carte utilisateur -->
       <div class="flex flex-col md:flex-row items-center space-x-2">
         <!-- Icône utilisateur -->
-        <img src="../assets/icons/candidate-48.png" alt="Photo de profil" class="h-8 w-8 rounded-full bg-gray-300" />
+        
         <div>
           <p class="text-xs text-black">{{ adminStore.state.nomEtPrenom }}</p>
           <p class="text-xs text-gray-600">Admin</p>
         </div>
+        <img src="../assets/icons/candidate-48.png" alt="Photo de profil" class="h-8 w-8 rounded-full bg-gray-300" />
       </div>
     </div>
   </header>
