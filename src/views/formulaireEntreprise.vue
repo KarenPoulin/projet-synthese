@@ -15,12 +15,12 @@
         </div>
         <form @submit.prevent="submitForm">
             <div class="flex justify-end my-10">
-                <RouterLink to="/app/Entreprise">
+                <RouterLink to="/app/Entreprises">
                     <button type="button"
                         class="btn-secondary mr-2 text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
                         @click="cancelForm">Annuler</button>
                 </RouterLink>
-                <router-link to="/app/Entreprise">
+                <router-link to="/app/Entreprises">
                     <button type="submit"
                         class="btn-primary focus:outline-none text-white bg-fuchsia-800  hover:bg-fuchsia-900 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 inline-flex"
                         :disabled="!isFormValid">
@@ -44,8 +44,8 @@
             <div class="nom_poste mb-4">
                 <label for="logo" class="block mb-1 text-neutral-500 font-bold">Logo</label>
                 <div class="flex items-center">
-                   
-                    <input type="text " id="logo" @input="validateLogo"  class="w-full border-gray-300 rounded-md p-2" >
+
+                    <input type="text " id="logo" @input="validateLogo" class="w-full border-gray-300 rounded-md p-2">
                     <label for="logo"
                         class="cursor-pointer bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center">
                         Parcourir
@@ -120,12 +120,12 @@
                 </div>
             </div>
             <div class="flex justify-end">
-                <router-link to="/app/Entreprise">
+                <router-link to="/app/Entreprises">
                     <button type="button"
                         class="btn-secondary mr-2 text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
                         @click="cancelForm">Annuler</button>
                 </router-link>
-                <router-link to="/app/Entreprise">
+                <router-link to="/app/Entreprises">
                     <button type="submit"
                         class="btn-primary focus:outline-none text-white bg-fuchsia-800  hover:bg-fuchsia-900 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 inline-flex"
                         :disabled="!isFormValid">
@@ -182,7 +182,7 @@
                 postalCode: '',
                 activitySector: {
                     "_id": "65f8df6040965a2e23d73271",
-                    "value": "Technologies"                    
+                    "value": "Technologies"
                 },
                 website: 'test.com',
 
@@ -229,18 +229,21 @@
             };
 
             const validateLogo = () => {
-                logoError.value = '';
-
+               /**  logoError.value = '';
 
                 const logoTrimmed = form.logo.trim();
 
-                if (logoTrimmed < 3 || logoTrimmed > 250) {
-                    logoError.value = 'Le url du fichier doit contenir entre 3 et 250 caractères.';
+                // Expression régulière pour valider une URL
+                const urlRegex = /^(ftp|http|https):\/\/[^ "]+$/;
+
+                if (!urlRegex.test(logoTrimmed)) {
+                    logoError.value = 'Veuillez entrer une URL valide pour le logo.';
                     return false;
-                }
+                }*/
 
                 return true;
             };
+
 
 
             const validateDescription = () => {
@@ -395,7 +398,7 @@
 
             const fetchEntreprise = async () => {
                 try {
-                    const response = await axios.get(`https://api-4.fly.dev/entreprise/${props.entrepriseId}`);
+                    const response = await axios.get(`https://api-4.fly.dev/enterprises/${props.entrepriseId}`);
                     const entreprise = response.data;
 
                     form.Name = entreprise.Name;
@@ -446,8 +449,8 @@
                     }
 
                     try {
-                        const url = editing.value ? `https://api-4.fly.dev/entreprise/${props.entrepriseId}` :
-                            'https://api-4.fly.dev/entreprise';
+                        const url = editing.value ? `https://api-4.fly.dev/enterprises/${props.entrepriseId}` :
+                            'https://api-4.fly.dev/enterprises';
                         const method = editing.value ? 'put' : 'post';
                         const response = await axios({
                             method: method,
@@ -487,8 +490,8 @@
             return {
                 form,
                 editing,
-                provinces,             
-                fetchProvinces,                
+                provinces,
+                fetchProvinces,
                 submitForm,
                 cancelForm,
                 isFormValid,
