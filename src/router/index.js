@@ -62,14 +62,10 @@ const router = createRouter({
           component: FormulaireEntreprise
         },
         {
-          path:'formulairedemande',
-          name:'formulairedemande',
-          component: FormulaireDO
-        },
-        {
-          path:'formulaireoffre',
-          name:'formulaireoffre',
-          component: FormulaireDO
+          path: 'formulairedo/:type',
+          name: 'formulairedo',
+          component: FormulaireDO,
+          props: route => ({ isRequest: route.params.type === 'request' })
         },
         {
           path:'pagedetaildemandedestage/:id',
