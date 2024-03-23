@@ -44,8 +44,8 @@
             <div class="nom_poste mb-4">
                 <label for="logo" class="block mb-1 text-neutral-500 font-bold">Logo</label>
                 <div class="flex items-center">
-                    <span class="ml-3">{{ logoFileName }}</span>
-                    <input type="file" id="logo" @change="validateLogo" accept="image/*" class="hidden">
+                   
+                    <input type="text " id="logo" @input="validateLogo"  class="w-full border-gray-300 rounded-md p-2" >
                     <label for="logo"
                         class="cursor-pointer bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center">
                         Parcourir
@@ -180,6 +180,10 @@
                 provinceId: '',
                 provinceValue: '',
                 postalCode: '',
+                activitySector: {
+                    "_id": "65f8df6040965a2e23d73271",
+                    "value": "Technologies"                    
+                },
                 website: 'test.com',
 
             });
@@ -223,296 +227,293 @@
 
                 return true;
             };
-            
-            const validateLogo = (event) => {
-        logoError.value = ''; 
 
-        const selectedFile = event.target.files[0];
-
-        if (!selectedFile) {
-            logoError.value = 'Veuillez sélectionner un fichier.';
-            return false;
-        }
-
-        const fileNameLength = selectedFile.name.length;
-
-        if (fileNameLength < 3 || fileNameLength > 50) {
-            logoError.value = 'Le nom du fichier doit contenir entre 3 et 50 caractères.';
-            return false;
-        }
-
-        return true;
-    };
+            const validateLogo = () => {
+                logoError.value = '';
 
 
-    const validateDescription = () => {
-        descriptionError.value = '';
+                const logoTrimmed = form.logo.trim();
 
-        const descriptionTrimmed = form.description.trim();
-
-        if (descriptionTrimmed.length < 3 || descriptionTrimmed.length > 250) {
-            descriptionError.value = 'La description doit contenir entre 3 et 250 caractères.';
-            return false;
-        }
-
-        return true;
-    };
-
-    const validateAddress = () => {
-        addressError.value = '';
-
-        const addressTrimmed = form.address.trim();
-
-        if (!addressTrimmed) {
-            addressError.value = 'Veuillez entrer votre adresse.';
-            return false;
-        }
-
-        const containsNumber = /\d/.test(addressTrimmed);
-        const containsWord = /[a-zA-Z]/.test(addressTrimmed);
-
-        if (!containsNumber || !containsWord) {
-            addressError.value = 'L\'adresse doit contenir à la fois un nombre et un mot.';
-            return false;
-        }
-
-        return true;
-    };
-
-
-    const validatePhone = () => {
-        phoneError.value = '';
-
-        const phoneTrimmed = form.phone.trim();
-
-        const phoneRegex = /^\d{3}-\d{3}-\d{4}$/;
-
-        if (!phoneTrimmed) {
-            phoneError.value = 'Veuillez entrer votre numéro de téléphone.';
-            return false;
-        } else if (!phoneRegex.test(phoneTrimmed)) {
-            phoneError.value = 'Veuillez entrer un numéro de téléphone valide au format 514-555-5555.';
-            return false;
-        }
-
-        return true;
-    };
-
-    const validateCity = () => {
-        cityError.value = '';
-
-        const cityTrimmed = form.city.trim();
-
-        if (!cityTrimmed) {
-            cityError.value = 'Veuillez entrer votre ville.';
-            return false;
-        }
-
-        if (cityTrimmed.length < 3 || cityTrimmed.length > 50) {
-            cityError.value = 'La ville doit contenir entre 3 et 50 caractères.';
-            return false;
-        }
-
-        return true;
-    };
-
-
-
-    const formatPostalCode = (postalCode) => {
-        const formattedPostalCode = postalCode.trim().toUpperCase();
-        return formattedPostalCode.substring(0, 3) + " " + formattedPostalCode.substring(3);
-    };
-    const validateEmail = () => {
-        emailError.value = '';
-
-        if (!form.email.trim()) {
-            emailError.value = 'Veuillez entrer votre adresse e-mail.';
-            return false;
-        } else if (!isEmailValid(form.email)) {
-            emailError.value = 'Veuillez entrer une adresse e-mail valide.';
-            return false;
-        }
-        return true;
-    };
-
-    const validateProvince = () => {
-        provinceError.value = '';
-
-        if (!form.provinceId) {
-            provinceError.value = 'Veuillez sélectionner une province.';
-            return false;
-        }
-        return true;
-    };
-
-    const validatePostalCode = () => {
-        postalCodeError.value = '';
-
-        if (!form.postalCode.trim()) {
-            postalCodeError.value = 'Veuillez entrer votre code postal.';
-            return false;
-        } else if (!isPostalCodeValid(form.postalCode)) {
-            postalCodeError.value = 'Veuillez entrer un code postal valide.';
-            return false;
-        }
-        return true;
-    };
-
-    const isEmailValid = (email) => {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return emailRegex.test(email);
-    };
-
-    const isPostalCodeValid = (postalCode) => {
-        const postalCodeRegex = /^[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d$/;
-        return postalCodeRegex.test(postalCode);
-    };
-
-    const isFormValid = computed(() => {
-        return !NameError.value &&
-            !descriptionError.value &&
-            !logoError.value &&
-            !addressError.value &&
-            !phoneError.value &&
-            !cityError.value &&
-            !emailError.value &&
-            !provinceError.value &&
-
-            !postalCodeError.value;
-
-    });
-
-    const cancelForm = () => {
-        form.Name = '';
-        form.logo = '';
-        form.description = '';
-        form.contact = '';
-        form.address = '';
-        form.phone = '';
-        form.city = '';
-        form.email = '';
-        form.province = '';
-        form.postalCode = '';
-    };
-
-    const fetchEntreprise = async () => {
-        try {
-            const response = await axios.get(`https://api-4.fly.dev/entreprise/${props.entrepriseId}`);
-            const entreprise = response.data;
-
-            form.Name = entreprise.Name;
-            form.logo = entreprise.logo;
-            form.description = entreprise.description;
-            form.address = entreprise.address;
-            form.phone = entreprise.phone;
-            form.city = entreprise.city;
-            form.email = entreprise.email;
-            form.provinceId = entreprise.province._id;
-            form.postalCode = entreprise.postalCode;
-            form.website = entreprise.website;
-        } catch (error) {
-            console.error(error);
-        }
-    }
-
-    const submitForm = async () => {
-
-        validateName();
-        validateLogo();
-        validateDescription();
-        validateAddress();
-        validatePhone();
-        validateCity();
-        validateEmail();
-        validateProvince();
-        validatePostalCode();
-
-        if (
-            validateName() &&
-            validateLogo() &&
-            validateDescription() &&
-            validateAddress() &&
-            validatePhone() &&
-            validateCity() &&
-            validateEmail() &&
-            validateProvince() &&
-            validatePostalCode()
-        ) {
-
-
-            const selectedProvince = provinces.value.find(province => province._id === form.provinceId);
-
-            if (!selectedProvince) {
-                throw new Error('Province non trouvée');
-            }
-
-            try {
-                const url = editing.value ? `https://api-4.fly.dev/entreprise/${props.entrepriseId}` :
-                    'https://api-4.fly.dev/entreprise';
-                const method = editing.value ? 'put' : 'post';
-                const response = await axios({
-                    method: method,
-                    url: url,
-                    data: {
-                        Name: form.Name,
-                        logo: form.logo,
-                        description: form.description,
-                        email: form.email,
-                        address: form.address,
-                        phone: form.phone,
-                        city: form.city,
-                        website: form.website,
-                        province: {
-                            _id: form.provinceId,
-                            value: selectedProvince.value
-                        },
-                        postalCode: formatPostalCode(form.postalCode),
-                    }
-                });
-
-                if (!response.data.success) {
-                    throw new Error('Échec de la soumission du formulaire');
+                if (logoTrimmed < 3 || logoTrimmed > 250) {
+                    logoError.value = 'Le url du fichier doit contenir entre 3 et 250 caractères.';
+                    return false;
                 }
-            } catch (error) {
-                console.error(error);
+
+                return true;
+            };
+
+
+            const validateDescription = () => {
+                descriptionError.value = '';
+
+                const descriptionTrimmed = form.description.trim();
+
+                if (descriptionTrimmed.length < 3 || descriptionTrimmed.length > 250) {
+                    descriptionError.value = 'La description doit contenir entre 3 et 250 caractères.';
+                    return false;
+                }
+
+                return true;
+            };
+
+            const validateAddress = () => {
+                addressError.value = '';
+
+                const addressTrimmed = form.address.trim();
+
+                if (!addressTrimmed) {
+                    addressError.value = 'Veuillez entrer votre adresse.';
+                    return false;
+                }
+
+                const containsNumber = /\d/.test(addressTrimmed);
+                const containsWord = /[a-zA-Z]/.test(addressTrimmed);
+
+                if (!containsNumber || !containsWord) {
+                    addressError.value = 'L\'adresse doit contenir à la fois un nombre et un mot.';
+                    return false;
+                }
+
+                return true;
+            };
+
+
+            const validatePhone = () => {
+                phoneError.value = '';
+
+                const phoneTrimmed = form.phone.trim();
+
+                const phoneRegex = /^\d{3}-\d{3}-\d{4}$/;
+
+                if (!phoneTrimmed) {
+                    phoneError.value = 'Veuillez entrer votre numéro de téléphone.';
+                    return false;
+                } else if (!phoneRegex.test(phoneTrimmed)) {
+                    phoneError.value = 'Veuillez entrer un numéro de téléphone valide au format 514-555-5555.';
+                    return false;
+                }
+
+                return true;
+            };
+
+            const validateCity = () => {
+                cityError.value = '';
+
+                const cityTrimmed = form.city.trim();
+
+                if (!cityTrimmed) {
+                    cityError.value = 'Veuillez entrer votre ville.';
+                    return false;
+                }
+
+                if (cityTrimmed.length < 3 || cityTrimmed.length > 50) {
+                    cityError.value = 'La ville doit contenir entre 3 et 50 caractères.';
+                    return false;
+                }
+
+                return true;
+            };
+
+
+
+            const formatPostalCode = (postalCode) => {
+                const formattedPostalCode = postalCode.trim().toUpperCase();
+                return formattedPostalCode.substring(0, 3) + " " + formattedPostalCode.substring(3);
+            };
+            const validateEmail = () => {
+                emailError.value = '';
+
+                if (!form.email.trim()) {
+                    emailError.value = 'Veuillez entrer votre adresse e-mail.';
+                    return false;
+                } else if (!isEmailValid(form.email)) {
+                    emailError.value = 'Veuillez entrer une adresse e-mail valide.';
+                    return false;
+                }
+                return true;
+            };
+
+            const validateProvince = () => {
+                provinceError.value = '';
+
+                if (!form.provinceId) {
+                    provinceError.value = 'Veuillez sélectionner une province.';
+                    return false;
+                }
+                return true;
+            };
+
+            const validatePostalCode = () => {
+                postalCodeError.value = '';
+
+                if (!form.postalCode.trim()) {
+                    postalCodeError.value = 'Veuillez entrer votre code postal.';
+                    return false;
+                } else if (!isPostalCodeValid(form.postalCode)) {
+                    postalCodeError.value = 'Veuillez entrer un code postal valide.';
+                    return false;
+                }
+                return true;
+            };
+
+            const isEmailValid = (email) => {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return emailRegex.test(email);
+            };
+
+            const isPostalCodeValid = (postalCode) => {
+                const postalCodeRegex = /^[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d$/;
+                return postalCodeRegex.test(postalCode);
+            };
+
+            const isFormValid = computed(() => {
+                return !NameError.value &&
+                    !descriptionError.value &&
+                    !logoError.value &&
+                    !addressError.value &&
+                    !phoneError.value &&
+                    !cityError.value &&
+                    !emailError.value &&
+                    !provinceError.value &&
+
+                    !postalCodeError.value;
+
+            });
+
+            const cancelForm = () => {
+                form.Name = '';
+                form.logo = '';
+                form.description = '';
+                form.contact = '';
+                form.address = '';
+                form.phone = '';
+                form.city = '';
+                form.email = '';
+                form.province = '';
+                form.postalCode = '';
+            };
+
+            const fetchEntreprise = async () => {
+                try {
+                    const response = await axios.get(`https://api-4.fly.dev/entreprise/${props.entrepriseId}`);
+                    const entreprise = response.data;
+
+                    form.Name = entreprise.Name;
+                    form.logo = entreprise.logo;
+                    form.description = entreprise.description;
+                    form.address = entreprise.address;
+                    form.phone = entreprise.phone;
+                    form.city = entreprise.city;
+                    form.email = entreprise.email;
+                    form.provinceId = entreprise.province._id;
+                    form.postalCode = entreprise.postalCode;
+                    form.website = entreprise.website;
+                    form.activitySector = entreprise.activitySector;
+                } catch (error) {
+                    console.error(error);
+                }
             }
-        }
-    };
-    onMounted(() => {
-        if (props.candidateId) {
-            fetchCandidate();
-        }
-    });
 
-    return {
-        form,
-        editing,
-        provinces,
-        submitForm,
-        cancelForm,
-        isFormValid,
-        NameError,
-        logoError,
-        descriptionError,
-        addressError,
-        phoneError,
-        cityError,
-        emailError,
-        provinceError,
-        postalCodeError,
-        validateName,
-        validateLogo,
-        validateDescription,
-        validateAddress,
-        validatePhone,
-        validateCity,
-        validateEmail,
-        validateProvince,
-        validatePostalCode,
-        formatPostalCode,
+            const submitForm = async () => {
 
-    };
-    }
+                validateName();
+                validateLogo();
+                validateDescription();
+                validateAddress();
+                validatePhone();
+                validateCity();
+                validateEmail();
+                validateProvince();
+                validatePostalCode();
+
+                if (
+                    validateName() &&
+                    validateLogo() &&
+                    validateDescription() &&
+                    validateAddress() &&
+                    validatePhone() &&
+                    validateCity() &&
+                    validateEmail() &&
+                    validateProvince() &&
+                    validatePostalCode()
+                ) {
+
+
+                    const selectedProvince = provinces.value.find(province => province._id === form.provinceId);
+
+                    if (!selectedProvince) {
+                        throw new Error('Province non trouvée');
+                    }
+
+                    try {
+                        const url = editing.value ? `https://api-4.fly.dev/entreprise/${props.entrepriseId}` :
+                            'https://api-4.fly.dev/entreprise';
+                        const method = editing.value ? 'put' : 'post';
+                        const response = await axios({
+                            method: method,
+                            url: url,
+                            data: {
+                                Name: form.Name,
+                                image: form.logo,
+                                description: form.description,
+                                email: form.email,
+                                address: form.address,
+                                phone: form.phone,
+                                city: form.city,
+                                website: form.website,
+                                activitySector: form.activitySector,
+                                province: {
+                                    _id: form.provinceId,
+                                    value: selectedProvince.value
+                                },
+                                postalCode: formatPostalCode(form.postalCode),
+                            }
+                        });
+
+                        if (!response.data.success) {
+                            throw new Error('Échec de la soumission du formulaire');
+                        }
+                    } catch (error) {
+                        console.error(error);
+                    }
+                }
+            };
+            onMounted(() => {
+                if (props.entrepriseId) {
+                    fetchEntreprise();
+                }
+            });
+
+            return {
+                form,
+                editing,
+                provinces,             
+                fetchProvinces,                
+                submitForm,
+                cancelForm,
+                isFormValid,
+                NameError,
+                logoError,
+                descriptionError,
+                addressError,
+                phoneError,
+                cityError,
+                emailError,
+                provinceError,
+                postalCodeError,
+                validateName,
+                validateLogo,
+                validateDescription,
+                validateAddress,
+                validatePhone,
+                validateCity,
+                validateEmail,
+                validateProvince,
+                validatePostalCode,
+                formatPostalCode,
+
+            };
+        }
     };
 </script>
 
