@@ -1,9 +1,9 @@
 <template>
   <h1>Demande de stage</h1>
   <div class="flex">
-    <RouterLink class="my-3  bg-teal-500 text-white px-4 py-2  rounded hover:bg-teal-600" to="/app/formulairedemande">
+    <button class="my-3  bg-teal-500 text-white px-4 py-2  rounded hover:bg-teal-600" @click="goToFormDO('request')">
       Ajouter une demande
-    </RouterLink>
+    </button>
   </div>
 
   <RouterLink to="/app/formulaireDo"
@@ -17,4 +17,11 @@
 </template>
 
 <script setup>
+import { useRouter } from 'vue-router'
+
+// Fonction pour émettre les routes dynamiques vers le formulaireDO pour une demande
+const router = useRouter()
+const goToFormDO = type => {
+  router.push({ name: 'formulairedo', params: { type } })
+}
 </script>

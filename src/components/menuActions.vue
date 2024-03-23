@@ -14,30 +14,29 @@
         </svg>
       </div>
 
-      <!-- Bouton "Ajouter une offre de stage" -->
+
       <nav class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-3 mb-4 md:mb-0">
-        <RouterLink to="/app/formulaireoffre">
-          <button
-            class="ripple inline-block rounded border border-red-800 bg-white px-2 py-1 text-center text-xs font-medium leading-6 text-red-800 shadow transition hover:bg-red-50 hover:shadow-lg focus:outline-none">
-            <svg class="mr-1 inline-block h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6">
-              </path>
-            </svg>
-            Ajouter une offre de stage
-          </button>
-        </RouterLink>
+        <!-- Bouton "Ajouter une offre de stage" -->
+        <button @click="goToFormDO('offer')"
+          class="ripple inline-block rounded border border-red-800 bg-white px-2 py-1 text-center text-xs font-medium leading-6 text-red-800 shadow transition hover:bg-red-50 hover:shadow-lg focus:outline-none">
+          <svg class="mr-1 inline-block h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6">
+            </path>
+          </svg>
+          Ajouter une offre de stage
+        </button>
+
 
         <!-- Bouton "Ajouter une demande de stage" -->
-        <RouterLink to="/app/formulairedemande">
-          <button
-            class="ripple inline-block rounded border border-yellow-600 bg-white px-2 py-1 text-center text-xs font-medium leading-6 text-yellow-600 shadow transition hover:bg-yellow-50 hover:shadow-lg focus:outline-none">
-            <svg class="mr-1 inline-block h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6">
-              </path>
-            </svg>
-            Ajouter une demande de stage
-          </button>
-        </RouterLink>
+        <button @click="goToFormDO('request')"
+          class="ripple inline-block rounded border border-yellow-600 bg-white px-2 py-1 text-center text-xs font-medium leading-6 text-yellow-600 shadow transition hover:bg-yellow-50 hover:shadow-lg focus:outline-none">
+          <svg class="mr-1 inline-block h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6">
+            </path>
+          </svg>
+          Ajouter une demande de stage
+        </button>
+
 
         <!-- Bouton "Ajouter une entreprise" -->
         <button
@@ -58,10 +57,10 @@
             </svg>
             Ajouter un candidat
           </button>
-          </RouterLink>
+        </RouterLink>
       </nav>
-      
-      
+
+
       <!-- Carte utilisateur -->
       <div class="flex flex-col md:flex-row items-center space-x-2">
         <!-- Icône utilisateur -->
@@ -77,7 +76,15 @@
 
 <script setup>
 import { RouterLink } from 'vue-router'
-import { useAdminStore} from '@/stores/admin';
+import { useRouter } from 'vue-router'
+import { useAdminStore } from '@/stores/admin';
 
 const adminStore = useAdminStore();
+
+// Fonction pour émettre les routes dynamiques vers le formulaireDO selon si c'est une offre ou un demande
+const router = useRouter();
+const goToFormDO = type => {
+  router.push({ name: 'formulairedo', params: { type } })
+}
+
 </script>

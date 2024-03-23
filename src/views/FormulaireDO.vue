@@ -1,12 +1,13 @@
 <template>
   <div class="bg-neutral-100 w-full mx-auto">
     <!-------------------- Entête -------------------->
-     <h1 class="text-4xl font-bold text-neutral-500 m-10 p-5">{{ isRequest ? 'Ajouter une demande de stage' : 'Offre de stage' }}</h1>
+    <!-- <h1 class="text-4xl font-bold text-neutral-500 m-10 p-5">{{ isRequest ? 'Ajouter une demande de stage' : 'Offre de stage' }}</h1> -->
 
 
 
     <!-------------------- Formulaire  ---------------------->
     <form class="m-[25px]">
+      <!-- BOUTONS D'ACTION -->
       <div>
         <div class="flex justify-end items-center px-2">
           <button class="bg-neutral-300 text-white px-4 py-2 m-1 rounded hover:bg-neutral-400"
@@ -19,19 +20,19 @@
         </div>
 
         <div>
+          <!-- CHAMP TITRE POUR LES DEMANDES ET OFFRES -->
           <div class="flex items-baseline mt-5">
             <label for="title" class="text-base text-center font-bold text-neutral-500 block mr-4">Titre: </label>
             <input id="title" v-model="formFieldsLinkedWithApi.title"
               @input="validateInput(formFieldsLinkedWithApi.title, 'title')" type="text"
               class="border border-gray-300 p-2 w-full rounded focus:bg-white"
               :class="{ 'hover:bg-teal-100': isRequest, 'hover:bg-red-100': !isRequest }">
-
           </div>
           <span v-if="fieldsToValidate.title !== ''" class="text-xs font-semibold text-red-700">{{
               fieldsToValidate.title }}</span>
         </div>
 
-
+        <!-- CHAMP ENTREPRISE POUR LES OFFRES  -->
         <div v-if="!isRequest">
           <div class="flex items-baseline mt-5">
             <label for="enterprise" class="text-base font-bold text-neutral-500 block mr-4">Entreprise: </label>
@@ -39,9 +40,10 @@
               @change="validateSelect(formFieldsLinkedWithApi.enterprise, 'enterprise')" type="text"
               class="border border-gray-300 p-2 w-full rounded  focus:bg-white"
               :class="{ 'hover:bg-teal-100': isRequest, 'hover:bg-red-100': !isRequest }">
-              <option>Entreprise 1</option>
-              <option>Entreprise 2</option>
+              <option v-for="enterprise in allEnterprisesResults" :key="enterprise._id" :value="enterprise.name">{{ enterprise.name
+                }}</option>
             </select>
+            
           </div>
           <span v-if="fieldsToValidate.enterprise !== ''" class="text-xs font-semibold mb-2 text-red-700">{{
               fieldsToValidate.enterprise }}</span>
@@ -50,20 +52,24 @@
       </div>
 
 
-
+      <!-- CHAMP NOM & PRÉNOM POUR LES DEMANDES ET OFFRES -->
       <div class="bg-white p-10 mt-10">
         <div v-if="isRequest" class="m-2">
-          <label for="nomComplet" class="text-sm font-bold text-neutral-500  block">Nom et prénom</label>
-          <input id="title" v-model="formFieldsLinkedWithApi.nomComplet"
-            @input="validateInput(formFieldsLinkedWithApi.nomComplet, 'nomComplet')" type="text"
+          <label for="fullName" class="text-sm font-bold text-neutral-500  block">Nom et prénom</label>
+          <select id="title" v-model="formFieldsLinkedWithApi.fullName"
+            @change="validateSelect(formFieldsLinkedWithApi.fullName, 'fullName')" type="text"
             class="border border-gray-300 w-full rounded focus:bg-white"
             :class="{ 'hover:bg-teal-100': isRequest, 'hover:bg-red-100': !isRequest }">
-          <span v-if="fieldsToValidate.nomComplet !== ''" class="p-2 text-xs font-semibold text-red-700">{{
-              fieldsToValidate.nomComplet
+            <option v-for="candidate in allCandidatesResults" :key="candidate._id" :value="candidate.firstName & candidate.lastName">{{
+              candidate.firstName}} {{ candidate.lastName }}</option>
+            </select>
+           
+          <span v-if="fieldsToValidate.fullName !== ''" class="p-2 text-xs font-semibold text-red-700">{{
+              fieldsToValidate.fullName
             }}</span>
         </div>
 
-
+        <!-- CHAMP PRÉSENTATION POUR LES DEMANDES  -->
         <div v-if="isRequest" class="m-2">
           <label for="description" class="text-sm font-bold text-neutral-500  block">Présentation</label>
           <textarea id="description" v-if="isRequest" v-model="formFieldsLinkedWithApi.description"
@@ -74,9 +80,9 @@
               fieldsToValidate.description }}</span>
         </div>
 
-
+        <!-- CHAMP DESCRIPTION DES TÂCHES POUR LES OFFRES  -->
         <div v-if="!isRequest" class="m-2">
-          <h2 class="text-xl font-bold text-red-800 py-4">Description de la tâche</h2>
+          <h2 class="text-xl font-bold text-red-800 py-4">Description des tâches</h2>
           <textarea id="taskDescription" v-model="formFieldsLinkedWithApi.taskDescription"
             @change="validateInput(formFieldsLinkedWithApi.taskDescription, 'taskDescription')"
             class="border border-gray-300 p-2 w-full rounded   focus:bg-white"
@@ -85,6 +91,7 @@
               fieldsToValidate.taskDescription }}</span>
         </div>
 
+        <!-- CHAMP PROGRAMME DE FORMATION  POUR LES DEMANDES ET OFFRES  -->
         <div class="grid grid-cols-2 gap-4">
           <div class="m-2 relative">
             <div class="h-full w-1.5 bg-neutral-800 absolute inset-y-0 left-0"></div>
@@ -97,7 +104,7 @@
               fieldsToValidate.programme }}</span>
           </div>
 
-
+          <!-- CHAMP ÉTABLISSEMENT  POUR LES DEMANDES  -->
           <div v-if="isRequest" class="m-2 relative">
             <div class="h-full w-1.5 bg-neutral-800 absolute inset-y-0 left-0"></div>
             <label for="etablissement" class="text-sm font-bold text-neutral-500 block ml-3 ">Établissement
@@ -110,7 +117,7 @@
               fieldsToValidate.etablissement }}</span>
           </div>
 
-
+          <!-- CHAMP SECTEUR D'ACTIVITÉS POUR LES DEMANDES -->
           <div v-if="isRequest" class="m-2 relative">
             <div class="h-full w-1.5 bg-neutral-800 absolute inset-y-0 left-0"></div>
             <label for="activitySector" class="text-sm font-bold text-neutral-500 block ml-3   focus:bg-white"
@@ -120,21 +127,14 @@
               @change="validateSelect(formFieldsLinkedWithApi.activitySector, 'activitySector')"
               class="border border-gray-300 p-2 w-full rounded mt-1 ml-3 focus:bg-white"
               :class="{ 'hover:bg-teal-100': isRequest, 'hover:bg-red-100': !isRequest }">
-              <option value="option1">Technologie de l'information</option>
-              <option value="option2">Santé</option>
-              <option value="option3">Finance</option>
-              <option value="option4">Éducation</option>
-              <option value="option5">Transport et logistique</option>
-              <option value="option6">Immoblier</option>
-              <option value="option7">Tourisme</option>
-              <option value="option8">Manufacture</option>
-              <option value="option9">Énergie</option>
-              <option value="option10">Commerce au détail</option>
+              <option v-for="sector in allActivitySectorsResults" :key="sector._id" :value="sector.id">{{ sector.value
+                }}</option>
             </select>
             <span v-if="fieldsToValidate.activitySector !== ''" class="p-2 text-xs font-semibold text-red-700">{{
               fieldsToValidate.activitySector }}</span>
           </div>
 
+          <!-- CHAMP VILLE POUR LES DEMANDES -->
           <div v-if="isRequest" class="m-2 relative">
             <div class="h-full w-1.5 bg-neutral-800 absolute inset-y-0 left-0"></div>
             <label for="city" class="text-sm font-bold text-neutral-500 block ml-3 ">Ville</label>
@@ -146,7 +146,7 @@
               fieldsToValidate.city }}</span>
           </div>
 
-
+          <!-- CHAMP RÉGION (PROVINCES) POUR LES DEMANDES -->
           <div v-if="isRequest" class="m-2 relative">
             <div class="h-full w-1.5 bg-neutral-800 absolute inset-y-0 left-0"></div>
             <label for="region" class="text-sm font-bold text-neutral-500 block ml-3 ">Région</label>
@@ -154,17 +154,16 @@
               @change="validateSelect(formFieldsLinkedWithApi.region, 'region')" type="text"
               class="border border-gray-300 p-2 w-full rounded mt-1 ml-3 focus:bg-white"
               :class="{ 'hover:bg-teal-100': isRequest, 'hover:bg-red-100': !isRequest }">
-              <option value="option1">Québec</option>
-              <option value="option2">Trois-Rivière</option>
-              <option value="option3">Montréal</option>
-              <option value="option4">Sherbrooke</option>
-              <option value="option5">Gatineau</option>
+              <option v-for="province in allProvincesResults" :key="province._id" :value="province.id">{{ province.value
+                }}</option>
             </select>
             <span v-if="fieldsToValidate.region !== ''" class="p-2 text-xs font-semibold text-red-700">{{
               fieldsToValidate.region }}</span>
           </div>
         </div>
 
+
+        <!-- CHAMP EXIGENCES POUR LES OFFRES -->
         <div v-if="!isRequest" class=" m-2 relative">
           <div class="h-[98px] w-1.5 bg-neutral-800 absolute inset-y-0 left-0"></div>
           <label for="requiredSkills" class="text-sm font-bold text-neutral-500 block ml-3 ">Exigences</label>
@@ -176,9 +175,7 @@
               fieldsToValidate.requiredSkills }}</span>
         </div>
 
-
-
-
+        <!-- CHAMP COMPÉTENCES POUR LES DEMANDES -->
         <div v-if="isRequest" class="m-2 relative">
           <div class="h-[90px] w-1.5 bg-neutral-800 absolute inset-y-0 left-0"></div>
           <label for="skills" class="text-sm font-bold text-neutral-500 block ml-3">Compétences</label>
@@ -191,10 +188,11 @@
         </div>
 
 
-
         <p class=" text-base font-bold px-4 py-2 m-1" :class="isRequest ? ' text-teal-500' : 'text-red-800'">
           Information sur le stage</p>
 
+
+        <!-- CHAMP TYPE DE STAGE  POUR LES DEMANDES ET LES OFFRES -->
         <div class="grid grid-cols-2 gap-4 items-baseline">
           <div class="m-2 relative">
             <div class="h-full w-1.5 bg-neutral-800 absolute inset-y-0 left-0"></div>
@@ -203,16 +201,15 @@
               @change="validateSelect(formFieldsLinkedWithApi.internshipType, 'internshipType')" type="text"
               class="border border-gray-300 p-2 w-full rounded mt-1 ml-3   focus:bg-white"
               :class="{ 'hover:bg-teal-100': isRequest, 'hover:bg-red-100': !isRequest }">
-              <option value="option1">Temps plein</option>
-              <option value="option2">Temps partiel</option>
+              <option v-for="intership in allIntershipTypesResults" :key="intership._id" :value="intership.id">{{
+              intership.value }}
+              </option>
             </select>
             <span v-if="fieldsToValidate.internshipType !== ''" class="p-2 text-xs font-semibold text-red-700">{{
               fieldsToValidate.internshipType }}</span>
           </div>
 
-
-
-
+          <!-- CHAMP DATE DE DÉBUT  POUR LES DEMANDES ET LES OFFRES -->
           <div class="m-2 relative">
             <div class="h-full w-1.5 bg-neutral-800 absolute inset-y-0 left-0"></div>
             <label for="startDate" class="text-sm font-bold text-neutral-500 block ml-3">Date de début</label>
@@ -224,7 +221,7 @@
               fieldsToValidate.startDate }}</span>
           </div>
 
-
+          <!-- CHAMP NOMBRE D'HEURES PAR SEMAINES LES DEMANDES ET LES OFFRES -->
           <div class="m-2 relative">
             <div class="h-full w-1.5 bg-neutral-800 absolute inset-y-0 left-0"></div>
             <label for="weeklyWorkHours" class="text-sm font-bold text-neutral-500 block ml-3">Nombre d'heures par
@@ -237,7 +234,7 @@
               fieldsToValidate.weeklyWorkHours }}</span>
           </div>
 
-
+          <!-- CHAMP DATE DE FIN POUR LES DEMANDES ET LES OFFRES -->
           <div class="m-2 relative">
             <div class="h-full w-1.5 bg-neutral-800 absolute inset-y-0 left-0"></div>
             <label for="endDate" class="text-sm font-bold text-neutral-500 block ml-3">Date de fin</label>
@@ -248,9 +245,9 @@
             <span v-if="fieldsToValidate.endDate !== ''" class="p-2 text-xs font-semibold text-red-700">{{
               fieldsToValidate.endDate }}</span>
           </div>
-
         </div>
 
+        <!-- CHAMP RÉNUMÉRATION POUR LES DEMANDES ET LES OFFRES -->
         <div class="m-2 relative">
           <div class="h-full w-1.5 bg-neutral-800 absolute inset-y-0 left-0"></div>
           <label class="text-sm font-bold text-neutral-500 block mb-2 ml-3">Rémunération</label>
@@ -270,9 +267,7 @@
               fieldsToValidate.paid }}</span>
         </div>
 
-
-
-
+        <!-- CHAMP INFORMATION SUPPLÉMENTAIRES POUR LES DEMANDES ET LES OFFRES -->
         <div class="m-2">
           <label for="additionalInformation" class="text-sm font-bold"
             :class="isRequest ? ' text-teal-500' : 'text-red-800'">Information supplémentaire</label>
@@ -284,21 +279,18 @@
               fieldsToValidate.additionalInformation }}</span>
         </div>
 
+        <!-- SECTION TÉLÉCHARGEMENT POUR LES DEMANDES  -->
         <div v-if="isRequest" class="m-2  flex justify-between items-center">
-
           <div class="w-1/2 flex items-center">
             <input class="h-10 border border-gray-300 py-3 w-full rounded  hover:bg-teal-100  focus:bg-white">
             <button
               class="h-10 bg-neutral-300 text-white px-4 py-1 rounded hover:bg-neutral-400 text-center">Parcourir</button>
           </div>
-
-
           <button class="bg-teal-500 text-white p-2 m-1 rounded hover:bg-teal-600  focus:bg-white"><i
               class="fa-solid fa-cloud-arrow-down p-1"></i>Télécharger le C.V. </button>
         </div>
 
-
-
+        <!-- BOUTONS D'ACTION  -->
         <div class="flex justify-end my-5 pb-10">
           <button class="bg-neutral-300 text-white px-4 py-2 m-1 rounded hover:bg-neutral-400"
             @click="resetForm">Annuler</button>
@@ -306,53 +298,87 @@
             :class="isRequest ? 'bg-teal-500 text-white px-4 py-2 m-1 rounded hover:bg-teal-600' : 'bg-red-800 text-white px-4 py-2 m-1 rounded hover:bg-red-900'"
             @click="submitForm"><i class="fa-solid fa-floppy-disk p-1"></i>{{ isAdding ? 'Sauvegarder' : 'Mettre à jour'
             }}</button>
-
         </div>
-
       </div>
-
     </form>
   </div>
-
 </template>
 
 <script setup>
-import { reactive, ref, onMounted, watch} from 'vue';
-import { useRouter } from 'vue-router';
+import { reactive, ref, onMounted } from 'vue';
+import { defineProps } from 'vue';
+import { useActivitySectors } from '@/composables/secteurActivites';
+import { useIntershipTypes } from '@/composables/typeStage';
+import { useProvinces } from '@/composables/provinces';
+import { useAllCandidates } from '@/composables/candidats';
+import { useAllEnterprises } from '@/composables/entreprises';
 
-// Function pour créer les routes vers le formulaireDO à partir de la navigation et des listes demandes et offres
-onMounted(() => {
-  watch(() => router.currentRoute.value.path, (newPath) => {
-    if(newPath.includes('formulairedemande')){
-      isRequest.value = true;
-    } else if(newPath.includes('formulaireoffre')){
-      isRequest.value = false;
-    }
-  });
-})
 
-const router = useRouter();
-
+// Props pour utiliser dans les routes vers le formulaire selon si c'est une demande ou un offre
+const props = defineProps(['isRequest'])
 
 
 //Variable pour déterminer si c'est un ajout ou une modification 
 let isAdding = ref(true);
 
 
-// Variable pour déterminer si c'est une demande ou une offre 
-let isRequest = ref(true);
+// REQUÊTE DE L'API //
+//Fonction pour afficher les candidats venant de l'api
+const { allCandidatesResults,   getAllCandidates } = useAllCandidates();
+
+onMounted(async () => {
+  await   getAllCandidates();
+  console.log(allCandidatesResults);
+})
+
+//Fonction pour afficher les entreprises venant de l'api
+const { allEnterprisesResults,  getAllEnterprises } = useAllEnterprises();
+
+onMounted(async () => {
+  await   getAllEnterprises();
+  console.log(allEnterprisesResults);
+})
 
 
-// Création des variables requises pour la validation du formulaire
+//Fonction pour afficher les secteurs d'activités venant de l'api
+const { allActivitySectorsResults, getAllActivitySectors } = useActivitySectors();
+
+onMounted(async () => {
+  await getAllActivitySectors();
+  console.log(allActivitySectorsResults);
+})
+
+
+//Fonction pour afficher les provinces venant de l'api
+const { allProvincesResults, getAllProvinces } = useProvinces();
+
+onMounted(async () => {
+  await getAllProvinces();
+  console.log(allProvincesResults);
+})
+
+//Fonction pour afficher les types de stage venant de l'api
+const { allIntershipTypesResults, getAllIntershipTypes } = useIntershipTypes();
+
+onMounted(async () => {
+  await getAllIntershipTypes();
+  console.log(allIntershipTypesResults);
+})
+
+
+
+
+// Création des variables dans les formulaires à envoyer à l'api 
 const formFieldsLinkedWithApi = reactive({
   title: '',
   enterprise: '',
   taskDescription: '',
-  nomComplet: '',
+  fullName: '',
   description: '',
-  programme: '',
-  requiredSkills: '',
-  etablissement: '',
+  programme: 'Technique de développement web',
+  requiredSkills: ['vue.js', 'angular', 'react'],
+  skills: ['vue.js', 'angular', 'react'],
+  etablissement: 'Cégep',
   activitySector: '',
   city: '',
   region: '',
@@ -362,9 +388,11 @@ const formFieldsLinkedWithApi = reactive({
   weeklyWorkHours: '',
   endDate: '',
   paid: '',
-  additionalInformation: ''
+  additionalInformation: '',
+
 });
 
+// Variables pour des messages d'erreur des formulaires 
 const errorMessage = reactive({
   empty: 'Le champ ne peut pas être vide',
   minCharacters: 'Le champ doit avoir au moins 5 caractères',
@@ -379,11 +407,12 @@ const errorMessage = reactive({
   maxHours: "Le nombre d'heures maximum est de 40."
 });
 
+// Variables des champs du formulaire pour effectuer la valifation 
 const fieldsToValidate = reactive({
   title: '',
   enterprise: '',
   taskDescription: '',
-  nomComplet: '',
+  fullName: '',
   description: '',
   programme: '',
   requiredSkills: '',
@@ -400,8 +429,11 @@ const fieldsToValidate = reactive({
   additionalInformation: ''
 });
 
+
 let isFormValid = ref(false);
 
+
+// VALIDATION DES CHAMPS DU FORM 
 // Fonction pour valider les champs de type input
 function validateInput(input, field) {
 
@@ -492,12 +524,12 @@ function validatePaid(value) {
 
 
 
-
+// SOUMISSION DU FORMULAIRE
 // Fonction pour soumettre le formulaire 
 const submitForm = (e) => {
   e.preventDefault();
   fieldsToValidate.title = validateInput(formFieldsLinkedWithApi.title, 'title');
-  fieldsToValidate.nomComplet = validateInput(formFieldsLinkedWithApi.nomComplet, 'nomComplet');
+  fieldsToValidate.fullName = validateSelect(formFieldsLinkedWithApi.fullName, 'fullName');
   fieldsToValidate.description = validateInput(formFieldsLinkedWithApi.description, 'description');
   fieldsToValidate.programme = validateInput(formFieldsLinkedWithApi.programme, 'programme');
   fieldsToValidate.etablissement = validateInput(formFieldsLinkedWithApi.etablissement, 'etablissement');
@@ -537,8 +569,6 @@ const resetForm = (e) => {
     fieldsToValidate[key] = '';
   }
 };
-
-
 </script>
 
 <style scoped>

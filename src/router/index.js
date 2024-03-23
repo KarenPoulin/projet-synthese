@@ -11,6 +11,7 @@ import FormulaireDO from '../views/FormulaireDO.vue'
 import Erreur from '../views/Erreur.vue'
 import FicheDetailCandidatEntreprise from '@/views/FicheDetailCandidatEntreprise.vue'
 import PageDetailDemandeEtOffre from '@/views/PageDetailDemandeEtOffre.vue'
+import FormulaireEntreprise from '@/views/formulaireEntreprise.vue'
 
 
 const router = createRouter({
@@ -56,14 +57,15 @@ const router = createRouter({
           component: formulaireCandidat
         },
         {
-          path:'formulairedemande',
-          name:'formulairedemande',
-          component: FormulaireDO
+          path:'formulaireentreprise',
+          name:'formulaireentreprise',
+          component: FormulaireEntreprise
         },
         {
-          path:'formulaireoffre',
-          name:'formulaireoffre',
-          component: FormulaireDO
+          path: 'formulairedo/:type',
+          name: 'formulairedo',
+          component: FormulaireDO,
+          props: route => ({ isRequest: route.params.type === 'request' })
         },
         {
           path:'pagedetaildemandedestage/:id',
