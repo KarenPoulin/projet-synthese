@@ -1,0 +1,601 @@
+<template>
+    <div class="p-4">
+        <div class="flex justify-between items-center mb-4">
+            <h1 class="titre_barre text-lg font-bold text-neutral-500 mb-9">
+                {{ editing ? '' : 'Ajouter une entreprise' }}</h1>
+            <div v-if="editing">
+                <div class="titre_barre-modifier">
+                    <div class="titre_modifer">
+                        <p class="text-neutral-500">Entreprise</p>
+                        <h1 class="text-neutral-500">{{ form.Name }}</h1>
+                        <p class="poste text-neutral-500">{{ form.logo }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <form @submit.prevent="submitForm">
+            <div class="flex justify-end my-10">
+                <RouterLink to="/app/Entreprise">
+                    <button type="button"
+                        class="btn-secondary mr-2 text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
+                        @click="cancelForm">Annuler</button>
+                </RouterLink>
+                <router-link to="/app/Entreprise">
+                    <button type="submit"
+                        class="btn-primary focus:outline-none text-white bg-fuchsia-800  hover:bg-fuchsia-900 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 inline-flex"
+                        :disabled="!isFormValid">
+                        <svg class="w-6 h-6 text-gray-100 dark:text-white" aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                            viewBox="0 0 24 24">
+                            <path fill-rule="evenodd"
+                                d="M8 10V7a4 4 0 1 1 8 0v3h1a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h1Zm2-3a2 2 0 1 1 4 0v3h-4V7Zm2 6a1 1 0 0 1 1 1v3a1 1 0 1 1-2 0v-3a1 1 0 0 1 1-1Z"
+                                clip-rule="evenodd" />
+                        </svg>
+                        {{ editing ? 'Mettre à jour' : 'Sauvegarder' }}</button>
+                </router-link>
+            </div>
+
+            <div class="nom_poste mb-4">
+                <label for="Name" class="block mb-1  text-neutral-500 font-bold">Nom </label>
+                <input type="text" id="Name" v-model="form.Name" @input="validateName"
+                    class="w-full border-gray-300 rounded-md p-2">
+                <span class="text-red-500">{{ NameError }}</span>
+            </div>
+            <div class="nom_poste mb-4">
+                <label for="logo" class="block mb-1 text-neutral-500 font-bold">Logo</label>
+                <div class="flex items-center">
+                    <span class="ml-3">{{ logoFileName }}</span>
+                    <input type="file" id="logo" @change="validateLogo" accept="image/*" class="hidden">
+                    <label for="logo"
+                        class="cursor-pointer bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center">
+                        Parcourir
+                    </label>
+
+                </div>
+                <span class="text-red-500">{{ logoError }}</span>
+            </div>
+
+            <div class="block_info-perso my-9">
+                <div class="mb-4">
+                    <label for="description" class="block mb-4">
+                        <h2 class="text-teal-500 text-lg font-bold">Courte présentation</h2>
+                    </label>
+                    <textarea id="description" v-model="form.description" @input="validateDescription"
+                        class="block  w-full border-gray-300 rounded-md p-2"></textarea>
+                    <span class="text-red-500">{{ descriptionError }}</span>
+                </div>
+                <div class="mb-4 input_barre-modifier">
+                    <label for="contatct" class="block mb-1 text-neutral-500 font-bold">Personne Contact</label>
+                    <input type="text" id="contact" v-model="form.contact" @input=""
+                        class="w-full border-gray-300 rounded-md p-2">
+                    <span v-if="!isAddressValid" class="text-red-500">{{ addressError }}</span>
+                </div>
+                <h3 class="  my-8 text-teal-500  font-bold">Information de contact</h3>
+                <div class="block_info-perso-all">
+                    <div class="block_info-perso-adresse">
+                        <div class="mb-4 input_barre-modifier">
+                            <label for="address" class="block mb-1 text-neutral-500 font-bold">Adresse</label>
+                            <input type="text" id="address" v-model="form.address" @input="validateAddress"
+                                class="w-full border-gray-300 rounded-md p-2">
+                            <span v-if="!isAddressValid" class="text-red-500">{{ addressError }}</span>
+                        </div>
+                        <div class="mb-4 input_barre-modifier">
+                            <label for="city" class="block mb-1  text-neutral-500 font-bold">Ville</label>
+                            <input type="text" id="city" v-model="form.city" @input="validateCity"
+                                class="w-full border-gray-300 rounded-md p-2">
+                            <span v-if="!isCityValid" class="text-red-500">{{ cityError }}</span>
+                        </div>
+                        <div class="mb-4 input_barre-modifier">
+                            <label for="province" class="block mb-1  text-neutral-500 font-bold">Province</label>
+                            <select id="province" v-model="form.provinceId" @change="validateProvince"
+                                class="w-full border-gray-300 rounded-md p-2">
+                                <option value="" disabled selected>Choisissez une province</option>
+                                <option v-for="province in provinces" :value="province._id" :key="province._id">
+                                    {{ province.value }}
+                                </option>
+                            </select>
+                            <span v-if="!isProvinceValid" class="text-red-500">{{ provinceError }}</span>
+                        </div>
+                        <div class="mb-4 input_barre-modifier">
+                            <label for="postalCode" class="block mb-1  text-neutral-500 font-bold">Code postal</label>
+                            <input type="text" id="postalCode" v-model="form.postalCode" @input="validatePostalCode"
+                                class="w-full border-gray-300 rounded-md p-2">
+                            <span v-if="!isPostalCodeValid" class="text-red-500">{{postalCodeError }}</span>
+                        </div>
+                    </div>
+                    <div class="block_info-perso-contact">
+                        <div class="mb-4 input_barre-modifier">
+                            <label for="phone" class="block mb-1  text-neutral-500 font-bold">Téléphone</label>
+                            <input type="text" id="phone" v-model="form.phone" @input="validatePhone"
+                                class="w-full border-gray-300 rounded-md p-2">
+                            <span v-if="!isPhoneValid" class="text-red-500">{{ phoneError }}</span>
+                        </div>
+                        <div class="mb-4 input_barre-modifier">
+                            <label for="email" class="block mb-1  text-neutral-500 font-bold">Courriel</label>
+                            <input type="email" id="email" v-model="form.email" @input="validateEmail"
+                                class="w-full border-gray-300 rounded-md p-2">
+                            <span v-if="!isEmailValid" class="text-red-500">{{ emailError }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="flex justify-end">
+                <router-link to="/app/Entreprise">
+                    <button type="button"
+                        class="btn-secondary mr-2 text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
+                        @click="cancelForm">Annuler</button>
+                </router-link>
+                <router-link to="/app/Entreprise">
+                    <button type="submit"
+                        class="btn-primary focus:outline-none text-white bg-fuchsia-800  hover:bg-fuchsia-900 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 inline-flex"
+                        :disabled="!isFormValid">
+                        <svg class="w-6 h-6 text-gray-100 dark:text-white" aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                            viewBox="0 0 24 24">
+                            <path fill-rule="evenodd"
+                                d="M8 10V7a4 4 0 1 1 8 0v3h1a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h1Zm2-3a2 2 0 1 1 4 0v3h-4V7Zm2 6a1 1 0 0 1 1 1v3a1 1 0 1 1-2 0v-3a1 1 0 0 1 1-1Z"
+                                clip-rule="evenodd" />
+                        </svg>
+                        {{ editing ? 'Mettre à jour' : 'Sauvegarder' }}</button>
+                </router-link>
+            </div>
+        </form>
+    </div>
+</template>
+
+<script>
+    import {
+        reactive,
+        computed,
+        onMounted,
+        ref
+    } from 'vue';
+
+    import {
+        RouterLink
+    } from 'vue-router';
+
+    import
+    axios
+    from 'axios';
+
+
+    export default {
+        props: {
+            entrepriseId: {
+                type: String,
+                required: false
+            }
+        },
+        setup(props) {
+            const form = reactive({
+                Name: '',
+                logo: '',
+                description: '',
+                contatct: '',
+                address: '',
+                phone: '',
+                city: '',
+                email: '',
+                provinceId: '',
+                provinceValue: '',
+                postalCode: '',
+                website: 'test.com',
+
+            });
+
+            const provinces = ref([]);
+
+            const fetchProvinces = async () => {
+                try {
+                    const response = await axios.get('https://api-4.fly.dev/provinces');
+                    provinces.value = response.data;
+                } catch (error) {
+                    console.error(error);
+                }
+            };
+
+            onMounted(fetchProvinces);
+
+            const editing = computed(() => !!props.entrepriseId);
+
+            const NameError = ref('');
+            const logoError = ref('');
+            const descriptionError = ref('');
+            const addressError = ref('');
+            const phoneError = ref('');
+            const cityError = ref('');
+            const emailError = ref('');
+            const provinceError = ref('');
+            const postalCodeError = ref('');
+
+            const validateName = () => {
+                NameError.value = '';
+
+                const NameTrimmed = form.Name.trim();
+
+
+
+                if (NameTrimmed.length < 3 || NameTrimmed.length > 50) {
+                    NameError.value = 'Le nom complet doit contenir entre 3 et 50 caractères.';
+                    return false;
+                }
+
+                return true;
+            };
+            
+            const validateLogo = (event) => {
+        logoError.value = ''; 
+
+        const selectedFile = event.target.files[0];
+
+        if (!selectedFile) {
+            logoError.value = 'Veuillez sélectionner un fichier.';
+            return false;
+        }
+
+        const fileNameLength = selectedFile.name.length;
+
+        if (fileNameLength < 3 || fileNameLength > 50) {
+            logoError.value = 'Le nom du fichier doit contenir entre 3 et 50 caractères.';
+            return false;
+        }
+
+        return true;
+    };
+
+
+    const validateDescription = () => {
+        descriptionError.value = '';
+
+        const descriptionTrimmed = form.description.trim();
+
+        if (descriptionTrimmed.length < 3 || descriptionTrimmed.length > 250) {
+            descriptionError.value = 'La description doit contenir entre 3 et 250 caractères.';
+            return false;
+        }
+
+        return true;
+    };
+
+    const validateAddress = () => {
+        addressError.value = '';
+
+        const addressTrimmed = form.address.trim();
+
+        if (!addressTrimmed) {
+            addressError.value = 'Veuillez entrer votre adresse.';
+            return false;
+        }
+
+        const containsNumber = /\d/.test(addressTrimmed);
+        const containsWord = /[a-zA-Z]/.test(addressTrimmed);
+
+        if (!containsNumber || !containsWord) {
+            addressError.value = 'L\'adresse doit contenir à la fois un nombre et un mot.';
+            return false;
+        }
+
+        return true;
+    };
+
+
+    const validatePhone = () => {
+        phoneError.value = '';
+
+        const phoneTrimmed = form.phone.trim();
+
+        const phoneRegex = /^\d{3}-\d{3}-\d{4}$/;
+
+        if (!phoneTrimmed) {
+            phoneError.value = 'Veuillez entrer votre numéro de téléphone.';
+            return false;
+        } else if (!phoneRegex.test(phoneTrimmed)) {
+            phoneError.value = 'Veuillez entrer un numéro de téléphone valide au format 514-555-5555.';
+            return false;
+        }
+
+        return true;
+    };
+
+    const validateCity = () => {
+        cityError.value = '';
+
+        const cityTrimmed = form.city.trim();
+
+        if (!cityTrimmed) {
+            cityError.value = 'Veuillez entrer votre ville.';
+            return false;
+        }
+
+        if (cityTrimmed.length < 3 || cityTrimmed.length > 50) {
+            cityError.value = 'La ville doit contenir entre 3 et 50 caractères.';
+            return false;
+        }
+
+        return true;
+    };
+
+
+
+    const formatPostalCode = (postalCode) => {
+        const formattedPostalCode = postalCode.trim().toUpperCase();
+        return formattedPostalCode.substring(0, 3) + " " + formattedPostalCode.substring(3);
+    };
+    const validateEmail = () => {
+        emailError.value = '';
+
+        if (!form.email.trim()) {
+            emailError.value = 'Veuillez entrer votre adresse e-mail.';
+            return false;
+        } else if (!isEmailValid(form.email)) {
+            emailError.value = 'Veuillez entrer une adresse e-mail valide.';
+            return false;
+        }
+        return true;
+    };
+
+    const validateProvince = () => {
+        provinceError.value = '';
+
+        if (!form.provinceId) {
+            provinceError.value = 'Veuillez sélectionner une province.';
+            return false;
+        }
+        return true;
+    };
+
+    const validatePostalCode = () => {
+        postalCodeError.value = '';
+
+        if (!form.postalCode.trim()) {
+            postalCodeError.value = 'Veuillez entrer votre code postal.';
+            return false;
+        } else if (!isPostalCodeValid(form.postalCode)) {
+            postalCodeError.value = 'Veuillez entrer un code postal valide.';
+            return false;
+        }
+        return true;
+    };
+
+    const isEmailValid = (email) => {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    };
+
+    const isPostalCodeValid = (postalCode) => {
+        const postalCodeRegex = /^[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d$/;
+        return postalCodeRegex.test(postalCode);
+    };
+
+    const isFormValid = computed(() => {
+        return !NameError.value &&
+            !descriptionError.value &&
+            !logoError.value &&
+            !addressError.value &&
+            !phoneError.value &&
+            !cityError.value &&
+            !emailError.value &&
+            !provinceError.value &&
+
+            !postalCodeError.value;
+
+    });
+
+    const cancelForm = () => {
+        form.Name = '';
+        form.logo = '';
+        form.description = '';
+        form.contact = '';
+        form.address = '';
+        form.phone = '';
+        form.city = '';
+        form.email = '';
+        form.province = '';
+        form.postalCode = '';
+    };
+
+    const fetchEntreprise = async () => {
+        try {
+            const response = await axios.get(`https://api-4.fly.dev/entreprise/${props.entrepriseId}`);
+            const entreprise = response.data;
+
+            form.Name = entreprise.Name;
+            form.logo = entreprise.logo;
+            form.description = entreprise.description;
+            form.address = entreprise.address;
+            form.phone = entreprise.phone;
+            form.city = entreprise.city;
+            form.email = entreprise.email;
+            form.provinceId = entreprise.province._id;
+            form.postalCode = entreprise.postalCode;
+            form.website = entreprise.website;
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    const submitForm = async () => {
+
+        validateName();
+        validateLogo();
+        validateDescription();
+        validateAddress();
+        validatePhone();
+        validateCity();
+        validateEmail();
+        validateProvince();
+        validatePostalCode();
+
+        if (
+            validateName() &&
+            validateLogo() &&
+            validateDescription() &&
+            validateAddress() &&
+            validatePhone() &&
+            validateCity() &&
+            validateEmail() &&
+            validateProvince() &&
+            validatePostalCode()
+        ) {
+
+
+            const selectedProvince = provinces.value.find(province => province._id === form.provinceId);
+
+            if (!selectedProvince) {
+                throw new Error('Province non trouvée');
+            }
+
+            try {
+                const url = editing.value ? `https://api-4.fly.dev/entreprise/${props.entrepriseId}` :
+                    'https://api-4.fly.dev/entreprise';
+                const method = editing.value ? 'put' : 'post';
+                const response = await axios({
+                    method: method,
+                    url: url,
+                    data: {
+                        Name: form.Name,
+                        logo: form.logo,
+                        description: form.description,
+                        email: form.email,
+                        address: form.address,
+                        phone: form.phone,
+                        city: form.city,
+                        website: form.website,
+                        province: {
+                            _id: form.provinceId,
+                            value: selectedProvince.value
+                        },
+                        postalCode: formatPostalCode(form.postalCode),
+                    }
+                });
+
+                if (!response.data.success) {
+                    throw new Error('Échec de la soumission du formulaire');
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        }
+    };
+    onMounted(() => {
+        if (props.candidateId) {
+            fetchCandidate();
+        }
+    });
+
+    return {
+        form,
+        editing,
+        provinces,
+        submitForm,
+        cancelForm,
+        isFormValid,
+        NameError,
+        logoError,
+        descriptionError,
+        addressError,
+        phoneError,
+        cityError,
+        emailError,
+        provinceError,
+        postalCodeError,
+        validateName,
+        validateLogo,
+        validateDescription,
+        validateAddress,
+        validatePhone,
+        validateCity,
+        validateEmail,
+        validateProvince,
+        validatePostalCode,
+        formatPostalCode,
+
+    };
+    }
+    };
+</script>
+
+<style scoped>
+    .titre_barre {
+        position: relative;
+        padding-left: 10px;
+    }
+
+    .titre_barre::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 0;
+        transform: translateY(-50%);
+        width: 4px;
+        height: 20px;
+        background-color: rgb(1, 26, 56);
+    }
+
+    .titre_barre-modifier {
+        position: relative;
+        padding-left: 10px;
+    }
+
+    .titre_barre-modifier::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 0;
+        transform: translateY(-50%);
+        width: 4px;
+        height: 100px;
+        background-color: rgb(1, 26, 56);
+    }
+
+    .input_barre-modifier {
+        position: relative;
+        padding-left: 10px;
+    }
+
+    .input_barre-modifier::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 0;
+        transform: translateY(-50%);
+        width: 4px;
+        height: 70px;
+        background-color: rgb(115 115 115);
+    }
+
+    .titre_modifer {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .poste {
+        background-color: white;
+    }
+
+    .nom_poste {
+        display: grid;
+        gap: 0.3rem;
+        grid-template-columns: 1fr 4fr;
+        justify-content: space-between;
+    }
+
+    .block_info-perso {
+        background-color: white;
+        padding: 2rem;
+    }
+
+    .block_info-perso-all {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+    }
+
+    @media (max-width: 768px) {
+        .block_info-perso-all {
+            display: flex;
+            flex-direction: column;
+        }
+    }
+</style>
