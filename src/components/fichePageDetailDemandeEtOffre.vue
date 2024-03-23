@@ -1,15 +1,24 @@
 <template>
-    <!-- <div class="ficheDetaillee__conteneur-icônes-mode"> 
-      <i class="ficheDetaillee__icône-supprimer fas fa-trash" @click="toggleModalSuppression"</i>
-      <modalSuppression 
+
+    <div class="ficheDetaillee__conteneur-icônes-mode">
+
+      <i class="ficheDetaillee__icône-consulter fas fa-trash"></i> 
+
+      <RouterLink :to="{ name: {link}, params: { id } }">
+        <i class="ficheDetaillee__icône-editer fas fa-trash"></i>
+      </RouterLink>
+
+      <i class="ficheDetaillee__icône-supprimer fas fa-trash" @click="toggleModalSuppression"></i>
+
+      <!-- <modalSuppression 
       :etatDuModal="etatDuModal"
       :title="title"
       :firstName="firstName"
       :lastName="lastName"
       @confirmationSuppression="confirmationSuppression"
       @suppressionAnnulee="suppressionAnnulee"
-      />
-    </div> -->
+      /> -->
+    </div>
 
     <div class="ficheDetaillee__card"  v-if="isFicheDetailDemandeDeStage || isFicheDetailDemandeOffre">
       <div class="ficheDetaillee__conteneur-informations">
@@ -179,7 +188,9 @@ const props = defineProps({
   isFicheDetailDemandeOffre: Boolean,
   ficheDemandeStage: Object,
   ficheDemandeOffre: Object,
-  ficheDemandeStageEtOffre: Object
+  ficheDemandeStageEtOffre: Object,
+  link: String,
+  id: String
   // etatDuModal: Boolean
 });
 

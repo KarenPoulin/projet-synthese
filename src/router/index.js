@@ -10,6 +10,7 @@ import formulaireCandidat from '../views/formulaireCandidat.vue'
 import FormulaireDO from '../views/FormulaireDO.vue'
 import Erreur from '../views/Erreur.vue'
 import FicheDetailCandidatEntreprise from '@/views/FicheDetailCandidatEntreprise.vue'
+import PageDetailDemandeEtOffre from '@/views/PageDetailDemandeEtOffre.vue'
 
 
 const router = createRouter({
@@ -63,6 +64,16 @@ const router = createRouter({
           path:'formulaireoffre',
           name:'formulaireoffre',
           component: FormulaireDO
+        },
+        {
+          path:'pagedetaildemandedestage/:id',
+          name:'pagedetaildemandedestage',
+          component: PageDetailDemandeEtOffre
+        },
+        {
+          path:'pagedetailoffredestage/:id',
+          name:'pagedetailoffredestage',
+          component: PageDetailDemandeEtOffre
         },
         {
           path:'fichedetailcandidat/:id',
