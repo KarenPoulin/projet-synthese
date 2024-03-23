@@ -16,13 +16,13 @@
 import { defineProps, defineEmits } from 'vue';
 
 const props = defineProps({
-  etatDuModal: Boolean,
+  modalSuppressionVisible: Boolean,
   title: String,
   firstName: String,
   lastName: String
 });
 
-const emits = defineEmits(['suppressionAnnulee', 'confirmationSuppression', 'modalSuppressionOuvert']);
+const emits = defineEmits(['suppressionAnnulee', 'confirmationSuppression']);
 
 const annulerSuppression = () => {
   modalFermetureIcone();

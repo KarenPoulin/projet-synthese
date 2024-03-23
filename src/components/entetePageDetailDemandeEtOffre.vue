@@ -5,7 +5,7 @@
       <div class="ficheDetaillee__bloc-style" :class="{'colorBgBlue': isEnteteDemandeDeStage}"></div>
       <div class="ficheDetaillee__titre">
         <span class="ficheDetaillee__sous-titre">Demande de stage</span>
-        <h1 class="ficheDetaillee__titre">{{ enteteDemandeStage }}</h1>
+        <h1 class="ficheDetaillee__titre">{{ enteteDemandeStage.title }}</h1>
       </div>
     </div>
 
@@ -13,7 +13,7 @@
       <div class="ficheDetaillee__titre">
         <div class="ficheDetaillee__bloc-style" :class="{'colorBgRed': isEnteteDemandeOffre}"></div>
         <span class="ficheDetaillee__sous-titre">Offre de stage</span>
-        <h1 class="ficheDetaillee__titre">{{ enteteDemandeOffre }}</h1>
+        <h1 class="ficheDetaillee__titre">{{ enteteDemandeOffre.title }}</h1>
       </div>
     </div>
   </div>

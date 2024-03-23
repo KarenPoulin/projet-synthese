@@ -6,22 +6,41 @@
     </button>
   </div>
 
-  <RouterLink to="/app/formulaireDo"
+  <div class="mt-4 px-10 py-16 bg-white rounded-lg">
+    <table v-if="allDemandeDeStagesResults" class="w-full mb-10">
+        <EnteteTableau :isDemandes="true" :isTableauDeBord="false" />
+        <template v-for="demandeDeStage in allDemandeDeStagesResults" :key="demandeDeStage._id">
+            <ElementTableau :element="demandeDeStage" :isDemandes="true" :isTableauDeBord="false" />
+        </template>
+    </table>
+  </div>
+
+<!--   <RouterLink to="/app/formulaireDo"
     class="bg-fuchsia-800 hover:bg-fuchsia-900 text-white text-sm font-bold p-4 rounded-xl mb-16">
     <i class="ficheDetaillee__icône-consulter fa fa-check"></i>
   </RouterLink>
   <RouterLink to="/app/formulaireDo"
     class="bg-fuchsia-800 hover:bg-fuchsia-900 text-white text-sm font-bold p-4 rounded-xl mb-16">
     <i class="ficheDetaillee__icône-editer fas fa-edit"></i>
-  </RouterLink>
+  </RouterLink> -->
 </template>
 
 <script setup>
+import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router'
+import { useAllDemandeDeStages } from '@/composables/demandeDeStage';
+import ElementTableau from '../components/elementTableau.vue'
+import EnteteTableau from '../components/enteteTableau.vue'
 
 // Fonction pour émettre les routes dynamiques vers le formulaireDO pour une demande
 const router = useRouter()
 const goToFormDO = type => {
   router.push({ name: 'formulairedo', params: { type } })
 }
+
+const { allDemandeDeStagesResults, getAllDemandeDeStages } = useAllDemandeDeStages();
+
+onMounted(async () => {
+  await getAllDemandeDeStages();
+})
 </script>

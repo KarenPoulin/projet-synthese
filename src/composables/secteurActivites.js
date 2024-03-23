@@ -1,4 +1,4 @@
-import { reactive } from "vue";
+import { reactive, ref } from "vue";
 import axios from 'axios';
 
 const baseUrl = "https://api-4.fly.dev/";
@@ -19,6 +19,23 @@ export function useActivitySectors() {
     return {
         allActivitySectorsResults,
         getAllActivitySectors
+    }
+}
+
+
+// https://api-4.fly.dev/activity-sectors/65f8df6040965a2e23d73271
+export function useActivitySector() {
+    const activitySectorResult = ref(null);
+
+    const getActivitySectorById = (id) => {
+        return axios.get(`${baseUrl}activity-sectors/${id}`)
+        .then((res) => activitySectorResult.value = res.data)
+        .catch((error) => console.log(error))
+    }
+
+    return {
+        activitySectorResult,
+        getActivitySectorById
     }
 }
 
