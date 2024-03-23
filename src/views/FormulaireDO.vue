@@ -1,7 +1,7 @@
 <template>
   <div class="bg-neutral-100 w-full mx-auto">
     <!-------------------- Entête -------------------->
-     <h1 class="text-4xl font-bold text-neutral-500 m-10 p-5">{{ isRequest ? 'Ajouter une demande de stage' : 'Offre de stage' }}</h1>
+    <h1 class="text-4xl font-bold text-neutral-500 m-10 p-5">{{ isRequest ? 'Ajouter une demande de stage' : 'Offre de stage' }}</h1>
 
 
 
@@ -53,13 +53,13 @@
 
       <div class="bg-white p-10 mt-10">
         <div v-if="isRequest" class="m-2">
-          <label for="nomComplet" class="text-sm font-bold text-neutral-500  block">Nom et prénom</label>
-          <input id="title" v-model="formFieldsLinkedWithApi.nomComplet"
-            @input="validateInput(formFieldsLinkedWithApi.nomComplet, 'nomComplet')" type="text"
+          <label for="fullName" class="text-sm font-bold text-neutral-500  block">Nom et prénom</label>
+          <input id="title" v-model="formFieldsLinkedWithApi.fullName"
+            @input="validateInput(formFieldsLinkedWithApi.fullName, 'fullName')" type="text"
             class="border border-gray-300 w-full rounded focus:bg-white"
             :class="{ 'hover:bg-teal-100': isRequest, 'hover:bg-red-100': !isRequest }">
-          <span v-if="fieldsToValidate.nomComplet !== ''" class="p-2 text-xs font-semibold text-red-700">{{
-              fieldsToValidate.nomComplet
+          <span v-if="fieldsToValidate.fullName !== ''" class="p-2 text-xs font-semibold text-red-700">{{
+              fieldsToValidate.fullName
             }}</span>
         </div>
 
@@ -317,21 +317,13 @@
 </template>
 
 <script setup>
-import { reactive, ref, onMounted, watch} from 'vue';
-import { useRouter } from 'vue-router';
+import { reactive, ref, onMounted, watch } from 'vue';
+import { defineProps } from 'vue';
 
-// Function pour créer les routes vers le formulaireDO à partir de la navigation et des listes demandes et offres
-onMounted(() => {
-  watch(() => router.currentRoute.value.path, (newPath) => {
-    if(newPath.includes('formulairedemande')){
-      isRequest.value = true;
-    } else if(newPath.includes('formulaireoffre')){
-      isRequest.value = false;
-    }
-  });
-})
 
-const router = useRouter();
+
+// Props pour utiliser dans les routes vers le formulaire selon si c'est une demande ou un offre
+const props = defineProps(['isRequest'])
 
 
 
@@ -339,16 +331,13 @@ const router = useRouter();
 let isAdding = ref(true);
 
 
-// Variable pour déterminer si c'est une demande ou une offre 
-let isRequest = ref(true);
-
 
 // Création des variables requises pour la validation du formulaire
 const formFieldsLinkedWithApi = reactive({
   title: '',
   enterprise: '',
   taskDescription: '',
-  nomComplet: '',
+  fullName: '',
   description: '',
   programme: '',
   requiredSkills: '',
@@ -362,7 +351,8 @@ const formFieldsLinkedWithApi = reactive({
   weeklyWorkHours: '',
   endDate: '',
   paid: '',
-  additionalInformation: ''
+  additionalInformation: '',
+  isActive: 'true'
 });
 
 const errorMessage = reactive({
@@ -383,7 +373,7 @@ const fieldsToValidate = reactive({
   title: '',
   enterprise: '',
   taskDescription: '',
-  nomComplet: '',
+  fullName: '',
   description: '',
   programme: '',
   requiredSkills: '',
@@ -497,7 +487,7 @@ function validatePaid(value) {
 const submitForm = (e) => {
   e.preventDefault();
   fieldsToValidate.title = validateInput(formFieldsLinkedWithApi.title, 'title');
-  fieldsToValidate.nomComplet = validateInput(formFieldsLinkedWithApi.nomComplet, 'nomComplet');
+  fieldsToValidate.fullName = validateInput(formFieldsLinkedWithApi.fullName, 'fullName');
   fieldsToValidate.description = validateInput(formFieldsLinkedWithApi.description, 'description');
   fieldsToValidate.programme = validateInput(formFieldsLinkedWithApi.programme, 'programme');
   fieldsToValidate.etablissement = validateInput(formFieldsLinkedWithApi.etablissement, 'etablissement');
