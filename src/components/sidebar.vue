@@ -6,7 +6,7 @@
         </div>
 
 
-        <ul class="flex flex-col justify-center">
+        <ul class="flex flex-col">
             <!--Bouton 1-->
             <li class="pt-2">
                 <router-link :to="{ name: 'tableaudebord' }"

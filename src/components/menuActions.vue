@@ -17,47 +17,64 @@
 
       <nav class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-3 mb-4 md:mb-0">
         <!-- Bouton "Ajouter une offre de stage" -->
-        <button @click="goToFormDO('offer')"
-          class="ripple inline-block rounded border border-red-800 bg-white px-2 py-1 text-center text-xs font-medium leading-6 text-red-800 shadow transition hover:bg-red-50 hover:shadow-lg focus:outline-none">
-          <svg class="mr-1 inline-block h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6">
-            </path>
-          </svg>
-          Ajouter une offre de stage
-        </button>
+<button @click="goToFormDO('offer')"
+  :class="[
+    'ripple inline-block rounded px-2 py-1 text-center text-xs font-medium leading-6 shadow transition hover:shadow-lg focus:outline-none border',
+    activeButton === 'offer' ? 'bg-red-50 text-red-800 border-red-800' : 'bg-white text-red-800 border-red-800 hover:bg-red-50'
+  ]">
+  <svg class="mr-1 inline-block h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+  </svg>
+  Ajouter une offre de stage
+</button>
 
 
         <!-- Bouton "Ajouter une demande de stage" -->
-        <button @click="goToFormDO('request')"
-          class="ripple inline-block rounded border border-yellow-600 bg-white px-2 py-1 text-center text-xs font-medium leading-6 text-yellow-600 shadow transition hover:bg-yellow-50 hover:shadow-lg focus:outline-none">
-          <svg class="mr-1 inline-block h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6">
-            </path>
-          </svg>
-          Ajouter une demande de stage
-        </button>
+<button @click="goToFormDO('request')"
+  :class="[
+    'ripple inline-block rounded px-2 py-1 text-center text-xs font-medium leading-6 shadow transition focus:outline-none border border-yellow-600',
+    activeButton === 'request' ? 'bg-yellow-50 text-yellow-600 hover:bg-yellow-50' : 'bg-white text-yellow-600 hover:bg-yellow-50'
+  ]">
+  <svg class="mr-1 inline-block h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6">
+    </path>
+  </svg>
+  Ajouter une demande de stage
+</button>
 
 
         <!-- Bouton "Ajouter une entreprise" -->
-        <button
-          class="ripple inline-block rounded border border-blue-400 bg-white px-2 py-1 text-center text-xs font-medium leading-6 text-blue-400 shadow transition hover:bg-blue-50 hover:shadow-lg focus:outline-none">
-          <svg class="mr-1 inline-block h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-          </svg>
-          Ajouter une entreprise
-        </button>
+<RouterLink to="/app/formulaireentreprise" class="inline-block">
+  <button
+    @click="setActiveButton('company')"
+    :class="[
+      'ripple inline-block rounded px-2 py-1 text-center text-xs font-medium leading-6 shadow transition focus:outline-none border border-blue-400',
+      activeButton === 'company' ? 'bg-blue-50 text-blue-400 hover:bg-blue-50' : 'bg-white text-blue-400 hover:bg-blue-50'
+    ]"
+  >
+    <svg class="mr-1 inline-block h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+    </svg>
+    Ajouter une entreprise
+  </button>
+</RouterLink>
+
         <!-- Bouton "Ajouter un candidat" -->
 
-        <RouterLink to="/app/formulairecandidat">
-          <button
-            class="ripple inline-block rounded border border-fuchsia-800 bg-white px-2 py-1 text-center text-xs font-medium leading-6 text-fuchsia-800 shadow transition hover:bg-fuchsia-50 hover:shadow-lg focus:outline-none">
-            <svg class="mr-1 inline-block h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6">
-              </path>
-            </svg>
-            Ajouter un candidat
-          </button>
-        </RouterLink>
+<RouterLink to="/app/formulairecandidat" class="inline-block">
+  <button
+    @click="setActiveButton('candidate')" 
+    :class="[
+      'ripple inline-block rounded px-2 py-1 text-center text-xs font-medium leading-6 shadow transition focus:outline-none border border-fuchsia-800',
+      activeButton === 'candidate' ? 'bg-fuchsia-100 text-fuchsia-800 hover:bg-fuchsia-100' : 'bg-white text-fuchsia-800 hover:bg-fuchsia-50'
+    ]"
+  >
+    <svg class="mr-1 inline-block h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+    </svg>
+    Ajouter un candidat
+  </button>
+</RouterLink>
       </nav>
 
 
@@ -78,13 +95,23 @@
 import { RouterLink } from 'vue-router'
 import { useRouter } from 'vue-router'
 import { useAdminStore } from '@/stores/admin';
+import { ref } from 'vue';
 
 const adminStore = useAdminStore();
 
 // Fonction pour émettre les routes dynamiques vers le formulaireDO selon si c'est une offre ou un demande
 const router = useRouter();
 const goToFormDO = type => {
+  setActiveButton(type);
   router.push({ name: 'formulairedo', params: { type } })
 }
+
+//Ajout dun etat local pour un bouton actif
+const activeButton = ref('');
+
+const setActiveButton = (button) => {
+  activeButton.value = button;
+}
+
 
 </script>
