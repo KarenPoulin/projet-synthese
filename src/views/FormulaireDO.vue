@@ -1,7 +1,7 @@
 <template>
   <div class="bg-neutral-100 w-full mx-auto">
     <!-------------------- Entête -------------------->
-    <h1 class="text-4xl font-bold text-neutral-500 m-10 p-5">{{ isRequest ? 'Ajouter une demande de stage' : 'Offre de stage' }}</h1>
+    <!-- <h1 class="text-4xl font-bold text-neutral-500 m-10 p-5">{{ isRequest ? 'Ajouter une demande de stage' : 'Offre de stage' }}</h1> -->
 
 
 
@@ -120,17 +120,10 @@
               @change="validateSelect(formFieldsLinkedWithApi.activitySector, 'activitySector')"
               class="border border-gray-300 p-2 w-full rounded mt-1 ml-3 focus:bg-white"
               :class="{ 'hover:bg-teal-100': isRequest, 'hover:bg-red-100': !isRequest }">
-              <option value="option1">Technologie de l'information</option>
-              <option value="option2">Santé</option>
-              <option value="option3">Finance</option>
-              <option value="option4">Éducation</option>
-              <option value="option5">Transport et logistique</option>
-              <option value="option6">Immoblier</option>
-              <option value="option7">Tourisme</option>
-              <option value="option8">Manufacture</option>
-              <option value="option9">Énergie</option>
-              <option value="option10">Commerce au détail</option>
+              <option v-for="sector in allActivitySectorsResults" :key="sector._id" :value="sector.id">{{ sector.value }}</option>
             </select>
+
+
             <span v-if="fieldsToValidate.activitySector !== ''" class="p-2 text-xs font-semibold text-red-700">{{
               fieldsToValidate.activitySector }}</span>
           </div>
@@ -203,8 +196,7 @@
               @change="validateSelect(formFieldsLinkedWithApi.internshipType, 'internshipType')" type="text"
               class="border border-gray-300 p-2 w-full rounded mt-1 ml-3   focus:bg-white"
               :class="{ 'hover:bg-teal-100': isRequest, 'hover:bg-red-100': !isRequest }">
-              <option value="option1">Temps plein</option>
-              <option value="option2">Temps partiel</option>
+              <option v-for="type in allIntershipTypesResults" :key="type._id" :value="type.id">{{ type.value }}</option>
             </select>
             <span v-if="fieldsToValidate.internshipType !== ''" class="p-2 text-xs font-semibold text-red-700">{{
               fieldsToValidate.internshipType }}</span>
@@ -317,19 +309,34 @@
 </template>
 
 <script setup>
-import { reactive, ref, onMounted, watch } from 'vue';
+import { reactive, ref, onMounted } from 'vue';
 import { defineProps } from 'vue';
-
+import {  useActivitySectors } from '@/composables/secteurActivites';
+import {  useIntershipTypes } from '@/composables/typeStage';
 
 
 // Props pour utiliser dans les routes vers le formulaire selon si c'est une demande ou un offre
 const props = defineProps(['isRequest'])
 
 
-
 //Variable pour déterminer si c'est un ajout ou une modification 
 let isAdding = ref(true);
 
+//Fonction pour afficher les secteurs d'activités venant de l'api
+const {allActivitySectorsResults, getAllActivitySectors} = useActivitySectors();
+
+onMounted(async () => {
+  await getAllActivitySectors();
+  console.log(allActivitySectorsResults);
+})
+
+//Fonction pour afficher les types de stage venant de l'api
+const {allIntershipTypesResults, getAllIntershipTypes} = useIntershipTypes();
+
+onMounted(async () => {
+  await getAllIntershipTypes();
+  console.log(allIntershipTypesResults);
+})
 
 
 // Création des variables requises pour la validation du formulaire
@@ -339,9 +346,10 @@ const formFieldsLinkedWithApi = reactive({
   taskDescription: '',
   fullName: '',
   description: '',
-  programme: '',
-  requiredSkills: '',
-  etablissement: '',
+  programme: 'Technique de développement web',
+  requiredSkills: ['vue.js', 'angular', 'react'],
+  skills: ['vue.js', 'angular', 'react'],
+  etablissement: 'Cégep',
   activitySector: '',
   city: '',
   region: '',
@@ -352,7 +360,7 @@ const formFieldsLinkedWithApi = reactive({
   endDate: '',
   paid: '',
   additionalInformation: '',
-  isActive: 'true'
+
 });
 
 const errorMessage = reactive({
@@ -527,6 +535,7 @@ const resetForm = (e) => {
     fieldsToValidate[key] = '';
   }
 };
+
 
 
 </script>
