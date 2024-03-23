@@ -14,7 +14,6 @@
     </table>
   </div>
 
-<!--   <TableauDemandesEtOffres :isDemandes="false" :isTableauDeBord="false"/> -->
 
 
 </template>
@@ -25,7 +24,6 @@ import { useRouter } from 'vue-router'
 import { useAllOffreDeStages } from '@/composables/offreDeStage';
 import ElementTableau from '../components/elementTableau.vue'
 import EnteteTableau from '../components/enteteTableau.vue'
-import TableauDemandesEtOffres from '../components/tableauDemandesEtOffres.vue'
 
 // Fonction pour émettre les routes dynamiques vers le formulaireDO pour une offre
 const router = useRouter()

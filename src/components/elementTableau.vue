@@ -41,8 +41,11 @@
         <td v-if="!isDemandes && isTableauDeBord">
             <p class="my-5 text-sm">Trois-Rivières</p>
         </td>
-        <td v-if="!isTableauDeBord && activitySectorResult">
-            <p class="my-5 text-sm">{{isDemandes? "Nouvelles technologies" : activitySectorResult.value}}</p>
+        <td v-if="!isTableauDeBord && !isDemandes && activitySectorResult">
+            <p class="my-5 text-sm">{{activitySectorResult.value}}</p>
+        </td>
+        <td v-if="!isTableauDeBord && isDemandes">
+            <p class="my-5 text-sm">Nouvelles technologies</p>
         </td>
         <td v-if="!isTableauDeBord">
             <p class="my-5 text-sm">Mauricie</p>
@@ -99,10 +102,9 @@
 
     onMounted(async () => {
         console.log(props.element);
-        if (props.element.enterprise.activitySector) {
+        if (props.element.enterprise) {
             activitySectorId = props.element.enterprise.activitySector;
             await getActivitySectorById(activitySectorId);
-            console.log(activitySectorResult.value);
         }
         if (props.element.isActive) {
             isActive = true;
