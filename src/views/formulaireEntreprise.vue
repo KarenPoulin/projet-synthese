@@ -7,19 +7,19 @@
                 <div class="titre_barre-modifier">
                     <div class="titre_modifer">
                         <p class="text-neutral-500">Entreprise</p>
-                        <h1 class="text-neutral-500">{{ form.Name }}</h1>
-                        <p class="poste text-neutral-500">{{ form.logo }}</p>
+                        <h1 class="text-neutral-500">{{ form.name }}</h1>
+                        <p class="poste text-neutral-500">{{ form.image }}</p>
                     </div>
                 </div>
             </div>
         </div>
         <form @submit.prevent="submitForm">
             <div class="flex justify-end my-10">
-                <RouterLink to="/app/Entreprises">
+                <router-link to="/app/Entreprises">
                     <button type="button"
                         class="btn-secondary mr-2 text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
                         @click="cancelForm">Annuler</button>
-                </RouterLink>
+                </router-link>
                 <router-link to="/app/Entreprises">
                     <button type="submit"
                         class="btn-primary focus:outline-none text-white bg-fuchsia-800  hover:bg-fuchsia-900 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 inline-flex"
@@ -36,17 +36,17 @@
             </div>
 
             <div class="nom_poste mb-4">
-                <label for="Name" class="block mb-1  text-neutral-500 font-bold">Nom </label>
-                <input type="text" id="Name" v-model="form.Name" @input="validateName"
+                <label for="name" class="block mb-1  text-neutral-500 font-bold">Nom </label>
+                <input type="text" id="name" v-model="form.name" @input="validateName"
                     class="w-full border-gray-300 rounded-md p-2">
-                <span class="text-red-500">{{ NameError }}</span>
+                <span class="text-red-500">{{ nameError }}</span>
             </div>
             <div class="nom_poste mb-4">
-                <label for="logo" class="block mb-1 text-neutral-500 font-bold">Logo</label>
+                <label for="image" class="block mb-1 text-neutral-500 font-bold">Logo</label>
                 <div class="flex items-center">
 
-                    <input type="text " id="logo" @input="validateLogo" class="w-full border-gray-300 rounded-md p-2">
-                    <label for="logo"
+                    <input type="text " id="image" v-model="form.image" @input="validateLogo" class="w-full border-gray-300 rounded-md p-2">
+                    <label for="image"
                         class="cursor-pointer bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center">
                         Parcourir
                     </label>
@@ -65,10 +65,10 @@
                     <span class="text-red-500">{{ descriptionError }}</span>
                 </div>
                 <div class="mb-4 input_barre-modifier">
-                    <label for="contatct" class="block mb-1 text-neutral-500 font-bold">Personne Contact</label>
-                    <input type="text" id="contact" v-model="form.contact" @input=""
+                    <label for="contact" class="block mb-1 text-neutral-500 font-bold">Personne Contact</label>
+                    <input type="text" id="contact" v-model="form.contact" @input="validateName"
                         class="w-full border-gray-300 rounded-md p-2">
-                    <span v-if="!isAddressValid" class="text-red-500">{{ addressError }}</span>
+                    <span v-if="!nameError" class="text-red-500">{{ nameError }}</span>
                 </div>
                 <h3 class="  my-8 text-teal-500  font-bold">Information de contact</h3>
                 <div class="block_info-perso-all">
@@ -77,13 +77,13 @@
                             <label for="address" class="block mb-1 text-neutral-500 font-bold">Adresse</label>
                             <input type="text" id="address" v-model="form.address" @input="validateAddress"
                                 class="w-full border-gray-300 rounded-md p-2">
-                            <span v-if="!isAddressValid" class="text-red-500">{{ addressError }}</span>
+                            <span v-if="!addressError" class="text-red-500">{{ addressError }}</span>
                         </div>
                         <div class="mb-4 input_barre-modifier">
                             <label for="city" class="block mb-1  text-neutral-500 font-bold">Ville</label>
                             <input type="text" id="city" v-model="form.city" @input="validateCity"
                                 class="w-full border-gray-300 rounded-md p-2">
-                            <span v-if="!isCityValid" class="text-red-500">{{ cityError }}</span>
+                            <span v-if="!cityError" class="text-red-500">{{ cityError }}</span>
                         </div>
                         <div class="mb-4 input_barre-modifier">
                             <label for="province" class="block mb-1  text-neutral-500 font-bold">Province</label>
@@ -94,13 +94,13 @@
                                     {{ province.value }}
                                 </option>
                             </select>
-                            <span v-if="!isProvinceValid" class="text-red-500">{{ provinceError }}</span>
+                            <span v-if="!provinceError" class="text-red-500">{{ provinceError }}</span>
                         </div>
                         <div class="mb-4 input_barre-modifier">
                             <label for="postalCode" class="block mb-1  text-neutral-500 font-bold">Code postal</label>
                             <input type="text" id="postalCode" v-model="form.postalCode" @input="validatePostalCode"
                                 class="w-full border-gray-300 rounded-md p-2">
-                            <span v-if="!isPostalCodeValid" class="text-red-500">{{postalCodeError }}</span>
+                            <span v-if="!postalCodeError" class="text-red-500">{{postalCodeError }}</span>
                         </div>
                     </div>
                     <div class="block_info-perso-contact">
@@ -108,13 +108,13 @@
                             <label for="phone" class="block mb-1  text-neutral-500 font-bold">Téléphone</label>
                             <input type="text" id="phone" v-model="form.phone" @input="validatePhone"
                                 class="w-full border-gray-300 rounded-md p-2">
-                            <span v-if="!isPhoneValid" class="text-red-500">{{ phoneError }}</span>
+                            <span v-if="!phoneError" class="text-red-500">{{ phoneError }}</span>
                         </div>
                         <div class="mb-4 input_barre-modifier">
                             <label for="email" class="block mb-1  text-neutral-500 font-bold">Courriel</label>
                             <input type="email" id="email" v-model="form.email" @input="validateEmail"
                                 class="w-full border-gray-300 rounded-md p-2">
-                            <span v-if="!isEmailValid" class="text-red-500">{{ emailError }}</span>
+                            <span v-if="!emailError" class="text-red-500">{{ emailError }}</span>
                         </div>
                     </div>
                 </div>
@@ -126,18 +126,19 @@
                         @click="cancelForm">Annuler</button>
                 </router-link>
                 <router-link to="/app/Entreprises">
-                    <button type="submit"
-                        class="btn-primary focus:outline-none text-white bg-fuchsia-800  hover:bg-fuchsia-900 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 inline-flex"
-                        :disabled="!isFormValid">
-                        <svg class="w-6 h-6 text-gray-100 dark:text-white" aria-hidden="true"
-                            xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
-                            viewBox="0 0 24 24">
-                            <path fill-rule="evenodd"
-                                d="M8 10V7a4 4 0 1 1 8 0v3h1a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h1Zm2-3a2 2 0 1 1 4 0v3h-4V7Zm2 6a1 1 0 0 1 1 1v3a1 1 0 1 1-2 0v-3a1 1 0 0 1 1-1Z"
-                                clip-rule="evenodd" />
-                        </svg>
-                        {{ editing ? 'Mettre à jour' : 'Sauvegarder' }}</button>
-                </router-link>
+
+                <button type="submit"
+                    class="btn-primary focus:outline-none text-white bg-fuchsia-800  hover:bg-fuchsia-900 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 inline-flex"
+                    :disabled="!isFormValid">
+                    <svg class="w-6 h-6 text-gray-100 dark:text-white" aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                        viewBox="0 0 24 24">
+                        <path fill-rule="evenodd"
+                            d="M8 10V7a4 4 0 1 1 8 0v3h1a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h1Zm2-3a2 2 0 1 1 4 0v3h-4V7Zm2 6a1 1 0 0 1 1 1v3a1 1 0 1 1-2 0v-3a1 1 0 0 1 1-1Z"
+                            clip-rule="evenodd" />
+                    </svg>
+                    {{ editing ? 'Mettre à jour' : 'Sauvegarder' }}</button></router-link>
+
             </div>
         </form>
     </div>
@@ -169,8 +170,8 @@
         },
         setup(props) {
             const form = reactive({
-                Name: '',
-                logo: '',
+                name: '',
+                image: '',
                 description: '',
                 contatct: '',
                 address: '',
@@ -181,8 +182,8 @@
                 provinceValue: '',
                 postalCode: '',
                 activitySector: {
-                    "_id": "65f8df6040965a2e23d73271",
-                    "value": "Technologies"
+                    _id: '65f8df6040965a2e23d73271',
+                    value: 'Technologies',
                 },
                 website: 'test.com',
 
@@ -203,7 +204,7 @@
 
             const editing = computed(() => !!props.entrepriseId);
 
-            const NameError = ref('');
+            const nameError = ref('');
             const logoError = ref('');
             const descriptionError = ref('');
             const addressError = ref('');
@@ -214,14 +215,14 @@
             const postalCodeError = ref('');
 
             const validateName = () => {
-                NameError.value = '';
+                nameError.value = '';
 
-                const NameTrimmed = form.Name.trim();
+                const nameTrimmed = form.name.trim();
 
 
 
-                if (NameTrimmed.length < 3 || NameTrimmed.length > 50) {
-                    NameError.value = 'Le nom complet doit contenir entre 3 et 50 caractères.';
+                if (nameTrimmed.length < 3 || nameTrimmed.length > 50) {
+                    nameError.value = 'Le nom complet doit contenir entre 3 et 50 caractères.';
                     return false;
                 }
 
@@ -229,17 +230,17 @@
             };
 
             const validateLogo = () => {
-               /**  logoError.value = '';
+                /**  logoError.value = '';
 
-                const logoTrimmed = form.logo.trim();
+                 const logoTrimmed = form.logo.trim();
 
-                // Expression régulière pour valider une URL
-                const urlRegex = /^(ftp|http|https):\/\/[^ "]+$/;
+                 // Expression régulière pour valider une URL
+                 const urlRegex = /^(ftp|http|https):\/\/[^ "]+$/;
 
-                if (!urlRegex.test(logoTrimmed)) {
-                    logoError.value = 'Veuillez entrer une URL valide pour le logo.';
-                    return false;
-                }*/
+                 if (!urlRegex.test(logoTrimmed)) {
+                     logoError.value = 'Veuillez entrer une URL valide pour le logo.';
+                     return false;
+                 }*/
 
                 return true;
             };
@@ -339,7 +340,7 @@
             const validateProvince = () => {
                 provinceError.value = '';
 
-                if (!form.provinceId) {
+                if (!form.provinceId.length) {
                     provinceError.value = 'Veuillez sélectionner une province.';
                     return false;
                 }
@@ -370,7 +371,7 @@
             };
 
             const isFormValid = computed(() => {
-                return !NameError.value &&
+                return !nameError.value &&
                     !descriptionError.value &&
                     !logoError.value &&
                     !addressError.value &&
@@ -384,8 +385,8 @@
             });
 
             const cancelForm = () => {
-                form.Name = '';
-                form.logo = '';
+                form.name = '';
+                form.image = '';
                 form.description = '';
                 form.contact = '';
                 form.address = '';
@@ -401,8 +402,8 @@
                     const response = await axios.get(`https://api-4.fly.dev/enterprises/${props.entrepriseId}`);
                     const entreprise = response.data;
 
-                    form.Name = entreprise.Name;
-                    form.logo = entreprise.logo;
+                    form.name = entreprise.name;
+                    form.image = entreprise.image;
                     form.description = entreprise.description;
                     form.address = entreprise.address;
                     form.phone = entreprise.phone;
@@ -430,15 +431,15 @@
                 validatePostalCode();
 
                 if (
-                    validateName() &&
-                    validateLogo() &&
-                    validateDescription() &&
-                    validateAddress() &&
-                    validatePhone() &&
-                    validateCity() &&
-                    validateEmail() &&
-                    validateProvince() &&
-                    validatePostalCode()
+                    !nameError.value &&
+                    !descriptionError.value &&
+                    !logoError.value &&
+                    !addressError.value &&
+                    !phoneError.value &&
+                    !cityError.value &&
+                    !emailError.value &&
+                    !provinceError.value &&
+                    !postalCodeError.value
                 ) {
 
 
@@ -449,6 +450,17 @@
                     }
 
                     try {
+                        let activitySector = null
+                        const reponse = await axios.get('https://api-4.fly.dev/activity-sectors');
+                        const activitySectors = reponse.data;
+                        activitySectors.forEach((activity) => {
+                            if (activity.value === form.activitySector.value) {
+                                activitySector = activity;
+                            }
+                        });
+                        if (!activitySector) {
+                            throw new Error('Secteur d\'activité non trouvé');
+                        }
                         const url = editing.value ? `https://api-4.fly.dev/enterprises/${props.entrepriseId}` :
                             'https://api-4.fly.dev/enterprises';
                         const method = editing.value ? 'put' : 'post';
@@ -456,15 +468,18 @@
                             method: method,
                             url: url,
                             data: {
-                                Name: form.Name,
-                                image: form.logo,
+                                name: form.name,
+                                image: form.image,
                                 description: form.description,
                                 email: form.email,
                                 address: form.address,
                                 phone: form.phone,
                                 city: form.city,
                                 website: form.website,
-                                activitySector: form.activitySector,
+                                activitySector: {
+                                    _id: activitySector._id,
+                                    value: form.activitySector.value
+                                },
                                 province: {
                                     _id: form.provinceId,
                                     value: selectedProvince.value
@@ -473,7 +488,7 @@
                             }
                         });
 
-                        if (!response.data.success) {
+                        if (!response.data._id) {
                             throw new Error('Échec de la soumission du formulaire');
                         }
                     } catch (error) {
@@ -495,7 +510,7 @@
                 submitForm,
                 cancelForm,
                 isFormValid,
-                NameError,
+                nameError,
                 logoError,
                 descriptionError,
                 addressError,

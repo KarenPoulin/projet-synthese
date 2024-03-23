@@ -62,13 +62,13 @@
               <label for="address" class="block mb-1 text-neutral-500 font-bold">Adresse</label>
               <input type="text" id="address" v-model="form.address" @input="validateAddress"
                 class="w-full border-gray-300 rounded-md p-2">
-              <span v-if="!isAddressValid" class="text-red-500">{{ addressError }}</span>
+              <span v-if="!addressError" class="text-red-500">{{ addressError }}</span>
             </div>
             <div class="mb-4 input_barre-modifier">
               <label for="city" class="block mb-1  text-neutral-500 font-bold">Ville</label>
               <input type="text" id="city" v-model="form.city" @input="validateCity"
                 class="w-full border-gray-300 rounded-md p-2">
-              <span v-if="!isCityValid" class="text-red-500">{{ cityError }}</span>
+              <span v-if="!cityError" class="text-red-500">{{ cityError }}</span>
             </div>
             <div class="mb-4 input_barre-modifier">
               <label for="province" class="block mb-1  text-neutral-500 font-bold">Province</label>
@@ -78,13 +78,13 @@
                 <option v-for="province in provinces" :value="province._id" :key="province._id">{{ province.value }}
                 </option>
               </select>
-              <span v-if="!isProvinceValid" class="text-red-500">{{ provinceError }}</span>
+              <span v-if="!phoneError" class="text-red-500">{{ provinceError }}</span>
             </div>
             <div class="mb-4 input_barre-modifier">
               <label for="postalCode" class="block mb-1  text-neutral-500 font-bold">Code postal</label>
               <input type="text" id="postalCode" v-model="form.postalCode" @input="validatePostalCode"
                 class="w-full border-gray-300 rounded-md p-2">
-              <span v-if="!isPostalCodeValid" class="text-red-500">{{ postalCodeError }}</span>
+              <span v-if="!postalCodeError" class="text-red-500">{{ postalCodeError }}</span>
             </div>
           </div>
           <div class="block_info-perso-contact">
@@ -92,13 +92,13 @@
               <label for="phone" class="block mb-1  text-neutral-500 font-bold">Téléphone</label>
               <input type="text" id="phone" v-model="form.phone" @input="validatePhone"
                 class="w-full border-gray-300 rounded-md p-2">
-              <span v-if="!isPhoneValid" class="text-red-500">{{ phoneError }}</span>
+              <span v-if="!phoneError" class="text-red-500">{{ phoneError }}</span>
             </div>
             <div class="mb-4 input_barre-modifier">
               <label for="email" class="block mb-1  text-neutral-500 font-bold">Courriel</label>
               <input type="email" id="email" v-model="form.email" @input="validateEmail"
                 class="w-full border-gray-300 rounded-md p-2">
-              <span v-if="!isEmailValid" class="text-red-500">{{ emailError }}</span>
+              <span v-if="!emailError" class="text-red-500">{{ emailError }}</span>
             </div>
           </div>
         </div>
@@ -398,7 +398,7 @@
       const submitForm = async () => {
 
         validateFullName();
-        
+        validatePosition();        
         validateDescription();
         validateAddress();
         validatePhone();
