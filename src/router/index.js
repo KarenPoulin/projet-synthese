@@ -12,6 +12,7 @@ import Erreur from '../views/Erreur.vue'
 import FicheDetailCandidatEntreprise from '@/views/FicheDetailCandidatEntreprise.vue'
 import PageDetailDemandeEtOffre from '@/views/PageDetailDemandeEtOffre.vue'
 import FormulaireEntreprise from '@/views/formulaireEntreprise.vue'
+import FormulaireCE from '@/views/formulaireCE.vue'
 
 
 const router = createRouter({
@@ -52,14 +53,10 @@ const router = createRouter({
           component: Entreprises
         },
         {
-          path:'formulaireCandidat',
-          name:'formulaireCandidat',
-          component: formulaireCandidat
-        },
-        {
-          path:'formulaireentreprise',
-          name:'formulaireentreprise',
-          component: FormulaireEntreprise
+          path: 'formulaireCE/:type',
+          name: 'formulaireCE',
+          component: FormulaireCE,
+          props: true
         },
         {
           path: 'formulairedo/:type',
