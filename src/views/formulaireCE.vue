@@ -288,6 +288,7 @@
 
 <script>
     import {
+        reactive,
         ref,
         computed,
         onMounted
@@ -298,38 +299,40 @@
         props: ['type', 'enterpriseId', 'candidateId', 'editing'],
         setup(props) {
             const isCandidat = computed(() => props.type === 'candidat')
-            const fullName = ref('')
-            const position = ref('')
-            const description = ref('')
-            const address = ref('')
-            const phone = ref('')
-            const city = ref('')
-            const email = ref('')
-            const provinceId = ref('')
-            const postalCode = ref('')
-            const skills = ref([])
-            const name = ref('')
-            const image = ref('')
-            const contact = ref('')
-            const activitySector = ref({
-                _id: '65f8df6040965a2e23d73271',
-                value: 'Technologies',
+            const formData = reactive({
+                fullName: '',
+                position: '',
+                description: '',
+                address: '',
+                phone: '',
+                city: '',
+                email: '',
+                provinceId: '',
+                postalCode: '',
+                skills: [],
+                name: '',
+                image: '',
+                contact: '',
+                activitySector: {
+                    _id: '65f8df6040965a2e23d73271',
+                    value: 'Technologies',
+                },
+                website: ''
             })
-            const website = ref('')
 
-
-            const fullNameError = ref('')
-            const positionError = ref('')
-            const descriptionError = ref('')
-            const addressError = ref('')
-            const phoneError = ref('')
-            const cityError = ref('')
-            const emailError = ref('')
-            const provinceError = ref('')
-            const postalCodeError = ref('')
-            const nameError = ref('')
-            const logoError = ref('')
-
+            const errors = reactive({
+                fullName: '',
+                position: '',
+                description: '',
+                address: '',
+                phone: '',
+                city: '',
+                email: '',
+                province: '',
+                postalCode: '',
+                name: '',
+                logo: ''
+            })
 
             const validateFullName = () => {
                 fullNameError.value = ''
@@ -648,7 +651,7 @@
             }
 
 
-            const provinces = ref([])
+            const provinces = reactive([])
             const fetchProvinces = async () => {
                 try {
                     const response = await axios.get('https://api-4.fly.dev/provinces')
@@ -659,10 +662,8 @@
             }
 
 
-            onMounted(fetchProvinces)
-
-
             onMounted(() => {
+                fetchProvinces()
                 if (!isCandidat.value && props.enterpriseId) {
                     fetchEnterprise(props.enterpriseId)
                 }
