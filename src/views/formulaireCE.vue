@@ -674,6 +674,7 @@
 
 
             return {
+                
                 fullName,
                 position,
                 description,
