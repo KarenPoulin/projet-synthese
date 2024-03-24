@@ -295,7 +295,7 @@
     import axios from 'axios'
 
     export default {
-        props: ['type'],
+        props: ['type', 'enterpriseId', 'candidateId', 'editing'],
         setup(props) {
             const isCandidat = computed(() => props.type === 'candidat')
 
@@ -433,6 +433,11 @@
                 return true
             }
 
+            const formatPostalCode = (postalCode) => {
+                const formattedPostalCode = postalCode.trim().toUpperCase();
+                return formattedPostalCode.substring(0, 3) + " " + formattedPostalCode.substring(3);
+            };
+
             const validatePostalCode = () => {
                 postalCodeError.value = ''
                 if (!postalCode.value.trim()) {
@@ -525,11 +530,18 @@
                         const [firstName, lastName] = fullName.value.split(' ')
                         formData.firstName = firstName
                         formData.lastName = lastName
-                        formData.position = position.value
                         formData.skills = skills.value
 
                         try {
-                            const response = await axios.post('https://api-4.fly.dev/candidates', formData)
+                            const url = editing.value ?
+                                `https://api-4.fly.dev/candidates/${props.candidateId}` :
+                                'https://api-4.fly.dev/candidates';
+                            const method = editing.value ? 'put' : 'post';
+                            const response = await axios({
+                                method: method,
+                                url: url,
+                                data: formData
+                            });
                             console.log(response)
                         } catch (error) {
                             console.error(error)
@@ -542,7 +554,28 @@
                         formData.website = website.value
 
                         try {
-                            const response = await axios.post('https://api-4.fly.dev/enterprises/', formData)
+                            let activitySector = null
+                            const activitySectorsResponse = await axios.get(
+                                'https://api-4.fly.dev/activity-sectors');
+                            const activitySectors = activitySectorsResponse.data;
+                            activitySectors.forEach((activity) => {
+                                if (activity.value === activitySector.value) {
+                                    activitySector = activity;
+                                }
+                            });
+                            if (!activitySector) {
+                                throw new Error('Secteur d\'activité non trouvé');
+                            }
+
+                            const url = editing.value ?
+                                `https://api-4.fly.dev/enterprises/${props.enterpriseId}` :
+                                'https://api-4.fly.dev/enterprises';
+                            const method = editing.value ? 'put' : 'post';
+                            const response = await axios({
+                                method: method,
+                                url: url,
+                                data: formData
+                            });
                             console.log(response)
                         } catch (error) {
                             console.error(error)
@@ -550,6 +583,50 @@
                     }
                 }
             }
+
+            const fetchEnterprise = async (enterpriseId) => {
+                try {
+                    const response = await axios.get(`https://api-4.fly.dev/enterprises/${enterpriseId}`);
+                    const enterprise = response.data;
+
+                    formData.name = enterprise.name;
+                    formData.image = enterprise.image;
+                    formData.description = enterprise.description;
+                    formData.address = enterprise.address;
+                    formData.phone = enterprise.phone;
+                    formData.city = enterprise.city;
+                    formData.email = enterprise.email;
+                    formData.provinceId = enterprise.province._id;
+                    formData.postalCode = enterprise.postalCode;
+                    formData.website = enterprise.website;
+                    formData.activitySector = enterprise.activitySector;
+                } catch (error) {
+                    console.error(error);
+                }
+            }
+
+            const fetchCandidate = async (candidateId) => {
+                try {
+                    const response = await axios.get(`https://api-4.fly.dev/candidates/${candidateId}`);
+                    const candidate = response.data;
+
+                    console.log(candidate);
+
+                    form.fullName = `${candidate.firstName} ${candidate.lastName}`;
+                    form.description = candidate.description;
+                    form.address = candidate.address;
+                    form.phone = candidate.phone;
+                    form.city = candidate.city;
+                    form.email = candidate.email;
+                    form.provinceId = candidate.province._id;
+                    form.postalCode = candidate.postalCode;
+                    form.skills = candidate.skills;
+                } catch (error) {
+                    console.error(error);
+                }
+            }
+
+
 
             const cancelForm = () => {
                 fullName.value = ''
@@ -586,33 +663,15 @@
 
             onMounted(fetchProvinces)
 
-            const fetchEnterprise = async (enterpriseId) => {
-                try {
-                    const response = await axios.get(`https://api-4.fly.dev/enterprises/${enterpriseId}`);
-                    const entreprise = response.data;
-
-                    form.name = entreprise.name;
-                    form.image = entreprise.image;
-                    form.description = entreprise.description;
-                    form.address = entreprise.address;
-                    form.phone = entreprise.phone;
-                    form.city = entreprise.city;
-                    form.email = entreprise.email;
-                    form.provinceId = entreprise.province._id;
-                    form.postalCode = entreprise.postalCode;
-                    form.website = entreprise.website;
-                    form.activitySector = entreprise.activitySector;
-                } catch (error) {
-                    console.error(error);
-                }
-            }
 
             onMounted(() => {
                 if (!isCandidat.value && props.enterpriseId) {
                     fetchEnterprise(props.enterpriseId)
                 }
+                if (!isCandidat.value && props.candidateId) {
+                    fetchCandidate(props.candidateId);
+                }
             })
-
 
 
             return {
@@ -664,6 +723,8 @@
         },
     }
 </script>
+
+
 
 
 <style scoped>
