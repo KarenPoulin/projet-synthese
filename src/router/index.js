@@ -10,6 +10,9 @@ import formulaireCandidat from '../views/formulaireCandidat.vue'
 import FormulaireDO from '../views/FormulaireDO.vue'
 import Erreur from '../views/Erreur.vue'
 import FicheDetailCandidatEntreprise from '@/views/FicheDetailCandidatEntreprise.vue'
+import PageDetailDemandeEtOffre from '@/views/PageDetailDemandeEtOffre.vue'
+import FormulaireEntreprise from '@/views/formulaireEntreprise.vue'
+import FormulaireCE from '@/views/formulaireCE.vue'
 
 
 const router = createRouter({
@@ -50,31 +53,38 @@ const router = createRouter({
           component: Entreprises
         },
         {
-          path:'formulaireCandidat',
-          name:'formulaireCandidat',
-          component: formulaireCandidat
+          path: 'formulaireCE/:type',
+          name: 'formulaireCE',
+          component: FormulaireCE,
+          props: true
         },
         {
-          path:'formulairedemande',
-          name:'formulairedemande',
-          component: FormulaireDO
+          path: 'formulairedo/:type',
+          name: 'formulairedo',
+          component: FormulaireDO,
+          props: route => ({ isRequest: route.params.type === 'request' })
         },
         {
-          path:'formulaireoffre',
-          name:'formulaireoffre',
-          component: FormulaireDO
+          path: 'pagedetaildemandedestage/:id',
+          name: 'pagedetaildemandedestage',
+          component: PageDetailDemandeEtOffre
         },
         {
-          path:'fichedetailcandidat/:id',
-          name:'fichedetailcandidat',
+          path: 'pagedetailoffredestage/:id',
+          name: 'pagedetailoffredestage',
+          component: PageDetailDemandeEtOffre
+        },
+        {
+          path: 'fichedetailcandidat/:id',
+          name: 'fichedetailcandidat',
           component: FicheDetailCandidatEntreprise
         },
         {
-          path:'fichedetailentreprise/:id',
-          name:'fichedetailentreprise',
+          path: 'fichedetailentreprise/:id',
+          name: 'fichedetailentreprise',
           component: FicheDetailCandidatEntreprise
         }
-        
+
       ]
     },
     {

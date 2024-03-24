@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div v-if="modalSuppressionVisible" class="modal">
     <div class="modal-content">
-      <img src="../assets/icons/detail-close-24.png" alt="" class="close" @click="modalFermetureIcone">
+      <span class="close" @click="annulerSuppression">&times;</span>
       <p>Voulez-vous vraiment supprimer cette entrée ?</p>
       <div class="donnees">
         <h4>{{ title }}</h4>
@@ -16,32 +16,36 @@
 <script setup>
 import { defineProps, defineEmits } from 'vue';
 
-const props = defineProps({
-  etatDuModal: Boolean,
+const { title, firstName, lastName, modalSuppressionVisible } = defineProps({
+  modalSuppressionVisible: Boolean,
   title: String,
   firstName: String,
   lastName: String
 });
 
-const emits = defineEmits(['suppressionAnnuleeIcone', 'suppressionAnnulee', 'confirmationSuppression']);
-
-const modalFermetureIcone = () => {
-  emits('suppressionAnnuleeIcone');
-};
+const emits = defineEmits(['suppressionAnnulee', 'confirmationSuppression']);
 
 const annulerSuppression = () => {
-  modalFermetureIcone();
   emits('suppressionAnnulee');
 };
 
 const confirmerSuppression = () => {
-  modalFermetureIcone();
   emits('confirmationSuppression');
 };
 </script>
 
-
 <style scoped>
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.4);
+}
 
 .modal-content {
   background-color: #fff;
@@ -49,10 +53,21 @@ const confirmerSuppression = () => {
   border-radius: 8px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
   max-width: 600px; 
+  margin: auto;
 }
 
 .close {
-  font-size: 24px;
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
 }
 
 .donnees {
@@ -70,7 +85,6 @@ button {
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  margin-right: 15px;
   margin-right: 15px;
 }
 

@@ -1,57 +1,48 @@
 <template>
   <h1>Demande de stage</h1>
   <div class="flex">
-    <RouterLink class="my-3  bg-teal-500 text-white px-4 py-2  rounded hover:bg-teal-600" to="/app/formulairedemande">
-      Ajouter une demande</RouterLink>
+    <button class="my-3  bg-teal-500 text-white px-4 py-2  rounded hover:bg-teal-600" @click="goToFormDO('request')">
+      Ajouter une demande
+    </button>
   </div>
 
-  <RouterLink to="/app/formulaireDo"
+  <div class="mt-4 px-10 py-16 bg-white rounded-lg">
+    <table v-if="allDemandeDeStagesResults" class="w-full mb-10">
+        <EnteteTableau :isDemandes="true" :isTableauDeBord="false" />
+        <template v-for="demandeDeStage in allDemandeDeStagesResults" :key="demandeDeStage._id">
+            <ElementTableau :element="demandeDeStage" :isDemandes="true" :isTableauDeBord="false" />
+        </template>
+    </table>
+  </div>
+
+<!--   <RouterLink to="/app/formulaireDo"
     class="bg-fuchsia-800 hover:bg-fuchsia-900 text-white text-sm font-bold p-4 rounded-xl mb-16">
     <i class="ficheDetaillee__icône-consulter fa fa-check"></i>
   </RouterLink>
   <RouterLink to="/app/formulaireDo"
     class="bg-fuchsia-800 hover:bg-fuchsia-900 text-white text-sm font-bold p-4 rounded-xl mb-16">
     <i class="ficheDetaillee__icône-editer fas fa-edit"></i>
-  </RouterLink>
-
-  <ficheDetailler sousTitre="allo" mainTitre="allo" ficheTitreOne="allo" ficheTitreTwo="allo" ficheDescription="allo"
-    @emitRedirectionPageEdition="" @emitToggleModal="toggleModal" programmeDeFormation="allo" secteurDeActiviter="allo"
-    competence="allo" etablissementEnseignement="allo" ville="allo" region="allo" diplomeDemandees="allo"
-    exigencesText="allo" adresse="allo" province="allo" codePostal="allo" telephone="allo" courriel=""
-    typeDeStage="allo" nombreHeures="allo" remuneration="allo" dateDeDebut="allo" dateDeFin="allo"
-    informationsSupplémentairesText="allo" :isPageDetaillerDemandeDeStage="true" :isPageDetaillerDemandeOffre="false"
-    :isPageDetaillerCandidat="false">
-    <modalSuppression :etatDuModal="true" @suppressionAnnuleeIcone="annulerSuppressionIcone"
-      @suppressionAnnulee="annulerSuppression" @confirmationSuppression="suppressionConfirmee" title="title"
-      firstName="firstName" lastName="lastName" />
-  </ficheDetailler>
+  </RouterLink> -->
 </template>
 
 <script setup>
-import ficheDetailler from '@/components/ficheDetailler.vue';
-import modalSuppression from '@/components/modalSuppression.vue';
-import { ref } from 'vue'
-import { RouterLink } from 'vue-router'
+import { onMounted, ref } from 'vue';
+import { useRouter } from 'vue-router'
+import { useAllDemandeDeStages } from '@/composables/demandeDeStage';
+import ElementTableau from '../components/elementTableau.vue'
+import EnteteTableau from '../components/enteteTableau.vue'
 
-const etatDuModal = ref(false)
-
-const annulerSuppressionIcone = () => {
-  etatDuModal.value = false;
-  console.log(etatDuModal.value)
+// Fonction pour émettre la route dynamique vers le formulaireDO pour ajouter une demande
+const router = useRouter()
+const goToFormDO = type => {
+  router.push({ name: 'formulairedo', params: { type } })
 }
 
-const annulerSuppression = () => {
-  etatDuModal.value = false;
-  console.log(etatDuModal.value)
-}
+const { allDemandeDeStagesResults, getAllDemandeDeStages } = useAllDemandeDeStages();
 
-const suppressionConfirmee = () => {
-  etatDuModal.value = false;
-  // Information de lapi pour la suppression
-  console.log(etatDuModal.value)
-}
+onMounted(async () => {
+  await getAllDemandeDeStages();
+})
 
-const toggleModal = () => {
-  etatDuModal.value = !etatDuModal.value;
-}
+
 </script>
