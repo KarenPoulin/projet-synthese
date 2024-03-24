@@ -2,7 +2,7 @@
   <div class="ficheDetaillee">
 
     <div v-if="isEnteteDemandeDeStage" class="ficheDetaillee__conteneur-titres-entete">
-      <div class="ficheDetaillee__bloc-style" :class="{'colorBgBlue': isEnteteDemandeDeStage}"></div>
+      <div class="ficheDetaillee__bloc-style" :class="{'colorBgYellow': isEnteteDemandeDeStage}"></div>
       <div class="ficheDetaillee__titre">
         <span class="ficheDetaillee__sous-titre">Demande de stage</span>
         <h1 class="ficheDetaillee__titre">{{ enteteDemandeStage.title }}</h1>
@@ -32,10 +32,13 @@ const props = defineProps({
 
 <style scoped>
 .colorBgBlue {
-  background-color: blue;
+  background-color: rgb(20 184 166);
 }
 .colorBgRed {
-  background-color: red;
+  background-color: rgb(153 27 27);
+}
+.colorBgYellow {
+  background-color: rgb(202 138 4);
 }
 .ficheDetaillee {
   max-width: 1100px;

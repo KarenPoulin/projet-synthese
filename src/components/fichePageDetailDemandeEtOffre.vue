@@ -1,274 +1,158 @@
 <template>
   <div class="ficheDetaillee">
-  <!-- Icones -->
-  <div class="ficheDetaillee__conteneur-icônes-mode">
-    <i class="ficheDetaillee__icône-consulter fa fa-check" aria-hidden="true" @click="emitConsulter"></i>
-    <!-- <RouterLink v-if="isFicheDetailDemandeDeStage " :to="{ name: 'formulairedo', params: { id } }">
+    <!-- Icones -->
+    <div class="containerIcones">
+      <div class="ficheDetaillee__conteneur-icônes-mode">
+        <!-- Icone pour consulter -->
+        <i
+          class="ficheDetaillee__icône-consulter fa fa-check"
+          aria-hidden="true"
+          @click="emitConsulter"
+        ></i>
+
+        <!-- Icone pour éditer -->
+        <!-- <RouterLink v-if="isFicheDetailDemandeDeStage || (isFicheDetailOffreDeStage && !isFicheDetailDemandeDeStage)" :to="{ name: 'formulairedo', params: { id } }">
+        </RouterLink> -->
         <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-        </RouterLink> -->
-    <!-- <RouterLink v-else-if="isFicheDetailDemandeOffre && !isFicheDetailDemandeDeStage" :to="{ name: 'formulairedo', params: { id } }">
-          <i class="ficheDetaillee__icône-editer fas fa-trash"></i>
-        </RouterLink> -->
-        <i class="ficheDetaillee__icône-editer fa-regular fa-pen-to-square"></i>
-    <i class="ficheDetaillee__icône-supprimer fas fa-trash" @click="emitSupprimer"></i>
-  </div>
 
-  <div class="ficheDetaillee__card">
-    <!-- Titre et description -->
-    <div class="ficheDetaillee__conteneur-titres">
-      <h2
-        class="ficheDetaillee__nom-personne"
-        :class="{ colorBlue: isFicheDetailDemandeDeStage }"
-      >
-        {{
-          ficheDemandeStage.candidate.firstname
-            ? ficheDemandeStage.candidate.firstname +
-              " " +
-              ficheDemandeStage.candidate.lastname
-            : "Nom Prenom"
-        }}
-      </h2>
-      <p>
-        {{
-          ficheDemandeStage.candidate.description
-            ? ficheDemandeStage.candidate.description
-            : "Nom Prenom"
-        }}
-      </p>
-    </div>
-
-    <!-- Conteneurs d'informations générales demande de stage-->
-    <div
-      class="ficheDetaillee__conteneur-informations-generales-stage"
-      v-if="isFicheDetailDemandeDeStage"
-    >
-      <div class="ficheDetaillee__conteneur-information">
-        <div class="ficheDetaillee__bloc-style"></div>
-        <div class="ficheDetaillee__infos">
-          <h3 class="ficheDetaillee__titre-info">Programme de formation</h3>
-          <span>
-            {{
-              ficheDemandeStage.skills[0]
-                ? ficheDemandeStage.skills[0]
-                : "secteur activite"
-            }}
-          </span>
-        </div>
-      </div>
-
-      <div class="ficheDetaillee__conteneur-information">
-        <div class="ficheDetaillee__bloc-style"></div>
-        <div class="ficheDetaillee__infos">
-          <h3 class="ficheDetaillee__titre-info">Secteur d'activité</h3>
-          <span class="ficheDetaillee__contenu-info">
-            {{
-              ficheDemandeStage.skills[0]
-                ? ficheDemandeStage.skills[0]
-                : "secteur activite"
-            }}
-          </span>
-        </div>
-      </div>
-
-      <div class="ficheDetaillee__conteneur-information">
-        <div class="ficheDetaillee__bloc-style"></div>
-        <div class="ficheDetaillee__infos">
-          <h3 class="ficheDetaillee__titre-info">Compétences</h3>
-          <span>
-            {{
-              ficheDemandeStage.skills[(0, 1, 2, 3)]
-                ? ficheDemandeStage.skills[(0, 1, 2, 3)]
-                : "competences"
-            }}
-          </span>
-        </div>
-      </div>
-
-      <div class="ficheDetaillee__conteneur-information">
-        <div class="ficheDetaillee__bloc-style"></div>
-        <div class="ficheDetaillee__infos">
-          <h3 class="ficheDetaillee__titre-info">
-            Établissement d'enseignement
-          </h3>
-          <span class="ficheDetaillee__contenu-info">
-            {{
-              ficheDemandeStage.candidate.adress
-                ? ficheDemandeStage.candidate.adress
-                : "Établissement d'enseignement inconnu"
-            }}
-          </span>
-        </div>
-      </div>
-
-      <div class="ficheDetaillee__conteneur-information">
-        <div class="ficheDetaillee__bloc-style"></div>
-        <div class="ficheDetaillee__infos">
-          <h3 class="ficheDetaillee__titre-info">Ville</h3>
-          <span class="ficheDetaillee__contenu-info">
-            {{
-              ficheDemandeStage.candidate.city
-                ? ficheDemandeStage.candidate.city
-                : "Ville inconnue"
-            }}
-          </span>
-        </div>
-      </div>
-
-      <div class="ficheDetaillee__conteneur-information">
-        <div class="ficheDetaillee__bloc-style"></div>
-        <div class="ficheDetaillee__infos">
-          <h3 class="ficheDetaillee__titre-info">Région</h3>
-          <span class="ficheDetaillee__contenu-info">
-            {{
-              ficheDemandeStage.province.value
-                ? ficheDemandeStage.province.value
-                : "Région inconnue"
-            }}
-          </span>
-        </div>
+        <!-- Icone pour supprimer -->
+        <i
+          class="ficheDetaillee__icône-supprimer fas fa-trash"
+          @click="emitSupprimer"
+        ></i>
       </div>
     </div>
 
-    <div class="ficheDetaillee__conteneur-titre">
-      <h2
-        v-if="isFicheDetailDemandeDeStage"
-        class="ficheDetaillee__titre-info-stage"
-        :class="{ colorBlue: isFicheDetailDemandeDeStage }"
-      >
-        Informations sur le stage recherché
-      </h2>
-    </div>
+    <div class="ficheDetaillee__card">
+      <!-- Titre et description -->
+      <div class="ficheDetaillee__conteneur-titres">
+        <h2
+          class="ficheDetaillee__nom-personne"
+          :class="{
+            colorBlue:
+              isFicheDetailDemandeDeStage && !isFicheDetailOffreDeStage,
+            colorRed: isFicheDetailOffreDeStage && !isFicheDetailDemandeDeStage,
+          }"
+        >
+          {{
+            ficheDemandeStage.candidate.firstname
+              ? ficheDemandeStage.candidate.firstname +
+                " " +
+                ficheDemandeStage.candidate.lastname
+              : "Nom Prenom"
+          }}
+        </h2>
+        <p>
+          {{
+            ficheDemandeStage.candidate.description
+              ? ficheDemandeStage.candidate.description
+              : "Descriptiion"
+          }}
+        </p>
+      </div>
 
-    <div
-      class="ficheDetaillee__conteneur-informations-generales-offre"
-      v-if="isFicheDetailOffreDeStage"
-    >
-      <div class="ficheDetaillee__conteneur-informations-generales-offre">
-        <div class="ficheDetaillee__conteneur-information">
-          <div class="ficheDetaillee__bloc-style"></div>
-          <div class="ficheDetaillee__infos">
-            <h3 class="ficheDetaillee__titre-info">Formation demandées</h3>
-            <span class="ficheDetaillee__contenu-info">{{
-              ficheOffreStage
-                ? ficheOffreStage
-                : "Aucune donnée de formation demander"
-            }}</span>
-          </div>
-        </div>
-
-        <div class="ficheDetaillee__conteneur-information">
-          <div class="ficheDetaillee__bloc-style"></div>
-          <div class="ficheDetaillee__infos">
-            <h3 class="ficheDetaillee__titre-info">Exigences</h3>
-            <span class="ficheDetaillee__contenu-info">{{
-              ficheOffreStage ? ficheOffreStage : "Aucune donnée dexigence"
-            }}</span>
-          </div>
-        </div>
-        <div class="ficheDetaillee__conteneur-titre">
-          <h2
-            v-if="isFicheDetailOffreDeStage"
-            class="ficheDetaillee__titre-info-stage"
-            :class="{ colorBlue: isFicheDetailOffreDeStage }"
+      <!-- v-if une condition isFicheDetailDemandeDeStage -->
+      <div class="containerDemandeDeStage" v-if="isFicheDetailDemandeDeStage">
+        <div class="ficheDetaillee__conteneur-informations-generales-stage">
+          <div
+            v-for="(info, index) in informationDemandeDeStage"
+            :key="index"
+            class="ficheDetaillee__conteneur-information"
           >
-            Informations sur le stage
+            <div class="ficheDetaillee__bloc-style"></div>
+            <div class="ficheDetaillee__infos">
+              <h3 class="ficheDetaillee__titre-info">{{ info.title }}</h3>
+              <span class="ficheDetaillee__contenu-info">{{
+                info.content
+              }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- v-if une condition isFicheDetailOffreDeStage -->
+      <div class="containerOffreDeStage" v-if="isFicheDetailOffreDeStage">
+        <div class="ficheDetaillee__conteneur-informations-generales-offre">
+          <div v-if="isFicheDetailOffreDeStage">
+            <div
+              class="ficheDetaillee__conteneur-information"
+              v-for="(info, index) in informationOffreDeStage"
+              :key="index"
+            >
+              <div class="ficheDetaillee__bloc-style"></div>
+              <div class="ficheDetaillee__infos">
+                <h3 class="ficheDetaillee__titre-info">{{ info.title }}</h3>
+                <span class="ficheDetaillee__contenu-info">{{
+                  info.content
+                }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- v-if deux conditions isFicheDetailDemandeDeStage et isFicheDetailOffreDeStage-->
+      <div
+        class="containerOffreEtDemande"
+        v-if="isFicheDetailDemandeDeStage || isFicheDetailOffreDeStage"
+      >
+        <div class="ficheDetaillee__conteneur-titres">
+          <h2 class="ficheDetaillee__titre-info-stage" :class="titleClass">
+            {{ title }}
           </h2>
         </div>
-      </div>
-    </div>
 
-    <!-- Conteneurs d'informations spécifiques sur demande de stage et offre de stage-->
-    <div
-      class="ficheDetaillee__conteneur-informations-specifiques"
-      v-if="isFicheDetailDemandeDeStage || isFicheDetailOffreDeStage"
-    >
-      <div class="ficheDetaillee__conteneur-information">
-        <div class="ficheDetaillee__bloc-style"></div>
-        <div class="ficheDetaillee__infos">
-          <h3 class="ficheDetaillee__titre-info">Type de stage</h3>
-          <span class="ficheDetaillee__contenu-info">
+        <div class="ficheDetaillee__conteneur-informations-specifiques">
+          <!-- Informations communes de demande et offre de stage-->
+          <div
+            v-for="info in commonInfos"
+            :key="info.title"
+            class="ficheDetaillee__conteneur-information"
+          >
+            <div class="ficheDetaillee__bloc-style"></div>
+            <div class="ficheDetaillee__infos">
+              <h3 class="ficheDetaillee__titre-info">{{ info.title }}</h3>
+              <span class="ficheDetaillee__contenu-info">{{
+                info.content
+              }}</span>
+            </div>
+          </div>
+        </div>
+        <!-- Conteneur information supplementaire -->
+        <div class="ficheDetaillee__conteneur-informations-supplementaires">
+          <h2
+            :class="{
+              colorBlue:
+                isFicheDetailDemandeDeStage && !isFicheDetailOffreDeStage,
+              colorRed:
+                isFicheDetailOffreDeStage && !isFicheDetailDemandeDeStage,
+            }"
+          >
+            Information supplementaires
+          </h2>
+          <p>
             {{
-              ficheDemandeStage.internshipType.value
-                ? ficheDemandeStage.internshipType.value + " " + "TIME"
-                : "Type de stage inconnu"
+              ficheDemandeStage.additionalInformation
+                ? ficheDemandeStage.additionalInformation
+                : "Pas dinformations supplementaires"
             }}
-          </span>
+          </p>
+          <button
+            type="button"
+            class="text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center me-2"
+            v-if="isFicheDetailDemandeDeStage"
+          >
+            <i class="fa-solid fa-cloud-arrow-down"></i>
+            Télécharger le C.V.
+          </button>
         </div>
       </div>
-      <div class="ficheDetaillee__conteneur-information">
-        <div class="ficheDetaillee__bloc-style"></div>
-        <div class="ficheDetaillee__infos">
-          <h3 class="ficheDetaillee__titre-info">
-            Nombre d'heures par semaine
-          </h3>
-          <span class="ficheDetaillee__contenu-info">
-            {{
-              ficheDemandeStage.weeklyWorkHours
-                ? ficheDemandeStage.weeklyWorkHours + " " + "Heures/semaine"
-                : "Nombre d'heures de travail hebdomadaire non spécifié"
-            }}
-          </span>
-        </div>
-      </div>
-      <div class="ficheDetaillee__conteneur-information">
-        <div class="ficheDetaillee__bloc-style"></div>
-        <div class="ficheDetaillee__infos">
-          <h3 class="ficheDetaillee__titre-info">Rémunération</h3>
-          <span class="ficheDetaillee__contenu-info">
-            {{
-              ficheDemandeStage.province
-                ? ficheDemandeStage.province
-                : "Région inconnue"
-            }}
-          </span>
-        </div>
-      </div>
-      <div class="ficheDetaillee__conteneur-information">
-        <div class="ficheDetaillee__bloc-style"></div>
-        <div class="ficheDetaillee__infos">
-          <h3 class="ficheDetaillee__titre-info">Date de début</h3>
-          <span class="ficheDetaillee__contenu-info">
-            {{
-              ficheDemandeStage.startDate
-                ? ficheDemandeStage.startDate
-                : "Région inconnue"
-            }}
-          </span>
-        </div>
-      </div>
-      <div class="ficheDetaillee__conteneur-information">
-        <div class="ficheDetaillee__bloc-style"></div>
-        <div class="ficheDetaillee__infos">
-          <h3 class="ficheDetaillee__titre-info">Date de fin</h3>
-          <span class="ficheDetaillee__contenu-info">
-            {{
-              ficheDemandeStage.endDate
-                ? ficheDemandeStage.endDate
-                : "Province inconnue"
-            }}
-          </span>
-        </div>
-      </div>
-    </div>
-    <!-- Conteneur information supplementaire -->
-    <div class="ficheDetaillee__conteneur-informations-supplementaires">
-      <h2>Information supplementaires</h2>
-      <p>
-        {{
-          ficheDemandeStage.additionalInformation
-            ? ficheDemandeStage.additionalInformation
-            : "Pas dinformations supplementaires"
-        }}
-      </p>
-      <button>
-        <i>Telechager CV</i>
-      </button>
     </div>
   </div>
-</div>
 </template>
 
 <script setup>
+import { ref, computed } from "vue";
 import { defineProps } from "vue";
 
 const props = defineProps({
@@ -288,6 +172,99 @@ const emitConsulter = () => {
 const emitSupprimer = () => {
   emits("emitSupprimer");
 };
+
+const title = computed(() => {
+  if (props.isFicheDetailDemandeDeStage) {
+    return "Informations sur le stage recherché";
+  } else if (isFicheDetailOffreDeStage.value) {
+    return "Informations sur le stage";
+  }
+});
+
+const titleClass = computed(() => {
+  return {
+    colorBlue:
+      props.isFicheDetailDemandeDeStage && !props.isFicheDetailOffreDeStage,
+    colorRed:
+      props.isFicheDetailOffreDeStage && !props.isFicheDetailDemandeDeStage,
+  };
+});
+
+const informationDemandeDeStage = computed(() => [
+  {
+    title: "Programme de formation",
+    content: props.ficheDemandeStage.skills[0] || "secteur activite",
+  },
+  {
+    title: "Secteur d'activité",
+    content: props.ficheDemandeStage.sector || "secteur activite",
+  },
+  {
+    title: "Compétences",
+    content:
+      props.ficheDemandeStage.skills.slice(0, 4).join(", ") || "competences",
+  },
+  {
+    title: "Établissement d'enseignement",
+    content:
+      props.ficheDemandeStage.candidate?.address ||
+      "Établissement d'enseignement inconnu",
+  },
+  {
+    title: "Ville",
+    content: props.ficheDemandeStage.candidate?.city || "Ville inconnue",
+  },
+  {
+    title: "Région",
+    content: props.ficheDemandeStage.province?.value || "Région inconnue",
+  },
+]);
+
+const informationOffreDeStage = computed(() => [
+  {
+    title: "Formation demandées",
+    content:
+      props.ficheOffreStage.requestedTraining ||
+      "Aucune donnée de formation demandée",
+  },
+  {
+    title: "Exigences",
+    content: props.ficheOffreStage.requirements || "Aucune donnée d'exigence",
+  },
+]);
+
+const commonInfos = computed(() => [
+  {
+    title: "Type de stage",
+    content: props.ficheDemandeStage.internshipType?.value
+      ? props.ficheDemandeStage.internshipType.value + " TIME"
+      : "Type de stage inconnu",
+  },
+  {
+    title: "Nombre d'heures par semaine",
+    content: props.ficheDemandeStage.weeklyWorkHours
+      ? props.ficheDemandeStage.weeklyWorkHours + " Heures/semaine"
+      : "Nombre d'heures de travail hebdomadaire non spécifié",
+  },
+  {
+    title: "Rémunération",
+    content: props.ficheDemandeStage.compensation
+      ? props.ficheDemandeStage.compensation
+      : "Rémunération inconnue",
+  },
+  {
+    title: "Date de début",
+    content: props.ficheDemandeStage.startDate
+      ? props.ficheDemandeStage.startDate
+      : "Date de début inconnue",
+  },
+  {
+    title: "Date de fin",
+    content: props.ficheDemandeStage.endDate
+      ? props.ficheDemandeStage.endDate
+      : "Date de fin inconnue",
+  },
+]);
 </script>
 
 <style scoped>
@@ -295,49 +272,52 @@ const emitSupprimer = () => {
   color: rgb(20 184 166);
 }
 .colorRed {
-  color: red;
-}
-.colorPurple {
-  color: palevioletred;
+  color: rgb(153 27 27);
 }
 .colorBgBlue {
   background-color: rgb(20 184 166);
 }
 .colorBgRed {
-  background-color: red;
+  background-color: rgb(153 27 27);
 }
-.colorBgPurple {
-  background-color: palevioletred;
+.colorBgYellow {
+  background-color: rgb(202 138 4);
 }
-
+.colorGrisMoyen {
+  background-color: rgb(115 115 115);
+}
+.colorGrisClair {
+  background-color: rgb(245 245 245);
+}
+.colorGrisFonce {
+  background-color: rgb(38 38 38);
+}
 .ficheDetaillee {
   margin-top: 100px;
 }
 
-.ficheDetaillee__conteneur-icônes-mode{
+.ficheDetaillee__conteneur-icônes-mode {
   display: flex;
   justify-content: flex-end;
   align-items: center;
   margin-bottom: 30px;
-  font-size: 20px;
+  font-size: 25px;
+  font-weight: 600;
 }
-.ficheDetaillee__conteneur-icônes-mode
-.ficheDetaillee__icône-consulter{
-  margin-left: 10px ;
+.ficheDetaillee__conteneur-icônes-mode .ficheDetaillee__icône-consulter {
+  margin-left: 10px;
   margin-right: 10px;
-
+  color: #2ecc71;
 }
-.ficheDetaillee__conteneur-icônes-mode
-.ficheDetaillee__icône-editer {
-  margin-left: 10px ;
+.ficheDetaillee__conteneur-icônes-mode .ficheDetaillee__icône-editer {
+  margin-left: 10px;
   margin-right: 10px;
-  
+  color: #3498db;
 }
-.ficheDetaillee__conteneur-icônes-mode
-.ficheDetaillee__icône-supprimer {
-  margin-left: 10px ;
+.ficheDetaillee__conteneur-icônes-mode .ficheDetaillee__icône-supprimer {
+  margin-left: 10px;
   margin-right: 10px;
-  
+  color: rgb(153 27 27);
 }
 
 .ficheDetaillee__card {
@@ -345,17 +325,22 @@ const emitSupprimer = () => {
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   padding: 80px 80px 80px 80px;
-  height: 1550px;
+  height: 1300px;
+  overflow: auto;
+}
+
+.ficheDetaillee__card::-webkit-scrollbar {
+  display: none;
 }
 
 .ficheDetaillee__conteneur-titres {
-  margin-bottom: 60px;
+  margin-bottom: 50px;
 }
 
 .ficheDetaillee__conteneur-titres .ficheDetaillee__nom-personne {
   font-size: 40px;
   font-weight: 600;
-  margin-bottom: 40px;
+  margin-bottom: 50px;
 }
 
 .ficheDetaillee__conteneur-titres p {
@@ -365,7 +350,6 @@ const emitSupprimer = () => {
 .ficheDetaillee__conteneur-informations-generales-stage,
 .ficheDetaillee__conteneur-informations-generales-offre,
 .ficheDetaillee__conteneur-informations-specifiques {
-  border: 2px solid red;
   display: flex;
   flex-wrap: wrap;
 }
@@ -374,14 +358,13 @@ const emitSupprimer = () => {
 .ficheDetaillee__conteneur-informations-generales-offre,
 .ficheDetaillee__conteneur-informations-specifiques,
 .ficheDetaillee__conteneur-informations-supplementaires {
-  border: 2px solid red;
   margin-bottom: 40px;
 }
 
 .ficheDetaillee__conteneur-information {
   display: flex;
   flex: 0 0 calc(50% - 20px);
-  margin-bottom: 35px;
+  margin-bottom: 40px;
 }
 
 .ficheDetaillee__conteneur-information .ficheDetaillee__bloc-style {
@@ -400,29 +383,35 @@ const emitSupprimer = () => {
   font-weight: 600;
   margin-bottom: 5px;
 }
-.ficheDetaillee__conteneur-titre{
+.ficheDetaillee__conteneur-titre {
   font-weight: 600;
   font-size: 18px;
   margin-bottom: 30px;
 }
-.ficheDetaillee__titre-info-stage{
-
+.ficheDetaillee__titre-info-stage {
+  font-weight: 600;
 }
-.ficheDetaillee__conteneur-informations-supplementaires{
-
+.ficheDetaillee__conteneur-informations-supplementaires {
+  overflow: auto;
 }
-.ficheDetaillee__conteneur-informations-supplementaires h2{
+.ficheDetaillee__conteneur-informations-supplementaires:-webkit-scrollbar {
+  display: none;
+}
+
+.ficheDetaillee__conteneur-informations-supplementaires h2 {
   font-weight: 600;
   font-size: 18px;
-  margin-bottom: 30px;
+  margin-bottom: 40px;
 }
-.ficheDetaillee__conteneur-informations-supplementaires p{
-  margin-bottom: 30px;
+.ficheDetaillee__conteneur-informations-supplementaires p {
+  margin-bottom: 40px;
 }
-.ficheDetaillee__conteneur-informations-supplementaires button{
-  background-color: aqua;
-  padding: 5px 10px 5px 10px;
-  border-radius: 8px;
-  font-size: 30px;
+.ficheDetaillee__conteneur-informations-supplementaires button {
+  background-color: rgb(20 184 166);
+  font-weight: 600;
+  font-size: 20px;
+  padding: 15px 10px 15px 10px;
+}
+.ficheDetaillee__conteneur-informations-supplementaires i {
 }
 </style>
