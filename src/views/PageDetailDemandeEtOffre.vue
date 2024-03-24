@@ -1,28 +1,25 @@
 <template>
-    <div v-if="demandeDeStageResult || offreDeStagesResult">
-      <entetePageDetailDemandeEtOffre
+  <div v-if="demandeDeStageResult || offreDeStagesResult">
+    <entetePageDetailDemandeEtOffre
       :isEnteteDemandeDeStage="true"
-      :isEnteteDemandeOffre="false"
+      :isEnteteOffreStage="false"
       :enteteDemandeStage="demandeDeStageResult"
-      :enteteDemandeOffre="offreDeStagesResult"
-      />
-      <fichePageDetailDemandeEtOffre
-      :isFicheDetailDemandeDeStage="false"
-      :isFicheDetailDemandeOffre="true"
+      :enteteOffreStage="offreDeStagesResult"
+    />
+    <fichePageDetailDemandeEtOffre
+      :isFicheDetailDemandeDeStage="true"
+      :isFicheDetailOffreDeStage="false"
       :ficheDemandeStage="demandeDeStageResult"
       :ficheOffreStage="offreDeStagesResult"
       @emitConsulter="consulterAction"
       @emitSupprimer="toggleModalSuppression"
-      />
-      <!-- :id="demandeDeStageResult._id" -->
-      <!-- <modalSuppression
+    />
+    <modalSuppression
       :modalSuppressionVisible="modalSuppressionVisible"
       @suppressionAnnulee="suppressionAnnulee"
-      @confirmationSuppression="confirmationSuppression"/> -->
-    </div>
-    <!-- <div v-else>
-      chargement en cours...
-    </div> -->
+      @confirmationSuppression="confirmationSuppression"
+    />
+  </div>
 </template>
 
 <script setup>
@@ -34,7 +31,6 @@ import { onMounted, ref } from 'vue';
 import { useDemandesDeStages } from '@/composables/demandeDeStage';
 import { useOffreDeStages } from '@/composables/offreDeStage';
 
-// Recuperation des donnees a partir du id pour laffichage
 const route = useRoute();
 
 let isFicheDetailDemandeDeStage = ref(true);
@@ -64,22 +60,17 @@ onMounted(async () => {
   }
 });
 
-// Configuration pour declenchement du modal
 const modalSuppressionVisible = ref(false);
 
 const toggleModalSuppression = () => modalSuppressionVisible.value = !modalSuppressionVisible.value;
-const fermerModalSuppression = () => modalSuppressionVisible.value = false;
 
 const suppressionAnnulee = () => {
-    console.log("Suppresion annuler");
-    fermerModalSuppression();
+  console.log("Suppresion annuler");
+  modalSuppressionVisible.value = false;
 };
 
 const confirmationSuppression = () => {
-    console.log("Suppression confirmer");
-    fermerModalSuppression();
+  console.log("Suppression confirmer");
+  modalSuppressionVisible.value = false;
 };
 </script>
-
-<style>
-</style>

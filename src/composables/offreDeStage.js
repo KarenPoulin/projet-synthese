@@ -3,7 +3,7 @@ import axios from 'axios';
 
 const baseUrl = "https://api-4.fly.dev/";
 
-// https://api-4.fly.dev/offreDeStages
+// https://api-4.fly.dev/internship-offers
 export function useAllOffreDeStages() {
     const allOffreDeStagesResults = reactive([]);
 
@@ -20,7 +20,7 @@ export function useAllOffreDeStages() {
 }
 
 
-// https://api-4.fly.dev/demandeDeStages/65f8e7c27e8a7a318bf937cf
+// https://api-4.fly.dev/internship-offers/65f8e7c27e8a7a318bf937cf
 export function useOffreDeStages() {
     const offreDeStagesResult = ref(null);
 

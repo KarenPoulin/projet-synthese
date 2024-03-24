@@ -9,11 +9,11 @@
       </div>
     </div>
 
-    <div v-else-if="isEnteteDemandeOffre" class="ficheDetaillee__conteneur-titres-entete">
+    <div v-else-if="isEnteteOffreDeStage" class="ficheDetaillee__conteneur-titres-entete">
       <div class="ficheDetaillee__titre">
-        <div class="ficheDetaillee__bloc-style" :class="{'colorBgRed': isEnteteDemandeOffre}"></div>
+        <div class="ficheDetaillee__bloc-style" :class="{'colorBgRed': isEnteteOffreDeStage}"></div>
         <span class="ficheDetaillee__sous-titre">Offre de stage</span>
-        <h1 class="ficheDetaillee__titre">{{ enteteDemandeOffre.title }}</h1>
+        <h1 class="ficheDetaillee__titre">{{ enteteOffreStage.title }}</h1>
       </div>
     </div>
   </div>
@@ -24,9 +24,9 @@ import { defineProps } from 'vue';
 
 const props = defineProps({
   isEnteteDemandeDeStage: Boolean,
-  isEnteteDemandeOffre: Boolean,
+  isEnteteOffreDeStage: Boolean,
   enteteDemandeStage: Object,
-  enteteDemandeOffre: Object,
+  enteteOffreStage: Object,
 });
 </script>
 
