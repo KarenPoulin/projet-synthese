@@ -13,7 +13,7 @@
       </div>
 
 
-      <main class="flex-grow pt-24 md:pt-16 p-4 md:px-20 md:py-20">
+      <main class="flex-grow pt-24 md:pt-16 p-4 md:px-40 md:py-40">
         <RouterView />
       </main>
     </div>
