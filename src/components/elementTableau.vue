@@ -1,5 +1,5 @@
 <template>
-    <tr class="border-b-4 border-neutral-200">
+    <tr v-if="element" class="border-b-4 border-neutral-200">
         <td class="">
             <div class="my-5 pl-4 flex flex-row items-center border-l-4" 
                 :class="{ 'border-neutral-500': !isActive,  
@@ -30,8 +30,8 @@
                     </svg>
                 </div>
                 <div class="ml-3 flex flex-col">
-                    <p class="text-sm font-bold" :class="{'text-red-700': !isActive}">Intégrateur Web</p>
-                    <p class="text-sm">Jean-Sébastien tremblay</p>
+                    <p class="text-sm font-bold" :class="{'text-red-700': !isActive}">{{isDemandes ? "Intégrateur Web" : element.title }}</p>
+                    <p class="text-sm">{{isDemandes ? "Jean-Sébastien tremblay" : element.enterprise.name}}</p>
                 </div>
             </div>
         </td>
@@ -41,14 +41,17 @@
         <td v-if="!isDemandes && isTableauDeBord">
             <p class="my-5 text-sm">Trois-Rivières</p>
         </td>
-        <td v-if="!isTableauDeBord">
+        <td v-if="!isTableauDeBord && !isDemandes && activitySectorResult">
+            <p class="my-5 text-sm">{{activitySectorResult.value}}</p>
+        </td>
+        <td v-if="!isTableauDeBord && isDemandes">
             <p class="my-5 text-sm">Nouvelles technologies</p>
         </td>
         <td v-if="!isTableauDeBord">
             <p class="my-5 text-sm">Mauricie</p>
         </td>
         <td>
-            <p class="my-5 text-sm">2022-03-02</p>
+            <p class="my-5 text-sm">{{ isDemandes? "2022-03-02" : formatDate(element.startDate) }}</p>
         </td>
         <td>
             <div class="my-5 flex flex-row items-center justify-between">
@@ -72,9 +75,41 @@
 </template>
 
 <script setup>
+    import { onMounted, ref } from 'vue';
+    import { useActivitySector } from '@/composables/secteurActivites';
+
+    let isActive = ref(true);
+
     const props = defineProps({
         isDemandes: Boolean,
         isTableauDeBord: Boolean,
-        isActive: Boolean
+        element: Object
+    })
+
+    const { activitySectorResult, getActivitySectorById} = useActivitySector();
+    let activitySectorId = ref(null);
+
+    /* Format de date 'année-mois-jours' */
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        
+        const year = date.getFullYear();
+        const month = ('0' + (date.getMonth() + 1)).slice(-2); // Ajout de 1 puisque le mois commence à 0
+        const day = ('0' + date.getDate()).slice(-2);
+        
+        return `${year}-${month}-${day}`;
+    };
+
+    onMounted(async () => {
+        console.log(props.element);
+        if (props.element.enterprise) {
+            activitySectorId = props.element.enterprise.activitySector;
+            await getActivitySectorById(activitySectorId);
+        }
+        if (props.element.isActive) {
+            isActive = true;
+        } else {
+            isActive = false;
+        }
     })
 </script>

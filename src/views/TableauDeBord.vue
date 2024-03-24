@@ -1,5 +1,5 @@
 <template>
-    <table class="w-full mb-10">
+<!--     <table class="w-full mb-10">
         <EnteteTableau :isDemandes="true" :isTableauDeBord="true" />
         <ElementTableau :isDemandes="true" :isTableauDeBord="true" :isActive="true" />
     </table>
@@ -16,7 +16,7 @@
         <EnteteTableau :isDemandes="false" :isTableauDeBord="false" />
         <ElementTableau :isDemandes="false" :isTableauDeBord="false" :isActive="true"/>
         <ElementTableau :isDemandes="false" :isTableauDeBord="false" :isActive="false"/>
-    </table>
+    </table> -->
 </template>
 
 <script setup>
