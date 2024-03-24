@@ -2,7 +2,7 @@
     <tr v-if="element" class="border-b-4 border-neutral-200">
         <td class="">
             <div class="my-5 pl-4 flex flex-row items-center border-l-4" 
-                :class="{ 'border-neutral-500': !isActive && !isTableauDeBord,  
+                :class="{ 'border-neutral-500': !isActive && !isTableauDeBord && !isDemandes,  
                         'border-yellow-600': isDemandes, 
                         'border-red-800/[0.85]': !isDemandes}">
                 <div v-if="isDemandes && isActive" class="p-3 bg-yellow-600/[.5] rounded-lg">
@@ -104,11 +104,12 @@
         if (props.element.enterprise) {
             activitySectorId = props.element.enterprise.activitySector;
             await getActivitySectorById(activitySectorId);
-        }
-        if (props.element.isActive) {
-            isActive = true;
-        } else {
-            isActive = false;
+
+            if (props.element.isActive) {
+                isActive = true;
+            } else {
+                isActive = false;
+            }
         }
     })
 </script>
