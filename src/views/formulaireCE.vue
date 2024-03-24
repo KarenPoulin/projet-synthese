@@ -298,8 +298,6 @@
         props: ['type', 'enterpriseId', 'candidateId', 'editing'],
         setup(props) {
             const isCandidat = computed(() => props.type === 'candidat')
-
-
             const fullName = ref('')
             const position = ref('')
             const description = ref('')
