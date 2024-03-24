@@ -1,7 +1,7 @@
 <template>
   <div class="bg-neutral-100 w-full mx-auto">
     <!-- ENTÊTE -->
-    <h1 class="text-4xl font-bold text-neutral-500 m-10 p-5">{{ isRequest ? 'Ajouter une demande de stage' : 'Offre de stage' }}</h1>
+    <h1 class="text-4xl font-bold text-neutral-500 m-10 p-5">{{ isRequest ? 'Ajouter une demande de stage' : 'Ajouter une offre de stage' }}</h1>
 
 
 
