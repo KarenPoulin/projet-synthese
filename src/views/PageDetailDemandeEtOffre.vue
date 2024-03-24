@@ -1,24 +1,24 @@
 <template>
-    <div>
-      <!-- v-if="demandeDeStageResult && offreDeStagesResult" -->
+    <div v-if="demandeDeStageResult || offreDeStagesResult">
       <entetePageDetailDemandeEtOffre
       :isEnteteDemandeDeStage="true"
       :isEnteteDemandeOffre="false"
       :enteteDemandeStage="demandeDeStageResult"
-      :enteteDemandeOffre="offreDeStagesResult"/>
+      :enteteDemandeOffre="offreDeStagesResult"
+      />
       <fichePageDetailDemandeEtOffre
-      :isFicheDetailDemandeDeStage="true"
-      :isFicheDetailDemandeOffre="false"
+      :isFicheDetailDemandeDeStage="false"
+      :isFicheDetailDemandeOffre="true"
       :ficheDemandeStage="demandeDeStageResult"
       :ficheOffreStage="offreDeStagesResult"
       @emitConsulter="consulterAction"
       @emitSupprimer="toggleModalSuppression"
       />
       <!-- :id="demandeDeStageResult._id" -->
-      <modalSuppression
+      <!-- <modalSuppression
       :modalSuppressionVisible="modalSuppressionVisible"
       @suppressionAnnulee="suppressionAnnulee"
-      @confirmationSuppression="confirmationSuppression"/>
+      @confirmationSuppression="confirmationSuppression"/> -->
     </div>
     <!-- <div v-else>
       chargement en cours...

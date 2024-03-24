@@ -4,12 +4,12 @@
     <!-- Conteneur des icônes de mode -->
     <div class="ficheDetaillee__conteneur-icônes-mode"  v-if="isFicheDetailDemandeDeStage || isFicheDetailDemandeOffre">
     <i class="ficheDetaillee__icône-consulter fas fa-trash" @click="emitConsulter"></i> 
-    <RouterLink v-if="isFicheDetailDemandeDeStage" :to="{ name: 'formulairedo', params: { id } }">
+    <!-- <RouterLink v-if="isFicheDetailDemandeDeStage" :to="{ name: 'formulairedo', params: { id } }">
     <i class="ficheDetaillee__icône-editer fas fa-trash"></i>
     </RouterLink>
     <RouterLink v-else-if="isFicheDetailDemandeOffre" :to="{ name: 'formulairedo', params: { id } }">
     <i class="ficheDetaillee__icône-editer fas fa-trash"></i>
-    </RouterLink>
+    </RouterLink> -->
     <i class="ficheDetaillee__icône-supprimer fas fa-trash" @click="emitSupprimer"></i>
     </div>
 
@@ -162,9 +162,11 @@
   <!-- Titre et description -->
   <div class="ficheDetaillee__conteneur-titres">
     <h2 class="ficheDetaillee__nom-personne" :class="{'colorBlue': isFicheDetailDemandeDeStage}">
-      {{ ficheDemandeStage.candidate.firstname ? ficheDemandeStage.candidate.firstname + ' ' + ficheDemandeStage.candidate.lastname : 'Nom Prenom'}}
+      {{ ficheOffreStage.candidate.firstname ? ficheOffreStage.candidate.firstname + ' ' + ficheOffreStage.candidate.lastname : 'Nom Prenom'}}
+
     </h2>
-    <p>{{ ficheOffreStage.province ? ficheOffreStage.province : 'Description' }}</p>
+    {{ ficheOffreStage.candidate.description ?  ficheOffreStage.candidate.description : 'Description'}}
+
   </div>
    <!-- Conteneurs d'informations générales offre de stage-->
    <div class="ficheDetaillee__conteneur-informations-generales-offre">
@@ -244,8 +246,8 @@
 </div>
 
 <div class="ficheDetaillee__conteneur-informations-supplementaires">
-          <h2>{{ ficheOffreStage.province }}</h2>
-          <p>{{ ficheOffreStage.province }}</p>
+  {{ ficheDemandeStage.province ? ficheDemandeStage.province : 'Province inconnue' }}
+  {{ ficheDemandeStage.province ? ficheDemandeStage.province : 'Province inconnue' }}
 </div>
 </div>
 </div>
@@ -260,10 +262,10 @@ const props = defineProps({
   isFicheDetailDemandeOffre: Boolean,
   ficheDemandeStage: Object,
   ficheOffreStage: Object,
-  id: Number
+  // id: Number
 });
 
-const emits = defineEmits(['emitConsulter', 'emitSupprimer']);
+ const emits = defineEmits(['emitConsulter', 'emitSupprimer']);
   
   const emitConsulter = () => {
     emits('emitConsulter');
@@ -271,6 +273,11 @@ const emits = defineEmits(['emitConsulter', 'emitSupprimer']);
   
   const emitSupprimer = () => {
     emits('emitSupprimer');
+  }
+
+  // Définissez une fonction utilitaire pour obtenir une valeur de propriété en toute sécurité
+  function getPropertySafe(obj, path, defaultValue = '') {
+    return path.split('.').reduce((acc, key) => acc && acc[key], obj) || defaultValue;
   }
 
 </script>
