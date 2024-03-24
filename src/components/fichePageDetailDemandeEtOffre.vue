@@ -13,7 +13,7 @@
         <!-- Icone pour éditer -->
         <!-- <RouterLink v-if="isFicheDetailDemandeDeStage || (isFicheDetailOffreDeStage && !isFicheDetailDemandeDeStage)" :to="{ name: 'formulairedo', params: { id } }">
         </RouterLink> -->
-        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+        <i class="fa-solid fa-pen-to-square"></i>
 
         <!-- Icone pour supprimer -->
         <i
