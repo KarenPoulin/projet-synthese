@@ -25,7 +25,7 @@ import { useAllOffreDeStages } from '@/composables/offreDeStage';
 import ElementTableau from '../components/elementTableau.vue'
 import EnteteTableau from '../components/enteteTableau.vue'
 
-// Fonction pour émettre les routes dynamiques vers le formulaireDO pour une offre
+// Fonction pour émettre la route dynamique vers le formulaireDO pour ajouter une offre
 const router = useRouter()
 const goToFormDO = type => {
   router.push({ name: 'formulairedo', params: { type } })

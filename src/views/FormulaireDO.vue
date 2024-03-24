@@ -1,11 +1,11 @@
 <template>
   <div class="bg-neutral-100 w-full mx-auto">
-    <!-------------------- Entête -------------------->
-    <!-- <h1 class="text-4xl font-bold text-neutral-500 m-10 p-5">{{ isRequest ? 'Ajouter une demande de stage' : 'Offre de stage' }}</h1> -->
+    <!-- ENTÊTE -->
+    <h1 class="text-4xl font-bold text-neutral-500 m-10 p-5">{{ isRequest ? 'Ajouter une demande de stage' : 'Offre de stage' }}</h1>
 
 
 
-    <!-------------------- Formulaire  ---------------------->
+    <!-- FORMULAIRE  -->
     <form class="m-[25px]">
       <!-- BOUTONS D'ACTION -->
       <div>
@@ -16,10 +16,9 @@
             :class="isRequest ? 'bg-teal-500 text-white px-4 py-2 m-1 rounded hover:bg-teal-600' : 'bg-red-800 text-white px-4 py-2 m-1 rounded hover:bg-red-900'"
             @click="submitForm"><i class="fa-solid fa-floppy-disk p-1"></i>{{ isAdding ? 'Sauvegarder' : 'Mettre à jour'
             }}</button>
-
         </div>
-
         <div>
+
           <!-- CHAMP TITRE POUR LES DEMANDES ET OFFRES -->
           <div class="flex items-baseline mt-5">
             <label for="title" class="text-base text-center font-bold text-neutral-500 block mr-4">Titre: </label>
@@ -40,19 +39,17 @@
               @change="validateSelect(formFieldsLinkedWithApi.enterprise, 'enterprise')" type="text"
               class="border border-gray-300 p-2 w-full rounded  focus:bg-white"
               :class="{ 'hover:bg-teal-100': isRequest, 'hover:bg-red-100': !isRequest }">
-              <option v-for="enterprise in allEnterprisesResults" :key="enterprise._id" :value="enterprise.name">{{ enterprise.name
-                }}</option>
+              <option v-for="enterprise in allEnterprisesResults" :key="enterprise._id" :value="enterprise.name">{{
+              enterprise.name
+            }}</option>
             </select>
-            
           </div>
           <span v-if="fieldsToValidate.enterprise !== ''" class="text-xs font-semibold mb-2 text-red-700">{{
               fieldsToValidate.enterprise }}</span>
         </div>
-
       </div>
 
-
-      <!-- CHAMP NOM & PRÉNOM POUR LES DEMANDES ET OFFRES -->
+      <!-- CHAMP NOM COMPLET  POUR LES DEMANDES ET LES OFFRES -->
       <div class="bg-white p-10 mt-10">
         <div v-if="isRequest" class="m-2">
           <label for="fullName" class="text-sm font-bold text-neutral-500  block">Nom et prénom</label>
@@ -60,10 +57,10 @@
             @change="validateSelect(formFieldsLinkedWithApi.fullName, 'fullName')" type="text"
             class="border border-gray-300 w-full rounded focus:bg-white"
             :class="{ 'hover:bg-teal-100': isRequest, 'hover:bg-red-100': !isRequest }">
-            <option v-for="candidate in allCandidatesResults" :key="candidate._id" :value="candidate.firstName & candidate.lastName">{{
-              candidate.firstName}} {{ candidate.lastName }}</option>
-            </select>
-           
+            <option v-for="candidate in allCandidatesResults" :key="candidate._id"
+              :value="candidate.firstName & candidate.lastName">{{
+              candidate.firstName }} {{ candidate.lastName }}</option>
+          </select>
           <span v-if="fieldsToValidate.fullName !== ''" class="p-2 text-xs font-semibold text-red-700">{{
               fieldsToValidate.fullName
             }}</span>
@@ -162,7 +159,6 @@
           </div>
         </div>
 
-
         <!-- CHAMP EXIGENCES POUR LES OFFRES -->
         <div v-if="!isRequest" class=" m-2 relative">
           <div class="h-[98px] w-1.5 bg-neutral-800 absolute inset-y-0 left-0"></div>
@@ -187,10 +183,8 @@
               fieldsToValidate.skills }}</span>
         </div>
 
-
         <p class=" text-base font-bold px-4 py-2 m-1" :class="isRequest ? ' text-teal-500' : 'text-red-800'">
           Information sur le stage</p>
-
 
         <!-- CHAMP TYPE DE STAGE  POUR LES DEMANDES ET LES OFFRES -->
         <div class="grid grid-cols-2 gap-4 items-baseline">
@@ -313,7 +307,7 @@ import { useProvinces } from '@/composables/provinces';
 import { useAllCandidates } from '@/composables/candidats';
 import { useAllEnterprises } from '@/composables/entreprises';
 
-
+// DÉCLARATION DES VARIABLES REQUISES POUR LES ROUTES ET LA RÉUTILISATION DU FORMULAIRE
 // Props pour utiliser dans les routes vers le formulaire selon si c'est une demande ou un offre
 const props = defineProps(['isRequest'])
 
@@ -322,20 +316,21 @@ const props = defineProps(['isRequest'])
 let isAdding = ref(true);
 
 
-// REQUÊTE DE L'API //
+
+// UTILISATION DES COMPOSABLES POUR L'AFFICHAGE DES DONNÉES VENANT DE L'API //
 //Fonction pour afficher les candidats venant de l'api
-const { allCandidatesResults,   getAllCandidates } = useAllCandidates();
+const { allCandidatesResults, getAllCandidates } = useAllCandidates();
 
 onMounted(async () => {
-  await   getAllCandidates();
+  await getAllCandidates();
   console.log(allCandidatesResults);
 })
 
 //Fonction pour afficher les entreprises venant de l'api
-const { allEnterprisesResults,  getAllEnterprises } = useAllEnterprises();
+const { allEnterprisesResults, getAllEnterprises } = useAllEnterprises();
 
 onMounted(async () => {
-  await   getAllEnterprises();
+  await getAllEnterprises();
   console.log(allEnterprisesResults);
 })
 
@@ -365,9 +360,7 @@ onMounted(async () => {
   console.log(allIntershipTypesResults);
 })
 
-
-
-
+// REQUÊTE POUR ENVOYER LES DONNÉES À L'API
 // Création des variables dans les formulaires à envoyer à l'api 
 const formFieldsLinkedWithApi = reactive({
   title: '',
@@ -375,10 +368,10 @@ const formFieldsLinkedWithApi = reactive({
   taskDescription: '',
   fullName: '',
   description: '',
-  programme: 'Technique de développement web',
-  requiredSkills: ['vue.js', 'angular', 'react'],
-  skills: ['vue.js', 'angular', 'react'],
-  etablissement: 'Cégep',
+  programme: '',
+  requiredSkills: '',
+  skills: '',
+  etablissement: '',
   activitySector: '',
   city: '',
   region: '',
@@ -389,8 +382,12 @@ const formFieldsLinkedWithApi = reactive({
   endDate: '',
   paid: '',
   additionalInformation: '',
-
 });
+
+
+// VALIDATION DES CHAMPS DES FORMULAIRES
+//Variable pour effectuer la validation avant la soumission
+let isFormValid = ref(false);
 
 // Variables pour des messages d'erreur des formulaires 
 const errorMessage = reactive({
@@ -430,10 +427,7 @@ const fieldsToValidate = reactive({
 });
 
 
-let isFormValid = ref(false);
 
-
-// VALIDATION DES CHAMPS DU FORM 
 // Fonction pour valider les champs de type input
 function validateInput(input, field) {
 
@@ -466,7 +460,6 @@ function validateSelect(select, field) {
 }
 
 
-
 // Fonction pour valider les champs de type date
 function validateDate(input, field) {
   const selectedDate = new Date(input);
@@ -489,8 +482,6 @@ function validateDate(input, field) {
 }
 
 
-
-
 // Fonction pour valider les champs de type nombre
 function validateNumber(input, field) {
   input = String(input);
@@ -511,7 +502,6 @@ function validateNumber(input, field) {
 }
 
 
-
 // Fonction pour valider les champs de type radio
 function validatePaid(value) {
   if (value !== 'DISCRETIONARY' && value !== 'PAID' && value !== 'UNPAID') {
@@ -523,8 +513,6 @@ function validatePaid(value) {
 }
 
 
-
-// SOUMISSION DU FORMULAIRE
 // Fonction pour soumettre le formulaire 
 const submitForm = (e) => {
   e.preventDefault();
@@ -546,7 +534,6 @@ const submitForm = (e) => {
   fieldsToValidate.enterprise = validateSelect(formFieldsLinkedWithApi.enterprise, 'enterprise');
   fieldsToValidate.taskDescription = validateInput(formFieldsLinkedWithApi.taskDescription, 'taskDescription');
   fieldsToValidate.requiredSkills = validateInput(formFieldsLinkedWithApi.requiredSkills, 'requiredSkills');
-
 
   isFormValid.value = Object.values(fieldsToValidate).every(value => value === '');
   if (isFormValid.value) {
@@ -571,9 +558,4 @@ const resetForm = (e) => {
 };
 </script>
 
-<style scoped>
-saveIcon {
-  width: 1px;
-  height: 1px;
-}
-</style>
+<style scoped></style>

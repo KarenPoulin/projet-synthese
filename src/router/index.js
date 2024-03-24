@@ -65,26 +65,26 @@ const router = createRouter({
           props: route => ({ isRequest: route.params.type === 'request' })
         },
         {
-          path:'pagedetaildemandedestage/:id',
-          name:'pagedetaildemandedestage',
+          path: 'pagedetaildemandedestage/:id',
+          name: 'pagedetaildemandedestage',
           component: PageDetailDemandeEtOffre
         },
         {
-          path:'pagedetailoffredestage/:id',
-          name:'pagedetailoffredestage',
+          path: 'pagedetailoffredestage/:id',
+          name: 'pagedetailoffredestage',
           component: PageDetailDemandeEtOffre
         },
         {
-          path:'fichedetailcandidat/:id',
-          name:'fichedetailcandidat',
+          path: 'fichedetailcandidat/:id',
+          name: 'fichedetailcandidat',
           component: FicheDetailCandidatEntreprise
         },
         {
-          path:'fichedetailentreprise/:id',
-          name:'fichedetailentreprise',
+          path: 'fichedetailentreprise/:id',
+          name: 'fichedetailentreprise',
           component: FicheDetailCandidatEntreprise
         }
-        
+
       ]
     },
     {

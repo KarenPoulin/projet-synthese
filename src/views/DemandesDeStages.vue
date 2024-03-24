@@ -32,7 +32,7 @@ import { useAllDemandeDeStages } from '@/composables/demandeDeStage';
 import ElementTableau from '../components/elementTableau.vue'
 import EnteteTableau from '../components/enteteTableau.vue'
 
-// Fonction pour émettre les routes dynamiques vers le formulaireDO pour une demande
+// Fonction pour émettre la route dynamique vers le formulaireDO pour ajouter une demande
 const router = useRouter()
 const goToFormDO = type => {
   router.push({ name: 'formulairedo', params: { type } })
@@ -43,4 +43,6 @@ const { allDemandeDeStagesResults, getAllDemandeDeStages } = useAllDemandeDeStag
 onMounted(async () => {
   await getAllDemandeDeStages();
 })
+
+
 </script>
