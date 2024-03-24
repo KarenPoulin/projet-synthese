@@ -14,6 +14,7 @@
       @emitConsulter="consulterAction"
       @emitSupprimer="toggleModalSuppression"
     />
+    <!-- :id="demandeDeStageResult._id" -->
     <modalSuppression
       :modalSuppressionVisible="modalSuppressionVisible"
       @suppressionAnnulee="suppressionAnnulee"
