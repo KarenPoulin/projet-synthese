@@ -1,6 +1,6 @@
 <template>
 
-    <div class="mb-12 w-full flex flex-col md:flex-row gap-x-2 justify-between">
+    <div v-if="intershipRequestsCount && intershipOffersCount && candidatesCount && enterprisesCount" class="mb-12 w-full flex flex-col md:flex-row gap-x-2 justify-between">
         <div class="bg-yellow-500 h-full w-full rounded-lg">
             <div class="py-2 lg:py-4 px-2 lg:px-4 w-11/12 flex flex-row items-center text-white bg-yellow-400 rounded-tl-lg rounded-bl-lg">
                 <div class="mr-2">
@@ -11,7 +11,7 @@
                 </div>
                 <div>
                     <p class="text-xs lg:text-sm font-medium">Demandes de stage</p>
-                    <p class="text-base lg:text-xl font-bold">125</p>
+                    <p class="text-base lg:text-xl font-bold">{{ intershipRequestsCount }}</p>
                 </div>
             </div>
         </div>
@@ -24,7 +24,7 @@
                 </div>
                 <div>
                     <p class="text-xs lg:text-sm font-medium">Offres de stage</p>
-                    <p class="text-base lg:text-xl font-bold">125</p>
+                    <p class="text-base lg:text-xl font-bold">{{ intershipOffersCount }}</p>
                 </div>
             </div>
         </div>
@@ -38,7 +38,7 @@
                     </div>
                     <div>
                         <p class="text-xs lg:text-sm font-medium">Candidats</p>
-                        <p class="text-base lg:text-xl font-bold">125</p>
+                        <p class="text-base lg:text-xl font-bold">{{ candidatesCount }}</p>
                     </div>
                 </div>
             </div>
@@ -51,16 +51,12 @@
                     </div>
                     <div>
                         <p class="text-xs lg:text-sm font-medium">Candidats</p>
-                        <p class="text-base lg:text-xl font-bold">125</p>
+                        <p class="text-base lg:text-xl font-bold">{{ enterprisesCount }}</p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
-
-
-
 
 
     <div v-if="allDemandeDeStagesResults" class="mt-4 mb-16 px-10 py-16 bg-white rounded-lg">
@@ -92,6 +88,7 @@
 
 <script setup>
 import { onMounted, ref } from 'vue';
+import axios from 'axios';
 import { useAllDemandeDeStages } from '@/composables/demandeDeStage';
 import { useAllOffreDeStages } from '@/composables/offreDeStage';
 import ElementTableau from '../components/elementTableau.vue'
@@ -100,8 +97,35 @@ import EnteteTableau from '../components/enteteTableau.vue'
 const { allDemandeDeStagesResults, getAllDemandeDeStages } = useAllDemandeDeStages();
 const { allOffreDeStagesResults, getAllOffreDeStages } = useAllOffreDeStages();
 
+let intershipRequestsCount = ref(null);
+let intershipOffersCount = ref(null);
+let candidatesCount = ref(null);
+let enterprisesCount = ref(null);
+
+const baseUrl = "https://api-4.fly.dev/";
+const intershipRequests = "internship-requests/";
+const intershipOffers = "internship-offers/";
+const candidates = "candidates/";
+const enterprises = "enterprises/";
+
+
+const getDataCount = async (endpoint, variable) => {
+    try {
+        const res = await axios.get(`${baseUrl}${endpoint}count`);
+        if (res) variable.value = res.data;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+
 onMounted(async () => {
     await getAllDemandeDeStages();
     await getAllOffreDeStages();
+    getDataCount(intershipRequests, intershipRequestsCount);
+    getDataCount(intershipOffers, intershipOffersCount);
+    getDataCount(candidates, candidatesCount);
+    getDataCount(enterprises, enterprisesCount);
+
 })
 </script>

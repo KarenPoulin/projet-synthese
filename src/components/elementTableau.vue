@@ -101,7 +101,6 @@
     };
 
     onMounted(async () => {
-        console.log(props.element);
         if (props.element.enterprise) {
             activitySectorId = props.element.enterprise.activitySector;
             await getActivitySectorById(activitySectorId);
