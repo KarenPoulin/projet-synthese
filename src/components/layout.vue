@@ -8,7 +8,7 @@
 
     <div class="w-full flex flex-col">
 
-      <div class="bg-neutral-100 z-20 md:static fixed top-0 left-0 right-0 h-24 ">
+      <div class="bg-neutral-100 z-20 sm:static top-0 left-0 right-0 ">
         <MenuActions />
       </div>
 
