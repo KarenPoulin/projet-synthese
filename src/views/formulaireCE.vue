@@ -286,7 +286,7 @@
 
 </template>
 
-<script steup>
+<script>
     import {
         ref,
         reactive,
@@ -299,14 +299,7 @@
     } from 'vue-router'
 
 
-    const router = useRouter();
-    const showCandidateForm = ref(false);
 
-    onMounted(() => {
-        if (router.currentRoute.value.params.from === 'entreprises') {
-            showCandidateForm.value = true;
-        }
-    });
     export default {
         props: 'type',
         entrepriseId: {
@@ -318,8 +311,11 @@
             required: false
         },
         setup(props) {
-            const isCandidat = computed(() => props.type === 'candidat')          
-           
+            const router = useRouter();
+            const editing = ref(false);
+            const showCandidateForm = ref(false);
+            const isCandidat = computed(() => props.type === 'candidat')
+
             const formData = reactive({
                 fullName: '',
                 position: '',
@@ -668,7 +664,13 @@
                 }
             }
             onMounted(() => {
-                fetchProvinces()
+                const type = router.currentRoute.value.params.type; 
+                if (type === 'entreprises') {
+                    showCandidateForm.value = true;
+                }
+
+
+                fetchProvinces();
                 if (!isCandidat.value && props.enterpriseId) {
                     fetchEnterprise(props.enterpriseId)
                 }
@@ -707,7 +709,9 @@
                 validateName,
                 validateLogo,
                 provinces,
-                
+                editing,
+                showCandidateForm
+
             }
         },
     }
