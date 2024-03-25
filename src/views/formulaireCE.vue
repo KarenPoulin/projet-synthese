@@ -318,7 +318,7 @@
             required: false
         },
         setup(props) {
-            const isCandidat = computed(() => props.type === 'candidat')
+            const isCandidat = computed(() => props.type === 'candidat')            
             const editing = ref(false)
             const formData = reactive({
                 fullName: '',
