@@ -39,13 +39,13 @@
 
                     <div class="nom_poste mb-4">
                         <label for="fullName" class="block mb-1  text-neutral-500 font-bold">Nom et prénom </label>
-                        <input type="text" id="fullName" v-model="form.fullName" @input="validateFullName"
+                        <input type="text" id="fullName" v-model="formData.fullName" @input="validateFullName"
                             class="w-full border-gray-300 rounded-md p-2">
                         <span class="text-red-500">{{ fullNameError }}</span>
                     </div>
                     <div class="nom_poste mb-4">
                         <label for="position" class="block mb-1  text-neutral-500 font-bold">Poste</label>
-                        <input type="text" id="position" v-model="form.position" @input="validatePosition"
+                        <input type="text" id="position" v-model="formData.position" @input="validatePosition"
                             class="w-full border-gray-300 rounded-md p-2">
                         <span class="text-red-500">{{ positionError }}</span>
                     </div>
@@ -54,7 +54,7 @@
                             <label for="description" class="block mb-4">
                                 <h2 class="text-teal-500 text-lg font-bold">Courte présentation</h2>
                             </label>
-                            <textarea id="description" v-model="form.description" @input="validateDescription"
+                            <textarea id="description" v-model="formData.description" @input="validateDescription"
                                 class="block  w-full border-gray-300 rounded-md p-2"></textarea>
                             <span class="text-red-500">{{ descriptionError }}</span>
                         </div>
@@ -63,20 +63,20 @@
                             <div class="block_info-perso-adresse">
                                 <div class="mb-4 input_barre-modifier">
                                     <label for="address" class="block mb-1 text-neutral-500 font-bold">Adresse</label>
-                                    <input type="text" id="address" v-model="form.address" @input="validateAddress"
+                                    <input type="text" id="address" v-model="formData.address" @input="validateAddress"
                                         class="w-full border-gray-300 rounded-md p-2">
                                     <span v-if="!addressError" class="text-red-500">{{ addressError }}</span>
                                 </div>
                                 <div class="mb-4 input_barre-modifier">
                                     <label for="city" class="block mb-1  text-neutral-500 font-bold">Ville</label>
-                                    <input type="text" id="city" v-model="form.city" @input="validateCity"
+                                    <input type="text" id="city" v-model="formData.city" @input="validateCity"
                                         class="w-full border-gray-300 rounded-md p-2">
                                     <span v-if="!cityError" class="text-red-500">{{ cityError }}</span>
                                 </div>
                                 <div class="mb-4 input_barre-modifier">
                                     <label for="province"
                                         class="block mb-1  text-neutral-500 font-bold">Province</label>
-                                    <select id="province" v-model="form.provinceId" @change="validateProvince"
+                                    <select id="province" v-model="formData.provinceId" @change="validateProvince"
                                         class="w-full border-gray-300 rounded-md p-2">
                                         <option value="" disabled selected>Choisissez une province</option>
                                         <option v-for="province in provinces" :value="province._id" :key="province._id">
@@ -88,7 +88,7 @@
                                 <div class="mb-4 input_barre-modifier">
                                     <label for="postalCode" class="block mb-1  text-neutral-500 font-bold">Code
                                         postal</label>
-                                    <input type="text" id="postalCode" v-model="form.postalCode"
+                                    <input type="text" id="postalCode" v-model="formData.postalCode"
                                         @input="validatePostalCode" class="w-full border-gray-300 rounded-md p-2">
                                     <span v-if="!postalCodeError" class="text-red-500">{{ postalCodeError }}</span>
                                 </div>
@@ -96,13 +96,13 @@
                             <div class="block_info-perso-contact">
                                 <div class="mb-4 input_barre-modifier">
                                     <label for="phone" class="block mb-1  text-neutral-500 font-bold">Téléphone</label>
-                                    <input type="text" id="phone" v-model="form.phone" @input="validatePhone"
+                                    <input type="text" id="phone" v-model="formData.phone" @input="validatePhone"
                                         class="w-full border-gray-300 rounded-md p-2">
                                     <span v-if="!phoneError" class="text-red-500">{{ phoneError }}</span>
                                 </div>
                                 <div class="mb-4 input_barre-modifier">
                                     <label for="email" class="block mb-1  text-neutral-500 font-bold">Courriel</label>
-                                    <input type="email" id="email" v-model="form.email" @input="validateEmail"
+                                    <input type="email" id="email" v-model="formData.email" @input="validateEmail"
                                         class="w-full border-gray-300 rounded-md p-2">
                                     <span v-if="!emailError" class="text-red-500">{{ emailError }}</span>
                                 </div>
@@ -141,8 +141,8 @@
                         <div class="titre_barre-modifier">
                             <div class="titre_modifer">
                                 <p class="text-neutral-500">Entreprise</p>
-                                <h1 class="text-neutral-500">{{ form.name }}</h1>
-                                <p class="poste text-neutral-500">{{ form.image }}</p>
+                                <h1 class="text-neutral-500">{{ formData.name }}</h1>
+                                <p class="poste text-neutral-500">{{ formData.image }}</p>
                             </div>
                         </div>
                     </div>
@@ -171,7 +171,7 @@
 
                     <div class="nom_poste mb-4">
                         <label for="name" class="block mb-1  text-neutral-500 font-bold">Nom </label>
-                        <input type="text" id="name" v-model="form.name" @input="validateName"
+                        <input type="text" id="name" v-model="formData.name" @input="validateName"
                             class="w-full border-gray-300 rounded-md p-2">
                         <span class="text-red-500">{{ nameError }}</span>
                     </div>
@@ -179,7 +179,7 @@
                         <label for="image" class="block mb-1 text-neutral-500 font-bold">Logo</label>
                         <div class="flex items-center">
 
-                            <input type="text " id="image" v-model="form.image" @input="validateLogo"
+                            <input type="text " id="image" v-model="formData.image" @input="validateLogo"
                                 class="w-full border-gray-300 rounded-md p-2">
                             <label for="image"
                                 class="cursor-pointer bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center">
@@ -195,13 +195,13 @@
                             <label for="description" class="block mb-4">
                                 <h2 class="text-teal-500 text-lg font-bold">Courte présentation</h2>
                             </label>
-                            <textarea id="description" v-model="form.description" @input="validateDescription"
+                            <textarea id="description" v-model="formData.description" @input="validateDescription"
                                 class="block  w-full border-gray-300 rounded-md p-2"></textarea>
                             <span class="text-red-500">{{ descriptionError }}</span>
                         </div>
                         <div class="mb-4 input_barre-modifier">
                             <label for="contact" class="block mb-1 text-neutral-500 font-bold">Personne Contact</label>
-                            <input type="text" id="contact" v-model="form.contact" @input="validateName"
+                            <input type="text" id="contact" v-model="formData.contact" @input="validateName"
                                 class="w-full border-gray-300 rounded-md p-2">
                             <span v-if="!nameError" class="text-red-500">{{ nameError }}</span>
                         </div>
@@ -210,20 +210,20 @@
                             <div class="block_info-perso-adresse">
                                 <div class="mb-4 input_barre-modifier">
                                     <label for="address" class="block mb-1 text-neutral-500 font-bold">Adresse</label>
-                                    <input type="text" id="address" v-model="form.address" @input="validateAddress"
+                                    <input type="text" id="address" v-model="formData.address" @input="validateAddress"
                                         class="w-full border-gray-300 rounded-md p-2">
                                     <span v-if="!addressError" class="text-red-500">{{ addressError }}</span>
                                 </div>
                                 <div class="mb-4 input_barre-modifier">
                                     <label for="city" class="block mb-1  text-neutral-500 font-bold">Ville</label>
-                                    <input type="text" id="city" v-model="form.city" @input="validateCity"
+                                    <input type="text" id="city" v-model="formData.city" @input="validateCity"
                                         class="w-full border-gray-300 rounded-md p-2">
                                     <span v-if="!cityError" class="text-red-500">{{ cityError }}</span>
                                 </div>
                                 <div class="mb-4 input_barre-modifier">
                                     <label for="province"
                                         class="block mb-1  text-neutral-500 font-bold">Province</label>
-                                    <select id="province" v-model="form.provinceId" @change="validateProvince"
+                                    <select id="province" v-model="formData.provinceId" @change="validateProvince"
                                         class="w-full border-gray-300 rounded-md p-2">
                                         <option value="" disabled selected>Choisissez une province</option>
                                         <option v-for="province in provinces" :value="province._id" :key="province._id">
@@ -235,7 +235,7 @@
                                 <div class="mb-4 input_barre-modifier">
                                     <label for="postalCode" class="block mb-1  text-neutral-500 font-bold">Code
                                         postal</label>
-                                    <input type="text" id="postalCode" v-model="form.postalCode"
+                                    <input type="text" id="postalCode" v-model="formData.postalCode"
                                         @input="validatePostalCode" class="w-full border-gray-300 rounded-md p-2">
                                     <span v-if="!postalCodeError" class="text-red-500">{{postalCodeError }}</span>
                                 </div>
@@ -243,13 +243,13 @@
                             <div class="block_info-perso-contact">
                                 <div class="mb-4 input_barre-modifier">
                                     <label for="phone" class="block mb-1  text-neutral-500 font-bold">Téléphone</label>
-                                    <input type="text" id="phone" v-model="form.phone" @input="validatePhone"
+                                    <input type="text" id="phone" v-model="formData.phone" @input="validatePhone"
                                         class="w-full border-gray-300 rounded-md p-2">
                                     <span v-if="!phoneError" class="text-red-500">{{ phoneError }}</span>
                                 </div>
                                 <div class="mb-4 input_barre-modifier">
                                     <label for="email" class="block mb-1  text-neutral-500 font-bold">Courriel</label>
-                                    <input type="email" id="email" v-model="form.email" @input="validateEmail"
+                                    <input type="email" id="email" v-model="formData.email" @input="validateEmail"
                                         class="w-full border-gray-300 rounded-md p-2">
                                     <span v-if="!emailError" class="text-red-500">{{ emailError }}</span>
                                 </div>
@@ -288,15 +288,25 @@
 
 <script>
     import {
-        reactive,
         ref,
+        reactive,
         computed,
         onMounted
     } from 'vue'
     import axios from 'axios'
-
+    import {
+        RouterLink
+    } from 'vue-router'
     export default {
-        props: ['type', 'enterpriseId', 'candidateId', 'editing'],
+        props: 'type',
+        entrepriseId: {
+            type: String,
+            required: false
+        },
+        candidateId: {
+            type: String,
+            required: false
+        },
         setup(props) {
             const isCandidat = computed(() => props.type === 'candidat')
             const formData = reactive({
@@ -308,18 +318,19 @@
                 city: '',
                 email: '',
                 provinceId: '',
+                provinceValue: '',
                 postalCode: '',
                 skills: [],
                 name: '',
                 image: '',
                 contact: '',
                 activitySector: {
+
                     _id: '65f8df6040965a2e23d73271',
                     value: 'Technologies',
                 },
-                website: ''
-            })
-
+                website: 'test.com',
+            });
             const errors = reactive({
                 fullName: '',
                 position: '',
@@ -333,45 +344,59 @@
                 name: '',
                 logo: ''
             })
+            const fullNameError = ref(null)
+            const positionError = ref(null)
+            const descriptionError = ref(null)
+            const addressError = ref(null)
+            const phoneError = ref(null)
+            const cityError = ref(null)
+            const emailError = ref(null)
+            const provinceError = ref(null)
+            const postalCodeError = ref(null)
+            const nameError = ref(null)
+            const logoError = ref(null)
 
             const validateFullName = () => {
                 fullNameError.value = ''
-                const fullNameTrimmed = fullName.value.trim()
-                const fullNameWords = fullNameTrimmed.split(' ')
-                if (fullNameWords.length !== 2) {
-                    fullNameError.value = 'Le nom complet doit contenir exactement deux mots.'
+                const fullNameTrimmed = formData.fullName.trim()
+                const fullNameWords =
+                    fullNameTrimmed.split(' ')
+                if (
+                    fullNameWords.length !== 2) {
+                    fullNameError.value =
+                        'Le nom complet doit contenir exactement deux mots.'
                     return false
                 }
-                if (fullNameTrimmed.length < 3 || fullNameTrimmed.length > 50) {
-                    fullNameError.value = 'Le nom complet doit contenir entre 3 et 50 caractères.'
+                if (fullNameTrimmed.length < 3 ||
+                    fullNameTrimmed.length > 50) {
+                    fullNameError.value =
+                        'Le nom complet doit contenir entre 3 et 50 caractères.'
                     return false
                 }
                 return true
             }
-
             const validatePosition = () => {
                 positionError.value = ''
-                const positionTrimmed = position.value.trim()
-                if (positionTrimmed.length < 3 || positionTrimmed.length > 50) {
+                const positionTrimmed = formData.position.trim()
+                if (positionTrimmed.length < 3 || positionTrimmed
+                    .length > 50) {
                     positionError.value = 'Le poste doit contenir entre 3 et 50 caractères.'
                     return false
                 }
                 return true
             }
-
             const validateDescription = () => {
                 descriptionError.value = ''
-                const descriptionTrimmed = description.value.trim()
+                const descriptionTrimmed = formData.description.trim()
                 if (descriptionTrimmed.length < 3 || descriptionTrimmed.length > 250) {
                     descriptionError.value = 'La description doit contenir entre 3 et 250 caractères.'
                     return false
                 }
                 return true
             }
-
             const validateAddress = () => {
                 addressError.value = ''
-                const addressTrimmed = address.value.trim()
+                const addressTrimmed = formData.address.trim()
                 if (!addressTrimmed) {
                     addressError.value = 'Veuillez entrer votre adresse.'
                     return false
@@ -384,10 +409,9 @@
                 }
                 return true
             }
-
             const validatePhone = () => {
                 phoneError.value = ''
-                const phoneTrimmed = phone.value.trim()
+                const phoneTrimmed = formData.phone.trim()
                 const phoneRegex = /^\d{3}-\d{3}-\d{4}$/
                 if (!phoneTrimmed) {
                     phoneError.value = 'Veuillez entrer votre numéro de téléphone.'
@@ -398,10 +422,9 @@
                 }
                 return true
             }
-
             const validateCity = () => {
                 cityError.value = ''
-                const cityTrimmed = city.value.trim()
+                const cityTrimmed = formData.city.trim()
                 if (!cityTrimmed) {
                     cityError.value = 'Veuillez entrer votre ville.'
                     return false
@@ -412,22 +435,20 @@
                 }
                 return true
             }
-
             const validateEmail = () => {
                 emailError.value = ''
-                if (!email.value.trim()) {
+                if (!formData.email.trim()) {
                     emailError.value = 'Veuillez entrer votre adresse e-mail.'
                     return false
-                } else if (!isEmailValid(email.value)) {
+                } else if (!isEmailValid(formData.email)) {
                     emailError.value = 'Veuillez entrer une adresse e-mail valide.'
                     return false
                 }
                 return true
             }
-
             const validateProvince = () => {
                 provinceError.value = ''
-                if (!provinceId.value) {
+                if (!formData.provinceId) {
                     provinceError.value = 'Veuillez sélectionner une province.'
                     return false
                 }
@@ -438,32 +459,29 @@
                 const formattedPostalCode = postalCode.trim().toUpperCase();
                 return formattedPostalCode.substring(0, 3) + " " + formattedPostalCode.substring(3);
             };
-
             const validatePostalCode = () => {
                 postalCodeError.value = ''
-                if (!postalCode.value.trim()) {
+                if (!formData.postalCode.trim()) {
                     postalCodeError.value = 'Veuillez entrer votre code postal.'
                     return false
-                } else if (!isPostalCodeValid(postalCode.value)) {
+                } else if (!isPostalCodeValid(formData.postalCode)) {
                     postalCodeError.value = 'Veuillez entrer un code postal valide.'
                     return false
                 }
                 return true
             }
-
             const validateName = () => {
                 nameError.value = ''
-                const nameTrimmed = name.value.trim()
+                const nameTrimmed = formData.name.trim()
                 if (nameTrimmed.length < 3 || nameTrimmed.length > 50) {
                     nameError.value = 'Le nom complet doit contenir entre 3 et 50 caractères.'
                     return false
                 }
                 return true
             }
-
             const validateLogo = () => {
                 logoError.value = ''
-                const logoTrimmed = image.value.trim()
+                const logoTrimmed = formData.image.trim()
                 const urlRegex = /^(ftp|http|https):\/\/[^ "]+$/
                 if (!urlRegex.test(logoTrimmed)) {
                     logoError.value = 'Veuillez entrer une URL valide pour le logo.'
@@ -471,21 +489,17 @@
                 }
                 return true
             }
-
             const isEmailValid = (email) => {
                 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
                 return emailRegex.test(email)
             }
-
             const isPostalCodeValid = (postalCode) => {
                 const postalCodeRegex = /^[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d$/
                 return postalCodeRegex.test(postalCode)
             }
-
             const isFormValid = computed(() => {
                 if (isCandidat.value) {
-                    return (
-                        validateFullName() &&
+                    return (validateFullName() &&
                         validatePosition() &&
                         validateDescription() &&
                         validateAddress() &&
@@ -493,11 +507,9 @@
                         validateCity() &&
                         validateEmail() &&
                         validateProvince() &&
-                        validatePostalCode()
-                    )
+                        validatePostalCode())
                 } else {
-                    return (
-                        validateName() &&
+                    return (validateName() &&
                         validateLogo() &&
                         validateDescription() &&
                         validateAddress() &&
@@ -505,34 +517,29 @@
                         validateCity() &&
                         validateEmail() &&
                         validateProvince() &&
-                        validatePostalCode()
-                    )
+                        validatePostalCode())
                 }
             })
-
-
             const submitForm = async () => {
                 if (isFormValid.value) {
                     const formData = {
-                        description: description.value,
-                        email: email.value,
-                        address: address.value,
-                        phone: phone.value,
-                        city: city.value,
+                        description: formData.description,
+                        email: formData.email,
+                        address: formData.address,
+                        phone: formData.phone,
+                        city: formData.city,
                         province: {
-                            _id: provinceId.value,
-                            value: provinces.value.find((province) => province._id === provinceId.value)
-                                .value,
+                            _id: formData.provinceId,
+                            value: provinces.value.find((province) => province._id === formData.provinceId).value,
                         },
-                        postalCode: formatPostalCode(postalCode.value),
+                        postalCode: formatPostalCode(formData.postalCode),
                     }
-
                     if (isCandidat.value) {
-                        const [firstName, lastName] = fullName.value.split(' ')
-                        formData.firstName = firstName
+                        const [firstName, lastName] = formData.fullName.split(' ')
+                        formData.firstName =
+                            firstName
                         formData.lastName = lastName
-                        formData.skills = skills.value
-
+                        formData.skills = formData.skills
                         try {
                             const url = editing.value ?
                                 `https://api-4.fly.dev/candidates/${props.candidateId}` :
@@ -548,29 +555,24 @@
                             console.error(error)
                         }
                     } else {
-                        formData.name = name.value
-                        formData.image = image.value
-                        formData.contact = contact.value
-                        formData.activitySector = activitySector.value
-                        formData.website = website.value
-
+                        formData.name = formData.name
+                        formData.image = formData.image
+                        formData.contact = formData.contact
+                        formData.activitySector = formData.activitySector
+                        formData.website = formData.website
                         try {
                             let activitySector = null
-                            const activitySectorsResponse = await axios.get(
-                                'https://api-4.fly.dev/activity-sectors');
+                            const activitySectorsResponse = await axios.get('https://api-4.fly.dev/activity-sectors');
                             const activitySectors = activitySectorsResponse.data;
                             activitySectors.forEach((activity) => {
-                                if (activity.value === activitySector.value) {
+                                if (activity.value === formData.activitySector.value) {
                                     activitySector = activity;
                                 }
                             });
                             if (!activitySector) {
                                 throw new Error('Secteur d\'activité non trouvé');
                             }
-
-                            const url = editing.value ?
-                                `https://api-4.fly.dev/enterprises/${props.enterpriseId}` :
-                                'https://api-4.fly.dev/enterprises';
+                            const url = editing.value ? `https://api-4.fly.dev/enterprises/${props.enterpriseId}` : 'https://api-4.fly.dev/enterprises';
                             const method = editing.value ? 'put' : 'post';
                             const response = await axios({
                                 method: method,
@@ -584,12 +586,10 @@
                     }
                 }
             }
-
             const fetchEnterprise = async (enterpriseId) => {
                 try {
                     const response = await axios.get(`https://api-4.fly.dev/enterprises/${enterpriseId}`);
                     const enterprise = response.data;
-
                     formData.name = enterprise.name;
                     formData.image = enterprise.image;
                     formData.description = enterprise.description;
@@ -605,53 +605,45 @@
                     console.error(error);
                 }
             }
-
             const fetchCandidate = async (candidateId) => {
                 try {
                     const response = await axios.get(`https://api-4.fly.dev/candidates/${candidateId}`);
                     const candidate = response.data;
-
                     console.log(candidate);
-
-                    form.fullName = `${candidate.firstName} ${candidate.lastName}`;
-                    form.description = candidate.description;
-                    form.address = candidate.address;
-                    form.phone = candidate.phone;
-                    form.city = candidate.city;
-                    form.email = candidate.email;
-                    form.provinceId = candidate.province._id;
-                    form.postalCode = candidate.postalCode;
-                    form.skills = candidate.skills;
+                    formData.fullName = `${candidate.firstName} ${candidate.lastName}`;
+                    formData.description = candidate.description;
+                    formData.address = candidate.address;
+                    formData.phone = candidate.phone;
+                    formData.city = candidate.city;
+                    formData.email = candidate.email;
+                    formData.provinceId = candidate.province._id;
+                    formData.postalCode = candidate.postalCode;
+                    formData.skills = candidate.skills;
                 } catch (error) {
                     console.error(error);
                 }
             }
-
-
-
             const cancelForm = () => {
-                fullName.value = ''
-                position.value = ''
-                description.value = ''
-                address.value = ''
-                phone.value = ''
-                city.value = ''
-                email.value = ''
-                provinceId.value = ''
-                postalCode.value = ''
-                skills.value = []
-                name.value = ''
-                image.value = ''
-                contact.value = ''
-                activitySector.value = {
+                formData.fullName = ''
+                formData.position = ''
+                formData.description = ''
+                formData.address = ''
+                formData.phone = ''
+                formData.city = ''
+                formData.email = ''
+                formData.provinceId = ''
+                formData.postalCode = ''
+                formData.skills = []
+                formData.name = ''
+                formData.image = ''
+                formData.contact = ''
+                formData.activitySector = {
                     _id: '65f8df6040965a2e23d73271',
                     value: 'Technologies',
                 }
-                website.value = ''
+                formData.website = ''
             }
-
-
-            const provinces = reactive([])
+            const provinces = ref([])
             const fetchProvinces = async () => {
                 try {
                     const response = await axios.get('https://api-4.fly.dev/provinces')
@@ -660,38 +652,18 @@
                     console.error(error)
                 }
             }
-
-
             onMounted(() => {
                 fetchProvinces()
                 if (!isCandidat.value && props.enterpriseId) {
                     fetchEnterprise(props.enterpriseId)
                 }
-                if (!isCandidat.value && props.candidateId) {
+                if (isCandidat.value && props.candidateId) {
                     fetchCandidate(props.candidateId);
                 }
             })
-
-
             return {
-                
-                fullName,
-                position,
-                description,
-                address,
-                phone,
-                city,
-                email,
-                provinceId,
-                postalCode,
-                skills,
-                name,
-                image,
-                contact,
-                activitySector,
-                website,
-                provinces,
-                isCandidat,
+                formData,
+                errors,
                 fullNameError,
                 positionError,
                 descriptionError,
@@ -719,6 +691,7 @@
                 validatePostalCode,
                 validateName,
                 validateLogo,
+                provinces
             }
         },
     }
