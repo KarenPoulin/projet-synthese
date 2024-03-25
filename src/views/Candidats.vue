@@ -23,8 +23,8 @@
   const {allCandidatesResults, getAllCandidates} = useAllCandidates();
 
   const router = useRouter()
-  const goToAddForm = type => {
-    router.push({ name: 'formulaireCE', params: { type } })
+  const goToAddForm = () => {
+    router.push({ name: 'formulaireCE', params: { type:'candidat' } })
   }
 
   onMounted(async () => {

@@ -23,8 +23,8 @@ import { useAllEnterprises } from '@/composables/entreprises';
 const {allEnterprisesResults, getAllEnterprises} = useAllEnterprises();
 
 const router = useRouter()
-  const goToAddForm = type => {
-    router.push({ name: 'formulaireCE', params: { type } })
+  const goToAddForm = () => {
+    router.push({ name: 'formulaireCE', params: {type:'entreprises' } })
   }
 
 

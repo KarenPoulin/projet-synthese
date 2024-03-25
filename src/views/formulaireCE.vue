@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div v-if="!entrepriseId">
+        <div v-if="!showCandidateForm">
             <div class="p-4">
                 <div class="flex justify-between items-center mb-4">
                     <h1 class="titre_barre text-lg font-bold text-neutral-500 mb-9">
@@ -286,7 +286,7 @@
 
 </template>
 
-<script>
+<script steup>
     import {
         ref,
         reactive,
@@ -295,8 +295,18 @@
     } from 'vue'
     import axios from 'axios'
     import {
-        RouterLink
+        useRouter
     } from 'vue-router'
+
+
+    const router = useRouter();
+    const showCandidateForm = ref(false);
+
+    onMounted(() => {
+        if (router.currentRoute.value.params.from === 'entreprises') {
+            showCandidateForm.value = true;
+        }
+    });
     export default {
         props: 'type',
         entrepriseId: {
@@ -309,6 +319,7 @@
         },
         setup(props) {
             const isCandidat = computed(() => props.type === 'candidat')
+            const editing = ref(false)
             const formData = reactive({
                 fullName: '',
                 position: '',
@@ -399,16 +410,16 @@
                 const addressTrimmed = formData.address.trim()
                 if (!addressTrimmed) {
                     addressError.value = 'Veuillez entrer votre adresse.'
-                    return false
+                    return false;
                 }
-                const containsNumber = /\d/.test(addressTrimmed)
-                const containsWord = /[a-zA-Z]/.test(addressTrimmed)
+                const containsNumber = /\d/.test(addressTrimmed);
+                const containsWord = /[a-zA-Z]/.test(addressTrimmed);
                 if (!containsNumber || !containsWord) {
                     addressError.value = "L'adresse doit contenir à la fois un nombre et un mot."
-                    return false
+                    return false;
                 }
-                return true
-            }
+                return true;
+            };
             const validatePhone = () => {
                 phoneError.value = ''
                 const phoneTrimmed = formData.phone.trim()
@@ -530,7 +541,8 @@
                         city: formData.city,
                         province: {
                             _id: formData.provinceId,
-                            value: provinces.value.find((province) => province._id === formData.provinceId).value,
+                            value: provinces.value.find((province) => province._id === formData.provinceId)
+                                .value,
                         },
                         postalCode: formatPostalCode(formData.postalCode),
                     }
@@ -562,7 +574,8 @@
                         formData.website = formData.website
                         try {
                             let activitySector = null
-                            const activitySectorsResponse = await axios.get('https://api-4.fly.dev/activity-sectors');
+                            const activitySectorsResponse = await axios.get(
+                                'https://api-4.fly.dev/activity-sectors');
                             const activitySectors = activitySectorsResponse.data;
                             activitySectors.forEach((activity) => {
                                 if (activity.value === formData.activitySector.value) {
@@ -572,7 +585,9 @@
                             if (!activitySector) {
                                 throw new Error('Secteur d\'activité non trouvé');
                             }
-                            const url = editing.value ? `https://api-4.fly.dev/enterprises/${props.enterpriseId}` : 'https://api-4.fly.dev/enterprises';
+                            const url = editing.value ?
+                                `https://api-4.fly.dev/enterprises/${props.enterpriseId}` :
+                                'https://api-4.fly.dev/enterprises';
                             const method = editing.value ? 'put' : 'post';
                             const response = await axios({
                                 method: method,
@@ -691,7 +706,8 @@
                 validatePostalCode,
                 validateName,
                 validateLogo,
-                provinces
+                provinces,
+                
             }
         },
     }

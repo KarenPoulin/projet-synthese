@@ -45,12 +45,12 @@ const router = createRouter({
         {
           path: 'candidats',
           name: 'candidats',
-          component: Candidats
+          component: Candidats,
         },
         {
           path: 'entreprises',
           name: 'entreprises',
-          component: Entreprises
+          component: Entreprises,          
         },
         {
           path: 'formulaireCE/:type',
