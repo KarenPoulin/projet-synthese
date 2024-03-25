@@ -5,9 +5,10 @@
     <h1 v-if="isAdding" class=" items-center text-4xl font-bold text-neutral-500   border-l-4 border-yellow-800 pl-2 my-5">{{ isRequest ? 'Ajouter une demande de stage' : 'Ajouter une offre de stage' }}</h1>
      <!-- ENTÊTE POUR LES MODIFICATIONS -->
     <div v-if="!isAdding" class="grid grid-cols-1 border-l-4 border-yellow-800 pl-2 my-5 ">
-    <p class=" text-base font-bold text-neutral-500">
-          Demande de stage</p>
-    <h1 class="text-4xl font-bold text-neutral-500">Titre</h1>
+      <p class=" text-base font-bold text-neutral-500">
+        {{ isRequest ? 'Demande de stage' : 'Offre de stage' }}</p>
+    <h1 class="text-4xl font-bold text-neutral-500">Type/Enteprises</h1>
+   
     </div>
     
 
@@ -27,7 +28,7 @@
         <div>
 
           <!-- CHAMP TITRE POUR LES DEMANDES ET OFFRES -->
-          <div class="flex items-baseline mt-5">
+          <div v-if="isAdding" class="flex items-baseline mt-5">
             <label for="title" class="text-base text-center font-bold text-neutral-500 block mr-4">Titre: </label>
             <input id="title" v-model="formFieldsLinkedWithApi.title"
               @input="validateInput(formFieldsLinkedWithApi.title, 'title')" type="text"
@@ -302,6 +303,7 @@ import { useIntershipTypes } from '@/composables/typeStage';
 import { useProvinces } from '@/composables/provinces';
 import { useAllCandidates } from '@/composables/candidats';
 import { useAllEnterprises } from '@/composables/entreprises';
+import { useDemandesDeStages } from '@/composables/demandeDeStage';
 import  router  from '../router/index';
 
 
@@ -311,7 +313,7 @@ const props = defineProps(['isRequest'])
 
 
 //Variable pour déterminer si c'est un ajout ou une modification 
-let isAdding = ref(false);
+let isAdding = ref(true);
 
 // UTILISATION DES COMPOSABLES POUR L'AFFICHAGE DES DONNÉES VENANT DE L'API //
 //Fonction pour afficher les candidats venant de l'api
@@ -354,6 +356,13 @@ const { allIntershipTypesResults, getAllIntershipTypes } = useIntershipTypes();
 onMounted(async () => {
   await getAllIntershipTypes();
   console.log(allIntershipTypesResults);
+})
+//Fonction pour afficher le nom et le titre de la demande venant de l'api
+const {  demandeDeStageResult, getDemandeDeStagesById } = useDemandesDeStages();
+
+onMounted(async () => {
+  await getDemandeDeStagesById ();
+  console.log(   demandeDeStageResult);
 })
 
 // REQUÊTE POUR ENVOYER LES DONNÉES À L'API
@@ -439,9 +448,6 @@ function validateInput(input, field) {
     fieldsToValidate[field] = errorMessage.maxCharacters;
     return errorMessage.maxCharacters;
   }
-
-
-  fieldsToValidate[field] = "";
   return '';
 }
 
@@ -450,8 +456,7 @@ function validateSelect(select, field) {
   if (select.trim() === "") {
     fieldsToValidate[field] = errorMessage.option;
     return errorMessage.option;
-
-  } fieldsToValidate[field] = "";
+  }
   return '';
 }
 
@@ -473,7 +478,6 @@ function validateDate(input, field) {
     fieldsToValidate[field] = errorMessage.endDate;
     return errorMessage.endDate;
   }
-  fieldsToValidate[field] = "";
   return '';
 }
 
@@ -493,7 +497,6 @@ function validateNumber(input, field) {
     fieldsToValidate[field] = errorMessage.maxHours;
     return errorMessage.maxHours;
   }
-  fieldsToValidate[field] = "";
   return '';
 }
 
@@ -504,13 +507,12 @@ function validatePaid(value) {
     fieldsToValidate.paid = errorMessage.radio;
     return errorMessage.radio;
   }
-  fieldsToValidate.paid = "";
   return '';
 }
 
 
 // Fonction pour soumettre le formulaire 
-const submitForm = (e,isRequest) => {
+const submitForm = (e) => {
   e.preventDefault();
   fieldsToValidate.title = validateInput(formFieldsLinkedWithApi.title, 'title');
   fieldsToValidate.fullName = validateSelect(formFieldsLinkedWithApi.fullName, 'fullName');
@@ -536,14 +538,15 @@ const submitForm = (e,isRequest) => {
     for (let key in fieldsToValidate) {
       fieldsToValidate[key] = '';
     }
+   /*  router.push(props.isRequest ? '/app/demandesdestages' : '/app/offresdestages'); */
   }
-  router.push(isRequest ? '/app/demandesdestages' : '/app/offresdestages');
+
 };
 
 
 
 // Fonction pour réinitialiser le formulaire
-const resetForm = (isRequest) => {
+const resetForm = () => {
   formFieldsLinkedWithApi.additionalInformation = '';
   for (let key in formFieldsLinkedWithApi) {
     formFieldsLinkedWithApi[key] = '';
@@ -552,7 +555,7 @@ const resetForm = (isRequest) => {
     fieldsToValidate[key] = '';
   }
  
-  router.push(isRequest ? '/app/demandesdestages' : '/app/offresdestages');
+  router.push(props.isRequest ? '/app/demandesdestages' : '/app/offresdestages');
 };
 </script>
 
