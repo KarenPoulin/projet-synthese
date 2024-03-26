@@ -44,8 +44,8 @@
                         <span class="text-red-500">{{ fullNameError }}</span>
                     </div>
                     <div class="nom_poste mb-4">
-                        <label for="position" class="block mb-1  text-neutral-500 font-bold">Poste</label>
-                        <input type="text" id="position" v-model="formData.position" @input="validatePosition"
+                        <label for="skills" class="block mb-1  text-neutral-500 font-bold">Poste</label>
+                        <input type="text" id="skills" v-model="formData.skilss" @input="validatePosition"
                             class="w-full border-gray-300 rounded-md p-2">
                         <span class="text-red-500">{{ positionError }}</span>
                     </div>
