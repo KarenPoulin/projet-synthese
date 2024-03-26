@@ -10,7 +10,7 @@
                             <div class="titre_modifer">
                                 <p class="text-neutral-500">Candidat</p>
                                 <h1 class="text-neutral-500">{{ candidate.firstName }} {{ candidate.lastName }}</h1>
-                                <p class="poste text-neutral-500">{{ candidate.position }}</p>
+                                <p class="poste text-neutral-500">{{ candidate.skills }}</p>
                             </div>
                         </div>
                     </div>
@@ -45,9 +45,9 @@
                     </div>
                     <div class="nom_poste mb-4">
                         <label for="skills" class="block mb-1  text-neutral-500 font-bold">Poste</label>
-                        <input type="text" id="skills" v-model="formData.skilss" @input="validatePosition"
+                        <input type="text" id="skills" v-model="formData.skills" @input="validateSkills"
                             class="w-full border-gray-300 rounded-md p-2">
-                        <span class="text-red-500">{{ positionError }}</span>
+                        <span class="text-red-500">{{ skillsError }}</span>
                     </div>
                     <div class="block_info-perso my-9">
                         <div class="mb-4">
@@ -179,7 +179,7 @@
                         <label for="image" class="block mb-1 text-neutral-500 font-bold">Logo</label>
                         <div class="flex items-center">
 
-                            <input type="text " id="image" v-model="formData.image" @input="validateLogo" 
+                            <input type="text " id="image" v-model="formData.image" @input="validateLogo"
                                 class="w-full border-gray-300 rounded-md p-2">
                             <label for="image"
                                 class="cursor-pointer bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center">
@@ -315,7 +315,7 @@
                 required: false
             }
         },
-        
+
         setup(props) {
             const router = useRouter();
             const editing = ref(false);
@@ -324,7 +324,6 @@
 
             const formData = reactive({
                 fullName: '',
-                position: '',
                 description: '',
                 address: '',
                 phone: '',
@@ -346,7 +345,7 @@
             });
             const errors = reactive({
                 fullName: '',
-                position: '',
+                skills: '',
                 description: '',
                 address: '',
                 phone: '',
@@ -357,56 +356,70 @@
                 name: '',
                 logo: ''
             })
-            const fullNameError = ref(null)
-            const positionError = ref(null)
-            const descriptionError = ref(null)
-            const addressError = ref(null)
-            const phoneError = ref(null)
-            const cityError = ref(null)
-            const emailError = ref(null)
-            const provinceError = ref(null)
-            const postalCodeError = ref(null)
-            const nameError = ref(null)
-            const logoError = ref(null)
+            const fullNameError = ref('');
+            const skillsError = ref('');
+            const descriptionError = ref('');
+            const addressError = ref('');
+            const phoneError = ref('');
+            const cityError = ref('');
+            const emailError = ref('');
+            const provinceError = ref('');
+            const postalCodeError = ref('');
+            const nameError = ref('');
+            const logoError = ref('');
+
+            const resetValidationErrors = () => {
+
+                fullNameError.value = '';
+                skillsError.value = '';
+                descriptionError.value = '';
+                addressError.value = '';
+                phoneError.value = '';
+                cityError.value = '';
+                emailError.value = '';
+                provinceError.value = '';
+                postalCodeError.value = '';
+                nameError.value = '';
+                logoError.value = '';
+            };
 
             const validateFullName = () => {
                 fullNameError.value = ''
                 const fullNameTrimmed = formData.fullName.trim()
-                const fullNameWords =
-                    fullNameTrimmed.split(' ')
-                if (
-                    fullNameWords.length !== 2) {
-                    fullNameError.value =
-                        'Le nom complet doit contenir exactement deux mots.'
-                    return false
+                const fullNameWords = fullNameTrimmed.split(' ')
+                if (fullNameWords.length !== 2) {
+                    fullNameError.value = 'Le nom complet doit contenir exactement deux mots.'
+                    return false;
                 }
-                if (fullNameTrimmed.length < 3 ||
-                    fullNameTrimmed.length > 50) {
-                    fullNameError.value =
-                        'Le nom complet doit contenir entre 3 et 50 caractères.'
-                    return false
+                if (fullNameTrimmed.length < 3 || fullNameTrimmed.length > 50) {
+                    fullNameError.value = 'Le nom complet doit contenir entre 3 et 50 caractères.'
+                    return false;
                 }
-                return true
-            }
-            const validatePosition = () => {
-                positionError.value = ''
-                const positionTrimmed = formData.position.trim()
-                if (positionTrimmed.length < 3 || positionTrimmed
-                    .length > 50) {
-                    positionError.value = 'Le poste doit contenir entre 3 et 50 caractères.'
-                    return false
+                return true;
+            };
+            const validateSkills = () => {
+                skillsError.value = '';
+                if (typeof formData.skills !== 'string') {
+                    skillsError.value = 'Les compétences doivent être une chaîne de caractères.';
+                    return false;
                 }
-                return true
-            }
+
+                const skillsTrimmed = formData.skills.trim();
+                if (skillsTrimmed.length < 3 || skillsTrimmed.length > 250) {
+                    skillsError.value = 'Les compétences doivent contenir entre 3 et 250 caractères.';
+                    return false;
+                }
+                return true;
+            };
             const validateDescription = () => {
                 descriptionError.value = ''
                 const descriptionTrimmed = formData.description.trim()
                 if (descriptionTrimmed.length < 3 || descriptionTrimmed.length > 250) {
                     descriptionError.value = 'La description doit contenir entre 3 et 250 caractères.'
-                    return false
+                    return false;
                 }
-                return true
-            }
+                return true;
+            };
             const validateAddress = () => {
                 addressError.value = ''
                 const addressTrimmed = formData.address.trim()
@@ -428,45 +441,45 @@
                 const phoneRegex = /^\d{3}-\d{3}-\d{4}$/
                 if (!phoneTrimmed) {
                     phoneError.value = 'Veuillez entrer votre numéro de téléphone.'
-                    return false
+                    return false;
                 } else if (!phoneRegex.test(phoneTrimmed)) {
                     phoneError.value = 'Veuillez entrer un numéro de téléphone valide au format 514-555-5555.'
-                    return false
+                    return false;
                 }
-                return true
-            }
+                return true;
+            };
             const validateCity = () => {
                 cityError.value = ''
                 const cityTrimmed = formData.city.trim()
                 if (!cityTrimmed) {
                     cityError.value = 'Veuillez entrer votre ville.'
-                    return false
+                    return false;
                 }
                 if (cityTrimmed.length < 3 || cityTrimmed.length > 50) {
                     cityError.value = 'La ville doit contenir entre 3 et 50 caractères.'
-                    return false
+                    return false;
                 }
-                return true
-            }
+                return true;
+            };
             const validateEmail = () => {
                 emailError.value = ''
                 if (!formData.email.trim()) {
                     emailError.value = 'Veuillez entrer votre adresse e-mail.'
-                    return false
+                    return false;
                 } else if (!isEmailValid(formData.email)) {
                     emailError.value = 'Veuillez entrer une adresse e-mail valide.'
-                    return false
+                    return false;
                 }
-                return true
-            }
+                return true;
+            };
             const validateProvince = () => {
                 provinceError.value = ''
                 if (!formData.provinceId) {
                     provinceError.value = 'Veuillez sélectionner une province.'
-                    return false
+                    return false;
                 }
-                return true
-            }
+                return true;
+            };
 
             const formatPostalCode = (postalCode) => {
                 const formattedPostalCode = postalCode.trim().toUpperCase();
@@ -476,44 +489,44 @@
                 postalCodeError.value = ''
                 if (!formData.postalCode.trim()) {
                     postalCodeError.value = 'Veuillez entrer votre code postal.'
-                    return false
+                    return false;
                 } else if (!isPostalCodeValid(formData.postalCode)) {
                     postalCodeError.value = 'Veuillez entrer un code postal valide.'
-                    return false
+                    return false;
                 }
-                return true
-            }
+                return true;
+            };
             const validateName = () => {
                 nameError.value = ''
                 const nameTrimmed = formData.name.trim()
                 if (nameTrimmed.length < 3 || nameTrimmed.length > 50) {
                     nameError.value = 'Le nom complet doit contenir entre 3 et 50 caractères.'
-                    return false
+                    return false;
                 }
-                return true
-            }
+                return true;
+            };
             const validateLogo = () => {
-                logoError.value = ''
+                /**logoError.value = ''
                 const logoTrimmed = formData.image.trim()
                 const urlRegex = /^(ftp|http|https):\/\/[^ "]+$/
                 if (!urlRegex.test(logoTrimmed)) {
                     logoError.value = 'Veuillez entrer une URL valide pour le logo.'
                     return false
-                }
-                return true
-            }
+                }**/
+                return true;
+            };
             const isEmailValid = (email) => {
                 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
                 return emailRegex.test(email)
-            }
+            };
             const isPostalCodeValid = (postalCode) => {
                 const postalCodeRegex = /^[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d$/
                 return postalCodeRegex.test(postalCode)
-            }
+            };
             const isFormValid = computed(() => {
                 if (isCandidat.value) {
                     return (validateFullName() &&
-                        validatePosition() &&
+                        validateSkills() &&
                         validateDescription() &&
                         validateAddress() &&
                         validatePhone() &&
@@ -534,6 +547,14 @@
                 }
             })
             const submitForm = async () => {
+
+
+
+                const selectedProvince = provinces.value.find(province => province._id === formData.provinceId);
+
+                if (!selectedProvince) {
+                    throw new Error('Province non trouvée');
+                }
                 if (isFormValid.value) {
                     const formData = {
                         description: formData.description,
@@ -543,17 +564,16 @@
                         city: formData.city,
                         province: {
                             _id: formData.provinceId,
-                            value: provinces.value.find((province) => province._id === formData.provinceId)
-                                .value,
+                            value: selectedProvince.value
                         },
                         postalCode: formatPostalCode(formData.postalCode),
                     }
                     if (isCandidat.value) {
                         const [firstName, lastName] = formData.fullName.split(' ')
-                        formData.firstName =
-                            firstName
-                        formData.lastName = lastName
-                        formData.skills = formData.skills
+                        formData.firstName = firstName,
+                            formData.lastName = lastName,
+                            formData.skills = formData.skills.split(',').map(skill => skill.trim());
+
                         try {
                             const url = editing.value ?
                                 `https://api-4.fly.dev/candidates/${props.candidateId}` :
@@ -562,7 +582,21 @@
                             const response = await axios({
                                 method: method,
                                 url: url,
-                                data: formData
+                                data: {
+                                    description: formData.description,
+                                    email: formData.email,
+                                    firstName: firstName,
+                                    lastName: lastName,
+                                    address: formData.address,
+                                    phone: formData.phone,
+                                    city: formData.city,
+                                    skills: formData.skills,
+                                    province: {
+                                        _id: formData.provinceId,
+                                        value: selectedProvince.value
+                                    },
+                                    postalCode: formatPostalCode(formData.postalCode),
+                                }
                             });
                             console.log(response)
                         } catch (error) {
@@ -594,9 +628,30 @@
                             const response = await axios({
                                 method: method,
                                 url: url,
-                                data: formData
+                                data: {
+                                    name: formData.name,
+                                    image: formData.image,
+                                    description: formData.description,
+                                    email: formData.email,
+                                    address: formData.address,
+                                    phone: formData.phone,
+                                    city: formData.city,
+                                    website: formData.website,
+                                    activitySector: {
+                                        _id: activitySector._id,
+                                        value: formData.activitySector.value
+                                    },
+                                    province: {
+                                        _id: formData.provinceId,
+                                        value: selectedProvince.value
+                                    },
+                                    postalCode: formatPostalCode(formData.postalCode),
+                                }
                             });
                             console.log(response)
+                            if (!response.data._id) {
+                                throw new Error('Échec de la soumission du formulaire');
+                            }
                         } catch (error) {
                             console.error(error)
                         }
@@ -641,24 +696,23 @@
                 }
             }
             const cancelForm = () => {
-                formData.fullName = ''
-                formData.position = ''
-                formData.description = ''
-                formData.address = ''
-                formData.phone = ''
-                formData.city = ''
-                formData.email = ''
-                formData.provinceId = ''
-                formData.postalCode = ''
-                formData.skills = []
-                formData.name = ''
-                formData.image = ''
-                formData.contact = ''
+                formData.fullName = '';
+                formData.skills = '';
+                formData.description = '';
+                formData.address = '';
+                formData.phone = '';
+                formData.city = '';
+                formData.email = '';
+                formData.provinceId = '';
+                formData.postalCode = '';
+                formData.name = '';
+                formData.image = '';
+                formData.contact = '';
                 formData.activitySector = {
                     _id: '65f8df6040965a2e23d73271',
                     value: 'Technologies',
-                }
-                formData.website = ''
+                };
+                formData.website = '';
             }
             const provinces = ref([])
             const fetchProvinces = async () => {
@@ -670,10 +724,11 @@
                 }
             }
             onMounted(() => {
-                const type = router.currentRoute.value.params.type; 
+                resetValidationErrors();
+                const type = router.currentRoute.value.params.type;
                 if (type === 'entreprises') {
                     showCandidateForm.value = true;
-                }
+                };
 
 
                 fetchProvinces();
@@ -682,13 +737,14 @@
                 }
                 if (isCandidat.value && props.candidateId) {
                     fetchCandidate(props.candidateId);
-                }
-            })
+                };
+            });
             return {
                 formData,
+                editing,
                 errors,
                 fullNameError,
-                positionError,
+                skillsError,
                 descriptionError,
                 addressError,
                 phoneError,
@@ -704,7 +760,7 @@
                 cancelForm,
                 formatPostalCode,
                 validateFullName,
-                validatePosition,
+                validateSkills,
                 validateDescription,
                 validateAddress,
                 validatePhone,
@@ -715,12 +771,11 @@
                 validateName,
                 validateLogo,
                 provinces,
-                editing,
-                showCandidateForm
+                showCandidateForm,
 
-            }
-        },
-    }
+            };
+        }
+    };
 </script>
 
 
