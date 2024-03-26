@@ -179,7 +179,7 @@
                         <label for="image" class="block mb-1 text-neutral-500 font-bold">Logo</label>
                         <div class="flex items-center">
 
-                            <input type="text " id="image" v-model="formData.image" @input="validateLogo"
+                            <input type="text " id="image" v-model="formData.image" @input="validateLogo" 
                                 class="w-full border-gray-300 rounded-md p-2">
                             <label for="image"
                                 class="cursor-pointer bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center">
@@ -333,9 +333,9 @@
                 provinceId: '',
                 provinceValue: '',
                 postalCode: '',
-                skills: [],
+                skills: ['vue.js', 'angular', 'react'],
                 name: '',
-                image: '',
+                image: 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8HwQACgAB/1TD9R8AAAAASUVORK5CYII=',
                 contact: '',
                 activitySector: {
 
