@@ -2,7 +2,7 @@
       <h1 class="text-5xl font-bold mb-20 text-neutral-500">Entreprises</h1>
       <div>
         <button  @click="goToAddForm" class="bg-blue-400 hover:bg-blue-500 hover:text-white text-gray-600 text-sm font-bold p-4 rounded-xl">Ajouter une entreprise</button>
-        <div class="grid grid-cols-3 grid-rows-4 gap-12 mt-16">
+        <div class="grid-cols-1 grid lg:grid-cols-2 grid-rows-4 gap-16 mt-16">
           <template v-if="allEnterprisesResults" v-for="enterprise in allEnterprisesResults" :key="enterprise._id">
             <RouterLink :to="{name:'fichedetailentreprise', params:{id: enterprise._id}}">
                 <carteCandidatEtEntreprise :enterprise="enterprise" :isEntreprise="true"/>

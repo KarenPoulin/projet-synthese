@@ -5,7 +5,7 @@
                 <img src="/src/assets/icons/candidate-48.png" alt="candidat" class="w-20">
             </div>
             <div class="ml-3">
-                <h1 class="text-xl font-bold">{{candidate.firstName}} {{ candidate.lastName }}</h1>
+                <h1 class="text-md lg:text-lg font-bold">{{candidate.firstName}} {{ candidate.lastName }}</h1>
                 <p class="text-xs mb-3 text-neutral-500">Développeur Front-End</p>
                 <p class="text-xs text-neutral-500">{{ candidate.email }}</p>
                 <p class="text-xs text-neutral-500">{{ candidate.phone }}</p>
@@ -13,17 +13,17 @@
         </div>
     </div>
 
-    <div v-if="isEntreprise" class="bg-white px-12 py-16 hover:bg-blue-100">
-        <div class="flex items-center">
+    <div v-if="isEntreprise" class="bg-white px-10 py-10 2xl:py-20 hover:bg-blue-100">
+        <div class="2xl:flex items-center">
             <div>
-                <img src="../assets/img/enterprises.png" alt="logo-entreprises" class="w-48">
+                <img src="../assets/img/enterprises.png" alt="logo-entreprises" class="mx-auto mb-6 2xl:mb-0 w-40">
             </div>
-            <div class="ml-16">
-                <h1 class="text-xl font-bold">{{ enterprise.name }}</h1>
-                <p class="text-sm">{{ enterprise.address }}</p>
-                <p class="text-sm mb-3">Trois-Rivières G9A 4H7</p>
-                <p class="text-sm">Téléphone : 819 373-2235</p>
-                <p class="text-sm">Télécopieur : 819 373-8805</p>
+            <div class="text-center 2xl:text-left 2xl:ml-10">
+                <h1 class="text-xl xl:text-xl font-bold mb-2">{{ enterprise.name }}</h1>
+                <p class="text-xs">{{ enterprise.address }}</p>
+                <p class="text-xs mb-5">Trois-Rivières G9A 4H7</p>
+                <p class="text-xs">Téléphone : 819 373-2235</p>
+                <p class="text-xs">Télécopieur : 819 373-8805</p>
             </div>
         </div>
     </div>
