@@ -13,7 +13,7 @@
       </div>
 
 
-      <main class="pt-24 px-16">
+      <main class="py-24 w-5/6 mx-auto">
         <RouterView />
       </main>
     </div>
