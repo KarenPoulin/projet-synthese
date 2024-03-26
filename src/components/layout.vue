@@ -1,7 +1,8 @@
-<template>
-  <div class="bg-neutral-100 flex flex-col md:flex-row min-h-screen">
 
-    <div class="hidden md:flex xl:flex 2xl:flex-shrink-0 2xl:100 xl:w-80 lg:w-60 md:w-40 sm:20 bg-gray-800 text-white min-h-screen">
+<template>
+  <div class="bg-neutral-100 flex flex-row min-h-screen">
+
+    <div class="flex flex-shrink-0 w-12 sm:w-20 lg:w-48 xl:w-80 bg-gray-800 text-white min-h-screen">
       <Sidebar />
     </div>
 
@@ -13,7 +14,7 @@
       </div>
 
 
-      <main class="py-24 w-5/6 mx-auto">
+      <main class="pt-6 lg:pt-24 px-4 xl:px-16 max-[400px]:max-w-[350px] mx-auto w-full">
         <RouterView />
       </main>
     </div>

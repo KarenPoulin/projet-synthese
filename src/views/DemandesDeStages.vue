@@ -1,7 +1,7 @@
 <template>
   <h1>Demande de stage</h1>
   <div class="flex">
-    <button class="my-3  bg-teal-500 text-white px-4 py-2  rounded hover:bg-teal-600" @click="goToFormDO('request')">
+    <button class="my-3  bg-yellow-600 text-white px-4 py-2  rounded hover:bg-yellow-700" @click="goToFormDO('request')">
       Ajouter une demande
     </button>
   </div>
