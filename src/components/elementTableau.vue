@@ -72,13 +72,24 @@
                 <button v-if="isTableauDeBord"
                     class="mr-4 py-2 px-3 bg-green-200/[.6] hover:bg-green-200 focus:bg-green-200 text-green-500 text-sm font-medium rounded-lg">Accepter</button>
                 <div class="flex flex-row justify-between">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
-                        class="bi bi-eye-fill text-teal-500 hover:text-teal-600 focus:text-teal-600"
-                        viewBox="0 0 16 16">
-                        <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0" />
-                        <path
-                            d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7" />
-                    </svg>
+                    <RouterLink v-if="element.candidate" :to="{name:'pagedetaildemandedestage', params:{id: element._id}}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                            class="bi bi-eye-fill text-teal-500 hover:text-teal-600 focus:text-teal-600"
+                            viewBox="0 0 16 16">
+                            <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0" />
+                            <path
+                                d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7" />
+                        </svg>
+                    </RouterLink>
+                    <RouterLink v-if="element.enterprise" :to="{name:'pagedetailoffredestage', params:{id: element._id}}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                            class="bi bi-eye-fill text-teal-500 hover:text-teal-600 focus:text-teal-600"
+                            viewBox="0 0 16 16">
+                            <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0" />
+                            <path
+                                d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7" />
+                        </svg>
+                    </RouterLink>
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
                         class="bi bi-pencil-square mx-2.5 text-yellow-600 hover:text-yellow-900 focus:text-yellow-900"
                         viewBox="0 0 16 16">
@@ -100,6 +111,7 @@
 
 <script setup>
 import { onMounted, ref } from 'vue';
+import { RouterLink } from 'vue-router';
 import { useActivitySector } from '@/composables/secteurActivites';
 
 
