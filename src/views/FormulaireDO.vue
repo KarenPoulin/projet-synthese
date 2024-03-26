@@ -58,26 +58,25 @@
       <div class="bg-white p-10 mt-10">
         <div class="py-2">
           <div v-if="isRequest && isAdding" class="border-l-4 border-gray-800 pl-2 m-2">
-            <label for="fullName" class="text-sm font-bold text-neutral-500  block">Nom et prénom</label>
-            <select id="title" v-model="dataToSendToAPI.fullName"
-              @change="validateSelect(dataToSendToAPI.fullName, 'fullName')" type="text"
+            <label for="candidateName" class="text-sm font-bold text-neutral-500  block">Nom et prénom</label>
+            <select id="title" v-model="dataToSendToAPI.selectedCandidateId"
+            @change="validateSelect(dataToSendToAPI.selectedCandidateId, 'candidateName')" type="text"
               class="border border-gray-300 p-2 w-full rounded focus:bg-white"
               :class="{ 'hover:bg-yellow-100': isRequest, 'hover:bg-red-100': !isRequest }">
               <option v-for="candidate in allCandidatesResults" :key="candidate._id"
-                :value="candidate.firstName & candidate.lastName">{{
+                :value="candidate._id">{{
                 candidate.firstName }} {{ candidate.lastName }}</option>
             </select>
-            <span v-if="fieldsToValidate.fullName !== ''" class="p-2 text-xs font-semibold text-red-700">{{
-                fieldsToValidate.fullName
+            <span v-if="fieldsToValidate.candidateName !== ''" class="p-2 text-xs font-semibold text-red-700">{{
+                fieldsToValidate.candidateName
               }}</span>
-        </div>
-
+          </div>
         </div>
    
  
         <!-- CHAMP CANDIDAT POUR LES DEMANDES EN MODIFICATION -->
         <div v-if="isRequest && !isAdding" class="border-l-4 border-gray-800 pl-2 m-2">
-          <label for="fullName" class="text-sm font-bold text-neutral-500  block">Candidat</label>
+          <label for="candidateName" class="text-sm font-bold text-neutral-500  block">Candidat</label>
           <input id="title"  class="border border-gray-300 p-2 w-full rounded focus:bg-white">
         </div>
    
@@ -308,7 +307,7 @@ import { defineProps } from 'vue';
 import { useActivitySectors } from '@/composables/secteurActivites';
 import { useIntershipTypes } from '@/composables/typeStage';
 import { useProvinces } from '@/composables/provinces';
-import { useAllCandidates } from '@/composables/candidats';
+import { useAllCandidates, useCandidate } from '@/composables/candidats';
 import { useAllEnterprises } from '@/composables/entreprises';
 import  router  from '../router/index';
 import { useRoute } from 'vue-router'
@@ -323,11 +322,13 @@ const props = defineProps(['isRequest'])
 //Variable pour déterminer si c'est un ajout ou une modification 
 let isAdding = ref(true);
 
-//Variable pour utliser dans les routes.params 
+//Variable pour utliser dans les routes et configurer avec un paramèteres
 const route = useRoute();
 
-// UTILISATION DES COMPOSABLES POUR L'AFFICHAGE DES DONNÉES VENANT DE L'API //
+
+// UTILISATION DES COMPOSABLES POUR L'AFFICHAGE DES DONNÉES VENANT DE L'API OU LEUR ENVOI À L'API //
 const { allCandidatesResults, getAllCandidates } = useAllCandidates();
+const { candidateResult, getCandidateById } = useCandidate(); 
 const { allEnterprisesResults, getAllEnterprises } = useAllEnterprises();
 const { allActivitySectorsResults, getAllActivitySectors } = useActivitySectors();
 const { allProvincesResults, getAllProvinces } = useProvinces();
@@ -369,7 +370,7 @@ const dataToSendToAPI = reactive({
   title: '',
   enterprise: '',
   taskDescription: '',
-  fullName: '',
+  candidateName: '',
   description: '',
   programme: '',
   requiredSkills: '',
@@ -411,7 +412,7 @@ const fieldsToValidate = reactive({
   title: '',
   enterprise: '',
   taskDescription: '',
-  fullName: '',
+  candidateName: '',
   description: '',
   programme: '',
   requiredSkills: '',
@@ -425,7 +426,8 @@ const fieldsToValidate = reactive({
   weeklyWorkHours: '',
   endDate: '',
   paid: '',
-  additionalInformation: ''
+  additionalInformation: '',
+  selectedCandidateId:''
 });
 
 
@@ -445,16 +447,16 @@ function validateInput(input, field) {
     fieldsToValidate[field] = errorMessage.maxCharacters;
     return errorMessage.maxCharacters;
   }
-  return '';
+  fieldsToValidate[field] = "";
 }
 
 // Fonction pour valider le champ de type select
 function validateSelect(select, field) {
-  if (select.trim() === "") {
+  if (select === "") {
     fieldsToValidate[field] = errorMessage.option;
     return errorMessage.option;
   }
-  return '';
+  fieldsToValidate[field] = "";
 }
 
 
@@ -475,7 +477,7 @@ function validateDate(input, field) {
     fieldsToValidate[field] = errorMessage.endDate;
     return errorMessage.endDate;
   }
-  return '';
+  fieldsToValidate[field] = "";
 }
 
 
@@ -494,17 +496,17 @@ function validateNumber(input, field) {
     fieldsToValidate[field] = errorMessage.maxHours;
     return errorMessage.maxHours;
   }
-  return '';
+  fieldsToValidate[field] = "";
 }
 
 
 // Fonction pour valider les champs de type radio
-function validatePaid(value) {
+function validatePaid(value, field) {
   if (value !== 'DISCRETIONARY' && value !== 'PAID' && value !== 'UNPAID') {
     fieldsToValidate.paid = errorMessage.radio;
     return errorMessage.radio;
   }
-  return '';
+  fieldsToValidate[field] = "";
 }
 
 //Variable pour effectuer la validation avant la soumission
@@ -514,7 +516,7 @@ let isFormValid = ref(false);
 const validateForm = () => {
 
   fieldsToValidate.title = validateInput(dataToSendToAPI.title, 'title');
-  fieldsToValidate.fullName = validateSelect(dataToSendToAPI.fullName, 'fullName');
+  fieldsToValidate.candidateName = validateSelect(dataToSendToAPI.candidateName, 'candidateName');
   fieldsToValidate.description = validateInput(dataToSendToAPI.description, 'description');
   fieldsToValidate.programme = validateInput(dataToSendToAPI.programme, 'programme');
   fieldsToValidate.etablissement = validateInput(dataToSendToAPI.etablissement, 'etablissement');
@@ -542,29 +544,53 @@ const validateForm = () => {
 };
 
 //Fonction pour soumettre le formulaire 
+
+const selectedCandidateInfo = reactive({
+          address: '',
+          city: '',
+          description: '',
+          email: '',
+          firstName: '',
+          lastName: '',
+          phone: '',
+          postalCode: '',
+          province: '',
+          skills: []
+      });
+
+      
 const submitForm = () => {
   event.preventDefault();
   validateForm();
-      //console.log(id du candidat) après avoir récupérer l'id 
-      //console.log sur le candidat reçu après le fetch
-      // console.log(object du handleFOrm est lié)
-  if(isFormValid) {
-    // Doit récupérer l'id du candidat sélectionner dans le menu déroulant 
 
-    //Fetch sur l'id du candidat voir composable 
-
-    //Setter un object que l'on pourra aller chercher le data dedans 
-
-    console.log("submitForm isFormValid");
+  if (isFormValid) {
+    const selectedCandidateId = dataToSendToAPI.selectedCandidateId;
+    console.log("ID du candidat sélectionné:", selectedCandidateId);
 
 
-  } else{
+
+    getCandidateById(selectedCandidateId).then((candidate) => {
+      selectedCandidateInfo.address = candidate.address;
+      selectedCandidateInfo.city = candidate.city;
+      selectedCandidateInfo.description = candidate.description;
+      selectedCandidateInfo.email = candidate.email;
+      selectedCandidateInfo.firstName = candidate.firstName;
+      selectedCandidateInfo.lastName = candidate.lastName;
+      selectedCandidateInfo.phone = candidate.phone;
+      selectedCandidateInfo.postalCode = candidate.postalCode;
+      selectedCandidateInfo.province = candidate.province.value;
+      selectedCandidateInfo.skills = candidate.skills;
+      console.log("Candidat reçu après le fetch:", candidateResult.value);
+
+  
+      console.log("submitForm isFormValid");
+      sendRequest();
+    });
+  } else {
     console.log("submitForm Form invalid");
   }
+};
 
-  sendRequest();
-
-}
 
 
 
@@ -588,78 +614,33 @@ const sendRequest = async (formData) => {
 
 // Fonction pour lier les champs du formulaire aux valeurs dans l'api 
 const handleFormData = async () => {
-  const formDataRequest = ({
+  const formDataRequest = {
     title: dataToSendToAPI.title,
     description: dataToSendToAPI.description,
-    //à setter avec le fetch sur id dans la fonction submitForm
-    "candidate": {
-      fullName: dataToSendToAPI.fullName,
-      "email": "string",
-      city: dataToSendToAPI.city,
-      skills: dataToSendToAPI.skills,
+    candidate: {
+      address: selectedCandidateInfo.address,
+      city: selectedCandidateInfo.city,
+      description: selectedCandidateInfo.description,
+      email: selectedCandidateInfo.email,
+      firstName: selectedCandidateInfo.firstName,
+      lastName: selectedCandidateInfo.lastName,
+      phone: selectedCandidateInfo.phone,
+      postalCode: selectedCandidateInfo.postalCode,
+      province: selectedCandidateInfo.province,
+      skills: selectedCandidateInfo.skills,
     },
     startDate: dataToSendToAPI.startDate,
     endDate: dataToSendToAPI.endDate,
     weeklyWorkHours: dataToSendToAPI.weeklyWorkHours,
     province: dataToSendToAPI.province,
-    skills: dataToSendToAPI.skills,
     internshipType: dataToSendToAPI.internshipType,
     additionalInformation: dataToSendToAPI.additionalInformation,
-    
+  };
 
-    
-    enterprise: dataToSendToAPI.enterprise,
-    taskDescription: dataToSendToAPI.taskDescription,
-    programme: dataToSendToAPI.programme,
-    requiredSkills: dataToSendToAPI.requiredSkills,
-    etablissement: dataToSendToAPI.etablissement,
-    activitySector: dataToSendToAPI.activitySector,
-    paid: dataToSendToAPI.paid,
-
-/* object de l'api    {
-  "title": "string",
-  "description": "string",
-  "candidate": {
-    "_id": "string",
-    "description": "string",
-    "email": "string",
-    "firstName": "string",
-    "lastName": "string",
-    "address": "string",
-    "phone": "string",
-    "city": "string",
-    "skills": [
-      "string"
-    ],
-    "province": {
-      "_id": "string",
-      "value": "string"
-    },
-    "postalCode": "string"
-  },
-  "startDate": "2024-03-25T23:43:58.649Z",
-  "endDate": "2024-03-25T23:43:58.649Z",
-  "weeklyWorkHours": 0,
-  "province": {
-    "_id": "string",
-    "value": "string"
-  },
-  "skills": [
-    "string"
-  ],
-  "internshipType": {
-    "_id": "string",
-    "value": "string"
-  },
-  "additionalInformation": "string",
-  "isActive": true
-} */
-    
-  })
   console.log(formDataRequest);
   await sendRequest(formDataRequest);
+};
 
-}
 
 
 
