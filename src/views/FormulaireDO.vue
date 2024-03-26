@@ -2,17 +2,14 @@
   <div class="bg-neutral-100 w-full">
     <!-- ENTÊTE -->
     <!-- ENTÊTE POUR LES AJOUTS  -->
-    <h1 v-if="isAdding" class=" items-center text-4xl font-bold text-neutral-500   border-l-4 border-yellow-800 pl-2 my-5">{{ isRequest ? 'Ajouter une demande de stage' : 'Ajouter une offre de stage' }}</h1>
+    <h1 v-if="isAdding"  class="text-4xl font-bold text-neutral-500 " :class="{'border-l-4 pl-2 my-5 border-yellow-600': isRequest, 'border-l-4 pl-2 my-5 border-red-800': !isRequest }">{{ isRequest ? 'Ajouter une demande de stage' : 'Ajouter une offre de stage' }}</h1>
      <!-- ENTÊTE POUR LES MODIFICATIONS -->
-    <div v-if="!isAdding" class="grid grid-cols-1 border-l-4 border-yellow-800 pl-2 my-5 ">
+    <div v-if="!isAdding" class="grid grid-cols-1 " :class="{'border-l-4 pl-2 my-5 border-yellow-600': isRequest, ' border-l-4 pl-2 my-5 border-red-800': !isRequest }">
       <p class=" text-base font-bold text-neutral-500">
-        {{ isRequest ? 'Demande de stage' : 'Offre de stage' }}</p>
-    <h1 class="text-4xl font-bold text-neutral-500">Type/Enteprises</h1>
-   
+          {{ isRequest ? 'Demande de stage' : 'Offre de stage' }}</p>
+      <p class="text-4xl font-bold text-neutral-500">Titre</p>
+      <p class="font-extrabold  text-neutral-500 bg-white p-2 m-1 w-fit rounded" v-if="!isRequest">Entreprise</p>
     </div>
-    
-
-
     <!-- FORMULAIRE  -->
     <form class="m-[25px]">
       <!-- BOUTONS D'ACTION -->
@@ -21,7 +18,7 @@
           <button class="bg-neutral-300 text-white px-4 py-2 m-1 rounded hover:bg-neutral-400"
           @click="resetForm(isRequest)">Annuler</button>
           <button
-            :class="isRequest ? 'bg-teal-500 text-white px-4 py-2 m-1 rounded hover:bg-teal-600' : 'bg-red-800 text-white px-4 py-2 m-1 rounded hover:bg-red-900'"
+            :class="isRequest ? 'bg-yellow-600 text-white px-4 py-2 m-1 rounded hover:bg-yellow-700' : 'bg-red-800 text-white px-4 py-2 m-1 rounded hover:bg-red-900'"
             @click="submitForm"><i class="fa-solid fa-floppy-disk p-1"></i>{{ isAdding ? 'Sauvegarder' : 'Mettre à jour'
             }}</button>
         </div>
@@ -30,23 +27,23 @@
           <!-- CHAMP TITRE POUR LES DEMANDES ET OFFRES -->
           <div v-if="isAdding" class="flex items-baseline mt-5">
             <label for="title" class="text-base text-center font-bold text-neutral-500 block mr-4">Titre: </label>
-            <input id="title" v-model="formFieldsLinkedWithApi.title"
-              @input="validateInput(formFieldsLinkedWithApi.title, 'title')" type="text"
+            <input id="title" v-model="dataToSendToAPI.title"
+              @input="validateInput(dataToSendToAPI.title, 'title')" type="text"
               class="border border-gray-300 p-2 w-full rounded focus:bg-white"
-              :class="{ 'hover:bg-teal-100': isRequest, 'hover:bg-red-100': !isRequest }">
+              :class="{ 'hover:bg-yellow-100': isRequest, 'hover:bg-red-100': !isRequest }">
           </div>
           <span v-if="fieldsToValidate.title !== ''" class="text-xs font-semibold text-red-700">{{
               fieldsToValidate.title }}</span>
         </div>
 
         <!-- CHAMP ENTREPRISE POUR LES OFFRES  -->
-        <div v-if="!isRequest">
+        <div v-if="!isRequest && isAdding">
           <div class="flex items-baseline mt-5">
             <label for="enterprise" class="text-base font-bold text-neutral-500 block mr-4">Entreprise: </label>
-            <select id="enterprise" v-model="formFieldsLinkedWithApi.enterprise"
-              @change="validateSelect(formFieldsLinkedWithApi.enterprise, 'enterprise')" type="text"
+            <select id="enterprise" v-model="dataToSendToAPI.enterprise"
+              @change="validateSelect(dataToSendToAPI.enterprise, 'enterprise')" type="text"
               class="border border-gray-300 p-2 w-full rounded  focus:bg-white"
-              :class="{ 'hover:bg-teal-100': isRequest, 'hover:bg-red-100': !isRequest }">
+              :class="{ 'hover:bg-yellow-100': isRequest, 'hover:bg-red-100': !isRequest }">
               <option v-for="enterprise in allEnterprisesResults" :key="enterprise._id" :value="enterprise.name">{{
               enterprise.name
             }}</option>
@@ -56,31 +53,41 @@
               fieldsToValidate.enterprise }}</span>
         </div>
       </div>
-
+    
       <!-- CHAMP NOM COMPLET  POUR LES DEMANDES ET LES OFFRES -->
       <div class="bg-white p-10 mt-10">
-        <div v-if="isRequest" class="border-l-4 border-gray-800 pl-2 m-2">
-          <label for="fullName" class="text-sm font-bold text-neutral-500  block">Nom et prénom</label>
-          <select id="title" v-model="formFieldsLinkedWithApi.fullName"
-            @change="validateSelect(formFieldsLinkedWithApi.fullName, 'fullName')" type="text"
-            class="border border-gray-300 p-2 w-full rounded focus:bg-white"
-            :class="{ 'hover:bg-teal-100': isRequest, 'hover:bg-red-100': !isRequest }">
-            <option v-for="candidate in allCandidatesResults" :key="candidate._id"
-              :value="candidate.firstName & candidate.lastName">{{
-              candidate.firstName }} {{ candidate.lastName }}</option>
-          </select>
-          <span v-if="fieldsToValidate.fullName !== ''" class="p-2 text-xs font-semibold text-red-700">{{
-              fieldsToValidate.fullName
-            }}</span>
+        <div class="py-2">
+          <div v-if="isRequest && isAdding" class="border-l-4 border-gray-800 pl-2 m-2">
+            <label for="fullName" class="text-sm font-bold text-neutral-500  block">Nom et prénom</label>
+            <select id="title" v-model="dataToSendToAPI.fullName"
+              @change="validateSelect(dataToSendToAPI.fullName, 'fullName')" type="text"
+              class="border border-gray-300 p-2 w-full rounded focus:bg-white"
+              :class="{ 'hover:bg-yellow-100': isRequest, 'hover:bg-red-100': !isRequest }">
+              <option v-for="candidate in allCandidatesResults" :key="candidate._id"
+                :value="candidate.firstName & candidate.lastName">{{
+                candidate.firstName }} {{ candidate.lastName }}</option>
+            </select>
+            <span v-if="fieldsToValidate.fullName !== ''" class="p-2 text-xs font-semibold text-red-700">{{
+                fieldsToValidate.fullName
+              }}</span>
         </div>
 
+        </div>
+   
+ 
+        <!-- CHAMP CANDIDAT POUR LES DEMANDES EN MODIFICATION -->
+        <div v-if="isRequest && !isAdding" class="border-l-4 border-gray-800 pl-2 m-2">
+          <label for="fullName" class="text-sm font-bold text-neutral-500  block">Candidat</label>
+          <input id="title"  class="border border-gray-300 p-2 w-full rounded focus:bg-white">
+        </div>
+   
         <!-- CHAMP PRÉSENTATION POUR LES DEMANDES  -->
         <div v-if="isRequest" class="grid grid-cols-1 border-l-4 border-gray-800 pl-2 m-2">
           <label for="description" class="text-sm font-bold text-neutral-500  block">Présentation</label>
-          <textarea id="description" v-if="isRequest" v-model="formFieldsLinkedWithApi.description"
-            @change="validateInput(formFieldsLinkedWithApi.description, 'description')"
+          <textarea id="description" v-if="isRequest" v-model="dataToSendToAPI.description"
+            @change="validateInput(dataToSendToAPI.description, 'description')"
             class="border border-gray-300 p-2 w-full rounded  focus:bg-white"
-            :class="{ 'hover:bg-teal-100': isRequest, 'hover:bg-red-100': !isRequest }"></textarea>
+            :class="{ 'hover:bg-yellow-100' : isRequest, 'hover:bg-red-100': !isRequest }"></textarea>
           <span v-if="fieldsToValidate.description !== ''" class="p-2 text-xs font-semibold text-red-700">{{
               fieldsToValidate.description }}</span>
         </div>
@@ -88,10 +95,10 @@
         <!-- CHAMP DESCRIPTION DES TÂCHES POUR LES OFFRES  -->
         <div v-if="!isRequest" class="grid grid-cols-1 border-l-4 border-gray-800 pl-2 m-2">
           <p class="text-4xl font-bold text-red-800">Description des tâches</p>
-          <textarea id="taskDescription" v-model="formFieldsLinkedWithApi.taskDescription"
-            @change="validateInput(formFieldsLinkedWithApi.taskDescription, 'taskDescription')"
+          <textarea id="taskDescription" v-model="dataToSendToAPI.taskDescription"
+            @change="validateInput(dataToSendToAPI.taskDescription, 'taskDescription')"
             class="border border-gray-300 p-2 w-full rounded  focus:bg-white"
-            :class="{ 'hover:bg-teal-100': isRequest, 'hover:bg-red-100': !isRequest }"></textarea>
+            :class="{ 'hover:bg-yellow-100': isRequest, 'hover:bg-red-100': !isRequest }"></textarea>
           <span v-if="fieldsToValidate.taskDescription !== ''" class="p-2 text-xs font-semibold text-red-700">{{
               fieldsToValidate.taskDescription }}</span>
         </div>
@@ -100,10 +107,10 @@
         <div class="grid grid-cols-2 gap-4">
           <div class="border-l-4 border-gray-800 pl-2 m-2">
             <label for="programme" class="text-sm font-bold text-neutral-500 block">Programme de formation</label>
-            <input id="programme" v-model="formFieldsLinkedWithApi.programme"
-              @input="validateInput(formFieldsLinkedWithApi.programme, 'programme')" type="text"
+            <input id="programme" v-model="dataToSendToAPI.programme"
+              @input="validateInput(dataToSendToAPI.programme, 'programme')" type="text"
               class="border border-gray-300 p-2 w-full rounded mt-1   focus:bg-white"
-              :class="{ 'hover:bg-teal-100': isRequest, 'hover:bg-red-100': !isRequest }">
+              :class="{ 'hover:bg-yellow-100' : isRequest, 'hover:bg-red-100': !isRequest }">
             <span v-if="fieldsToValidate.programme !== ''" class="text-xs font-semibold text-red-700 p-2">{{
               fieldsToValidate.programme }}</span>
           </div>
@@ -112,10 +119,10 @@
           <div v-if="isRequest" class="border-l-4 border-gray-800 pl-2 m-2">
             <label for="etablissement" class="text-sm font-bold text-neutral-500 block">Établissement
               scolaire</label>
-            <input id="etablissement" v-model="formFieldsLinkedWithApi.etablissement"
-              @input="validateInput(formFieldsLinkedWithApi.etablissement, 'etablissement')" type="text"
+            <input id="etablissement" v-model="dataToSendToAPI.etablissement"
+              @input="validateInput(dataToSendToAPI.etablissement, 'etablissement')" type="text"
               class="border border-gray-300 p-2 w-full rounded mt-1 focus:bg-white"
-              :class="{ 'hover:bg-teal-100': isRequest, 'hover:bg-red-100': !isRequest }">
+              :class="{ 'hover:bg-yellow-100' : isRequest, 'hover:bg-red-100': !isRequest }">
             <span v-if="fieldsToValidate.etablissement !== ''" class="text-xs font-semibold text-red-700 p-2">{{
               fieldsToValidate.etablissement }}</span>
           </div>
@@ -125,10 +132,10 @@
             <label for="activitySector" class="text-sm font-bold text-neutral-500 block ml-3   focus:bg-white"
               :class="{ 'hover:bg-teal-100': isRequest, 'hover:bg-red-100': !isRequest }">Secteur
               d'activité</label>
-            <select id="activitySector" v-model="formFieldsLinkedWithApi.activitySector"
-              @change="validateSelect(formFieldsLinkedWithApi.activitySector, 'activitySector')"
+            <select id="activitySector" v-model="dataToSendToAPI.activitySector"
+              @change="validateSelect(dataToSendToAPI.activitySector, 'activitySector')"
               class="border border-gray-300 p-2 w-full rounded mt-1 focus:bg-white"
-              :class="{ 'hover:bg-teal-100': isRequest, 'hover:bg-red-100': !isRequest }">
+              :class="{ 'hover:bg-yellow-100' : isRequest, 'hover:bg-red-100': !isRequest }">
               <option v-for="sector in allActivitySectorsResults" :key="sector._id" :value="sector.id">{{ sector.value
                 }}</option>
             </select>
@@ -139,36 +146,36 @@
           <!-- CHAMP VILLE POUR LES DEMANDES -->
           <div v-if="isRequest" class="border-l-4 border-gray-800 pl-2 m-2">
             <label for="city" class="text-sm font-bold text-neutral-500 block">Ville</label>
-            <input id="city" v-model="formFieldsLinkedWithApi.city"
-              @input="validateInput(formFieldsLinkedWithApi.city, 'city')" type="text"
+            <input id="city" v-model="dataToSendToAPI.city"
+              @input="validateInput(dataToSendToAPI.city, 'city')" type="text"
               class="border border-gray-300 p-2 w-full rounded mt-1  focus:bg-white"
-              :class="{ 'hover:bg-teal-100': isRequest, 'hover:bg-red-100': !isRequest }">
+              :class="{ 'hover:bg-yellow-100' : isRequest, 'hover:bg-red-100': !isRequest }">
             <span v-if="fieldsToValidate.city !== ''" class="p-2 text-xs font-semibold text-red-700">{{
               fieldsToValidate.city }}</span>
           </div>
 
           <!-- CHAMP PROVINCES POUR LES DEMANDES -->
           <div v-if="isRequest" class="border-l-4 border-gray-800 pl-2 m-2">
-            <label for="region" class="text-sm font-bold text-neutral-500 block">Province</label>
-            <select id="region" v-model="formFieldsLinkedWithApi.region"
-              @change="validateSelect(formFieldsLinkedWithApi.region, 'region')" type="text"
+            <label for="province" class="text-sm font-bold text-neutral-500 block">Province</label>
+            <select id="province" v-model="dataToSendToAPI.province"
+              @change="validateSelect(dataToSendToAPI.province, 'province')" type="text"
               class="border border-gray-300 p-2 w-full rounded mt-1  focus:bg-white"
-              :class="{ 'hover:bg-teal-100': isRequest, 'hover:bg-red-100': !isRequest }">
+              :class="{ 'hover:bg-yellow-100' : isRequest, 'hover:bg-red-100': !isRequest }">
               <option v-for="province in allProvincesResults" :key="province._id" :value="province.id">{{ province.value
                 }}</option>
             </select>
-            <span v-if="fieldsToValidate.region !== ''" class="p-2 text-xs font-semibold text-red-700">{{
-              fieldsToValidate.region }}</span>
+            <span v-if="fieldsToValidate.province !== ''" class="p-2 text-xs font-semibold text-red-700">{{
+              fieldsToValidate.province }}</span>
           </div>
         </div>
 
         <!-- CHAMP EXIGENCES POUR LES OFFRES -->
         <div v-if="!isRequest" class="grid grid-cols-1 border-l-4 border-gray-800 pl-2 m-2">
           <label for="requiredSkills" class="text-sm font-bold text-neutral-500 block">Exigences</label>
-          <textarea id="requiredSkills" v-model="formFieldsLinkedWithApi.requiredSkills"
-            @change="validateInput(formFieldsLinkedWithApi.requiredSkills, 'requiredSkills')"
+          <textarea id="requiredSkills" v-model="dataToSendToAPI.requiredSkills"
+            @change="validateInput(dataToSendToAPI.requiredSkills, 'requiredSkills')"
             class="border border-gray-300 p-2 w-full rounded  focus:bg-white"
-            :class="{ 'hover:bg-teal-100': isRequest, 'hover:bg-red-100': !isRequest }"></textarea>
+            :class="{ 'hover:bg-yellow-100' : isRequest, 'hover:bg-red-100': !isRequest }"></textarea>
           <span v-if="fieldsToValidate.requiredSkills !== ''" class="p-2 text-xs font-semibold text-red-700">{{
               fieldsToValidate.requiredSkills }}</span>
         </div>
@@ -176,26 +183,26 @@
         <!-- CHAMP COMPÉTENCES POUR LES DEMANDES -->
         <div v-if="isRequest" class="grid grid-cols-1 border-l-4 border-gray-800 pl-2 m-2">
           <label for="skills" class="text-sm font-bold text-neutral-500 block">Compétences</label>
-          <textarea id="skills" v-if="isRequest" v-model="formFieldsLinkedWithApi.skills"
-            @change="validateInput(formFieldsLinkedWithApi.skills, 'skills')"
+          <textarea id="skills" v-if="isRequest" v-model="dataToSendToAPI.skills"
+            @change="validateInput(dataToSendToAPI.skills, 'skills')"
             class="border border-gray-300 p-2 w-full rounded  focus:bg-white"
-            :class="{ 'hover:bg-teal-100': isRequest, 'hover:bg-red-100': !isRequest }"></textarea>
+            :class="{ 'hover:bg-yellow-100': isRequest, 'hover:bg-red-100': !isRequest }"></textarea>
           <span v-if="fieldsToValidate.skills !== ''" class="text-xs font-semibold text-red-700">{{
               fieldsToValidate.skills }}</span>
         </div>
         
         <!-- SECTION INFORMATION SUR LE STAGE  POUR LES DEMANDES ET LES OFFRES -->
-        <p class=" text-base font-bold px-4 py-2 m-1" :class="isRequest ? ' text-teal-500' : 'text-red-800'">
+        <p class=" text-base font-bold px-4 py-2 m-1" :class="isRequest ? ' text-yellow-600' : 'text-red-800'">
           Information sur le stage</p>
 
         <!-- CHAMP TYPE DE STAGE  POUR LES DEMANDES ET LES OFFRES -->
         <div class="grid grid-cols-2 gap-4 items-baseline">
           <div class="border-l-4 border-gray-800 pl-2 m-2">
             <label for="internshipType" class="text-sm font-bold text-neutral-500 block">Type de stage</label>
-            <select id="internshipType" v-model="formFieldsLinkedWithApi.internshipType"
-              @change="validateSelect(formFieldsLinkedWithApi.internshipType, 'internshipType')" type="text"
+            <select id="internshipType" v-model="dataToSendToAPI.internshipType"
+              @change="validateSelect(dataToSendToAPI.internshipType, 'internshipType')" type="text"
               class="border border-gray-300 p-2 w-full rounded mt-1    focus:bg-white"
-              :class="{ 'hover:bg-teal-100': isRequest, 'hover:bg-red-100': !isRequest }">
+              :class="{ 'hover:bg-yellow-100': isRequest, 'hover:bg-red-100': !isRequest }">
               <option v-for="intership in allIntershipTypesResults" :key="intership._id" :value="intership.id">{{
               intership.value }}
               </option>
@@ -207,10 +214,10 @@
           <!-- CHAMP DATE DE DÉBUT  POUR LES DEMANDES ET LES OFFRES -->
           <div class="border-l-4 border-gray-800 pl-2 m-2">
             <label for="startDate" class="text-sm font-bold text-neutral-500 block">Date de début</label>
-            <input id="startDate" v-model="formFieldsLinkedWithApi.startDate"
-              @input="validateDate(formFieldsLinkedWithApi.startDate, 'startDate')" type="date"
+            <input id="startDate" v-model="dataToSendToAPI.startDate"
+              @input="validateDate(dataToSendToAPI.startDate, 'startDate')" type="date"
               class="border border-gray-300 p-2 w-full rounded mt-1    focus:bg-white"
-              :class="{ 'hover:bg-teal-100': isRequest, 'hover:bg-red-100': !isRequest }">
+              :class="{ 'hover:bg-yellow-100': isRequest, 'hover:bg-red-100': !isRequest }">
             <span v-if="fieldsToValidate.startDate !== ''" class="p-2 text-xs font-semibold text-red-700">{{
               fieldsToValidate.startDate }}</span>
           </div>
@@ -219,10 +226,10 @@
           <div class="border-l-4 border-gray-800 pl-2 m-2">
             <label for="weeklyWorkHours" class="text-sm font-bold text-neutral-500 block">Nombre d'heures par
               semaine</label>
-            <input id="weeklyWorkHours" v-model="formFieldsLinkedWithApi.weeklyWorkHours"
-              @input="validateNumber(formFieldsLinkedWithApi.weeklyWorkHours, 'weeklyWorkHours')" type="number"
+            <input id="weeklyWorkHours" v-model="dataToSendToAPI.weeklyWorkHours"
+              @input="validateNumber(dataToSendToAPI.weeklyWorkHours, 'weeklyWorkHours')" type="number"
               class="border border-gray-300 p-2 w-full rounded mt-1    focus:bg-white"
-              :class="{ 'hover:bg-teal-100': isRequest, 'hover:bg-red-100': !isRequest }">
+              :class="{ 'hover:bg-yellow-100' : isRequest, 'hover:bg-red-100': !isRequest }">
             <span v-if="fieldsToValidate.weeklyWorkHours !== ''" class="p-2 font-semibold text-xs text-red-700">{{
               fieldsToValidate.weeklyWorkHours }}</span>
           </div>
@@ -230,10 +237,10 @@
           <!-- CHAMP DATE DE FIN POUR LES DEMANDES ET LES OFFRES -->
           <div class="border-l-4 border-gray-800 pl-2 m-2">
             <label for="endDate" class="text-sm font-bold text-neutral-500 block">Date de fin</label>
-            <input id="endDate" v-model="formFieldsLinkedWithApi.endDate"
-              @input="validateDate(formFieldsLinkedWithApi.endDate, 'endDate')" type="date"
+            <input id="endDate" v-model="dataToSendToAPI.endDate"
+              @input="validateDate(dataToSendToAPI.endDate, 'endDate')" type="date"
               class="border border-gray-300 p-2 w-full rounded mt-1    focus:bg-white"
-              :class="{ 'hover:bg-teal-100': isRequest, 'hover:bg-red-100': !isRequest }">
+              :class="{ 'hover:bg-yellow-100': isRequest, 'hover:bg-red-100': !isRequest }">
             <span v-if="fieldsToValidate.endDate !== ''" class="p-2 text-xs font-semibold text-red-700">{{
               fieldsToValidate.endDate }}</span>
           </div>
@@ -242,17 +249,17 @@
         <!-- CHAMP RÉNUMÉRATION POUR LES DEMANDES ET LES OFFRES -->
         <div class="border-l-4 border-gray-800 pl-2 m-2">
           <label class="text-sm font-bold text-neutral-500 block mb-2">Rémunération</label>
-          <input id="discretionary" v-model="formFieldsLinkedWithApi.paid"
-            @change="validatePaid(formFieldsLinkedWithApi.paid, 'paid')" value="DISCRETIONARY" type="radio"
-            class="mr-2 ml-3 rounded " :class="{ 'hover:bg-teal-100': isRequest, 'hover:bg-red-100': !isRequest }">
+          <input id="discretionary" v-model="dataToSendToAPI.paid"
+            @change="validatePaid(dataToSendToAPI.paid, 'paid')" value="DISCRETIONARY" type="radio"
+            class="mr-2 ml-3 rounded " :class="{ 'hover:bg-yellow-100' : isRequest, 'hover:bg-red-100': !isRequest }">
           <label for="discretionary">À discuter</label><br>
-          <input id="paid" v-model="formFieldsLinkedWithApi.paid"
-            @change="validatePaid(formFieldsLinkedWithApi.paid, 'paid')" value="PAID" type="radio"
-            class="mr-2 ml-3 rounded 0 " :class="{ 'hover:bg-teal-100': isRequest, 'hover:bg-red-100': !isRequest }">
+          <input id="paid" v-model="dataToSendToAPI.paid"
+            @change="validatePaid(dataToSendToAPI.paid, 'paid')" value="PAID" type="radio"
+            class="mr-2 ml-3 rounded 0 " :class="{ 'hover:bg-yellow-100' : isRequest, 'hover:bg-red-100': !isRequest }">
           <label for="paid">Stage rémunéré</label><br>
-          <input id="unpaid" v-model="formFieldsLinkedWithApi.paid"
-            @change="validatePaid(formFieldsLinkedWithApi.paid, 'paid')" value="UNPAID" type="radio"
-            class="mr-2 ml-3 rounded  " :class="{ 'hover:bg-teal-100': isRequest, 'hover:bg-red-100': !isRequest }">
+          <input id="unpaid" v-model="dataToSendToAPI.paid"
+            @change="validatePaid(dataToSendToAPI.paid, 'paid')" value="UNPAID" type="radio"
+            class="mr-2 ml-3 rounded  " :class="{ 'hover:bg-yellow-100' : isRequest, 'hover:bg-red-100': !isRequest }">
           <label for="unpaid">Stage non rémunéré</label><br>
           <span v-if="fieldsToValidate.paid !== ''" class="p-2 text-xs font-semibold text-red-700">{{
               fieldsToValidate.paid }}</span>
@@ -261,11 +268,11 @@
         <!-- CHAMP INFORMATION SUPPLÉMENTAIRES POUR LES DEMANDES ET LES OFFRES -->
         <div class="m-2">
           <label for="additionalInformation" class="text-sm font-bold"
-            :class="isRequest ? ' text-teal-500' : 'text-red-800'">Information supplémentaire</label>
-          <textarea id="additionalInformation" v-model="formFieldsLinkedWithApi.additionalInformation"
-            @change="validateInput(formFieldsLinkedWithApi.additionalInformation, 'additionalInformation')"
+            :class="isRequest ? ' text-yellow-600' : 'text-red-800'">Information supplémentaire</label>
+          <textarea id="additionalInformation" v-model="dataToSendToAPI.additionalInformation"
+            @change="validateInput(dataToSendToAPI.additionalInformation, 'additionalInformation')"
             class="border border-gray-300 p-2 w-full  rounded   focus:bg-white"
-            :class="{ 'hover:bg-teal-100': isRequest, 'hover:bg-red-100': !isRequest }"></textarea>
+            :class="{ 'hover:bg-yellow-100' : isRequest, 'hover:bg-red-100': !isRequest }"></textarea>
           <span v-if="fieldsToValidate.additionalInformation !== ''" class="p-2 text-xs font-semibold text-red-700">{{
               fieldsToValidate.additionalInformation }}</span>
         </div>
@@ -273,11 +280,11 @@
         <!-- SECTION TÉLÉCHARGEMENT POUR LES DEMANDES  -->
         <div v-if="isRequest" class="m-2  flex justify-between items-center">
           <div class="w-1/2 flex items-center">
-            <input class="h-10 border border-gray-300 py-3 w-full rounded  hover:bg-teal-100  focus:bg-white">
+            <input class="h-10 border border-gray-300 py-3 w-full rounded  hover:bg-yellow-100  focus:bg-white">
             <button
               class="h-10 bg-neutral-300 text-white px-4 py-1 rounded hover:bg-neutral-400 text-center">Parcourir</button>
           </div>
-          <button v-if="!isAdding" class="bg-teal-500 text-white p-2 m-1 rounded hover:bg-teal-600  focus:bg-white"><i
+          <button v-if="!isAdding" class="bg-yellow-600 text-white p-2 m-1 rounded hover:bg-yellow-700  focus:bg-white"><i
               class="fa-solid fa-cloud-arrow-down p-1"></i>Télécharger le C.V. </button>
         </div>
 
@@ -286,7 +293,7 @@
           <button class="bg-neutral-300 text-white px-4 py-2 m-1 rounded hover:bg-neutral-400"
             @click="resetForm">Annuler</button>
           <button
-            :class="isRequest ? 'bg-teal-500 text-white px-4 py-2 m-1 rounded hover:bg-teal-600' : 'bg-red-800 text-white px-4 py-2 m-1 rounded hover:bg-red-900'"
+            :class="isRequest ? 'bg-yellow-600 text-white px-4 py-2 m-1 rounded hover:bg-yellow-700' : 'bg-red-800 text-white px-4 py-2 m-1 rounded hover:bg-red-900'"
             @click="submitForm"><i class="fa-solid fa-floppy-disk p-1"></i>{{ isAdding ? 'Sauvegarder' : 'Mettre à jour'
             }}</button>
         </div>
@@ -303,8 +310,9 @@ import { useIntershipTypes } from '@/composables/typeStage';
 import { useProvinces } from '@/composables/provinces';
 import { useAllCandidates } from '@/composables/candidats';
 import { useAllEnterprises } from '@/composables/entreprises';
-import { useDemandesDeStages } from '@/composables/demandeDeStage';
 import  router  from '../router/index';
+import { useRoute } from 'vue-router'
+import axios from 'axios'
 
 
 // DÉCLARATION DES VARIABLES REQUISES POUR LES ROUTES ET LA RÉUTILISATION DU FORMULAIRE
@@ -315,59 +323,49 @@ const props = defineProps(['isRequest'])
 //Variable pour déterminer si c'est un ajout ou une modification 
 let isAdding = ref(true);
 
+//Variable pour utliser dans les routes.params 
+const route = useRoute();
+
 // UTILISATION DES COMPOSABLES POUR L'AFFICHAGE DES DONNÉES VENANT DE L'API //
-//Fonction pour afficher les candidats venant de l'api
 const { allCandidatesResults, getAllCandidates } = useAllCandidates();
-
-onMounted(async () => {
-  await getAllCandidates();
-  console.log(allCandidatesResults);
-})
-
-//Fonction pour afficher les entreprises venant de l'api
 const { allEnterprisesResults, getAllEnterprises } = useAllEnterprises();
-
-onMounted(async () => {
-  await getAllEnterprises();
-  console.log(allEnterprisesResults);
-})
-
-
-//Fonction pour afficher les secteurs d'activités venant de l'api
 const { allActivitySectorsResults, getAllActivitySectors } = useActivitySectors();
-
-onMounted(async () => {
-  await getAllActivitySectors();
-  console.log(allActivitySectorsResults);
-})
-
-
-//Fonction pour afficher les provinces venant de l'api
 const { allProvincesResults, getAllProvinces } = useProvinces();
-
-onMounted(async () => {
-  await getAllProvinces();
-  console.log(allProvincesResults);
-})
-
-//Fonction pour afficher les types de stage venant de l'api
 const { allIntershipTypesResults, getAllIntershipTypes } = useIntershipTypes();
 
-onMounted(async () => {
-  await getAllIntershipTypes();
-  console.log(allIntershipTypesResults);
-})
-//Fonction pour afficher le nom et le titre de la demande venant de l'api
-const {  demandeDeStageResult, getDemandeDeStagesById } = useDemandesDeStages();
+// si on veut réutiliser l'id partout dans le code déclarer une variable ici 
+
 
 onMounted(async () => {
-  await getDemandeDeStagesById ();
-  console.log(   demandeDeStageResult);
+  //lorsqu'on passera un id en param passer le tout ici  
+  const id = route.params.id;
+
+  if(props.isRequest){
+    await getAllCandidates();
+    console.log(allCandidatesResults);
+    await getAllActivitySectors();
+    console.log(allActivitySectorsResults);
+    await getAllProvinces();
+    console.log(allProvincesResults);
+    await getAllIntershipTypes();
+    console.log(allIntershipTypesResults);
+
+  } else {
+    await getAllEnterprises();
+    console.log(allEnterprisesResults);
+    await getAllActivitySectors();
+    console.log(allActivitySectorsResults);
+    await getAllProvinces();
+    console.log(allProvincesResults);
+    await getAllIntershipTypes();
+    console.log(allIntershipTypesResults);
+  }
 })
+
 
 // REQUÊTE POUR ENVOYER LES DONNÉES À L'API
 // Création des variables dans les formulaires à envoyer à l'api 
-const formFieldsLinkedWithApi = reactive({
+const dataToSendToAPI = reactive({
   title: '',
   enterprise: '',
   taskDescription: '',
@@ -379,7 +377,7 @@ const formFieldsLinkedWithApi = reactive({
   etablissement: '',
   activitySector: '',
   city: '',
-  region: '',
+  province: '',
   skills: '',
   internshipType: '',
   startDate: '',
@@ -391,8 +389,7 @@ const formFieldsLinkedWithApi = reactive({
 
 
 // VALIDATION DES CHAMPS DES FORMULAIRES
-//Variable pour effectuer la validation avant la soumission
-let isFormValid = ref(false);
+
 
 // Variables pour des messages d'erreur des formulaires 
 const errorMessage = reactive({
@@ -421,7 +418,7 @@ const fieldsToValidate = reactive({
   etablissement: '',
   activitySector: '',
   city: '',
-  region: '',
+  province: '',
   skills: '',
   internshipType: '',
   startDate: '',
@@ -464,7 +461,7 @@ function validateSelect(select, field) {
 // Fonction pour valider les champs de type date
 function validateDate(input, field) {
   const selectedDate = new Date(input);
-  const startDate = new Date(formFieldsLinkedWithApi.startDate);
+  const startDate = new Date(dataToSendToAPI.startDate);
   const currentDate = new Date();
   currentDate.setHours(0, 0, 0, 0);
 
@@ -510,46 +507,167 @@ function validatePaid(value) {
   return '';
 }
 
+//Variable pour effectuer la validation avant la soumission
+let isFormValid = ref(false);
 
-// Fonction pour soumettre le formulaire 
-const submitForm = (e) => {
-  e.preventDefault();
-  fieldsToValidate.title = validateInput(formFieldsLinkedWithApi.title, 'title');
-  fieldsToValidate.fullName = validateSelect(formFieldsLinkedWithApi.fullName, 'fullName');
-  fieldsToValidate.description = validateInput(formFieldsLinkedWithApi.description, 'description');
-  fieldsToValidate.programme = validateInput(formFieldsLinkedWithApi.programme, 'programme');
-  fieldsToValidate.etablissement = validateInput(formFieldsLinkedWithApi.etablissement, 'etablissement');
-  fieldsToValidate.city = validateInput(formFieldsLinkedWithApi.city, 'city');
-  fieldsToValidate.skills = validateInput(formFieldsLinkedWithApi.skills, 'skills');
-  fieldsToValidate.activitySector = validateSelect(formFieldsLinkedWithApi.activitySector, 'activitySector');
-  fieldsToValidate.region = validateSelect(formFieldsLinkedWithApi.region, 'region');
-  fieldsToValidate.internshipType = validateSelect(formFieldsLinkedWithApi.internshipType, 'internshipType');
-  fieldsToValidate.startDate = validateDate(formFieldsLinkedWithApi.startDate, 'startDate');
-  fieldsToValidate.endDate = validateDate(formFieldsLinkedWithApi.endDate, 'endDate');
-  fieldsToValidate.weeklyWorkHours = validateNumber(formFieldsLinkedWithApi.weeklyWorkHours, 'weeklyWorkHours');
-  fieldsToValidate.paid = validatePaid(formFieldsLinkedWithApi.paid, 'paid');
-  fieldsToValidate.additionalInformation = validateInput(formFieldsLinkedWithApi.additionalInformation, 'additionalInformation');
-  fieldsToValidate.enterprise = validateSelect(formFieldsLinkedWithApi.enterprise, 'enterprise');
-  fieldsToValidate.taskDescription = validateInput(formFieldsLinkedWithApi.taskDescription, 'taskDescription');
-  fieldsToValidate.requiredSkills = validateInput(formFieldsLinkedWithApi.requiredSkills, 'requiredSkills');
+// Fonction pour effectuer toutes les validations 
+const validateForm = () => {
+
+  fieldsToValidate.title = validateInput(dataToSendToAPI.title, 'title');
+  fieldsToValidate.fullName = validateSelect(dataToSendToAPI.fullName, 'fullName');
+  fieldsToValidate.description = validateInput(dataToSendToAPI.description, 'description');
+  fieldsToValidate.programme = validateInput(dataToSendToAPI.programme, 'programme');
+  fieldsToValidate.etablissement = validateInput(dataToSendToAPI.etablissement, 'etablissement');
+  fieldsToValidate.city = validateInput(dataToSendToAPI.city, 'city');
+  fieldsToValidate.skills = validateInput(dataToSendToAPI.skills, 'skills');
+  fieldsToValidate.activitySector = validateSelect(dataToSendToAPI.activitySector, 'activitySector');
+  fieldsToValidate.province = validateSelect(dataToSendToAPI.province, 'province');
+  fieldsToValidate.internshipType = validateSelect(dataToSendToAPI.internshipType, 'internshipType');
+  fieldsToValidate.startDate = validateDate(dataToSendToAPI.startDate, 'startDate');
+  fieldsToValidate.endDate = validateDate(dataToSendToAPI.endDate, 'endDate');
+  fieldsToValidate.weeklyWorkHours = validateNumber(dataToSendToAPI.weeklyWorkHours, 'weeklyWorkHours');
+  fieldsToValidate.paid = validatePaid(dataToSendToAPI.paid, 'paid');
+  fieldsToValidate.additionalInformation = validateInput(dataToSendToAPI.additionalInformation, 'additionalInformation');
+  fieldsToValidate.enterprise = validateSelect(dataToSendToAPI.enterprise, 'enterprise');
+  fieldsToValidate.taskDescription = validateInput(dataToSendToAPI.taskDescription, 'taskDescription');
+  fieldsToValidate.requiredSkills = validateInput(dataToSendToAPI.requiredSkills, 'requiredSkills');
 
   isFormValid.value = Object.values(fieldsToValidate).every(value => value === '');
   if (isFormValid.value) {
     for (let key in fieldsToValidate) {
       fieldsToValidate[key] = '';
     }
-   /*  router.push(props.isRequest ? '/app/demandesdestages' : '/app/offresdestages'); */
+    console.log('The form is valid!')
+  }
+};
+
+//Fonction pour soumettre le formulaire 
+const submitForm = () => {
+  event.preventDefault();
+  validateForm();
+      //console.log(id du candidat) après avoir récupérer l'id 
+      //console.log sur le candidat reçu après le fetch
+      // console.log(object du handleFOrm est lié)
+  if(isFormValid) {
+    // Doit récupérer l'id du candidat sélectionner dans le menu déroulant 
+
+    //Fetch sur l'id du candidat voir composable 
+
+    //Setter un object que l'on pourra aller chercher le data dedans 
+
+    console.log("submitForm isFormValid");
+
+
+  } else{
+    console.log("submitForm Form invalid");
   }
 
-};
+  sendRequest();
+
+}
+
+
+
+// Fonction pour envoyer les données à l'api 
+const sendRequest = async (formData) => {
+
+  try
+  {
+     const response = await axios.post('https://api-4.fly.dev/internship-requests', formData)
+     console.log('Reponse:', response.data);
+
+
+  } catch (error) {
+    console.error('Error:', error);
+
+  } 
+     
+     //router.push(props.isRequest ? '/app/demandesdestages' : '/app/offresdestages'); 
+
+}
+
+// Fonction pour lier les champs du formulaire aux valeurs dans l'api 
+const handleFormData = async () => {
+  const formDataRequest = ({
+    title: dataToSendToAPI.title,
+    description: dataToSendToAPI.description,
+    //à setter avec le fetch sur id dans la fonction submitForm
+    "candidate": {
+      fullName: dataToSendToAPI.fullName,
+      "email": "string",
+      city: dataToSendToAPI.city,
+      skills: dataToSendToAPI.skills,
+    },
+    startDate: dataToSendToAPI.startDate,
+    endDate: dataToSendToAPI.endDate,
+    weeklyWorkHours: dataToSendToAPI.weeklyWorkHours,
+    province: dataToSendToAPI.province,
+    skills: dataToSendToAPI.skills,
+    internshipType: dataToSendToAPI.internshipType,
+    additionalInformation: dataToSendToAPI.additionalInformation,
+    
+
+    
+    enterprise: dataToSendToAPI.enterprise,
+    taskDescription: dataToSendToAPI.taskDescription,
+    programme: dataToSendToAPI.programme,
+    requiredSkills: dataToSendToAPI.requiredSkills,
+    etablissement: dataToSendToAPI.etablissement,
+    activitySector: dataToSendToAPI.activitySector,
+    paid: dataToSendToAPI.paid,
+
+/* object de l'api    {
+  "title": "string",
+  "description": "string",
+  "candidate": {
+    "_id": "string",
+    "description": "string",
+    "email": "string",
+    "firstName": "string",
+    "lastName": "string",
+    "address": "string",
+    "phone": "string",
+    "city": "string",
+    "skills": [
+      "string"
+    ],
+    "province": {
+      "_id": "string",
+      "value": "string"
+    },
+    "postalCode": "string"
+  },
+  "startDate": "2024-03-25T23:43:58.649Z",
+  "endDate": "2024-03-25T23:43:58.649Z",
+  "weeklyWorkHours": 0,
+  "province": {
+    "_id": "string",
+    "value": "string"
+  },
+  "skills": [
+    "string"
+  ],
+  "internshipType": {
+    "_id": "string",
+    "value": "string"
+  },
+  "additionalInformation": "string",
+  "isActive": true
+} */
+    
+  })
+  console.log(formDataRequest);
+  await sendRequest(formDataRequest);
+
+}
 
 
 
 // Fonction pour réinitialiser le formulaire
 const resetForm = () => {
-  formFieldsLinkedWithApi.additionalInformation = '';
-  for (let key in formFieldsLinkedWithApi) {
-    formFieldsLinkedWithApi[key] = '';
+  dataToSendToAPI.additionalInformation = '';
+  for (let key in dataToSendToAPI) {
+    dataToSendToAPI[key] = '';
   }
   for (let key in fieldsToValidate) {
     fieldsToValidate[key] = '';

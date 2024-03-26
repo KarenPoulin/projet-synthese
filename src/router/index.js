@@ -59,7 +59,7 @@ const router = createRouter({
           props: true
         },
         {
-          path: 'formulairedo/:type',
+          path: 'formulairedo/:type/:id?',
           name: 'formulairedo',
           component: FormulaireDO,
           props: route => ({ isRequest: route.params.type === 'request' })
