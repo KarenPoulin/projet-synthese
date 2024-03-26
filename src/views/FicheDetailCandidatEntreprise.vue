@@ -12,8 +12,8 @@
                 <h2 v-if="isCandidate"class="bg-white text-neutral-500 font-semibold text-xl w-60 text-center p-2 ml-5">Développeur Front-End</h2>
             </div>
         </div>
-        <div class="bg-white p-16 rounded-xl">
-            <h3 class="text-4xl font-bold mb-10" :class="{'text-blue-400': !isCandidate, 'text-fuchsia-800': isCandidate}">Courte présentation</h3>
+        <div class="bg-white p-8 lg:p-16 rounded-xl">
+            <h3 class="text-3xl md:text-4xl font-bold mb-5 lg:mb-10" :class="{'text-blue-400': !isCandidate, 'text-fuchsia-800': isCandidate}">Courte présentation</h3>
             <p class="text-neutral-500 text-md mb-14">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus quidem,
                 nam reprehenderit hic dolores iste minima laboriosam. Nam maiores hic blanditiis necessitatibus
                 suscipit, quod minima nostrum perspiciatis, odit iusto quas! Quasi magni veniam, repudiandae minus
@@ -23,7 +23,7 @@
             <h4 v-if="!isCandidate" class="text-lg text-blue-400 font-bold mb-5">Personne contact</h4>
             <p v-if="!isCandidate" class="text-2xl font-bold text-neutral-500 mb-8">Pierre Boivin</p>
             <h4 class="text-lg font-bold mb-10" :class="{'text-blue-400': !isCandidate, 'text-fuchsia-800': isCandidate}">Informations personnelles</h4>
-            <div class="grid grid-cols-2">
+            <div class="grid grid-cols-1 md:grid-cols-2 md:gap-5">
                 <div>
                     <div class="border-l-8 border-neutral-500 mb-5">                                                          
                         <h5 class="text-lg font-bold text-neutral-500 mb-3 ml-2">Adresse</h5>
@@ -37,7 +37,7 @@
                         <h5 class="text-lg font-bold text-neutral-500 mb-3 ml-2">Province</h5>
                         <p class='text-neutral-500 text-sm ml-2'>{{ isCandidate ? candidateResult.province.value : enterpriseResult.province.value }}</p>
                     </div>
-                    <div class="border-l-8 border-neutral-500">
+                    <div class="border-l-8 border-neutral-500 mb-5 md:mb-0">
                         <h5 class="text-lg font-bold text-neutral-500 mb-3 ml-2">Code postal</h5>
                         <p class='text-neutral-500 text-sm ml-2'>{{ isCandidate ? candidateResult.postalCode : enterpriseResult.postalCode }}</p>
                     </div>
