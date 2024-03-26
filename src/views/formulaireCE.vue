@@ -333,7 +333,7 @@
                 provinceId: '',
                 provinceValue: '',
                 postalCode: '',
-                skills: ['vue.js', 'angular', 'react'],
+                skills: [],
                 name: '',
                 image: 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8HwQACgAB/1TD9R8AAAAASUVORK5CYII=',
                 contact: '',
