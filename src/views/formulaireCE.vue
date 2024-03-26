@@ -301,15 +301,21 @@
 
 
     export default {
-        props: 'type',
-        entrepriseId: {
-            type: String,
-            required: false
+        props: {
+            type: {
+                type: String,
+                required: true
+            },
+            candidateId: {
+                type: String,
+                required: false
+            },
+            entrepriseId: {
+                type: String,
+                required: false
+            }
         },
-        candidateId: {
-            type: String,
-            required: false
-        },
+        
         setup(props) {
             const router = useRouter();
             const editing = ref(false);
