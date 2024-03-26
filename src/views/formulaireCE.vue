@@ -588,7 +588,7 @@
                                 throw new Error('Secteur d\'activité non trouvé');
                             }
                             const url = editing.value ?
-                                `https://api-4.fly.dev/enterprises/${props.enterpriseId}` :
+                                `https://api-4.fly.dev/enterprises/${props.entrepriseId}` :
                                 'https://api-4.fly.dev/enterprises';
                             const method = editing.value ? 'put' : 'post';
                             const response = await axios({
@@ -677,8 +677,8 @@
 
 
                 fetchProvinces();
-                if (!isCandidat.value && props.enterpriseId) {
-                    fetchEnterprise(props.enterpriseId)
+                if (!isCandidat.value && props.entrepriseId) {
+                    fetchEnterprise(props.entrepriseId)
                 }
                 if (isCandidat.value && props.candidateId) {
                     fetchCandidate(props.candidateId);
