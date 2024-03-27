@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div v-if="!showCandidateForm">
+        <div v-if="!showEnterpriseForm">
             <div class="p-4">
                 <div class="flex justify-between items-center mb-4">
                     <h1 class="titre_barre text-lg font-bold text-neutral-500 mb-9">
@@ -22,10 +22,11 @@
                                 class="btn-secondary mr-2 text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
                                 @click="cancelForm">Annuler</button>
                         </RouterLink>
-                        <router-link to="/app/candidats">
+                        <!-- <router-link to="/app/candidats"> -->
                             <button type="submit"
                                 class="btn-primary focus:outline-none text-white bg-fuchsia-800  hover:bg-fuchsia-900 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 inline-flex"
-                                :disabled="!isFormValid">
+                                >
+                                <!-- :disabled="!isFormValid" A ÉTÉ ENLEVER DU BOUTON -->
                                 <svg class="w-6 h-6 text-gray-100 dark:text-white" aria-hidden="true"
                                     xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
                                     viewBox="0 0 24 24">
@@ -34,20 +35,20 @@
                                         clip-rule="evenodd" />
                                 </svg>
                                 {{ editing ? 'Mettre à jour' : 'Sauvegarder' }}</button>
-                        </router-link>
+                        <!-- </router-link> -->
                     </div>
 
                     <div class="nom_poste mb-4">
                         <label for="fullName" class="block mb-1  text-neutral-500 font-bold">Nom et prénom </label>
                         <input type="text" id="fullName" v-model="formData.fullName" @input="validateFullName"
                             class="w-full border-gray-300 rounded-md p-2">
-                        <span v-if="fullNameError" class="text-red-500">{{ fullNameError }}</span>
+                        <span v-if="fieldsError.fullName" class="text-red-500">{{ fieldsError.fullName }}</span>
                     </div>
                     <div class="nom_poste mb-4">
                         <label for="skills" class="block mb-1  text-neutral-500 font-bold">Poste</label>
                         <input type="text" id="skills" v-model="formData.skills" @input="validateSkills"
                             class="w-full border-gray-300 rounded-md p-2">
-                        <span v-if="skills" class="text-red-500">{{ skillsError }}</span>
+                        <span v-if="fieldsError.skills" class="text-red-500">{{ fieldsError.skills}}</span>
                     </div>
                     <div class="block_info-perso my-9">
                         <div class="mb-4">
@@ -56,7 +57,7 @@
                             </label>
                             <textarea id="description" v-model="formData.description" @input="validateDescription"
                                 class="block  w-full border-gray-300 rounded-md p-2"></textarea>
-                            <span v-if="descriptionError" class="text-red-500">{{ descriptionError }}</span>
+                            <span v-if="fieldsError.description " class="text-red-500">{{ fieldsError.description }}</span>
                         </div>
                         <h3 class="  my-8 text-teal-500  font-bold">Information personnelle</h3>
                         <div class="block_info-perso-all">
@@ -65,13 +66,13 @@
                                     <label for="address" class="block mb-1 text-neutral-500 font-bold">Adresse</label>
                                     <input type="text" id="address" v-model="formData.address" @input="validateAddress"
                                         class="w-full border-gray-300 rounded-md p-2">
-                                    <span v-if="!addressError" class="text-red-500">{{ addressError }}</span>
+                                    <span v-if="fieldsError.address" class="text-red-500">{{ fieldsError.address }}</span>
                                 </div>
                                 <div class="mb-4 input_barre-modifier">
                                     <label for="city" class="block mb-1  text-neutral-500 font-bold">Ville</label>
                                     <input type="text" id="city" v-model="formData.city" @input="validateCity"
                                         class="w-full border-gray-300 rounded-md p-2">
-                                    <span v-if="!cityError" class="text-red-500">{{ cityError }}</span>
+                                    <span v-if="fieldsError.city " class="text-red-500">{{fieldsError.city }}</span>
                                 </div>
                                 <div class="mb-4 input_barre-modifier">
                                     <label for="province"
@@ -83,14 +84,14 @@
                                             {{ province.value }}
                                         </option>
                                     </select>
-                                    <span v-if="!phoneError" class="text-red-500">{{ provinceError }}</span>
+                                    <span v-if="fieldsError.province" class="text-red-500">{{ fieldsError.province }}</span>
                                 </div>
                                 <div class="mb-4 input_barre-modifier">
                                     <label for="postalCode" class="block mb-1  text-neutral-500 font-bold">Code
                                         postal</label>
                                     <input type="text" id="postalCode" v-model="formData.postalCode"
                                         @input="validatePostalCode" class="w-full border-gray-300 rounded-md p-2">
-                                    <span v-if="!postalCodeError" class="text-red-500">{{ postalCodeError }}</span>
+                                    <span v-if="fieldsError.postalCode" class="text-red-500">{{ fieldsError.postalCode }}</span>
                                 </div>
                             </div>
                             <div class="block_info-perso-contact">
@@ -98,13 +99,13 @@
                                     <label for="phone" class="block mb-1  text-neutral-500 font-bold">Téléphone</label>
                                     <input type="text" id="phone" v-model="formData.phone" @input="validatePhone"
                                         class="w-full border-gray-300 rounded-md p-2">
-                                    <span v-if="!phoneError" class="text-red-500">{{ phoneError }}</span>
+                                    <span v-if="fieldsError.phone" class="text-red-500">{{ fieldsError.phone}}</span>
                                 </div>
                                 <div class="mb-4 input_barre-modifier">
                                     <label for="email" class="block mb-1  text-neutral-500 font-bold">Courriel</label>
                                     <input type="email" id="email" v-model="formData.email" @input="validateEmail"
                                         class="w-full border-gray-300 rounded-md p-2">
-                                    <span v-if="!emailError" class="text-red-500">{{ emailError }}</span>
+                                    <span v-if="fieldsError.email" class="text-red-500">{{ fieldsError.email }}</span>
                                 </div>
                             </div>
                         </div>
@@ -115,10 +116,11 @@
                                 class="btn-secondary mr-2 text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
                                 @click="cancelForm">Annuler</button>
                         </router-link>
-                        <router-link to="/app/candidats">
+                        <!-- <router-link to="/app/candidats"> -->
                             <button type="submit"
                                 class="btn-primary focus:outline-none text-white bg-fuchsia-800  hover:bg-fuchsia-900 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 inline-flex"
-                                :disabled="!isFormValid">
+                                >
+                                <!-- :disabled="!isFormValid" A ÉTÉ ENLEVER DU BOUTON -->
                                 <svg class="w-6 h-6 text-gray-100 dark:text-white" aria-hidden="true"
                                     xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
                                     viewBox="0 0 24 24">
@@ -127,11 +129,20 @@
                                         clip-rule="evenodd" />
                                 </svg>
                                 {{ editing ? 'Mettre à jour' : 'Sauvegarder' }}</button>
-                        </router-link>
+                        <!-- </router-link> -->
                     </div>
                 </form>
             </div>
         </div>
+
+
+
+
+
+
+
+
+
         <div v-else>
             <div class="p-4">
                 <div class="flex justify-between items-center mb-4">
@@ -154,10 +165,11 @@
                                 class="btn-secondary mr-2 text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
                                 @click="cancelForm">Annuler</button>
                         </router-link>
-                        <router-link to="/app/Entreprises">
+                        <!-- <router-link to="/app/Entreprises"> -->
                             <button type="submit"
                                 class="btn-primary focus:outline-none text-white bg-fuchsia-800  hover:bg-fuchsia-900 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 inline-flex"
-                                :disabled="!isFormValid">
+                                >
+                                <!-- :disabled="!isFormValid" A ÉTÉ ENLEVER DU BOUTON -->
                                 <svg class="w-6 h-6 text-gray-100 dark:text-white" aria-hidden="true"
                                     xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
                                     viewBox="0 0 24 24">
@@ -166,14 +178,14 @@
                                         clip-rule="evenodd" />
                                 </svg>
                                 {{ editing ? 'Mettre à jour' : 'Sauvegarder' }}</button>
-                        </router-link>
+                        <!-- </router-link> -->
                     </div>
 
                     <div class="nom_poste mb-4">
                         <label for="name" class="block mb-1  text-neutral-500 font-bold">Nom </label>
                         <input type="text" id="name" v-model="formData.name" @input="validateName"
                             class="w-full border-gray-300 rounded-md p-2">
-                        <span class="text-red-500">{{ nameError }}</span>
+                        <span v-if="fieldsError.name" class="text-red-500">{{ fieldsError.name}}</span>
                     </div>
                     <div class="nom_poste mb-4">
                         <label for="image" class="block mb-1 text-neutral-500 font-bold">Logo</label>
@@ -187,7 +199,7 @@
                             </label>
 
                         </div>
-                        <span class="text-red-500">{{ logoError }}</span>
+                        <span v-if="fieldsError.logo" class="text-red-500">{{ fieldsError.logo }}</span>
                     </div>
 
                     <div class="block_info-perso my-9">
@@ -197,13 +209,13 @@
                             </label>
                             <textarea id="description" v-model="formData.description" @input="validateDescription"
                                 class="block  w-full border-gray-300 rounded-md p-2"></textarea>
-                            <span class="text-red-500">{{ descriptionError }}</span>
+                            <span v-if="fieldsError.description" class="text-red-500">{{ fieldsError.description }}</span>
                         </div>
                         <div class="mb-4 input_barre-modifier">
                             <label for="contact" class="block mb-1 text-neutral-500 font-bold">Personne Contact</label>
-                            <input type="text" id="contact" v-model="formData.contact" @input="validateName"
+                            <input type="text" id="contact" v-model="formData.contact" @input="validateContact"
                                 class="w-full border-gray-300 rounded-md p-2">
-                            <span v-if="!nameError" class="text-red-500">{{ nameError }}</span>
+                            <span v-if="fieldsError.contact" class="text-red-500">{{ fieldsError.contact }}</span>
                         </div>
                         <h3 class="  my-8 text-teal-500  font-bold">Information de contact</h3>
                         <div class="block_info-perso-all">
@@ -212,13 +224,13 @@
                                     <label for="address" class="block mb-1 text-neutral-500 font-bold">Adresse</label>
                                     <input type="text" id="address" v-model="formData.address" @input="validateAddress"
                                         class="w-full border-gray-300 rounded-md p-2">
-                                    <span v-if="!addressError" class="text-red-500">{{ addressError }}</span>
+                                    <span v-if="fieldsError.address" class="text-red-500">{{ fieldsError.address }}</span>
                                 </div>
                                 <div class="mb-4 input_barre-modifier">
                                     <label for="city" class="block mb-1  text-neutral-500 font-bold">Ville</label>
                                     <input type="text" id="city" v-model="formData.city" @input="validateCity"
                                         class="w-full border-gray-300 rounded-md p-2">
-                                    <span v-if="!cityError" class="text-red-500">{{ cityError }}</span>
+                                    <span v-if="fieldsError.city" class="text-red-500">{{ fieldsError.city }}</span>
                                 </div>
                                 <div class="mb-4 input_barre-modifier">
                                     <label for="province"
@@ -230,14 +242,14 @@
                                             {{ province.value }}
                                         </option>
                                     </select>
-                                    <span v-if="!provinceError" class="text-red-500">{{ provinceError }}</span>
+                                    <span v-if="fieldsError.province" class="text-red-500">{{ fieldsError.province }}</span>
                                 </div>
                                 <div class="mb-4 input_barre-modifier">
                                     <label for="postalCode" class="block mb-1  text-neutral-500 font-bold">Code
                                         postal</label>
                                     <input type="text" id="postalCode" v-model="formData.postalCode"
                                         @input="validatePostalCode" class="w-full border-gray-300 rounded-md p-2">
-                                    <span v-if="!postalCodeError" class="text-red-500">{{postalCodeError }}</span>
+                                    <span v-if="fieldsError.postalCode" class="text-red-500">{{ fieldsError.postalCode }}</span>
                                 </div>
                             </div>
                             <div class="block_info-perso-contact">
@@ -245,13 +257,13 @@
                                     <label for="phone" class="block mb-1  text-neutral-500 font-bold">Téléphone</label>
                                     <input type="text" id="phone" v-model="formData.phone" @input="validatePhone"
                                         class="w-full border-gray-300 rounded-md p-2">
-                                    <span v-if="!phoneError" class="text-red-500">{{ phoneError }}</span>
+                                    <span v-if="fieldsError.phone" class="text-red-500">{{ fieldsError.phone }}</span>
                                 </div>
                                 <div class="mb-4 input_barre-modifier">
                                     <label for="email" class="block mb-1  text-neutral-500 font-bold">Courriel</label>
                                     <input type="email" id="email" v-model="formData.email" @input="validateEmail"
                                         class="w-full border-gray-300 rounded-md p-2">
-                                    <span v-if="!emailError" class="text-red-500">{{ emailError }}</span>
+                                    <span v-if="fieldsError.email" class="text-red-500">{{ fieldsError.email }}</span>
                                 </div>
                             </div>
                         </div>
@@ -262,11 +274,12 @@
                                 class="btn-secondary mr-2 text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
                                 @click="cancelForm">Annuler</button>
                         </router-link>
-                        <router-link to="/app/Entreprises">
+                        <!-- <router-link to="/app/Entreprises"> -->
 
                             <button type="submit"
                                 class="btn-primary focus:outline-none text-white bg-fuchsia-800  hover:bg-fuchsia-900 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 inline-flex"
-                                :disabled="!isFormValid">
+                                >
+                                <!-- :disabled="!isFormValid" A ÉTÉ ENLEVER DU BOUTON -->
                                 <svg class="w-6 h-6 text-gray-100 dark:text-white" aria-hidden="true"
                                     xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
                                     viewBox="0 0 24 24">
@@ -276,7 +289,7 @@
                                 </svg>
                                 {{ editing ? 'Mettre à jour' : 'Sauvegarder' }}
                             </button>
-                        </router-link>
+                        <!-- </router-link> -->
                     </div>
                 </form>
             </div>
@@ -319,9 +332,10 @@
         setup(props) {
             const router = useRouter();
             const editing = ref(false);
-            const showCandidateForm = ref(false);
+            const showEnterpriseForm = ref(false);
             const isCandidat = computed(() => props.type === 'candidat')
 
+            // Formulaire
             const formData = reactive({
                 fullName: '',
                 description: '',
@@ -343,7 +357,32 @@
                 },
                 website: 'test.com',
             });
-            const errors = reactive({
+
+
+            // Message d'erreurs à pousser
+            const errorMessage = reactive({
+                empty: 'Le champ ne peut pas être vide',
+                minCharacters: 'Le champ doit avoir au moins 2 caractères',
+                max50Characters: 'Le champ doit avoir entre 3 et 50 caractères',
+                max250Characters: 'Le champ doit avoir entre 3 et 50 caractères',
+                maxCharacters: 'Le champ ne peut pas dépasser 500 caractères',
+                twoStrings: 'Le champ doit avoir au moins un prénom et un nom',
+                option: 'Le champ doit avoir une option valide',
+                date: 'Le champ doit avoir une date valide.',
+                pastDate: 'La date ne doit pas être dans le passé.',
+                endDate: 'La date de fin ne peut pas être avant la date de début.',
+                number: 'Le champ doit avoir une nombre positif valide.',
+                radio: 'Le champ doit avoir au moins un choix.',
+                letterOnly: 'Le champ doit comporter que des lettres minuscule ou majuscules.',
+                maxHours: 'Le nombre d\'heures maximum est de 40.',
+                string: 'Les compétences doivent être une chaîne de caractères.',
+                adressFormat: 'L\'adresse doit contenir à la fois un nombre et un mot.',
+                email: 'Veuillez entrer une adresse e-mail valide.',
+                postalCode: 'Veuillez entrer un code postal valide.'
+            })
+
+            // Champs qui reçoit les messages d'erreurs
+            const fieldsError = reactive({
                 fullName: '',
                 skills: '',
                 description: '',
@@ -354,167 +393,180 @@
                 province: '',
                 postalCode: '',
                 name: '',
-                logo: ''
+                logo: '',
+                contact: ''
             })
-            const fullNameError = ref('');
-            const skillsError = ref('');
-            const descriptionError = ref('');
-            const addressError = ref('');
-            const phoneError = ref('');
-            const cityError = ref('');
-            const emailError = ref('');
-            const provinceError = ref('');
-            const postalCodeError = ref('');
-            const nameError = ref('');
-            const logoError = ref('');
+
+
 
             const resetValidationErrors = () => {
-
-                fullNameError.value = '';
-                skillsError.value = '';
-                descriptionError.value = '';
-                addressError.value = '';
-                phoneError.value = '';
-                cityError.value = '';
-                emailError.value = '';
-                provinceError.value = '';
-                postalCodeError.value = '';
-                nameError.value = '';
-                logoError.value = '';
+                for (let keyValue in fieldsError) {
+                    if (fieldsError.hasOwnProperty(keyValue)) {
+                        fieldsError[keyValue] = '';
+                    }
+                }
             };
+
+
+// NOUVELLE VALIDATION
+            const validateString = (input, field) => {
+                if (input.trim() === "") {
+                    fieldsError[field] = errorMessage.empty;
+                    return;
+                }
+                if (input.length < 3) {
+                    fieldsError[field] = errorMessage.minCharacters;
+                    return;
+                }
+                if (input.length > 50) {
+                    fieldsError[field] = errorMessage.max50Characters;
+                    return;
+                }
+                fieldsError[field] = "";
+            }
 
             const validateFullName = () => {
-                fullNameError.value = ''
                 const fullNameTrimmed = formData.fullName.trim()
                 const fullNameWords = fullNameTrimmed.split(' ')
-                if (fullNameWords.length !== 2) {
-                    fullNameError.value = 'Le nom complet doit contenir exactement deux mots.'
-                    return false;
-                }
                 if (fullNameTrimmed.length < 3 || fullNameTrimmed.length > 50) {
-                    fullNameError.value = 'Le nom complet doit contenir entre 3 et 50 caractères.'
-                    return false;
+                    fieldsError.fullName = errorMessage.max50Characters;
+                    return;
                 }
-                return true;
+                if (fullNameWords.length !== 2) {
+                    fieldsError.fullName = errorMessage.twoStrings;
+                    return;
+                }
+                fieldsError.fullName = "";
             };
+
             const validateSkills = () => {
-                skillsError.value = '';
                 if (typeof formData.skills !== 'string') {
-                    skillsError.value = 'Les compétences doivent être une chaîne de caractères.';
-                    return false;
+                    fieldsError.skills  = errorMessage.string;
+                    return;
                 }
 
                 const skillsTrimmed = formData.skills.trim();
                 if (skillsTrimmed.length < 3 || skillsTrimmed.length > 250) {
-                    skillsError.value = 'Les compétences doivent contenir entre 3 et 250 caractères.';
-                    return false;
+                    fieldsError.skills  = errorMessage.max250Characters;
+                    return;
                 }
-                return true;
+                fieldsError.skills = "";
             };
+
+
             const validateDescription = () => {
-                descriptionError.value = ''
                 const descriptionTrimmed = formData.description.trim()
                 if (descriptionTrimmed.length < 3 || descriptionTrimmed.length > 250) {
-                    descriptionError.value = 'La description doit contenir entre 3 et 250 caractères.'
-                    return false;
+                    fieldsError.description = errorMessage.max250Characters;
+                    return;
                 }
-                return true;
+                fieldsError.description = "";
             };
+
             const validateAddress = () => {
-                addressError.value = ''
                 const addressTrimmed = formData.address.trim()
                 if (!addressTrimmed) {
-                    addressError.value = 'Veuillez entrer votre adresse.'
-                    return false;
+                    fieldsError.address = errorMessage.empty;
+                    return;
                 }
                 const containsNumber = /\d/.test(addressTrimmed);
                 const containsWord = /[a-zA-Z]/.test(addressTrimmed);
                 if (!containsNumber || !containsWord) {
-                    addressError.value = "L'adresse doit contenir à la fois un nombre et un mot."
-                    return false;
+                    fieldsError.address = errorMessage.adressFormat;
+                    return;
                 }
-                return true;
+                fieldsError.address = "";
             };
+
             const validatePhone = () => {
-                phoneError.value = ''
                 const phoneTrimmed = formData.phone.trim()
                 const phoneRegex = /^\d{3}-\d{3}-\d{4}$/
                 if (!phoneTrimmed) {
-                    phoneError.value = 'Veuillez entrer votre numéro de téléphone.'
-                    return false;
+                    fieldsError.phone = errorMessage.empty;
+                    return;
                 } else if (!phoneRegex.test(phoneTrimmed)) {
-                    phoneError.value = 'Veuillez entrer un numéro de téléphone valide au format 514-555-5555.'
-                    return false;
+                    fieldsError.phone = 'Veuillez entrer un numéro de téléphone valide au format 514-555-5555.'
+                    return;
                 }
-                return true;
+                fieldsError.phone = "";
             };
+
             const validateCity = () => {
-                cityError.value = ''
                 const cityTrimmed = formData.city.trim()
                 if (!cityTrimmed) {
-                    cityError.value = 'Veuillez entrer votre ville.'
-                    return false;
+                    fieldsError.city = errorMessage.empty;
+                    return;
                 }
                 if (cityTrimmed.length < 3 || cityTrimmed.length > 50) {
-                    cityError.value = 'La ville doit contenir entre 3 et 50 caractères.'
-                    return false;
+                    fieldsError.city = errorMessage.max50Characters;
+                    return;
                 }
-                return true;
+                fieldsError.city = "";
             };
+
             const validateEmail = () => {
-                emailError.value = ''
                 if (!formData.email.trim()) {
-                    emailError.value = 'Veuillez entrer votre adresse e-mail.'
-                    return false;
+                    fieldsError.email = errorMessage.empty;
+                    return;
                 } else if (!isEmailValid(formData.email)) {
-                    emailError.value = 'Veuillez entrer une adresse e-mail valide.'
-                    return false;
+                    fieldsError.email = errorMessage.email;
+                    return;
                 }
-                return true;
+                fieldsError.email = "";
             };
+
             const validateProvince = () => {
-                provinceError.value = ''
                 if (!formData.provinceId) {
-                    provinceError.value = 'Veuillez sélectionner une province.'
-                    return false;
+                    fieldsError.province = 'Veuillez sélectionner une province.'
+                    return;
                 }
-                return true;
+                fieldsError.province = "";
             };
+
 
             const formatPostalCode = (postalCode) => {
                 const formattedPostalCode = postalCode.trim().toUpperCase();
                 return formattedPostalCode.substring(0, 3) + " " + formattedPostalCode.substring(3);
             };
+
             const validatePostalCode = () => {
-                postalCodeError.value = ''
                 if (!formData.postalCode.trim()) {
-                    postalCodeError.value = 'Veuillez entrer votre code postal.'
-                    return false;
+                    fieldsError.postalCode = errorMessage.empty;
+                    return;
                 } else if (!isPostalCodeValid(formData.postalCode)) {
-                    postalCodeError.value = 'Veuillez entrer un code postal valide.'
-                    return false;
+                    fieldsError.postalCode = errorMessage.postalCode;
+                    return;
                 }
-                return true;
+                fieldsError.postalCode = "";
             };
+
             const validateName = () => {
-                nameError.value = ''
                 const nameTrimmed = formData.name.trim()
                 if (nameTrimmed.length < 3 || nameTrimmed.length > 50) {
-                    nameError.value = 'Le nom complet doit contenir entre 3 et 50 caractères.'
-                    return false;
+                    fieldsError.name = errorMessage.max50Characters;
+                    return;
                 }
-                return true;
+                fieldsError.name = "";
             };
+
+            const validateContact = () => {
+                const contactTrimmed = formData.contact.trim()
+                if (contactTrimmed.length < 3 || contactTrimmed.length > 50) {
+                    fieldsError.contact = errorMessage.max50Characters;
+                    return;
+                }
+                fieldsError.contact = "";
+            };
+
             const validateLogo = () => {
-                /**logoError.value = ''
                 const logoTrimmed = formData.image.trim()
-                const urlRegex = /^(ftp|http|https):\/\/[^ "]+$/
-                if (!urlRegex.test(logoTrimmed)) {
-                    logoError.value = 'Veuillez entrer une URL valide pour le logo.'
-                    return false
-                }**/
-                return true;
+                if (!logoTrimmed) {
+                    fieldsError.logo = errorMessage.empty;
+                    return;
+                }
+                fieldsError.logo = "";
             };
+
             const isEmailValid = (email) => {
                 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
                 return emailRegex.test(email)
@@ -523,33 +575,87 @@
                 const postalCodeRegex = /^[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d$/
                 return postalCodeRegex.test(postalCode)
             };
-            const isFormValid = computed(() => {
-                if (isCandidat.value) {
-                    return (validateFullName() &&
-                        validateSkills() &&
-                        validateDescription() &&
-                        validateAddress() &&
-                        validatePhone() &&
-                        validateCity() &&
-                        validateEmail() &&
-                        validateProvince() &&
-                        validatePostalCode())
+
+
+
+
+            // Validation complète du formulaire
+            let isFormValid = ref(false);
+
+            const validateForm = () => {
+                // validation communes
+                validateDescription();
+                validateAddress();
+                validateCity();
+                validatePhone();
+                validateEmail();
+                validateProvince();
+                validatePostalCode();
+
+
+                // Vérifie si candidat ou entreprise
+                if (!showEnterpriseForm.value) {
+                    validateFullName();
+                    validateSkills();
+
+                    // vérifie que les champs de message d'erreurs sont vide
+                    if (
+                        fieldsError.fullName === "" &&
+                        fieldsError.skills === "" &&
+                        fieldsError.description === "" &&
+                        fieldsError.address === "" &&
+                        fieldsError.city === "" &&
+                        fieldsError.province === "" &&
+                        fieldsError.postalCode === "" &&
+                        fieldsError.phone === "" &&
+                        fieldsError.email === ""
+                    ) {
+                        isFormValid.value = true;
+                        console.log(isFormValid.value);
+                        console.log("candidate form valid");
+                    } else {
+                        isFormValid.value = false;
+                        console.log(isFormValid.value);
+                        console.log("candidate form invalid");
+                    }
+
                 } else {
-                    return (validateName() &&
-                        validateLogo() &&
-                        validateDescription() &&
-                        validateAddress() &&
-                        validatePhone() &&
-                        validateCity() &&
-                        validateEmail() &&
-                        validateProvince() &&
-                        validatePostalCode())
+                    validateName();
+                    validateContact();
+                    validateLogo();
+
+                    // vérifie que les champs de message d'erreurs sont vide
+                    if (
+                        fieldsError.fullName === "" &&
+                        fieldsError.logo === "" &&
+                        fieldsError.contact === "" &&
+                        fieldsError.description === "" &&
+                        fieldsError.address === "" &&
+                        fieldsError.city === "" &&
+                        fieldsError.province === "" &&
+                        fieldsError.postalCode === "" &&
+                        fieldsError.phone === "" &&
+                        fieldsError.email === ""
+                    ) {
+                        isFormValid.value = true;
+                        console.log(isFormValid.value);
+                        console.log("enterprise form valid");
+                    } else {
+                        isFormValid.value = false;
+                        console.log(isFormValid.value);
+                        console.log("enterprise form invalid");
+                    }
                 }
-            })
+
+            }
+
+
+
             const submitForm = async () => {
+                validateForm();
 
 
-
+/* 
                 const selectedProvince = provinces.value.find(province => province._id === formData.provinceId);
 
                 if (!selectedProvince) {
@@ -656,7 +762,7 @@
                             console.error(error)
                         }
                     }
-                }
+                } */
             }
             const fetchEnterprise = async (enterpriseId) => {
                 try {
@@ -724,11 +830,15 @@
                 }
             }
             onMounted(() => {
-                resetValidationErrors();
+                /* resetValidationErrors(); */
                 const type = router.currentRoute.value.params.type;
                 if (type === 'entreprises') {
-                    showCandidateForm.value = true;
+                    showEnterpriseForm.value = true;
                 };
+                if (type === 'candidat') {
+                    showEnterpriseForm.value = false;
+                };
+                
 
 
                 fetchProvinces();
@@ -742,19 +852,9 @@
             return {
                 formData,
                 editing,
-                errors,
-                fullNameError,
-                skillsError,
-                descriptionError,
-                addressError,
-                phoneError,
-                cityError,
-                emailError,
-                provinceError,
-                postalCodeError,
-                nameError,
-                logoError,
-                isFormValid,
+                fieldsError,
+                errorMessage,
+                validateString,
                 isCandidat,
                 submitForm,
                 cancelForm,
@@ -770,9 +870,12 @@
                 validatePostalCode,
                 validateName,
                 validateLogo,
+                validateContact,
+                validateForm,
+                isFormValid,
                 provinces,
-                showCandidateForm,
-
+                showEnterpriseForm,
+                resetValidationErrors
             };
         }
     };
