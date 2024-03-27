@@ -22,10 +22,9 @@
                                 class="btn-secondary mr-2 text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
                                 @click="cancelForm">Annuler</button>
                         </RouterLink>
-                        <!-- <router-link to="/app/candidats"> -->
-                            <button type="submit"
-                                class="btn-primary focus:outline-none text-white bg-fuchsia-800  hover:bg-fuchsia-900 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 inline-flex"
-                                >
+                       
+                            <button type="submit" @click="submitForm"
+                                class="btn-primary focus:outline-none text-white bg-fuchsia-800  hover:bg-fuchsia-900 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 inline-flex">
                                 <!-- :disabled="!isFormValid" A ÉTÉ ENLEVER DU BOUTON -->
                                 <svg class="w-6 h-6 text-gray-100 dark:text-white" aria-hidden="true"
                                     xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
@@ -35,7 +34,7 @@
                                         clip-rule="evenodd" />
                                 </svg>
                                 {{ editing ? 'Mettre à jour' : 'Sauvegarder' }}</button>
-                        <!-- </router-link> -->
+                        
                     </div>
 
                     <div class="nom_poste mb-4">
@@ -57,7 +56,8 @@
                             </label>
                             <textarea id="description" v-model="formData.description" @input="validateDescription"
                                 class="block  w-full border-gray-300 rounded-md p-2"></textarea>
-                            <span v-if="fieldsError.description " class="text-red-500">{{ fieldsError.description }}</span>
+                            <span v-if="fieldsError.description "
+                                class="text-red-500">{{ fieldsError.description }}</span>
                         </div>
                         <h3 class="  my-8 text-teal-500  font-bold">Information personnelle</h3>
                         <div class="block_info-perso-all">
@@ -66,7 +66,8 @@
                                     <label for="address" class="block mb-1 text-neutral-500 font-bold">Adresse</label>
                                     <input type="text" id="address" v-model="formData.address" @input="validateAddress"
                                         class="w-full border-gray-300 rounded-md p-2">
-                                    <span v-if="fieldsError.address" class="text-red-500">{{ fieldsError.address }}</span>
+                                    <span v-if="fieldsError.address"
+                                        class="text-red-500">{{ fieldsError.address }}</span>
                                 </div>
                                 <div class="mb-4 input_barre-modifier">
                                     <label for="city" class="block mb-1  text-neutral-500 font-bold">Ville</label>
@@ -84,14 +85,16 @@
                                             {{ province.value }}
                                         </option>
                                     </select>
-                                    <span v-if="fieldsError.province" class="text-red-500">{{ fieldsError.province }}</span>
+                                    <span v-if="fieldsError.province"
+                                        class="text-red-500">{{ fieldsError.province }}</span>
                                 </div>
                                 <div class="mb-4 input_barre-modifier">
                                     <label for="postalCode" class="block mb-1  text-neutral-500 font-bold">Code
                                         postal</label>
                                     <input type="text" id="postalCode" v-model="formData.postalCode"
                                         @input="validatePostalCode" class="w-full border-gray-300 rounded-md p-2">
-                                    <span v-if="fieldsError.postalCode" class="text-red-500">{{ fieldsError.postalCode }}</span>
+                                    <span v-if="fieldsError.postalCode"
+                                        class="text-red-500">{{ fieldsError.postalCode }}</span>
                                 </div>
                             </div>
                             <div class="block_info-perso-contact">
@@ -116,20 +119,19 @@
                                 class="btn-secondary mr-2 text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
                                 @click="cancelForm">Annuler</button>
                         </router-link>
-                        <!-- <router-link to="/app/candidats"> -->
-                            <button type="submit"
-                                class="btn-primary focus:outline-none text-white bg-fuchsia-800  hover:bg-fuchsia-900 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 inline-flex"
-                                >
-                                <!-- :disabled="!isFormValid" A ÉTÉ ENLEVER DU BOUTON -->
-                                <svg class="w-6 h-6 text-gray-100 dark:text-white" aria-hidden="true"
-                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path fill-rule="evenodd"
-                                        d="M8 10V7a4 4 0 1 1 8 0v3h1a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h1Zm2-3a2 2 0 1 1 4 0v3h-4V7Zm2 6a1 1 0 0 1 1 1v3a1 1 0 1 1-2 0v-3a1 1 0 0 1 1-1Z"
-                                        clip-rule="evenodd" />
-                                </svg>
-                                {{ editing ? 'Mettre à jour' : 'Sauvegarder' }}</button>
-                        <!-- </router-link> -->
+
+                        <button type="submit" @click="submitForm"
+                            class="btn-primary focus:outline-none text-white bg-fuchsia-800  hover:bg-fuchsia-900 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 inline-flex">
+                            <!-- :disabled="!isFormValid" A ÉTÉ ENLEVER DU BOUTON -->
+                            <svg class="w-6 h-6 text-gray-100 dark:text-white" aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                                viewBox="0 0 24 24">
+                                <path fill-rule="evenodd"
+                                    d="M8 10V7a4 4 0 1 1 8 0v3h1a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h1Zm2-3a2 2 0 1 1 4 0v3h-4V7Zm2 6a1 1 0 0 1 1 1v3a1 1 0 1 1-2 0v-3a1 1 0 0 1 1-1Z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                            {{ editing ? 'Mettre à jour' : 'Sauvegarder' }}</button>
+
                     </div>
                 </form>
             </div>
@@ -165,10 +167,9 @@
                                 class="btn-secondary mr-2 text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
                                 @click="cancelForm">Annuler</button>
                         </router-link>
-                        <!-- <router-link to="/app/Entreprises"> -->
-                            <button type="submit"
-                                class="btn-primary focus:outline-none text-white bg-fuchsia-800  hover:bg-fuchsia-900 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 inline-flex"
-                                >
+                       
+                            <button type="submit" @click="submitForm"
+                                class="btn-primary focus:outline-none text-white bg-fuchsia-800  hover:bg-fuchsia-900 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 inline-flex">
                                 <!-- :disabled="!isFormValid" A ÉTÉ ENLEVER DU BOUTON -->
                                 <svg class="w-6 h-6 text-gray-100 dark:text-white" aria-hidden="true"
                                     xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
@@ -178,7 +179,7 @@
                                         clip-rule="evenodd" />
                                 </svg>
                                 {{ editing ? 'Mettre à jour' : 'Sauvegarder' }}</button>
-                        <!-- </router-link> -->
+                        
                     </div>
 
                     <div class="nom_poste mb-4">
@@ -209,7 +210,8 @@
                             </label>
                             <textarea id="description" v-model="formData.description" @input="validateDescription"
                                 class="block  w-full border-gray-300 rounded-md p-2"></textarea>
-                            <span v-if="fieldsError.description" class="text-red-500">{{ fieldsError.description }}</span>
+                            <span v-if="fieldsError.description"
+                                class="text-red-500">{{ fieldsError.description }}</span>
                         </div>
                         <div class="mb-4 input_barre-modifier">
                             <label for="contact" class="block mb-1 text-neutral-500 font-bold">Personne Contact</label>
@@ -224,7 +226,8 @@
                                     <label for="address" class="block mb-1 text-neutral-500 font-bold">Adresse</label>
                                     <input type="text" id="address" v-model="formData.address" @input="validateAddress"
                                         class="w-full border-gray-300 rounded-md p-2">
-                                    <span v-if="fieldsError.address" class="text-red-500">{{ fieldsError.address }}</span>
+                                    <span v-if="fieldsError.address"
+                                        class="text-red-500">{{ fieldsError.address }}</span>
                                 </div>
                                 <div class="mb-4 input_barre-modifier">
                                     <label for="city" class="block mb-1  text-neutral-500 font-bold">Ville</label>
@@ -242,14 +245,16 @@
                                             {{ province.value }}
                                         </option>
                                     </select>
-                                    <span v-if="fieldsError.province" class="text-red-500">{{ fieldsError.province }}</span>
+                                    <span v-if="fieldsError.province"
+                                        class="text-red-500">{{ fieldsError.province }}</span>
                                 </div>
                                 <div class="mb-4 input_barre-modifier">
                                     <label for="postalCode" class="block mb-1  text-neutral-500 font-bold">Code
                                         postal</label>
                                     <input type="text" id="postalCode" v-model="formData.postalCode"
                                         @input="validatePostalCode" class="w-full border-gray-300 rounded-md p-2">
-                                    <span v-if="fieldsError.postalCode" class="text-red-500">{{ fieldsError.postalCode }}</span>
+                                    <span v-if="fieldsError.postalCode"
+                                        class="text-red-500">{{ fieldsError.postalCode }}</span>
                                 </div>
                             </div>
                             <div class="block_info-perso-contact">
@@ -274,22 +279,22 @@
                                 class="btn-secondary mr-2 text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
                                 @click="cancelForm">Annuler</button>
                         </router-link>
-                        <!-- <router-link to="/app/Entreprises"> -->
 
-                            <button type="submit"
-                                class="btn-primary focus:outline-none text-white bg-fuchsia-800  hover:bg-fuchsia-900 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 inline-flex"
-                                >
-                                <!-- :disabled="!isFormValid" A ÉTÉ ENLEVER DU BOUTON -->
-                                <svg class="w-6 h-6 text-gray-100 dark:text-white" aria-hidden="true"
-                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path fill-rule="evenodd"
-                                        d="M8 10V7a4 4 0 1 1 8 0v3h1a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h1Zm2-3a2 2 0 1 1 4 0v3h-4V7Zm2 6a1 1 0 0 1 1 1v3a1 1 0 1 1-2 0v-3a1 1 0 0 1 1-1Z"
-                                        clip-rule="evenodd" />
-                                </svg>
-                                {{ editing ? 'Mettre à jour' : 'Sauvegarder' }}
-                            </button>
-                        <!-- </router-link> -->
+
+
+                        <button type="submit" @click="submitForm"
+                            class="btn-primary focus:outline-none text-white bg-fuchsia-800  hover:bg-fuchsia-900 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 inline-flex">
+                            <!-- :disabled="!isFormValid" A ÉTÉ ENLEVER DU BOUTON -->
+                            <svg class="w-6 h-6 text-gray-100 dark:text-white" aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                                viewBox="0 0 24 24">
+                                <path fill-rule="evenodd"
+                                    d="M8 10V7a4 4 0 1 1 8 0v3h1a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h1Zm2-3a2 2 0 1 1 4 0v3h-4V7Zm2 6a1 1 0 0 1 1 1v3a1 1 0 1 1-2 0v-3a1 1 0 0 1 1-1Z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                            {{ editing ? 'Mettre à jour' : 'Sauvegarder' }}
+                        </button>
+
                     </div>
                 </form>
             </div>
@@ -308,6 +313,7 @@
     } from 'vue'
     import axios from 'axios'
     import {
+        RouterLink,
         useRouter
     } from 'vue-router'
 
@@ -319,6 +325,7 @@
                 type: String,
                 required: true
             },
+
             candidateId: {
                 type: String,
                 required: false
@@ -408,7 +415,7 @@
             };
 
 
-// NOUVELLE VALIDATION
+            // NOUVELLE VALIDATION
             const validateString = (input, field) => {
                 if (input.trim() === "") {
                     fieldsError[field] = errorMessage.empty;
@@ -441,13 +448,13 @@
 
             const validateSkills = () => {
                 if (typeof formData.skills !== 'string') {
-                    fieldsError.skills  = errorMessage.string;
+                    fieldsError.skills = errorMessage.string;
                     return;
                 }
 
                 const skillsTrimmed = formData.skills.trim();
                 if (skillsTrimmed.length < 3 || skillsTrimmed.length > 250) {
-                    fieldsError.skills  = errorMessage.max250Characters;
+                    fieldsError.skills = errorMessage.max250Characters;
                     return;
                 }
                 fieldsError.skills = "";
@@ -654,15 +661,14 @@
             const submitForm = async () => {
                 validateForm();
 
-
-/* 
                 const selectedProvince = provinces.value.find(province => province._id === formData.provinceId);
 
                 if (!selectedProvince) {
                     throw new Error('Province non trouvée');
                 }
                 if (isFormValid.value) {
-                    const formData = {
+                    const formattedPostalCode = formatPostalCode(formData.postalCode);
+                    const formPayload = {
                         description: formData.description,
                         email: formData.email,
                         address: formData.address,
@@ -672,50 +678,41 @@
                             _id: formData.provinceId,
                             value: selectedProvince.value
                         },
-                        postalCode: formatPostalCode(formData.postalCode),
-                    }
+                        postalCode: formattedPostalCode,
+                    };
+
                     if (isCandidat.value) {
-                        const [firstName, lastName] = formData.fullName.split(' ')
-                        formData.firstName = firstName,
-                            formData.lastName = lastName,
-                            formData.skills = formData.skills.split(',').map(skill => skill.trim());
+                        const [firstName, lastName] = formData.fullName.split(' ');
+                        const skillsArray = formData.skills.split(',').map(skill => skill.trim());
 
                         try {
                             const url = editing.value ?
-                                `https://api-4.fly.dev/candidates/${props.candidateId}` :
+                                `https://api-4.fly.dev/candidates/${candidateId}` :
                                 'https://api-4.fly.dev/candidates';
+
                             const method = editing.value ? 'put' : 'post';
+
                             const response = await axios({
                                 method: method,
                                 url: url,
                                 data: {
-                                    description: formData.description,
-                                    email: formData.email,
+                                    ...formPayload,
                                     firstName: firstName,
                                     lastName: lastName,
-                                    address: formData.address,
-                                    phone: formData.phone,
-                                    city: formData.city,
-                                    skills: formData.skills,
-                                    province: {
-                                        _id: formData.provinceId,
-                                        value: selectedProvince.value
-                                    },
-                                    postalCode: formatPostalCode(formData.postalCode),
+                                    skills: skillsArray,
                                 }
                             });
-                            console.log(response)
+                            if (response.status === 201) {
+                                
+                                router.push('/app/Candidats');
+                            }
+                            console.log(response);
                         } catch (error) {
-                            console.error(error)
+                            console.error(error);
                         }
                     } else {
-                        formData.name = formData.name
-                        formData.image = formData.image
-                        formData.contact = formData.contact
-                        formData.activitySector = formData.activitySector
-                        formData.website = formData.website
                         try {
-                            let activitySector = null
+                            let activitySector = null;
                             const activitySectorsResponse = await axios.get(
                                 'https://api-4.fly.dev/activity-sectors');
                             const activitySectors = activitySectorsResponse.data;
@@ -724,83 +721,48 @@
                                     activitySector = activity;
                                 }
                             });
+
                             if (!activitySector) {
                                 throw new Error('Secteur d\'activité non trouvé');
                             }
+
                             const url = editing.value ?
                                 `https://api-4.fly.dev/enterprises/${props.entrepriseId}` :
                                 'https://api-4.fly.dev/enterprises';
+
                             const method = editing.value ? 'put' : 'post';
+
                             const response = await axios({
                                 method: method,
                                 url: url,
                                 data: {
+                                    ...formPayload,
                                     name: formData.name,
                                     image: formData.image,
-                                    description: formData.description,
-                                    email: formData.email,
-                                    address: formData.address,
-                                    phone: formData.phone,
-                                    city: formData.city,
-                                    website: formData.website,
                                     activitySector: {
                                         _id: activitySector._id,
                                         value: formData.activitySector.value
                                     },
-                                    province: {
-                                        _id: formData.provinceId,
-                                        value: selectedProvince.value
-                                    },
-                                    postalCode: formatPostalCode(formData.postalCode),
+                                    website: formData.website,
                                 }
                             });
-                            console.log(response)
+
+                            console.log(response);
+                            if (response.status === 201) {
+                                
+                                router.push('/app/Entreprises');
+                            }
+
                             if (!response.data._id) {
                                 throw new Error('Échec de la soumission du formulaire');
                             }
                         } catch (error) {
-                            console.error(error)
+                            console.error(error);
                         }
                     }
-                } */
-            }
-            const fetchEnterprise = async (enterpriseId) => {
-                try {
-                    const response = await axios.get(`https://api-4.fly.dev/enterprises/${enterpriseId}`);
-                    const enterprise = response.data;
-                    formData.name = enterprise.name;
-                    formData.image = enterprise.image;
-                    formData.description = enterprise.description;
-                    formData.address = enterprise.address;
-                    formData.phone = enterprise.phone;
-                    formData.city = enterprise.city;
-                    formData.email = enterprise.email;
-                    formData.provinceId = enterprise.province._id;
-                    formData.postalCode = enterprise.postalCode;
-                    formData.website = enterprise.website;
-                    formData.activitySector = enterprise.activitySector;
-                } catch (error) {
-                    console.error(error);
                 }
-            }
-            const fetchCandidate = async (candidateId) => {
-                try {
-                    const response = await axios.get(`https://api-4.fly.dev/candidates/${candidateId}`);
-                    const candidate = response.data;
-                    console.log(candidate);
-                    formData.fullName = `${candidate.firstName} ${candidate.lastName}`;
-                    formData.description = candidate.description;
-                    formData.address = candidate.address;
-                    formData.phone = candidate.phone;
-                    formData.city = candidate.city;
-                    formData.email = candidate.email;
-                    formData.provinceId = candidate.province._id;
-                    formData.postalCode = candidate.postalCode;
-                    formData.skills = candidate.skills;
-                } catch (error) {
-                    console.error(error);
-                }
-            }
+            };
+
             const cancelForm = () => {
                 formData.fullName = '';
                 formData.skills = '';
@@ -838,7 +800,7 @@
                 if (type === 'candidat') {
                     showEnterpriseForm.value = false;
                 };
-                
+
 
 
                 fetchProvinces();
