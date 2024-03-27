@@ -25,7 +25,7 @@
                        
                             <button type="submit" @click="submitForm"
                                 class="btn-primary focus:outline-none text-white bg-fuchsia-800  hover:bg-fuchsia-900 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 inline-flex">
-                                <!-- :disabled="!isFormValid" A ÉTÉ ENLEVER DU BOUTON -->
+                                
                                 <svg class="w-6 h-6 text-gray-100 dark:text-white" aria-hidden="true"
                                     xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
                                     viewBox="0 0 24 24">
@@ -122,7 +122,7 @@
 
                         <button type="submit" @click="submitForm"
                             class="btn-primary focus:outline-none text-white bg-fuchsia-800  hover:bg-fuchsia-900 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 inline-flex">
-                            <!-- :disabled="!isFormValid" A ÉTÉ ENLEVER DU BOUTON -->
+                            
                             <svg class="w-6 h-6 text-gray-100 dark:text-white" aria-hidden="true"
                                 xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
                                 viewBox="0 0 24 24">
@@ -178,10 +178,8 @@
                                         d="M8 10V7a4 4 0 1 1 8 0v3h1a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h1Zm2-3a2 2 0 1 1 4 0v3h-4V7Zm2 6a1 1 0 0 1 1 1v3a1 1 0 1 1-2 0v-3a1 1 0 0 1 1-1Z"
                                         clip-rule="evenodd" />
                                 </svg>
-                                {{ editing ? 'Mettre à jour' : 'Sauvegarder' }}</button>
-                        
+                                {{ editing ? 'Mettre à jour' : 'Sauvegarder' }}</button>                        
                     </div>
-
                     <div class="nom_poste mb-4">
                         <label for="name" class="block mb-1  text-neutral-500 font-bold">Nom </label>
                         <input type="text" id="name" v-model="formData.name" @input="validateName"
@@ -191,18 +189,15 @@
                     <div class="nom_poste mb-4">
                         <label for="image" class="block mb-1 text-neutral-500 font-bold">Logo</label>
                         <div class="flex items-center">
-
                             <input type="text " id="image" v-model="formData.image" @input="validateLogo"
                                 class="w-full border-gray-300 rounded-md p-2">
                             <label for="image"
                                 class="cursor-pointer bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center">
                                 Parcourir
                             </label>
-
                         </div>
                         <span v-if="fieldsError.logo" class="text-red-500">{{ fieldsError.logo }}</span>
                     </div>
-
                     <div class="block_info-perso my-9">
                         <div class="mb-4">
                             <label for="description" class="block mb-4">
@@ -279,9 +274,6 @@
                                 class="btn-secondary mr-2 text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
                                 @click="cancelForm">Annuler</button>
                         </router-link>
-
-
-
                         <button type="submit" @click="submitForm"
                             class="btn-primary focus:outline-none text-white bg-fuchsia-800  hover:bg-fuchsia-900 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 inline-flex">
                             <!-- :disabled="!isFormValid" A ÉTÉ ENLEVER DU BOUTON -->
@@ -294,14 +286,11 @@
                             </svg>
                             {{ editing ? 'Mettre à jour' : 'Sauvegarder' }}
                         </button>
-
                     </div>
                 </form>
             </div>
         </div>
     </div>
-
-
 </template>
 
 <script>
@@ -342,7 +331,7 @@
             const showEnterpriseForm = ref(false);
             const isCandidat = computed(() => props.type === 'candidat')
 
-            // Formulaire
+          
             const formData = reactive({
                 fullName: '',
                 description: '',
@@ -366,7 +355,7 @@
             });
 
 
-            // Message d'erreurs à pousser
+            
             const errorMessage = reactive({
                 empty: 'Le champ ne peut pas être vide',
                 minCharacters: 'Le champ doit avoir au moins 2 caractères',
@@ -388,7 +377,7 @@
                 postalCode: 'Veuillez entrer un code postal valide.'
             })
 
-            // Champs qui reçoit les messages d'erreurs
+         
             const fieldsError = reactive({
                 fullName: '',
                 skills: '',
@@ -415,7 +404,7 @@
             };
 
 
-            // NOUVELLE VALIDATION
+           
             const validateString = (input, field) => {
                 if (input.trim() === "") {
                     fieldsError[field] = errorMessage.empty;
@@ -586,11 +575,11 @@
 
 
 
-            // Validation complète du formulaire
+            
             let isFormValid = ref(false);
 
             const validateForm = () => {
-                // validation communes
+                
                 validateDescription();
                 validateAddress();
                 validateCity();
@@ -600,12 +589,12 @@
                 validatePostalCode();
 
 
-                // Vérifie si candidat ou entreprise
+               
                 if (!showEnterpriseForm.value) {
                     validateFullName();
                     validateSkills();
 
-                    // vérifie que les champs de message d'erreurs sont vide
+                   
                     if (
                         fieldsError.fullName === "" &&
                         fieldsError.skills === "" &&
@@ -631,7 +620,7 @@
                     validateContact();
                     validateLogo();
 
-                    // vérifie que les champs de message d'erreurs sont vide
+                    
                     if (
                         fieldsError.fullName === "" &&
                         fieldsError.logo === "" &&
@@ -653,10 +642,7 @@
                         console.log("enterprise form invalid");
                     }
                 }
-
             }
-
-
 
             const submitForm = async () => {
                 validateForm();
@@ -792,7 +778,7 @@
                 }
             }
             onMounted(() => {
-                /* resetValidationErrors(); */
+                
                 const type = router.currentRoute.value.params.type;
                 if (type === 'entreprises') {
                     showEnterpriseForm.value = true;
@@ -801,9 +787,8 @@
                     showEnterpriseForm.value = false;
                 };
 
-
-
                 fetchProvinces();
+                
                 if (!isCandidat.value && props.entrepriseId) {
                     fetchEnterprise(props.entrepriseId)
                 }
