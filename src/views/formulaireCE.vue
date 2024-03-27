@@ -17,11 +17,11 @@
                 </div>
                 <form @submit.prevent="submitForm">
                     <div class="flex justify-end my-10">
-                        <RouterLink to="/app/Candidats">
+                        <router-link to="/app/Candidats">
                             <button type="button"
                                 class="btn-secondary mr-2 text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
                                 @click="cancelForm">Annuler</button>
-                        </RouterLink>
+                        </router-link>
                        
                             <button type="submit" @click="submitForm"
                                 class="btn-primary focus:outline-none text-white bg-fuchsia-800  hover:bg-fuchsia-900 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 inline-flex">
