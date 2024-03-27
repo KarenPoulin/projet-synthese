@@ -60,14 +60,14 @@
           <div v-if="isRequest && isAdding" class="border-l-4 border-gray-800 pl-2 m-2">
             <label for="candidateName" class="text-sm font-bold text-neutral-500  block">Nom et prénom</label>
             <select id="title" v-model="dataToSendToAPI.selectedCandidateId"
-            @change="validateSelect(dataToSendToAPI.selectedCandidateId, 'candidateName')" type="text"
+            @change="validateSelect(dataToSendToAPI.selectedCandidateId, 'selectedCandidateId')" type="text"
               class="border border-gray-300 p-2 w-full rounded focus:bg-white"
               :class="{ 'hover:bg-yellow-100': isRequest, 'hover:bg-red-100': !isRequest }">
               <option v-for="candidate in allCandidatesResults" :key="candidate._id"
                 :value="candidate._id">{{
                 candidate.firstName }} {{ candidate.lastName }}</option>
             </select>
-            <span v-if="fieldsToValidate.candidateName !== ''" class="p-2 text-xs font-semibold text-red-700">{{
+            <span v-if="fieldsToValidate.selectedCandidateId!== ''" class="p-2 text-xs font-semibold text-red-700">{{
                 fieldsToValidate.candidateName
               }}</span>
           </div>
@@ -154,15 +154,16 @@
           </div>
 
           <!-- CHAMP PROVINCES POUR LES DEMANDES -->
-          <div v-if="isRequest" class="border-l-4 border-gray-800 pl-2 m-2">
+       <!-- CHAMP PROVINCES POUR LES DEMANDES -->
+       <div v-if="isRequest" class="border-l-4 border-gray-800 pl-2 m-2">
             <label for="province" class="text-sm font-bold text-neutral-500 block">Province</label>
             <select id="province" v-model="dataToSendToAPI.province"
-              @change="validateSelect(dataToSendToAPI.province, 'province')" type="text"
-              class="border border-gray-300 p-2 w-full rounded mt-1  focus:bg-white"
-              :class="{ 'hover:bg-yellow-100' : isRequest, 'hover:bg-red-100': !isRequest }">
-              <option v-for="province in allProvincesResults" :key="province._id" :value="province.id">{{ province.value
-                }}</option>
-            </select>
+        @change="handleProvinceChange" type="text"
+        class="border border-gray-300 p-2 w-full rounded mt-1 focus:bg-white"
+        :class="{ 'hover:bg-yellow-100': isRequest, 'hover:bg-red-100': !isRequest }">
+  <option v-for="province in allProvincesResults" :key="province._id" :value="province.id"
+          :data-id="province.id">{{ province.value }}</option>
+</select>
             <span v-if="fieldsToValidate.province !== ''" class="p-2 text-xs font-semibold text-red-700">{{
               fieldsToValidate.province }}</span>
           </div>
@@ -199,13 +200,12 @@
           <div class="border-l-4 border-gray-800 pl-2 m-2">
             <label for="internshipType" class="text-sm font-bold text-neutral-500 block">Type de stage</label>
             <select id="internshipType" v-model="dataToSendToAPI.internshipType"
-              @change="validateSelect(dataToSendToAPI.internshipType, 'internshipType')" type="text"
-              class="border border-gray-300 p-2 w-full rounded mt-1    focus:bg-white"
-              :class="{ 'hover:bg-yellow-100': isRequest, 'hover:bg-red-100': !isRequest }">
-              <option v-for="intership in allIntershipTypesResults" :key="intership._id" :value="intership.id">{{
-              intership.value }}
-              </option>
-            </select>
+        @change="handleInternshipTypeChange" type="text"
+        class="border border-gray-300 p-2 w-full rounded mt-1 focus:bg-white"
+        :class="{ 'hover:bg-yellow-100': isRequest, 'hover:bg-red-100': !isRequest }">
+  <option v-for="intership in allIntershipTypesResults" :key="intership._id" :value="intership.id"
+          :data-id="intership.id">{{ intership.value }}</option>
+</select>
             <span v-if="fieldsToValidate.internshipType !== ''" class="p-2 text-xs font-semibold text-red-700">{{
               fieldsToValidate.internshipType }}</span>
           </div>
@@ -379,14 +379,15 @@ const dataToSendToAPI = reactive({
   activitySector: '',
   city: '',
   province: '',
-  skills: '',
-  internshipType: '',
+  internshipType:'',
   startDate: '',
   weeklyWorkHours: '',
   endDate: '',
   paid: '',
   additionalInformation: '',
+  selectedCandidateId: '',
 });
+
 
 
 // VALIDATION DES CHAMPS DES FORMULAIRES
@@ -398,6 +399,7 @@ const errorMessage = reactive({
   minCharacters: 'Le champ doit avoir au moins 5 caractères',
   maxCharacters: 'Le champ ne peut pas dépasser 500 caractères',
   option: 'Le champ doit avoir une option valide',
+  province: "Veuillez sélectionner une province",
   date: 'Le champ doit avoir une date valide.',
   pastDate: 'La date ne doit pas être dans le passé.',
   endDate: 'La date de fin ne peut pas être avant la date de début.',
@@ -427,7 +429,9 @@ const fieldsToValidate = reactive({
   endDate: '',
   paid: '',
   additionalInformation: '',
-  selectedCandidateId:''
+  selectedCandidateId:'',
+  selectedProvinceId:'',
+  selectedInternshipTypeId:''
 });
 
 
@@ -451,6 +455,7 @@ function validateInput(input, field) {
 }
 
 // Fonction pour valider le champ de type select
+// Fonction pour valider le champ de type select
 function validateSelect(select, field) {
   if (select === "") {
     fieldsToValidate[field] = errorMessage.option;
@@ -458,6 +463,10 @@ function validateSelect(select, field) {
   }
   fieldsToValidate[field] = "";
 }
+
+
+
+
 
 
 // Fonction pour valider les champs de type date
@@ -516,7 +525,7 @@ let isFormValid = ref(false);
 const validateForm = () => {
 
   fieldsToValidate.title = validateInput(dataToSendToAPI.title, 'title');
-  fieldsToValidate.candidateName = validateSelect(dataToSendToAPI.candidateName, 'candidateName');
+  fieldsToValidate.selectedCandidateId= validateSelect(dataToSendToAPI.selectedCandidateId, 'selectedCandidateId');
   fieldsToValidate.description = validateInput(dataToSendToAPI.description, 'description');
   fieldsToValidate.programme = validateInput(dataToSendToAPI.programme, 'programme');
   fieldsToValidate.etablissement = validateInput(dataToSendToAPI.etablissement, 'etablissement');
@@ -545,47 +554,47 @@ const validateForm = () => {
 
 //Fonction pour soumettre le formulaire 
 
-const selectedCandidateInfo = reactive({
-          address: '',
-          city: '',
-          description: '',
-          email: '',
-          firstName: '',
-          lastName: '',
-          phone: '',
-          postalCode: '',
-          province: '',
-          skills: []
-      });
+// Initialiser les références réactives
+let selectedCandidateInfo = ref(null);
+let selectedProvince = ref({ id: null, value: null });
+let selectedInternshipType = ref({ id: null, value: null });
 
-      
+// Déclarer les variables non réactives
+let selectedProvinceId;
+let selectedInternshipTypeId;
+
+
+const handleProvinceChange = (event) => {
+  // Mettre à jour la valeur et l'ID de la province sélectionnée
+  selectedProvince.value = { id: event.target.value, value: event.target.selectedOptions[0].text };
+};
+
+const handleInternshipTypeChange = (event) => {
+  // Mettre à jour la valeur et l'ID du type de stage sélectionné
+  selectedInternshipType.value = { id: event.target.value, value: event.target.selectedOptions[0].text };
+};
+  
+
+
 const submitForm = () => {
   event.preventDefault();
   validateForm();
 
   if (isFormValid) {
-    const selectedCandidateId = dataToSendToAPI.selectedCandidateId;
-    console.log("ID du candidat sélectionné:", selectedCandidateId);
+    const provinceId = selectedProvince.value ? selectedProvince.value.id : null;
+    const internshipTypeId = selectedInternshipType.value ? selectedInternshipType.value.id : null;
+    console.log("ID de la province sélectionnée:", provinceId);
+    console.log("ID du type de stage sélectionné:", internshipTypeId);
 
+    getCandidateById(dataToSendToAPI.selectedCandidateId)
+      .then(() => {
+        selectedCandidateInfo.value = candidateResult;
+        console.log("Informations sur le candidat sélectionné:", selectedCandidateInfo.value);
 
+        handleFormData();
+      });
 
-    getCandidateById(selectedCandidateId).then((candidate) => {
-      selectedCandidateInfo.address = candidate.address;
-      selectedCandidateInfo.city = candidate.city;
-      selectedCandidateInfo.description = candidate.description;
-      selectedCandidateInfo.email = candidate.email;
-      selectedCandidateInfo.firstName = candidate.firstName;
-      selectedCandidateInfo.lastName = candidate.lastName;
-      selectedCandidateInfo.phone = candidate.phone;
-      selectedCandidateInfo.postalCode = candidate.postalCode;
-      selectedCandidateInfo.province = candidate.province.value;
-      selectedCandidateInfo.skills = candidate.skills;
-      console.log("Candidat reçu après le fetch:", candidateResult.value);
-
-  
-      console.log("submitForm isFormValid");
-      sendRequest();
-    });
+    console.log("submitForm isFormValid");
   } else {
     console.log("submitForm Form invalid");
   }
@@ -596,51 +605,52 @@ const submitForm = () => {
 
 // Fonction pour envoyer les données à l'api 
 const sendRequest = async (formData) => {
-
-  try
-  {
-     const response = await axios.post('https://api-4.fly.dev/internship-requests', formData)
-     console.log('Reponse:', response.data);
-
-
+  try {
+    const response = await axios.post('https://api-4.fly.dev/internship-requests', formData)
+    console.log('Reponse:', response.data);
   } catch (error) {
     console.error('Error:', error);
-
   } 
-     
-     //router.push(props.isRequest ? '/app/demandesdestages' : '/app/offresdestages'); 
-
+  //router.push(props.isRequest ? '/app/demandesdestages' : '/app/offresdestages'); 
 }
 
-// Fonction pour lier les champs du formulaire aux valeurs dans l'api 
-const handleFormData = async () => {
+const handleFormData = async (selectedProvinceId, selectedInternshipTypeId) => {
   const formDataRequest = {
     title: dataToSendToAPI.title,
     description: dataToSendToAPI.description,
     candidate: {
-      address: selectedCandidateInfo.address,
-      city: selectedCandidateInfo.city,
+      _id: selectedCandidateInfo._id,
       description: selectedCandidateInfo.description,
       email: selectedCandidateInfo.email,
       firstName: selectedCandidateInfo.firstName,
       lastName: selectedCandidateInfo.lastName,
+      address: selectedCandidateInfo.address,
       phone: selectedCandidateInfo.phone,
+      city: selectedCandidateInfo.city,
       postalCode: selectedCandidateInfo.postalCode,
-      province: selectedCandidateInfo.province,
-      skills: selectedCandidateInfo.skills,
+      province: {
+        _id: selectedProvinceId,
+        value: selectedProvince.value
+      },
+      skills: selectedCandidateInfo.skills
     },
-    startDate: dataToSendToAPI.startDate,
-    endDate: dataToSendToAPI.endDate,
+    startDate: new Date(dataToSendToAPI.startDate).toISOString(),
+    endDate: new Date(dataToSendToAPI.endDate).toISOString(),
     weeklyWorkHours: dataToSendToAPI.weeklyWorkHours,
-    province: dataToSendToAPI.province,
-    internshipType: dataToSendToAPI.internshipType,
+    province: {
+      _id: selectedProvinceId,
+      value: selectedProvince.value
+    },
+    internshipType: {
+      _id: selectedInternshipTypeId,
+      value: selectedInternshipType.value
+    },
     additionalInformation: dataToSendToAPI.additionalInformation,
+    isActive: false
   };
-
-  console.log(formDataRequest);
   await sendRequest(formDataRequest);
+  console.log(formDataRequest);
 };
-
 
 
 
