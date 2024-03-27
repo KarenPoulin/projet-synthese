@@ -9,7 +9,7 @@
                 <p v-if="isCandidate" class="text-neutral-500 text-md font-semibold ml-5">Candidat</p>
                 <p v-if="!isCandidate" class="text-neutral-500 text-md font-semibold ml-5">Entreprise</p>
                 <h1 class='text-neutral-500 text-4xl font-bold mb-5 ml-5'>{{ isCandidate ? candidateResult.firstName + ' ' + candidateResult.lastName : enterpriseResult.name }}</h1>
-                <h2 v-if="isCandidate"class="bg-white text-neutral-500 font-semibold text-xl w-60 text-center p-2 ml-5">Développeur Front-End</h2>
+                <h2 v-if="isCandidate"class="bg-white text-neutral-500 font-semibold text-xl inline-block text-center p-2 ml-5">Développeur Front-End</h2>
             </div>
         </div>
         <div class="bg-white p-8 lg:p-16 rounded-xl">
