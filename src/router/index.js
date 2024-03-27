@@ -53,6 +53,11 @@ const router = createRouter({
           component: Entreprises,          
         },
         {
+          path: 'formulaireCandidat',
+          name: 'formulaireCandidat',
+          component: formulaireCandidat
+        },
+        {
           path: 'formulaireEntreprise',
           name: 'formulaireEntreprise',
           component: FormulaireEntreprise
