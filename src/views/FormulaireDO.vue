@@ -60,7 +60,7 @@
           <div v-if="isRequest && isAdding" class="border-l-4 border-gray-800 pl-2 m-2">
             <label for="candidateName" class="text-sm font-bold text-neutral-500  block">Nom et prénom</label>
             <select id="title" v-model="dataToSendToAPI.selectedCandidateId"
-            @change="validateSelect(dataToSendToAPI.selectedCandidateId, 'selectedCandidateId')" type="text"
+            @change="handleCandidateChange" type="text"
               class="border border-gray-300 p-2 w-full rounded focus:bg-white"
               :class="{ 'hover:bg-yellow-100': isRequest, 'hover:bg-red-100': !isRequest }">
               <option v-for="candidate in allCandidatesResults" :key="candidate._id"
@@ -153,7 +153,7 @@
               fieldsToValidate.city }}</span>
           </div>
 
-          <!-- CHAMP PROVINCES POUR LES DEMANDES -->
+     
        <!-- CHAMP PROVINCES POUR LES DEMANDES -->
        <div v-if="isRequest" class="border-l-4 border-gray-800 pl-2 m-2">
             <label for="province" class="text-sm font-bold text-neutral-500 block">Province</label>
@@ -203,7 +203,7 @@
         @change="handleInternshipTypeChange" type="text"
         class="border border-gray-300 p-2 w-full rounded mt-1 focus:bg-white"
         :class="{ 'hover:bg-yellow-100': isRequest, 'hover:bg-red-100': !isRequest }">
-  <option v-for="intership in allIntershipTypesResults" :key="intership._id" :value="intership.id"
+  <option v-for="intership in  allIntershipTypesResults" :key="intership._id" :value="intership.id"
           :data-id="intership.id">{{ intership.value }}</option>
 </select>
             <span v-if="fieldsToValidate.internshipType !== ''" class="p-2 text-xs font-semibold text-red-700">{{
@@ -555,24 +555,51 @@ const validateForm = () => {
 //Fonction pour soumettre le formulaire 
 
 // Initialiser les références réactives
-let selectedCandidateInfo = ref(null);
-let selectedProvince = ref({ id: null, value: null });
-let selectedInternshipType = ref({ id: null, value: null });
+let selectedCandidate = ref(null);
+let selectedProvince = ref(null);
+let selectedInternshipType = ref(null);
 
-// Déclarer les variables non réactives
-let selectedProvinceId;
-let selectedInternshipTypeId;
+const handleCandidateChange = (event) => {
+  // Trouver l'objet candidat correspondant dans allCandidatesResults
+  const selectedCandidateObj = allCandidatesResults.find(candidate => candidate._id === event.target.value);
+  
+  if (selectedCandidateObj) {
+    // Mettre à jour l'ID du candidat sélectionné
+    selectedCandidate.value = selectedCandidateObj;
+  } else {
+    console.error('Candidate not found in allCandidatesResults');
+  }
+};
 
 
 const handleProvinceChange = (event) => {
-  // Mettre à jour la valeur et l'ID de la province sélectionnée
-  selectedProvince.value = { id: event.target.value, value: event.target.selectedOptions[0].text };
+  // Mettre à jour l'objet province sélectionné
+  const selectedProvinceObj = allProvincesResults.find(province => province._id === event.target.value);
+  
+  if (selectedProvinceObj) {
+    console.log(selectedProvinceObj)
+    // Mettre à jour l'ID du candidat sélectionné
+    selectedProvince.value = selectedProvinceObj;
+  } else {
+    console.error('Province not found in allProvincesResults');
+  }
+
 };
 
+
 const handleInternshipTypeChange = (event) => {
-  // Mettre à jour la valeur et l'ID du type de stage sélectionné
-  selectedInternshipType.value = { id: event.target.value, value: event.target.selectedOptions[0].text };
+  // Mettre à jour l'objet du type de stage sélectionné
+const selectedInternshipTypeObj = allIntershipTypesResults.find(type => type._id === event.target.value);
+
+  if (selectedInternshipTypeObj) {
+    console.log(selectedIntershipTypeObj)
+    // Mettre à jour l'ID du candidat sélectionné
+    selectedInternshipType.value = selectedIntershipTypeObj;
+  } else {
+    console.error('Intershiptype not found in allIntershipTypesResults');
+  }
 };
+
   
 
 
@@ -581,24 +608,25 @@ const submitForm = () => {
   validateForm();
 
   if (isFormValid) {
-    const provinceId = selectedProvince.value ? selectedProvince.value.id : null;
-    const internshipTypeId = selectedInternshipType.value ? selectedInternshipType.value.id : null;
+    const provinceId = selectedProvince.value ? selectedProvince.value._id : null;
+    const internshipTypeId = selectedInternshipType.value ? selectedInternshipType.value._id : null;
+    const candidateId = selectedCandidate.value ? selectedCandidate.value._id : null; // Utilisation de _id
     console.log("ID de la province sélectionnée:", provinceId);
     console.log("ID du type de stage sélectionné:", internshipTypeId);
+    console.log("ID du candidat sélectionné:", candidateId);
 
-    getCandidateById(dataToSendToAPI.selectedCandidateId)
-      .then(() => {
-        selectedCandidateInfo.value = candidateResult;
-        console.log("Informations sur le candidat sélectionné:", selectedCandidateInfo.value);
-
-        handleFormData();
-      });
+    if (candidateId) {
+      handleFormData();
+    } else {
+      console.error("Candidate ID is not valid");
+    }
 
     console.log("submitForm isFormValid");
   } else {
     console.log("submitForm Form invalid");
   }
 };
+
 
 
 
@@ -614,43 +642,40 @@ const sendRequest = async (formData) => {
   //router.push(props.isRequest ? '/app/demandesdestages' : '/app/offresdestages'); 
 }
 
-const handleFormData = async (selectedProvinceId, selectedInternshipTypeId) => {
-  const formDataRequest = {
-    title: dataToSendToAPI.title,
-    description: dataToSendToAPI.description,
-    candidate: {
-      _id: selectedCandidateInfo._id,
-      description: selectedCandidateInfo.description,
-      email: selectedCandidateInfo.email,
-      firstName: selectedCandidateInfo.firstName,
-      lastName: selectedCandidateInfo.lastName,
-      address: selectedCandidateInfo.address,
-      phone: selectedCandidateInfo.phone,
-      city: selectedCandidateInfo.city,
-      postalCode: selectedCandidateInfo.postalCode,
-      province: {
-        _id: selectedProvinceId,
-        value: selectedProvince.value
+const handleFormData = async () => {
+  if (selectedCandidate.value) {
+    const formDataRequest = {
+      title: dataToSendToAPI.title,
+      description: dataToSendToAPI.description,
+      candidate: {
+        _id: selectedCandidate.value._id,
+        description: selectedCandidate.value.description,
+        email: selectedCandidate.value.email,
+        firstName: selectedCandidate.value.firstName,
+        lastName: selectedCandidate.value.lastName,
+        address: selectedCandidate.value.address,
+        phone: selectedCandidate.value.phone,
+        city: selectedCandidate.value.city,
+        postalCode: selectedCandidate.value.postalCode,
+        province: selectedCandidate.value.province, 
+        skills: selectedCandidate.value.skills
       },
-      skills: selectedCandidateInfo.skills
-    },
-    startDate: new Date(dataToSendToAPI.startDate).toISOString(),
-    endDate: new Date(dataToSendToAPI.endDate).toISOString(),
-    weeklyWorkHours: dataToSendToAPI.weeklyWorkHours,
-    province: {
-      _id: selectedProvinceId,
-      value: selectedProvince.value
-    },
-    internshipType: {
-      _id: selectedInternshipTypeId,
-      value: selectedInternshipType.value
-    },
-    additionalInformation: dataToSendToAPI.additionalInformation,
-    isActive: false
-  };
-  await sendRequest(formDataRequest);
-  console.log(formDataRequest);
+      startDate: new Date(dataToSendToAPI.startDate).toISOString(),
+      endDate: new Date(dataToSendToAPI.endDate).toISOString(),
+      weeklyWorkHours: dataToSendToAPI.weeklyWorkHours,
+      province: selectedProvince.value,
+      internshipType: selectedInternshipType.value,
+      additionalInformation: dataToSendToAPI.additionalInformation,
+      isActive: false
+    };
+    await sendRequest(formDataRequest);
+    console.log(formDataRequest);
+  } else {
+    console.error('Selected candidate is not valid');
+  }
 };
+
+
 
 
 
