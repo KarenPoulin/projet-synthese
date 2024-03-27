@@ -85,8 +85,8 @@
         <!-- Icône utilisateur -->
 
         <div>
-          <p class="text-xs text-black bold">{{ adminStore.state.nomEtPrenom }}</p>
-          <p class="text-xs text-gray-600 bold">Admin</p>
+          <p class="text-xs text-black font-semibold">{{ adminStore.state.nomEtPrenom }}</p>
+          <p class="text-xs text-gray-400 font-semibold">Admin</p>
 
         </div>
         <img src="../assets/icons/candidate-48.png" alt="Photo de profil" class="h-8 w-8 rounded-full bg-gray-300" />
