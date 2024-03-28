@@ -1,7 +1,7 @@
 <template>
 
   <template v-if="isFicheDetailDemandeDeStage && demandeDeStageResult || offreDeStagesResult">
-    <div class="mb-20"
+    <div class="mb-10"
       :class="{'border-l-8 border-yellow-600': isFicheDetailDemandeDeStage, 'border-l-8 border-red-800': !isFicheDetailDemandeDeStage}">
       <p v-if="isFicheDetailDemandeDeStage" class="text-neutral-500 text-md font-semibold ml-5">Demande de stage</p>
       <p v-if="!isFicheDetailDemandeDeStage" class="text-neutral-500 text-md font-semibold ml-5">Offre de stage</p>
@@ -11,6 +11,9 @@
         class="bg-white inline-block text-neutral-500 font-semibold text-xl text-center p-3 ml-5">
         {{ offreDeStagesResult.enterprise.name }}</h2>
     </div>
+    <div class="text-right mb-10">
+            <button @click="goToEditForm" type="button" class="bg-yellow-600 p-3 text-white rounded-lg">Modifier</button>  
+        </div>
     <div class="bg-white p-8 lg:p-16 rounded-xl">
       <h3 v-if="isFicheDetailDemandeDeStage" class="text-3xl md:text-4xl font-bold mb-5 lg:mb-10"
         :class="{'text-yellow-600': isFicheDetailDemandeDeStage }">
@@ -225,23 +228,32 @@
 
 <script setup>
   import modalSuppression from "@/components/modalSuppression.vue";
-  import {
-    useRoute
-  } from "vue-router";
-  import {
-    onMounted,
-    ref
-  } from "vue";
-  import {
-    useDemandesDeStages
-  } from "@/composables/demandeDeStage";
-  import {
-    useOffreDeStages
-  } from "@/composables/offreDeStage";
+  import { useRoute } from "vue-router";
+  import { onMounted, ref } from "vue";
+  import { useDemandesDeStages } from "@/composables/demandeDeStage";
+  import { useOffreDeStages } from "@/composables/offreDeStage";
+  import { useRouter } from "vue-router";
 
   const route = useRoute();
 
   const isFicheDetailDemandeDeStage = ref(true);
+
+  const router = useRouter()
+    
+    const goToEditForm = () => {
+    let id;
+    let type;
+    
+    if (isFicheDetailDemandeDeStage.value) {
+      id = demandeDeStageId;
+      type = 'request';
+    } else {
+      id = offreDeStageId;
+      type = 'offer';
+    }
+    
+    router.push({ name: 'formulairedo', params: { type: type, id: id } })
+  }
 
 
   /* const informationDemandeDeStage = computed(() => [
