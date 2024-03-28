@@ -43,10 +43,10 @@
           <div class="flex items-baseline mt-5">
             <label for="enterprise" class="text-base font-bold text-neutral-500 block mr-4">Entreprise: </label>
             <select id="enterprise" v-model="dataToSendToAPI.enterprise"
-              @change="validateSelect(dataToSendToAPI.enterprise, 'enterprise')" type="text"
+              @change="handleEnterpriseChange" type="text"
               class="border border-gray-300 p-2 w-full rounded  focus:bg-white"
               :class="{ 'hover:bg-yellow-100': isRequest, 'hover:bg-red-100': !isRequest }">
-              <option v-for="enterprise in allEnterprisesResults" :key="enterprise._id" :value="enterprise.name">{{
+              <option v-for="enterprise in allEnterprisesResults" :key="enterprise._id" :value="enterprise._id">{{
       enterprise.name
     }}</option>
             </select>
@@ -61,13 +61,13 @@
         <div class="py-2">
           <div v-if="isRequest && isAdding" class="border-l-4 border-gray-800 pl-2 m-2">
             <label for="candidateName" class="text-sm font-bold text-neutral-500  block">Nom et prénom</label>
-            <select id="title" v-model="dataToSendToAPI.selectedCandidateId" @change="handleCandidateChange" type="text"
+            <select id="title" v-model="dataToSendToAPI.candidateName" @change="handleCandidateChange" type="text"
               class="border border-gray-300 p-2 w-full rounded focus:bg-white"
               :class="{ 'hover:bg-yellow-100': isRequest, 'hover:bg-red-100': !isRequest }">
               <option v-for="candidate in allCandidatesResults" :key="candidate._id" :value="candidate._id">{{
       candidate.firstName }} {{ candidate.lastName }}</option>
             </select>
-            <span v-if="fieldsToValidate.selectedCandidateId !== ''" class="p-2 text-xs font-semibold text-red-700">{{
+            <span v-if="fieldsToValidate.candidateName !== ''" class="p-2 text-xs font-semibold text-red-700">{{
       fieldsToValidate.candidateName
     }}</span>
           </div>
@@ -94,12 +94,12 @@
         <!-- CHAMP DESCRIPTION DES TÂCHES POUR LES OFFRES  -->
         <div v-if="!isRequest" class="grid grid-cols-1 border-l-4 border-gray-800 pl-2 m-2">
           <p class="text-4xl font-bold text-red-800">Description des tâches</p>
-          <textarea id="taskDescription" v-model="dataToSendToAPI.taskDescription"
-            @change="validateInput(dataToSendToAPI.taskDescription, 'taskDescription')"
+          <textarea id="description" v-model="dataToSendToAPI.description"
+            @change="validateInput(dataToSendToAPI.description, 'description')"
             class="border border-gray-300 p-2 w-full rounded  focus:bg-white"
             :class="{ 'hover:bg-yellow-100': isRequest, 'hover:bg-red-100': !isRequest }"></textarea>
-          <span v-if="fieldsToValidate.taskDescription !== ''" class="p-2 text-xs font-semibold text-red-700">{{
-      fieldsToValidate.taskDescription }}</span>
+          <span v-if="fieldsToValidate.description !== ''" class="p-2 text-xs font-semibold text-red-700">{{
+      fieldsToValidate.description }}</span>
         </div>
 
         <!-- CHAMP PROGRAMME DE FORMATION  POUR LES DEMANDES ET OFFRES  -->
@@ -304,7 +304,7 @@ import { defineProps } from 'vue';
 import { useActivitySectors } from '@/composables/secteurActivites';
 import { useIntershipTypes } from '@/composables/typeStage';
 import { useProvinces } from '@/composables/provinces';
-import { useAllCandidates, useCandidate } from '@/composables/candidats';
+import { useAllCandidates } from '@/composables/candidats';
 import { useAllEnterprises } from '@/composables/entreprises';
 import router from '../router/index';
 import { useRoute } from 'vue-router'
@@ -325,7 +325,6 @@ const route = useRoute();
 
 // UTILISATION DES COMPOSABLES POUR L'AFFICHAGE DES DONNÉES VENANT DE L'API OU LEUR ENVOI À L'API //
 const { allCandidatesResults, getAllCandidates } = useAllCandidates();
-const { candidateResult, getCandidateById } = useCandidate();
 const { allEnterprisesResults, getAllEnterprises } = useAllEnterprises();
 const { allActivitySectorsResults, getAllActivitySectors } = useActivitySectors();
 const { allProvincesResults, getAllProvinces } = useProvinces();
@@ -366,7 +365,7 @@ onMounted(async () => {
 const dataToSendToAPI = reactive({
   title: '',
   enterprise: '',
-  taskDescription: '',
+  description: '',
   candidateName: '',
   description: '',
   programme: '',
@@ -388,8 +387,6 @@ const dataToSendToAPI = reactive({
 
 
 // VALIDATION DES CHAMPS DES FORMULAIRES
-
-
 // Variables pour des messages d'erreur des formulaires 
 const errorMessage = reactive({
   empty: 'Le champ ne peut pas être vide',
@@ -410,7 +407,7 @@ const errorMessage = reactive({
 const fieldsToValidate = reactive({
   title: '',
   enterprise: '',
-  taskDescription: '',
+  description: '',
   candidateName: '',
   description: '',
   programme: '',
@@ -451,18 +448,15 @@ function validateInput(input, field) {
   fieldsToValidate[field] = "";
 }
 
-// Fonction pour valider le champ de type select
-// Fonction pour valider le champ de type select
+
 function validateSelect(select, field) {
   if (select === "") {
     fieldsToValidate[field] = errorMessage.option;
     return errorMessage.option;
   }
   fieldsToValidate[field] = "";
+  return "";
 }
-
-
-
 
 
 
@@ -522,7 +516,7 @@ let isFormValid = ref(false);
 const validateForm = () => {
 
   fieldsToValidate.title = validateInput(dataToSendToAPI.title, 'title');
-  fieldsToValidate.selectedCandidateId = validateSelect(dataToSendToAPI.selectedCandidateId, 'selectedCandidateId');
+  fieldsToValidate.candidateName = validateSelect(dataToSendToAPI.candidateName, 'candidateName');
   fieldsToValidate.description = validateInput(dataToSendToAPI.description, 'description');
   fieldsToValidate.programme = validateInput(dataToSendToAPI.programme, 'programme');
   fieldsToValidate.etablissement = validateInput(dataToSendToAPI.etablissement, 'etablissement');
@@ -537,7 +531,7 @@ const validateForm = () => {
   fieldsToValidate.paid = validatePaid(dataToSendToAPI.paid, 'paid');
   fieldsToValidate.additionalInformation = validateInput(dataToSendToAPI.additionalInformation, 'additionalInformation');
   fieldsToValidate.enterprise = validateSelect(dataToSendToAPI.enterprise, 'enterprise');
-  fieldsToValidate.taskDescription = validateInput(dataToSendToAPI.taskDescription, 'taskDescription');
+  fieldsToValidate.description = validateInput(dataToSendToAPI.description, 'description');
   fieldsToValidate.requiredSkills = validateInput(dataToSendToAPI.requiredSkills, 'requiredSkills');
 
   isFormValid.value = Object.values(fieldsToValidate).every(value => value === '');
@@ -549,13 +543,14 @@ const validateForm = () => {
   }
 };
 
-//Fonction pour soumettre le formulaire 
-
-// Initialiser les références réactives
+//  SOUMISSION DES FORMULAIRES 
+// Initialiser les références réactives pour récupérer les informations de l'id et de la value des candidats, provinces et types de stage
 let selectedCandidate = ref(null);
 let selectedProvince = ref(null);
 let selectedInternshipType = ref(null);
+let selectedEnterprise = ref(null);
 
+// Fonction pour récupérer l'id et la value des candidats
 const handleCandidateChange = (event) => {
   const selectedCandidateId = event.target.value;
 
@@ -568,6 +563,7 @@ const handleCandidateChange = (event) => {
   }
 };
 
+// Fonction pour récupérer l'id et la value des provinces
 const handleProvinceChange = (event) => {
   const selectedProvinceId = event.target.value;
 
@@ -580,6 +576,7 @@ const handleProvinceChange = (event) => {
   }
 };
 
+// Fonction pour récupérer l'id et la value des types de stage
 const handleInternshipTypeChange = (event) => {
   const selectedInternshipTypeId = event.target.value;
 
@@ -592,36 +589,55 @@ const handleInternshipTypeChange = (event) => {
   }
 };
 
+// Fonction pour récupérer l'id et la value des entreprises
+const handleEnterpriseChange = (event) => {
+  const selectedEnterpriseId = event.target.value;
+
+  const selectedEnterpriseObj = allEnterprisesResults.find(type => type._id === selectedEnterpriseId);
+
+  if (selectedEnterpriseObj) {
+    selectedEnterprise.value = selectedEnterpriseObj;
+    console.log(selectedEnterpriseObj)
+  } else {
+    console.error('Enterprise not found in allEnterprisesResults');
+  }
+};
 
 
+//Fonction pour soumettre la demande ou l'offre au click sur le bouton Sauvegarder
 const submitForm = () => {
   event.preventDefault();
   validateForm();
 
   if (isFormValid) {
-    handleFormData();
+    if (props.isRequest) {
+      handleDataRequest();
+    } else {
+      handleDataOffer();
+    }
     console.log("Form submitted successfully");
+    
   } else {
     console.error("Form is invalid");
   }
 
 };
 
-
-
-
-// Fonction pour envoyer les données à l'api 
+// Fonction pour envoyer les données du formulaire à l'api 
 const sendRequest = async (formData) => {
   try {
-    const response = await axios.post('https://api-4.fly.dev/internship-requests', formData)
-    console.log('Reponse:', response.data);
+    const url = props.isRequest ? 'https://api-4.fly.dev/internship-requests' : 'https://api-4.fly.dev/internship-offers';
+    const response = await axios.post(url, formData);
+    console.log('Response:', response.data);
+    router.push(props.isRequest ? '/app/demandesdestages' : '/app/offresdestages');
   } catch (error) {
     console.error('Error:', error);
   }
-  //router.push(props.isRequest ? '/app/demandesdestages' : '/app/offresdestages'); 
 }
 
-const handleFormData = async () => {
+
+//Données à envoyer pour les demandes 
+const handleDataRequest = async () => {
   if (selectedCandidate.value) {
     const formDataRequest = {
       title: dataToSendToAPI.title,
@@ -655,6 +671,42 @@ const handleFormData = async () => {
   }
 };
 
+//Données à envoyer pour les offres 
+const handleDataOffer = async () => {
+  if (selectedEnterprise.value) {
+    const formDataOffer = {
+      title: dataToSendToAPI.title,
+      description:  selectedEnterprise.value.description,
+      enterprise: {
+        _id: selectedEnterprise.value._id,
+        image:  selectedEnterprise.value.image,
+        name:  selectedEnterprise.value.name,
+        address:  selectedEnterprise.value.address,
+        postalCode:  selectedEnterprise.value.postalCode,
+        province:  selectedEnterprise.value.province,
+        city:  selectedEnterprise.value.city,
+        phone:  selectedEnterprise.value.phone,
+        email:  selectedEnterprise.value.email,
+        description:  selectedEnterprise.value.description,
+        activySector:  selectedEnterprise.value.activitySector,
+        website:  selectedEnterprise.value.website,
+      },
+      startDate: new Date(dataToSendToAPI.startDate).toISOString(),
+      endDate: new Date(dataToSendToAPI.endDate).toISOString(),
+      weeklyWorkHours: dataToSendToAPI.weeklyWorkHours,
+      salary:dataToSendToAPI.weeklyWorkHours,
+      province:  selectedEnterprise.value.province,
+      requiredSkills: dataToSendToAPI.requiredSkills,
+      internshipType: selectedInternshipType.value,
+      paid:dataToSendToAPI.paid,
+      isActive: false
+    };
+    await sendRequest(formDataOffer);
+    console.log(formDataOffer);
+  } else {
+    console.error('Selected enterprise is not valid');
+  }
+};
 
 
 
