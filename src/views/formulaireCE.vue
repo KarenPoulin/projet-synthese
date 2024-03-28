@@ -293,7 +293,7 @@
 </template>
 
 <script>
-    import { ref, reactive, computed, onMounted, watchEffect} from 'vue'
+    import { ref, reactive, computed, onMounted} from 'vue'
     import axios from 'axios'
     import {RouterLink, useRouter, useRoute} from 'vue-router'
 
@@ -776,7 +776,7 @@
                 }
             };
 
-            const fetchData = async () => {
+            const fetchData = async (id, type) => {
                 if (props.type === 'entreprises' && props.entrepriseId) {
                     editing.value = true;
                     try {
@@ -803,17 +803,37 @@
 
 
 
-            watchEffect(() => {
-                
-            })
 
             onMounted(() => {
                 id.value = route.params.id;
                 console.log(id.value);
+                const type = router.currentRoute.value.params.type;
+                console.log(type);
 
+                // IL Y A UN ID
+/*              if (id.value) {
+                    if (type === 'entreprises') {
+                        showEnterpriseForm.value = true;
+                        fetchData(id.value, entreprise);
+                    };
+                    if (type === 'candidat') {
+                        showEnterpriseForm.value = false;
+                    };
+
+
+                // PAS DE ID
+                else {
+                    if (type === 'entreprises') {
+                        showEnterpriseForm.value = true;
+                    };
+                    if (type === 'candidat') {
+                        showEnterpriseForm.value = false;
+                    };
+                };
+            } */
                 fetchData();
 
-                const type = router.currentRoute.value.params.type;
+
                 if (type === 'entreprises') {
                     showEnterpriseForm.value = true;
                 };
