@@ -1,7 +1,7 @@
 <template>
 
     <template v-if="isCandidate && candidateResult || enterpriseResult">
-        <div class="flex mb-20">
+        <div class="flex mb-10">
             <div>
                 <img v-if="!isCandidate" src="../assets/img/enterprises.png" alt="logo-entreprises" class="w-40 mr-5">
             </div>
@@ -11,6 +11,9 @@
                 <h1 class='text-neutral-500 text-4xl font-bold mb-5 ml-5'>{{ isCandidate ? candidateResult.firstName + ' ' + candidateResult.lastName : enterpriseResult.name }}</h1>
                 <h2 v-if="isCandidate"class="bg-white text-neutral-500 font-semibold text-xl inline-block text-center p-2 ml-5">Développeur Front-End</h2>
             </div>
+        </div>
+        <div class="text-right mb-10">
+            <button @click="goToEditForm" type="button" class="bg-fuchsia-800 p-3 text-white rounded-lg">Modifier</button>  
         </div>
         <div class="bg-white p-8 lg:p-16 rounded-xl">
             <h3 class="text-3xl md:text-4xl font-bold mb-5 lg:mb-10" :class="{'text-blue-400': !isCandidate, 'text-fuchsia-800': isCandidate}">Courte présentation</h3>
@@ -61,19 +64,28 @@
 </template>
 
 <script setup>
-    import {
-        onMounted,
-        ref
-    } from 'vue';
-    import {
-        useRoute
-    } from 'vue-router';
-    import {
-        useCandidate
-    } from '@/composables/candidats';
-    import {
-        useEnterprise
-    } from '@/composables/entreprises';
+    import { onMounted, ref } from 'vue';
+    import { useRoute } from 'vue-router';
+    import { useRouter } from 'vue-router'
+    import { useCandidate } from '@/composables/candidats';
+    import { useEnterprise } from '@/composables/entreprises';
+
+    const router = useRouter()
+    
+    const goToEditForm = () => {
+    let id;
+    let type;
+    
+    if (isCandidate.value) {
+      id = candidateId;
+      type = 'candidats';
+    } else {
+      id = enterpriseId;
+      type = 'entreprises';
+    }
+    
+    router.push({ name: 'formulaireCE', params: { type: type, id: id } })
+  }
 
     const route = useRoute();
 

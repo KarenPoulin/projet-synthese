@@ -63,7 +63,7 @@ const router = createRouter({
           component: FormulaireEntreprise
         },
         {
-          path: 'formulaireCE/:type',
+          path: 'formulaireCE/:type/:id?',
           name: 'formulaireCE',
           component: FormulaireCE,
           props: true
