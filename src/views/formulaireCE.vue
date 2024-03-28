@@ -304,7 +304,7 @@
         RouterLink,
         useRouter
     } from 'vue-router'
-   
+
 
 
 
@@ -325,7 +325,7 @@
             }
         },
 
-    
+
 
         setup(props) {
             const router = useRouter();
@@ -783,52 +783,38 @@
             };
 
             const fetchData = async () => {
-      if (props.type === 'entreprise' && props.entrepriseId) {
-        editing.value = true
-        try {
-          const response = await axios.get(`https://api-4.fly.dev/enterprises/${props.entrepriseId}`)
-          const data = response.data
-          formData.name = data.name
-          formData.image = data.image
-          formData.description = data.description
-          formData.address = data.address
-          formData.phone = data.phone
-          formData.city = data.city
-          formData.email = data.email
-          formData.provinceId = data.province._id
-          formData.postalCode = data.postalCode
-          formData.activitySector.value = data.activitySector.value
-          formData.website = data.website
-        } catch (error) {
-          console.error(error)
-        }
-      } else if (props.type === 'candidat' && props.candidateId) {
-        editing.value = true
-        try {
-          const response = await axios.get(`https://api-4.fly.dev/candidates/${props.candidateId}`)
-          const data = response.data
-          formData.fullName = data.fullName
-          formData.skills = data.skills.join(', ')
-          formData.description = data.description
-          formData.address = data.address
-          formData.phone = data.phone
-          formData.city = data.city
-          formData.email = data.email
-          formData.provinceId = data.province._id
-          formData.postalCode = data.postalCode
-        } catch (error) {
-          console.error(error)
-        }
-      }
-    }
+                if (props.type === 'entreprises' && props.entrepriseId) {
+                    editing.value = true;
+                    try {
+                        const response = await axios.get(
+                            `https://api-4.fly.dev/enterprises/${props.entrepriseId}`)
+                        const data = response.data
+                        Object.assign(formData, data);
+                    } catch (error) {
+                        console.error(error)
+                    }
+                } else if (props.type === 'candidats' && props.candidateId) {
+                    editing.value = true
+                    try {
+                        const response = await axios.get(
+                            `https://api-4.fly.dev/candidates/${props.candidateId}`)
+                        const data = response.data
+                        Object.assign(formData, data);
+                    } catch (error) {
+                        console.error(error)
+                    }
+                }
+            }
 
-    // appeler la fonction fetchData
-    
+
+
+
+
 
             onMounted(() => {
-               
+
                 fetchData();
-                
+
                 const type = router.currentRoute.value.params.type;
                 if (type === 'entreprises') {
                     showEnterpriseForm.value = true;
@@ -839,7 +825,7 @@
 
                 fetchProvinces();
 
-               
+
             });
 
 
@@ -870,6 +856,7 @@
                 provinces,
                 showEnterpriseForm,
                 resetValidationErrors,
+                fetchData
 
             };
         }
