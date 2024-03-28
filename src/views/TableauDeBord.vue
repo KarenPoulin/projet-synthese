@@ -66,7 +66,7 @@
         </div>
         <table class="w-full mb-10">
             <EnteteTableau :isDemandes="true" :isTableauDeBord="true" />
-            <template v-for="demandeDeStage in allDemandeDeStagesResults" :key="demandeDeStage._id">
+            <template v-for="demandeDeStage in demandeDeStageIsNotActive" :key="demandeDeStage._id">
                 <ElementTableau :element="demandeDeStage" :isDemandes="true" :isTableauDeBord="true" />
             </template>
         </table>
@@ -79,7 +79,7 @@
         </div>
         <table class="w-full mb-10">
             <EnteteTableau :isDemandes="false" :isTableauDeBord="true" />
-            <template v-for="offreDeStage in allOffreDeStagesResults" :key="offreDeStage._id">
+            <template v-for="offreDeStage in offreDeStagesIsNotActive" :key="offreDeStage._id">
                 <ElementTableau :element="offreDeStage" :isDemandes="false" :isTableauDeBord="true" />
             </template>
         </table>
@@ -87,7 +87,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue';
+import { onMounted, reactive, ref } from 'vue';
 import axios from 'axios';
 import { useAllDemandeDeStages } from '@/composables/demandeDeStage';
 import { useAllOffreDeStages } from '@/composables/offreDeStage';
@@ -101,6 +101,8 @@ let intershipRequestsCount = ref(null);
 let intershipOffersCount = ref(null);
 let candidatesCount = ref(null);
 let enterprisesCount = ref(null);
+let demandeDeStageIsNotActive = reactive([]);
+let offreDeStagesIsNotActive = reactive([]);
 
 const baseUrl = "https://api-4.fly.dev/";
 const intershipRequests = "internship-requests/";
@@ -122,6 +124,8 @@ const getDataCount = async (endpoint, variable) => {
 onMounted(async () => {
     await getAllDemandeDeStages();
     await getAllOffreDeStages();
+    demandeDeStageIsNotActive = allDemandeDeStagesResults.filter(request => !request.isActive);
+    offreDeStagesIsNotActive = allOffreDeStagesResults.filter(offer => !offer.isActive);
     getDataCount(intershipRequests, intershipRequestsCount);
     getDataCount(intershipOffers, intershipOffersCount);
     getDataCount(candidates, candidatesCount);
