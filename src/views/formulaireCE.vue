@@ -293,17 +293,9 @@
 </template>
 
 <script>
-    import {
-        ref,
-        reactive,
-        computed,
-        onMounted
-    } from 'vue'
+    import { ref, reactive, computed, onMounted, watchEffect} from 'vue'
     import axios from 'axios'
-    import {
-        RouterLink,
-        useRouter
-    } from 'vue-router'
+    import {RouterLink, useRouter, useRoute} from 'vue-router'
 
 
 
@@ -329,6 +321,8 @@
 
         setup(props) {
             const router = useRouter();
+            const route = useRoute();
+            const id = ref(null);
             const editing = ref(false);
             const showEnterpriseForm = ref(false);
             const isCandidat = computed(() => props.type === 'candidat')
@@ -809,9 +803,13 @@
 
 
 
-
+            watchEffect(() => {
+                
+            })
 
             onMounted(() => {
+                id.value = route.params.id;
+                console.log(id.value);
 
                 fetchData();
 

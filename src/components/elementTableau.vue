@@ -1,6 +1,6 @@
 <template>
     <tr v-if="element" class="border-b-4 border-neutral-200">
-        <td class="">
+        <td>
             <div class="my-5 pl-4 flex flex-row items-center border-l-4" :class="{
         'border-neutral-500': !isTableauDeBord && !element.isActive,
         'border-yellow-600': !isTableauDeBord && element.isActive && isDemandes,
@@ -139,8 +139,6 @@ import { RouterLink } from 'vue-router';
 import { useActivitySector } from '@/composables/secteurActivites';
 
 
-let isActive = ref(true);
-
 const props = defineProps({
     isDemandes: Boolean,
     isTableauDeBord: Boolean,
@@ -162,6 +160,7 @@ const formatDate = (dateString) => {
 };
 
 onMounted(async () => {
+    console.log('id:', props.element._id, 'isActive', props.element.isActive, 'isTableaudebord', props.isTableauDeBord, 'isDemandes', props.isDemandes);
     if (props.element.enterprise) {
         activitySectorId = props.element.enterprise.activitySector;
         await getActivitySectorById(activitySectorId);
