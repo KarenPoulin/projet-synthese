@@ -1,86 +1,12 @@
 <template>
-
-  <template v-if="isFicheDetailDemandeDeStage && demandeDeStageResult || offreDeStagesResult">
-    <div class="mb-10"
-      :class="{'border-l-8 border-yellow-600': isFicheDetailDemandeDeStage, 'border-l-8 border-red-800': !isFicheDetailDemandeDeStage}">
-      <p v-if="isFicheDetailDemandeDeStage" class="text-neutral-500 text-md font-semibold ml-5">Demande de stage</p>
-      <p v-if="!isFicheDetailDemandeDeStage" class="text-neutral-500 text-md font-semibold ml-5">Offre de stage</p>
-      <h1 class="text-neutral-500 text-4xl font-bold mb-5 ml-5">
-        {{ isFicheDetailDemandeDeStage ? demandeDeStageResult.title : offreDeStagesResult.title }}</h1>
-      <h2 v-if="!isFicheDetailDemandeDeStage"
-        class="bg-white inline-block text-neutral-500 font-semibold text-xl text-center p-3 ml-5">
-        {{ offreDeStagesResult.enterprise.name }}</h2>
-    </div>
-    <div class="text-right mb-10">
-            <button @click="goToEditForm" type="button" class="bg-yellow-600 p-3 text-white rounded-lg">Modifier</button>  
-        </div>
-    <div class="bg-white p-8 lg:p-16 rounded-xl">
-      <h3 v-if="isFicheDetailDemandeDeStage" class="text-3xl md:text-4xl font-bold mb-5 lg:mb-10"
-        :class="{'text-yellow-600': isFicheDetailDemandeDeStage }">
-        {{ demandeDeStageResult.candidate.firstName + ' ' + demandeDeStageResult.candidate.lastName }}</h3>
-      <h3 v-if="!isFicheDetailDemandeDeStage" class="text-red-800 text-3xl md:text-4xl font-bold mb-5 lg:mb-10">
-        Description de la tâche</h3>
-      <p class="mb-5">Lorem ipsum dolor sit amet consectetur adipisicing elit. Error a nostrum modi, maiores voluptates recusandae
-        odit dolorum iure exercitationem aperiam velit ipsam saepe. Ad praesentium sunt reprehenderit, perspiciatis
-        cumque aut commodi unde quod mollitia laudantium vitae iure eaque, voluptas rem nesciunt labore, culpa illum
-        accusamus dicta dolor illo ducimus deserunt excepturi. Vitae totam nulla ullam sunt vero iusto, non molestiae
-        autem placeat alias modi, quod minus error sed impedit adipisci repudiandae facilis a mollitia quam officiis
-        aperiam nisi?</p>
-        <p class="mb-16">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Distinctio nisi laborum aliquid corrupti possimus
-        aliquam quia officia provident cupiditate dolorem perferendis iusto consequatur at animi molestiae natus, rerum
-        tenetur porro, sed ducimus? Perspiciatis, corporis animi quasi ex quam molestias! Alias quas architecto
-        provident officia ad, saepe laudantium suscipit eaque inventore nostrum ipsa esse beatae.</p>
-      <div v-if="isFicheDetailDemandeDeStage" class="grid grid-cols-1 md:grid-cols-2 md:gap-5">
-        <div>
-          <div class="border-l-8 border-neutral-500 mb-8">
-            <h5 class="text-lg font-bold text-neutral-500 mb-3 ml-2">Programme de formation</h5>
-            <p class="text-neutral-500 text-sm ml-2">{{ demandeDeStageResult.skills[0] }}</p>
-          </div>
-          <div class="border-l-8 border-neutral-500 mb-8">
-            <h5 class="text-lg font-bold text-neutral-500 mb-3 ml-2">Secteur d'activité</h5>
-            <p class="text-neutral-500 text-sm ml-2">Nouvelles technologies de l'information</p>
-          </div>
-          <div class="border-l-8 border-neutral-500 mb-8">
-            <h5 class="text-lg font-bold text-neutral-500 mb-3 ml-2">Compétences</h5>
-            <p class="text-neutral-500 text-sm ml-2">{{ demandeDeStageResult.candidate.skills.slice(0,10) .join(', ') }}</p>
-          </div>
-        </div>
-        <div>
-          <div class="border-l-8 border-neutral-500 mb-8">
-            <h5 class="text-lg font-bold text-neutral-500 mb-3 ml-2">Établissement d'enseignement</h5>
-            <p class="text-neutral-500 text-sm ml-2">Cégep de Trois-Rivières</p>
-          </div>
-          <div class="border-l-8 border-neutral-500 mb-8">
-            <h5 class="text-lg font-bold text-neutral-500 mb-3 ml-2">Ville</h5>
-            <p class="text-neutral-500 text-sm ml-2">{{ demandeDeStageResult.candidate.city }}</p>
-          </div>
-          <div class="border-l-8 border-neutral-500 mb-8">
-            <h5 class="text-lg font-bold text-neutral-500 mb-3 ml-2">Région</h5>
-            <p class="text-neutral-500 text-sm ml-2">{{ demandeDeStageResult.province.value }}</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </template>
-
-
-</template>
-
-
-
-
-
-
-<!--<template v-if="isFicheDetailDemandeDeStage && demandeDeStageResult || offreDeStagesResult">
-  <div class="ficheDetaillee">
+  <div class="ficheDetaillee" v-if="isFicheDetailDemandeDeStage && demandeDeStageResult || offreDeStagesResult">
     <div class="ficheDetaillee__container-titres-entete">
       <div
-        class="ficheDetaillee__border-titre-soustitre"
+        class="ficheDetaillee__border-titre-soustitre mb-10"
         :class="{
-          'border-l-8 bg-yellow-600': isFicheDetailDemandeDeStage,
-          'border-l-8 bg-red-800': !isFicheDetailDemandeDeStage,
-        }"
-      >
+          'border-l-8 border-yellow-600': isFicheDetailDemandeDeStage,
+          'border-l-8 border-red-800': !isFicheDetailDemandeDeStage,
+        }">
         <span
           v-if="isFicheDetailDemandeDeStage"
           class="ficheDetaillee__sous-titre"
@@ -91,106 +17,90 @@
           class="ficheDetaillee__sous-titre"
           >Offre de stage</span
         >
-        <h1 class="ficheDetaillee__titre">
-          {{
-            isFicheDetailDemandeDeStage
-              ? demandeDeStageResult.title
-              : offreDeStagesResult.title
-          }}
+        <h1 class="ficheDetaillee__titre" v-if="isFicheDetailDemandeDeStage">
+          {{ demandeDeStageResult.title}}
+        </h1>
+        <h1 class="ficheDetaillee__titre" v-if="!isFicheDetailDemandeDeStage">
+          {{ offreDeStagesResult.title}}
         </h1>
       </div>
-    </div> -->
+    </div>
 <!-- icones -->
-<!-- <div class="containerIcones">
+    <div class="containerIcones">
       <div class="ficheDetaillee__conteneur-icônes-mode">
-        <i
-          class="ficheDetaillee__icône-consulter fa fa-check"
-          aria-hidden="true"
-        ></i>
-        <RouterLink
-          v-if="isFicheDetailDemandeDeStage"
-          :to="{ name: 'formulairedo', params: demandeDeStageResult._id }"
-        >
-          <i class="fa-solid fa-pen-to-square"></i>
-        </RouterLink>
-        <RouterLink
-          v-if="!isFicheDetailDemandeDeStage"
-          :to="{ name: 'formulairedo', params: offreDeStagesResult._id }"
-        >
-          <i class="fa-solid fa-pen-to-square"></i>
-        </RouterLink>
-        <i class="ficheDetaillee__icône-supprimer fas fa-trash"></i>
+        <i class="ficheDetaillee__icône-consulter fa fa-check" aria-hidden="true"></i>
+        <i class="fa-solid fa-pen-to-square" @click="goToEditForm"></i>
+        <i class="ficheDetaillee__icône-supprimer fas fa-trash" @click="toggleModalSuppression"></i>
+        <!-- Voila comment jai penser faire laffichage du modal dependament quel page saffiche  -->
+        <modalSuppression
+        v-if="isFicheDetailDemandeDeStage"
+        :modalSuppressionVisible="modalSuppressionVisible"
+        @suppressionAnnulee="suppressionAnnulee"
+        @confirmationSuppression="suppressionComfirmer"
+        :title="demandeDeStageResult.title"
+        :firstName="demandeDeStageResult.candidate.firstName"
+        :lastName="demandeDeStageResult.candidate.lastName"
+        />
+        <modalSuppression
+        v-if="!isFicheDetailDemandeDeStage"
+        :modalSuppressionVisible="modalSuppressionVisible"
+        @suppressionAnnulee="suppressionAnnulee"
+        @confirmationSuppression="suppressionComfirmer"
+        :title="offreDeStagesResult.title"
+        :firstName="offreDeStagesResult.candidate.firstName"
+        :lastName="offreDeStagesResult.candidate.lastName"
+        />
       </div>
-    </div> -->
+    </div>
 
-<!-- Fiche 
-    <div class="ficheDetaillee__card"> -->
-<!-- Titre et description 
+<!-- Fiche  -->
+    <div class="ficheDetaillee__card">
+<!-- Titre et description  -->
       <div class="ficheDetaillee__container-titres-card">
-        <h2
-          class="ficheDetaillee__nom-personne"
-          :class="{
-            'bg-blue-400': isFicheDetailDemandeDeStage,
-            'bg-red-800': !isFicheDetailDemandeDeStage,
-          }"
-        >
-          {{
-            isFicheDetailDemandeDeStage
-              ? demandeDeStageResult.candidate.firstname +
-                " " +
-                demandeDeStageResult.candidate.lastname
-              : offreDeStagesResult.candidate.firstname +
-                " " +
-                offreDeStagesResult.candidate.lastname
-          }}
+        <h2 class="ficheDetaillee__nom-personne text-blue-400"  v-if="isFicheDetailDemandeDeStage">
+          {{ demandeDeStageResult.candidate.firstName + ' ' + demandeDeStageResult.candidate.lastName }}  
         </h2>
-        <p>
-          {{
-            isFicheDetailDemandeDeStage
-              ? demandeDeStageResult.candidate.description
-              : offreDeStagesResult.candidate.description
-          }}
-        </p>
-      </div> -->
-<!-- Informations generale demandeDeStage 
-        <div class="ficheDetaillee__conteneur-informations-generales-stage" v-if="isFicheDetailDemandeDeStage">
-          <div class="ficheDetaillee__conteneur-information" v-for="(info, index) in informationDemandeDeStage" :key="index">
-            <div class="ficheDetaillee__bloc-style"></div>
+        <h2 class="ficheDetaillee__nom-personne text-red-800" v-if="!isFicheDetailDemandeDeStage">
+          {{ offreDeStagesResult.candidate.firstName + ' ' + offreDeStagesResult.candidate.lastName }}  
+        </h2>
+        <p>{{ demandeDeStageResult.candidate.description }}</p>
+      </div>
+<!-- Informations generale demandeDeStage  -->
+      <div class="ficheDetaillee__conteneur-informations-generales-stage" v-if="isFicheDetailDemandeDeStage">
+          <div class="ficheDetaillee__conteneur-information mb-10 border-l-8" v-for="(info, index) in informationDemandeDeStage" :key="index">
             <div class="ficheDetaillee__infos">
               <h3 class="ficheDetaillee__titre-info">{{ info.title }}</h3>
               <span class="ficheDetaillee__contenu-info">{{
                 info.content
               }}</span>
             </div>
-          </div>
-        </div> -->
-<!-- Informations generale offreDeStage 
-        <div class="ficheDetaillee__conteneur-informations-generales-offre" v-if="!isFicheDetailDemandeDeStage">
-          <div class="ficheDetaillee__conteneur-information" v-for="(info, index) in informationOffreDeStage":key="index">
-              <div class="ficheDetaillee__bloc-style"></div>
+        </div>
+      </div>
+<!-- Informations generale offreDeStage  -->
+      <div class="ficheDetaillee__conteneur-informations-generales-offre" v-if="!isFicheDetailDemandeDeStage">
+          <div class="ficheDetaillee__conteneur-information mb-10 border-l-8" v-for="(info, index) in informationOffreDeStage":key="index">
               <div class="ficheDetaillee__infos">
                 <h3 class="ficheDetaillee__titre-info">{{ info.title }}</h3>
                 <span class="ficheDetaillee__contenu-info">{{
                   info.content
                 }}</span>
               </div>
-            </div>
-        </div> -->
-<!-- Information specifique titre 
+          </div>
+      </div>
+<!-- Information specifique titre  -->
         <div class="ficheDetaillee__conteneur-titres">
           <h2 class="ficheDetaillee__titre-info-stage" v-if="isFicheDetailDemandeDeStage"
-          :class="{'border-l-8 bg-blue-400': isFicheDetailDemandeDeStage}">
+          :class="{'text-blue-400': isFicheDetailDemandeDeStage}">
           Informations sur le stage recherché
           </h2>
           <h2 class="ficheDetaillee__titre-info-stage" v-if="!isFicheDetailDemandeDeStage"
-          :class="{'border-l-8 bg-red-800': !isFicheDetailDemandeDeStage}">
+          :class="{'text-red-800': !isFicheDetailDemandeDeStage}">
           Informations sur le stage
           </h2>
-        </div> -->
-<!-- Information specifique 
+        </div>
+<!-- Information specifique  -->
         <div class="ficheDetaillee__conteneur-informations-specifiques">
-          <div class="ficheDetaillee__conteneur-information" v-for="info in commonInfos" :key="info.title">
-            <div class="ficheDetaillee__bloc-style"></div>
+          <div class="ficheDetaillee__conteneur-information mb-10 border-l-8" v-for="info in commonInfos" :key="info.title">
             <div class="ficheDetaillee__infos">
               <h3 class="ficheDetaillee__titre-info">{{ info.title }}</h3>
               <span class="ficheDetaillee__contenu-info">{{
@@ -198,8 +108,8 @@
               }}</span>
             </div>
           </div>
-        </div> -->
-<!-- Information supplementaire 
+        </div>
+<!-- Information supplementaire  -->
         <div class="ficheDetaillee__conteneur-informations-supplementaires">
           <h2 :class="{ colorBlue: isFicheDetailDemandeDeStage, colorRed: !isFicheDetailDemandeDeStage}">
             Information supplementaires
@@ -224,21 +134,35 @@
         </div>
       </div>
     </div>
-</template> -->
+    <div v-else>
+      Chargement en cours ...
+    </div>
+</template>
 
 <script setup>
   import modalSuppression from "@/components/modalSuppression.vue";
-  import { useRoute } from "vue-router";
+  import { useRouter, useRoute} from "vue-router";
   import { onMounted, ref } from "vue";
+  import { computed } from "vue";
   import { useDemandesDeStages } from "@/composables/demandeDeStage";
   import { useOffreDeStages } from "@/composables/offreDeStage";
-  import { useRouter } from "vue-router";
 
-  const route = useRoute();
+    const {
+    demandeDeStageResult,
+    getDemandeDeStagesById
+  } = useDemandesDeStages();
+  let demandeDeStageId = ref(null);
+
+  const {
+    offreDeStagesResult,
+    getOffreDeStageById
+  } = useOffreDeStages();
+  let offreDeStageId = ref(null);
 
   const isFicheDetailDemandeDeStage = ref(true);
 
   const router = useRouter()
+  const route = useRoute();
     
     const goToEditForm = () => {
     let id;
@@ -256,94 +180,77 @@
   }
 
 
-  /* const informationDemandeDeStage = computed(() => [
+  const informationDemandeDeStage = computed(() => [
     {
       title: "Programme de formation",
-      content: demandeDeStageResult.skills[0] || "secteur activite",
+      content: demandeDeStageResult.value.candidate.skills.slice(0,10) .join(', ') || "Programme de formation inconu",
     },
     {
       title: "Secteur d'activité",
-      content: demandeDeStageResult.sector || "secteur activite",
-    },
-    {
-      title: "Compétences",
-      content: demandeDeStageResult.slice(0, 4).join(", ") || "competences",
+      content: demandeDeStageResult.value.sector || "Secteur activite inconnu",
     },
     {
       title: "Établissement d'enseignement",
-      content: demandeDeStageResult.candidate?.address || "Établissement d'enseignement inconnu",
+      content: demandeDeStageResult.value.candidate?.address || "Établissement d'enseignement inconnu",
     },
     {
       title: "Ville",
-      content: demandeDeStageResult.candidate?.city || "Ville inconnue",
+      content: demandeDeStageResult.value.candidate?.city || "Ville inconnue",
     },
     {
       title: "Région",
-      content: demandeDeStageResult.province?.value || "Région inconnue",
-    },
+      content: demandeDeStageResult.value.province?.value || "Région inconnue",
+    }
   ]);
 
-  const informationOffreDeStage = computed(() => [
+
+const informationOffreDeStage = computed(() => [
     {
       title: "Formation demandées", 
-      content: offreDeStagesResult.requestedTraining || "Aucune donnée de formation demandée",
+      content: offreDeStagesResult.value.requestedTraining || "Aucune donnée de formation demandée",
     },
     {
       title: "Exigences",
-      content: offreDeStagesResult.requirements || "Aucune donnée d'exigence",
+      content: offreDeStagesResult.value.requirements || "Aucune donnée d'exigence",
     },
   ]);
 
-  const commonInfos = computed(() => [
+
+const commonInfos = computed(() => [
     {
       title: "Type de stage",
-      content: isFicheDetailDemandeDeStage ? 
-      demandeDeStageResult.internshipType?.value + " TIME" : 
-      offreDeStagesResult.internshipType?.value + " TIME"
-    },
-    {
-      title: "Nombre d'heures par semaine",
-      content: 
-      isFicheDetailDemandeDeStage ? 
-      demandeDeStageResult.weeklyWorkHours + " Heures/semaine" : 
-      offreDeStagesResult.weeklyWorkHours + " Heures/semaine"
-    },
-    {
-      title: "Rémunération",
-      content: 
-      isFicheDetailDemandeDeStage ? 
-      demandeDeStageResult.compensation:
-      offreDeStagesResult.compensation
+      content: isFicheDetailDemandeDeStage.value ? 
+        demandeDeStageResult.value.internshipType?.value + " TIME" : 
+        offreDeStagesResult.value.internshipType?.value + " TIME"
     },
     {
       title: "Date de début",
-      content: 
-      isFicheDetailDemandeDeStage ? 
-      demandeDeStageResult.startDate:
-      offreDeStagesResult.startDate
+      content: isFicheDetailDemandeDeStage.value ? 
+        demandeDeStageResult.value.startDate :
+        offreDeStagesResult.value.startDate
+    },
+    {
+      title: "Nombre d'heures par semaine",
+      content: isFicheDetailDemandeDeStage.value ? 
+        demandeDeStageResult.value.weeklyWorkHours + " Heures/semaine" : 
+        offreDeStagesResult.value.weeklyWorkHours + " Heures/semaine"
     },
     {
       title: "Date de fin",
-      content: 
-      isFicheDetailDemandeDeStage ? 
-      demandeDeStageResult.endDate:
-      offreDeStagesResult.endDate
+      content: isFicheDetailDemandeDeStage.value ? 
+        demandeDeStageResult.value.endDate :
+        offreDeStagesResult.value.endDate
     },
-  ]); 
-   */
+    {
+        title: "Rémunération",
+        content: isFicheDetailDemandeDeStage.value ? 
+          (demandeDeStageResult.value.compensation ? demandeDeStageResult.value.compensation : "A discuter") :
+          (offreDeStagesResult.value.compensation ? offreDeStagesResult.value.compensation : "A discuter")
+      }
+  ]);
+
+  
   // Configuration affichage des informations detailler selon l'identifiant
-
-  const {
-    demandeDeStageResult,
-    getDemandeDeStagesById
-  } = useDemandesDeStages();
-  let demandeDeStageId = ref(null);
-
-  const {
-    offreDeStagesResult,
-    getOffreDeStageById
-  } = useOffreDeStages();
-  let offreDeStageId = ref(null);
 
   onMounted(async () => {
     const urlString = window.location.href;
@@ -362,21 +269,21 @@
     }
   });
 
-  /* // Configuration Modal de suppression
+  // Configuration Modal de suppression
   const modalSuppressionVisible = ref(false);
 
   const toggleModalSuppression = () =>
-    (modalSuppressionVisible.value = !modalSuppressionVisible.value);
+    modalSuppressionVisible.value = !modalSuppressionVisible.value;
 
   const suppressionAnnulee = () => {
     console.log("Suppresion annuler");
     modalSuppressionVisible.value = false;
   };
 
-  const confirmationSuppression = () => {
+  const suppressionComfirmer = () => {
     console.log("Suppression confirmer");
     modalSuppressionVisible.value = false;
-  }; */
+  }; 
 </script>
 
 <style>
@@ -472,13 +379,6 @@
     display: flex;
     flex: 0 0 calc(50% - 20px);
     margin-bottom: 40px;
-  }
-
-  .ficheDetaillee__conteneur-information .ficheDetaillee__bloc-style {
-    width: 10px;
-    height: 55px;
-    background-color: rgb(115 115 115);
-    margin-right: 5px;
   }
 
   .ficheDetaillee__infos {}
