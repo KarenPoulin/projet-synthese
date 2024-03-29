@@ -13,12 +13,12 @@
         </div>
     </div>
 
-    <div v-if="isEntreprise" class="bg-white px-10 py-10 2xl:py-20 hover:bg-blue-100">
-        <div class="2xl:flex items-center">
+    <div v-if="isEntreprise" class="bg-white px-4 py-12 2xl:py-20 hover:bg-blue-100">
+        <div class="xl:flex items-center justify-center">
             <div>
-                <img src="../assets/img/enterprises.png" alt="logo-entreprises" class="mx-auto mb-6 2xl:mb-0 w-40">
+                <img src="../assets/img/enterprises.png" alt="logo-entreprises" class="mx-auto mb-6 xl:mb-0 w-32">
             </div>
-            <div class="text-center 2xl:text-left 2xl:ml-10">
+            <div class="text-center xl:text-left xl:ml-6">
                 <h1 class="text-xl xl:text-xl font-bold mb-2">{{ enterprise.name }}</h1>
                 <p class="text-xs">{{ enterprise.address }}</p>
                 <p class="text-xs mb-5">Trois-Rivières G9A 4H7</p>
