@@ -6,12 +6,12 @@ import DemandesDeStages from '../views/DemandesDeStages.vue'
 import OffresDeStages from '../views/OffresDeStages.vue'
 import Candidats from '../views/Candidats.vue'
 import Entreprises from '../views/Entreprises.vue'
-import formulaireCandidat from '../views/formulaireCandidat.vue'
+
 import FormulaireDO from '../views/FormulaireDO.vue'
 import Erreur from '../views/Erreur.vue'
 import FicheDetailCandidatEntreprise from '@/views/FicheDetailCandidatEntreprise.vue'
 import PageDetailDemandeEtOffre from '@/views/PageDetailDemandeEtOffre.vue'
-import FormulaireEntreprise from '@/views/formulaireEntreprise.vue'
+
 import FormulaireCE from '@/views/formulaireCE.vue'
 
 
@@ -52,17 +52,7 @@ const router = createRouter({
           name: 'entreprises',
           component: Entreprises,          
         },
-        {
-          path: 'formulaireCandidat/:id?',
-          name: 'formulaireCandidat',
-          component: formulaireCandidat,
-          props: true
-        },
-        {
-          path: 'formulaireEntreprise',
-          name: 'formulaireEntreprise',
-          component: FormulaireEntreprise
-        },
+       
         {
           path: 'formulaireCE/:type/:id?',
           name: 'formulaireCE',
