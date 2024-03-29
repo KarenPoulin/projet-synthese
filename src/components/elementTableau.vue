@@ -1,13 +1,15 @@
 <template>
+
     <tr v-if="element" class="border-b-4 border-neutral-200">
-        <td class="">
-            <div class="my-5 pl-4 flex flex-row items-center border-l-4" :class="{
-        'border-neutral-500': !isTableauDeBord && !element.isActive,
-        'border-yellow-600': !isTableauDeBord && element.isActive && isDemandes,
-        'border-red-800/[0.85]': !isTableauDeBord && element.isActive && !isDemandes,
-        'border-yellow-600': isTableauDeBord && isDemandes,
-        'border-red-800/[0.85]': isTableauDeBord && !isDemandes
-    }">
+        <td>
+            <div class="my-5 pl-4 flex flex-row items-center border-l-4"
+                :class="{
+                    'border-neutral-500': !isTableauDeBord && !element.isActive,
+                    'border-yellow-600-active': !isTableauDeBord && isDemandes && element.isActive,
+                    'border-red-800-active': !isTableauDeBord && !isDemandes && element.isActive,
+                    'border-yellow-600': isTableauDeBord && isDemandes,
+                    'border-red-800/[0.85]': isTableauDeBord && !isDemandes,
+                }">
                 <template v-if="isTableauDeBord">
                     <div v-if="isDemandes" class="p-3 bg-yellow-600/[.5] rounded-lg">
                         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor"
@@ -139,8 +141,6 @@ import { RouterLink } from 'vue-router';
 import { useActivitySector } from '@/composables/secteurActivites';
 
 
-let isActive = ref(true);
-
 const props = defineProps({
     isDemandes: Boolean,
     isTableauDeBord: Boolean,
@@ -165,13 +165,17 @@ onMounted(async () => {
     if (props.element.enterprise) {
         activitySectorId = props.element.enterprise.activitySector;
         await getActivitySectorById(activitySectorId);
-
-/*         if (props.element.isActive === true) {
-            isActive = true;
-        } else {
-            isActive = false;
-        } */
     }
 })
 
 </script>
+
+<style>
+.border-yellow-600-active {
+    border-color: rgb(202, 138, 4);
+}
+
+.border-red-800-active {
+    border-color: rgb(153, 27, 27, 0.85);
+}
+</style>

@@ -22,19 +22,19 @@
                                 class="btn-secondary mr-2 text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
                                 @click="cancelForm">Annuler</button>
                         </router-link>
-                       
-                            <button type="submit" @click="submitForm"
-                                class="btn-primary focus:outline-none text-white bg-fuchsia-800  hover:bg-fuchsia-900 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 inline-flex">
-                                
-                                <svg class="w-6 h-6 text-gray-100 dark:text-white" aria-hidden="true"
-                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path fill-rule="evenodd"
-                                        d="M8 10V7a4 4 0 1 1 8 0v3h1a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h1Zm2-3a2 2 0 1 1 4 0v3h-4V7Zm2 6a1 1 0 0 1 1 1v3a1 1 0 1 1-2 0v-3a1 1 0 0 1 1-1Z"
-                                        clip-rule="evenodd" />
-                                </svg>
-                                {{ editing ? 'Mettre à jour' : 'Sauvegarder' }}</button>
-                        
+
+                        <button type="submit" @click="submitForm"
+                            class="btn-primary focus:outline-none text-white bg-fuchsia-800  hover:bg-fuchsia-900 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 inline-flex">
+
+                            <svg class="w-6 h-6 text-gray-100 dark:text-white" aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                                viewBox="0 0 24 24">
+                                <path fill-rule="evenodd"
+                                    d="M8 10V7a4 4 0 1 1 8 0v3h1a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h1Zm2-3a2 2 0 1 1 4 0v3h-4V7Zm2 6a1 1 0 0 1 1 1v3a1 1 0 1 1-2 0v-3a1 1 0 0 1 1-1Z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                            {{ editing ? 'Mettre à jour' : 'Sauvegarder' }}</button>
+
                     </div>
 
                     <div class="nom_poste mb-4">
@@ -122,7 +122,7 @@
 
                         <button type="submit" @click="submitForm"
                             class="btn-primary focus:outline-none text-white bg-fuchsia-800  hover:bg-fuchsia-900 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 inline-flex">
-                            
+
                             <svg class="w-6 h-6 text-gray-100 dark:text-white" aria-hidden="true"
                                 xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
                                 viewBox="0 0 24 24">
@@ -167,18 +167,18 @@
                                 class="btn-secondary mr-2 text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
                                 @click="cancelForm">Annuler</button>
                         </router-link>
-                       
-                            <button type="submit" @click="submitForm"
-                                class="btn-primary focus:outline-none text-white bg-fuchsia-800  hover:bg-fuchsia-900 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 inline-flex">
-                             
-                                <svg class="w-6 h-6 text-gray-100 dark:text-white" aria-hidden="true"
-                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path fill-rule="evenodd"
-                                        d="M8 10V7a4 4 0 1 1 8 0v3h1a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h1Zm2-3a2 2 0 1 1 4 0v3h-4V7Zm2 6a1 1 0 0 1 1 1v3a1 1 0 1 1-2 0v-3a1 1 0 0 1 1-1Z"
-                                        clip-rule="evenodd" />
-                                </svg>
-                                {{ editing ? 'Mettre à jour' : 'Sauvegarder' }}</button>                        
+
+                        <button type="submit" @click="submitForm"
+                            class="btn-primary focus:outline-none text-white bg-fuchsia-800  hover:bg-fuchsia-900 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 inline-flex">
+
+                            <svg class="w-6 h-6 text-gray-100 dark:text-white" aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                                viewBox="0 0 24 24">
+                                <path fill-rule="evenodd"
+                                    d="M8 10V7a4 4 0 1 1 8 0v3h1a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h1Zm2-3a2 2 0 1 1 4 0v3h-4V7Zm2 6a1 1 0 0 1 1 1v3a1 1 0 1 1-2 0v-3a1 1 0 0 1 1-1Z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                            {{ editing ? 'Mettre à jour' : 'Sauvegarder' }}</button>
                     </div>
                     <div class="nom_poste mb-4">
                         <label for="name" class="block mb-1  text-neutral-500 font-bold">Nom </label>
@@ -293,17 +293,10 @@
 </template>
 
 <script>
-    import {
-        ref,
-        reactive,
-        computed,
-        onMounted
-    } from 'vue'
+    import { ref, reactive, computed, onMounted} from 'vue'
     import axios from 'axios'
-    import {
-        RouterLink,
-        useRouter
-    } from 'vue-router'
+    import {RouterLink, useRouter, useRoute} from 'vue-router'
+
 
 
 
@@ -324,13 +317,19 @@
             }
         },
 
+
+
         setup(props) {
             const router = useRouter();
+            const route = useRoute();
+            const id = ref(null);
             const editing = ref(false);
             const showEnterpriseForm = ref(false);
             const isCandidat = computed(() => props.type === 'candidat')
 
-          
+
+
+
             const formData = reactive({
                 fullName: '',
                 description: '',
@@ -354,7 +353,7 @@
             });
 
 
-            
+
             const errorMessage = reactive({
                 empty: 'Le champ ne peut pas être vide',
                 minCharacters: 'Le champ doit avoir au moins 2 caractères',
@@ -376,7 +375,7 @@
                 postalCode: 'Veuillez entrer un code postal valide.'
             })
 
-         
+
             const fieldsError = reactive({
                 fullName: '',
                 skills: '',
@@ -403,7 +402,7 @@
             };
 
 
-           
+
             const validateString = (input, field) => {
                 if (input.trim() === "") {
                     fieldsError[field] = errorMessage.empty;
@@ -574,11 +573,11 @@
 
 
 
-            
+
             let isFormValid = ref(false);
 
             const validateForm = () => {
-                
+
                 validateDescription();
                 validateAddress();
                 validateCity();
@@ -588,12 +587,12 @@
                 validatePostalCode();
 
 
-               
+
                 if (!showEnterpriseForm.value) {
                     validateFullName();
                     validateSkills();
 
-                   
+
                     if (
                         fieldsError.fullName === "" &&
                         fieldsError.skills === "" &&
@@ -619,7 +618,7 @@
                     validateContact();
                     validateLogo();
 
-                    
+
                     if (
                         fieldsError.fullName === "" &&
                         fieldsError.logo === "" &&
@@ -688,7 +687,7 @@
                                 }
                             });
                             if (response.status === 201) {
-                                
+
                                 router.push('/app/Candidats');
                             }
                             console.log(response);
@@ -734,7 +733,7 @@
 
                             console.log(response);
                             if (response.status === 201) {
-                                
+
                                 router.push('/app/Entreprises');
                             }
 
@@ -775,10 +774,66 @@
                 } catch (error) {
                     console.error(error)
                 }
+            };
+
+            const fetchData = async (id, type) => {
+                if (props.type === 'entreprises' && props.entrepriseId) {
+                    editing.value = true;
+                    try {
+                        const response = await axios.get(
+                            `https://api-4.fly.dev/enterprises/${props.entrepriseId}`)
+                        const data = response.data
+                        Object.assign(formData, data);
+                    } catch (error) {
+                        console.error(error)
+                    }
+                } else if (props.type === 'candidats' && props.candidateId) {
+                    editing.value = true
+                    try {
+                        const response = await axios.get(
+                            `https://api-4.fly.dev/candidates/${props.candidateId}`)
+                        const data = response.data
+                        Object.assign(formData, data);
+                    } catch (error) {
+                        console.error(error)
+                    }
+                }
             }
+
+
+
+
+
             onMounted(() => {
-                
+                id.value = route.params.id;
+                console.log(id.value);
                 const type = router.currentRoute.value.params.type;
+                console.log(type);
+
+                // IL Y A UN ID
+/*              if (id.value) {
+                    if (type === 'entreprises') {
+                        showEnterpriseForm.value = true;
+                        fetchData(id.value, entreprise);
+                    };
+                    if (type === 'candidat') {
+                        showEnterpriseForm.value = false;
+                    };
+
+
+                // PAS DE ID
+                else {
+                    if (type === 'entreprises') {
+                        showEnterpriseForm.value = true;
+                    };
+                    if (type === 'candidat') {
+                        showEnterpriseForm.value = false;
+                    };
+                };
+            } */
+                fetchData();
+
+
                 if (type === 'entreprises') {
                     showEnterpriseForm.value = true;
                 };
@@ -788,13 +843,10 @@
 
                 fetchProvinces();
 
-                if (!isCandidat.value && props.entrepriseId) {
-                    fetchEnterprise(props.entrepriseId)
-                }
-                if (isCandidat.value && props.candidateId) {
-                    fetchCandidate(props.candidateId);
-                };
+
             });
+
+
             return {
                 formData,
                 editing,
@@ -821,7 +873,9 @@
                 isFormValid,
                 provinces,
                 showEnterpriseForm,
-                resetValidationErrors
+                resetValidationErrors,
+                fetchData
+
             };
         }
     };
