@@ -1,7 +1,7 @@
 <template>
-  <h1>Demande de stage</h1>
+  <h1 class="text-5xl font-bold mb-14 text-neutral-500">Demandes de stage</h1>
   <div class="flex">
-    <button class="my-3  bg-yellow-600 text-white px-4 py-2  rounded hover:bg-yellow-700" @click="goToFormDO('request')">
+    <button class="my-3  bg-yellow-600 text-white px-4 py-2  rounded-lg hover:bg-yellow-700" @click="goToFormDO('request')">
       Ajouter une demande
     </button>
   </div>
@@ -26,7 +26,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue';
+import { onMounted } from 'vue';
 import { useRouter } from 'vue-router'
 import { useAllDemandeDeStages } from '@/composables/demandeDeStage';
 import ElementTableau from '../components/elementTableau.vue'

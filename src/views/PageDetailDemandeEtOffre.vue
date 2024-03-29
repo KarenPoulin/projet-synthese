@@ -14,10 +14,10 @@
     </div>
     
     <!-- Icones -->
-   <div class="text-right font-extrabold">
-      <i class="ficheDetaillee__icône-consulter fa fa-check fa-lg ml-2 mr-2 text-green-400" aria-hidden="true"></i>
-      <i class="fa-solid fa-pen-to-square text-blue-900 text-lg ml-2 mr-2" type="button" @click="goToEditForm"></i>
-      <i class="ficheDetaillee__icône-supprimer fas fa-trash fa-lg ml-2 mr-2 text-red-500" @click="ouvrirModalSuppression"></i>
+   <div class="text-right font-extrabold mb-5">
+      <i class="ficheDetaillee__icône-consulter fa fa-check fa-2xl mr-2 text-green-400 cursor-pointer" aria-hidden="true"></i>
+      <i class="fa-solid fa-pen-to-square text-blue-900 text-2xl ml-2 mr-2 cursor-pointer" @click="goToEditForm"></i>
+      <i class="ficheDetaillee__icône-supprimer fas fa-trash fa-2xl ml-2 text-red-700 cursor-pointer" @click="ouvrirModalSuppression"></i>
       <modalSuppression
         v-if="modalSuppressionVisible && isFicheDetailDemandeDeStage"
         :modalSuppressionVisible="modalSuppressionVisible"
@@ -41,50 +41,99 @@
     <!-- Fiche -->
     <div class="bg-white p-8 lg:p-16 rounded-xl">
       <h3 v-if="isFicheDetailDemandeDeStage" class="text-3xl md:text-4xl font-bold mb-5 lg:mb-10"
-        :class="{'text-yellow-600': isFicheDetailDemandeDeStage }">
+        :class="{'text-teal-500': isFicheDetailDemandeDeStage }">
         {{ demandeDeStageResult.candidate.firstName + ' ' + demandeDeStageResult.candidate.lastName }}</h3>
       <h3 v-if="!isFicheDetailDemandeDeStage" class="text-red-800 text-3xl md:text-4xl font-bold mb-5 lg:mb-10">
         Description de la tâche</h3>
-      <p class="mb-5">Lorem ipsum dolor sit amet consectetur adipisicing elit. Error a nostrum modi, maiores voluptates recusandae
+      <p class="text-neutral-500 mb-5">Lorem ipsum dolor sit amet consectetur adipisicing elit. Error a nostrum modi, maiores voluptates recusandae
         odit dolorum iure exercitationem aperiam velit ipsam saepe. Ad praesentium sunt reprehenderit, perspiciatis
         cumque aut commodi unde quod mollitia laudantium vitae iure eaque, voluptas rem nesciunt labore, culpa illum
         accusamus dicta dolor illo ducimus deserunt excepturi. Vitae totam nulla ullam sunt vero iusto, non molestiae
         autem placeat alias modi, quod minus error sed impedit adipisci repudiandae facilis a mollitia quam officiis
         aperiam nisi?</p>
-        <p class="mb-16">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Distinctio nisi laborum aliquid corrupti possimus
+        <p class="text-neutral-500 mb-16">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Distinctio nisi laborum aliquid corrupti possimus
         aliquam quia officia provident cupiditate dolorem perferendis iusto consequatur at animi molestiae natus, rerum
         tenetur porro, sed ducimus? Perspiciatis, corporis animi quasi ex quam molestias! Alias quas architecto
         provident officia ad, saepe laudantium suscipit eaque inventore nostrum ipsa esse beatae.</p>
-      <div v-if="isFicheDetailDemandeDeStage" class="grid grid-cols-1 md:grid-cols-2 md:gap-5">
+      <div class="grid grid-cols-1 mb-16" :class="{'md:grid-cols-2 md:gap-5': isFicheDetailDemandeDeStage, 'md:grid-cols-1': !isFicheDetailDemandeDeStage}">
         <div>
           <div class="border-l-8 border-neutral-500 mb-8">
-            <h5 class="text-lg font-bold text-neutral-500 mb-3 ml-2">Programme de formation</h5>
-            <p class="text-neutral-500 text-sm ml-2">{{ demandeDeStageResult.skills[0] }}</p>
+            <h5 v-if="isFicheDetailDemandeDeStage" class="text-lg font-bold text-neutral-500 mb-3 ml-2">Programme de formation</h5>
+            <h5 v-if="!isFicheDetailDemandeDeStage" class="text-lg font-bold text-neutral-500 mb-3 ml-2">Formations demandées</h5>
+            <p v-if="isFicheDetailDemandeDeStage" class="text-neutral-500 text-sm ml-2">{{ demandeDeStageResult.skills.slice(0,10) .join(', ') }}</p>
+            <p v-if="!isFicheDetailDemandeDeStage" class="text-neutral-500 text-sm ml-2">Diplôme d'études collégiales ou équivalent</p>
           </div>
           <div class="border-l-8 border-neutral-500 mb-8">
-            <h5 class="text-lg font-bold text-neutral-500 mb-3 ml-2">Secteur d'activité</h5>
-            <p class="text-neutral-500 text-sm ml-2">Nouvelles technologies de l'information</p>
+            <h5 v-if="isFicheDetailDemandeDeStage" class="text-lg font-bold text-neutral-500 mb-3 ml-2">Secteur d'activité</h5>
+            <h5 v-if="!isFicheDetailDemandeDeStage" class="text-lg font-bold text-neutral-500 mb-3 ml-2">Exigences</h5>
+            <p v-if="isFicheDetailDemandeDeStage" class="text-neutral-500 text-sm ml-2">Nouvelles technologies de l'information</p>
+            <p v-if="!isFicheDetailDemandeDeStage" class="text-neutral-500 mb-5 ml-2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Error a nostrum modi, maiores voluptates recusandae
+              odit dolorum iure exercitationem aperiam velit ipsam saepe. Ad praesentium sunt reprehenderit, perspiciatis
+              cumque aut commodi unde quod mollitia laudantium vitae iure eaque, voluptas rem nesciunt labore, culpa illum
+              accusamus dicta dolor illo ducimus deserunt excepturi. Vitae totam nulla ullam sunt vero iusto, non molestiae
+              autem placeat alias modi, quod minus error sed impedit adipisci repudiandae facilis a mollitia quam officiis
+              aperiam nisi?</p>
+              <p v-if="!isFicheDetailDemandeDeStage" class="text-neutral-500 ml-2">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Distinctio nisi laborum aliquid corrupti possimus
+                aliquam quia officia provident cupiditate dolorem perferendis iusto consequatur at animi molestiae natus, rerum
+                tenetur porro, sed ducimus? Perspiciatis, corporis animi quasi ex quam molestias! Alias quas architecto
+                provident officia ad, saepe laudantium suscipit eaque inventore nostrum ipsa esse beatae.</p>
           </div>
-          <div class="border-l-8 border-neutral-500 mb-8">
+          <div v-if="isFicheDetailDemandeDeStage" class="border-l-8 border-neutral-500">
             <h5 class="text-lg font-bold text-neutral-500 mb-3 ml-2">Compétences</h5>
             <p class="text-neutral-500 text-sm ml-2">{{ demandeDeStageResult.candidate.skills.slice(0,10) .join(', ') }}</p>
           </div>
         </div>
         <div>
-          <div class="border-l-8 border-neutral-500 mb-8">
+          <div v-if="isFicheDetailDemandeDeStage" class="border-l-8 border-neutral-500 mb-8">
             <h5 class="text-lg font-bold text-neutral-500 mb-3 ml-2">Établissement d'enseignement</h5>
             <p class="text-neutral-500 text-sm ml-2">Cégep de Trois-Rivières</p>
           </div>
-          <div class="border-l-8 border-neutral-500 mb-8">
+          <div v-if="isFicheDetailDemandeDeStage" class="border-l-8 border-neutral-500 mb-8">
             <h5 class="text-lg font-bold text-neutral-500 mb-3 ml-2">Ville</h5>
             <p class="text-neutral-500 text-sm ml-2">{{ demandeDeStageResult.candidate.city }}</p>
           </div>
-          <div class="border-l-8 border-neutral-500 mb-8">
+          <div v-if="isFicheDetailDemandeDeStage" class="border-l-8 border-neutral-500">
             <h5 class="text-lg font-bold text-neutral-500 mb-3 ml-2">Région</h5>
             <p class="text-neutral-500 text-sm ml-2">{{ demandeDeStageResult.province.value }}</p>
           </div>
         </div>
       </div>
+      <h4 v-if="isFicheDetailDemandeDeStage" class="text-teal-500 text-lg font-bold mb-10">Informations sur le stage recherché</h4>
+      <h4 v-if="!isFicheDetailDemandeDeStage" class="text-red-800 text-lg font-bold mb-10">Informations sur le stage</h4>
+      <div class="grid grid-cols-1 mb-16 md:grid-cols-2 md:gap-5">
+        <div>
+          <div class="border-l-8 border-neutral-500 mb-8">
+            <h5 class="text-lg font-bold text-neutral-500 mb-3 ml-2">Type de stage</h5>
+            <p class="text-neutral-500 text-sm ml-2">{{ isFicheDetailDemandeDeStage ? demandeDeStageResult.internshipType.value : offreDeStagesResult.internshipType.value }}</p>
+          </div>
+          <div class="border-l-8 border-neutral-500 mb-8">
+            <h5 class="text-lg font-bold text-neutral-500 mb-3 ml-2">Nombre d'heures par semaine</h5>
+            <p class="text-neutral-500 text-sm ml-2">{{ isFicheDetailDemandeDeStage ? demandeDeStageResult.weeklyWorkHours : offreDeStagesResult.weeklyWorkHours }} heures par semaine</p>
+          </div>
+          <div class="border-l-8 border-neutral-500">
+            <h5 class="text-lg font-bold text-neutral-500 mb-3 ml-2">Rémunération</h5>
+            <p v-if="isFicheDetailDemandeDeStage" class="text-neutral-500 text-sm ml-2">À la discrétion de l'entreprise</p>
+            <p v-if="!isFicheDetailDemandeDeStage" class="text-neutral-500 text-sm ml-2">{{ offreDeStagesResult.salary }}</p>
+          </div>
+        </div>
+        <div>
+          <div class="border-l-8 border-neutral-500 mb-8">
+            <h5 class="text-lg font-bold text-neutral-500 mb-3 ml-2">Date de début</h5>
+            <p class="text-neutral-500 text-sm ml-2">{{ isFicheDetailDemandeDeStage ? formatDate(demandeDeStageResult.startDate) : formatDate(offreDeStagesResult.startDate) }}</p>
+          </div>
+          <div class="border-l-8 border-neutral-500 mb-8">
+            <h5 class="text-lg font-bold text-neutral-500 mb-3 ml-2">Date de fin</h5>
+            <p class="text-neutral-500 text-sm ml-2">{{ isFicheDetailDemandeDeStage ? formatDate(demandeDeStageResult.endDate) : formatDate(offreDeStagesResult.endDate) }}</p>
+          </div>
+        </div>
+      </div>
+      <h4 class="text-lg font-bold mb-10" :class="{'text-teal-500': isFicheDetailDemandeDeStage, 'text-red-800': !isFicheDetailDemandeDeStage }">Informations supplémentaires</h4>
+      <p class="text-neutral-500">Lorem ipsum dolor sit amet consectetur adipisicing elit. Error a nostrum modi, maiores voluptates recusandae
+        odit dolorum iure exercitationem aperiam velit ipsam saepe. Ad praesentium sunt reprehenderit, perspiciatis
+        cumque aut commodi unde quod mollitia laudantium vitae iure eaque, voluptas rem nesciunt labore, culpa illum
+        accusamus dicta dolor illo ducimus deserunt excepturi. Vitae totam nulla ullam sunt vero iusto, non molestiae
+        autem placeat alias modi, quod minus error sed impedit adipisci repudiandae facilis a mollitia quam officiis
+        aperiam nisi?</p>
     </div>
   </template>
 
@@ -153,6 +202,17 @@
     }
     router.push({ name: 'formulairedo', params: { type: type, id: id } })
   }
+
+  /* Format de date 'année-mois-jours' */
+const formatDate = (dateString) => {
+    const date = new Date(dateString);
+
+    const year = date.getFullYear();
+    const month = ('0' + (date.getMonth() + 1)).slice(-2); // Ajout de 1 puisque le mois commence à 0
+    const day = ('0' + date.getDate()).slice(-2);
+
+    return `${year}-${month}-${day}`;
+};
 
   // Configuration icone supprimer pour modal de suppression
   const modalSuppressionVisible = ref(false);
