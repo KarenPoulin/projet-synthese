@@ -4,7 +4,7 @@
             <div class="p-4">
                 <div class="flex justify-between items-center mb-4">
                     <h1 class="titre_barre text-lg font-bold text-neutral-500 mb-9">
-                        {{ editing ? '' : 'Ajouter un Candidat' }}</h1>
+                        {{ editing ? '' :' Ajouter un Candidat'  }}</h1>
                     <div v-if="editing">
                         <div class="titre_barre-modifier">
                             <div class="titre_modifer">
