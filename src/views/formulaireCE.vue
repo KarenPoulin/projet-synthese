@@ -2,17 +2,17 @@
     <div>
         <div v-if="!showEnterpriseForm">
             <div class="p-4">
-                <div class="flex justify-between items-center mb-4">
-                    <h1 class="titre_barre text-lg font-bold text-neutral-500 mb-9">
+                <div class="flex justify-between items-center mb-4 border-l-4 border-neutral-500">
+                    <h1 class=" text-lg font-bold text-neutral-500 mb-9">
                         {{ editing ? '' :' Ajouter un Candidat'  }}</h1>
                     <div v-if="editing">
-                        <div class="titre_barre-modifier">
+                        
                             <div class="titre_modifer">
                                 <p class="text-neutral-500">Candidat</p>
                                 <h1 class="text-neutral-500">{{ candidate.firstName }} {{ candidate.lastName }}</h1>
                                 <p class="poste text-neutral-500">{{ candidate.skills }}</p>
                             </div>
-                        </div>
+                        
                     </div>
                 </div>
                 <form @submit.prevent="submitForm">
