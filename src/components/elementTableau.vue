@@ -95,7 +95,7 @@
         </td>
         <td>
             <div class="my-5 flex flex-row items-center justify-between">
-                <button v-if="isTableauDeBord"
+                <button v-if="isTableauDeBord" @click="activateIntership(element._id, isDemandes)"
                     class="mr-4 py-2 px-3 bg-green-200/[.6] hover:bg-green-200 focus:bg-green-200 text-green-500 text-sm font-medium rounded-lg">Accepter</button>
                 <div class="flex flex-row justify-between">
                     <RouterLink v-if="element.candidate" :to="{name:'pagedetaildemandedestage', params:{id: element._id}}">
@@ -138,6 +138,7 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import { RouterLink } from 'vue-router';
+import axios from 'axios';
 import { useActivitySector } from '@/composables/secteurActivites';
 
 
@@ -146,6 +147,8 @@ const props = defineProps({
     isTableauDeBord: Boolean,
     element: Object
 })
+
+let isOffer = ref(false);
 
 const { activitySectorResult, getActivitySectorById } = useActivitySector();
 let activitySectorId = ref(null);
@@ -161,10 +164,47 @@ const formatDate = (dateString) => {
     return `${year}-${month}-${day}`;
 };
 
+
+function activateIntership(id) {
+    const baseUrl = 'https://api-4.fly.dev/';
+    let patchUrl = '';
+    if (!isOffer) {
+        patchUrl = `${baseUrl}internship-requests/${id}`;
+    } else {
+        patchUrl = `${baseUrl}internship-offers/${id}`;
+    }
+    const patchData = {
+        "isActive": true
+    }
+
+    axios.patch(patchUrl, patchData)
+        .then(res => {
+            console.log('PATCH requête réussie');
+            console.log('Réponse:', res.data);
+            // Timeout a enlever quand tout sera fini
+            setTimeout(() => {
+                window.location.reload();
+            }, 3000);
+        })
+        .catch(error => {
+            console.error('Erreur:', error)
+        });
+
+}
+
+
 onMounted(async () => {
+    if (props.isDemandes) {
+        isOffer = false;
+    } else {
+        isOffer = true;
+    }
     if (props.element.enterprise) {
         activitySectorId = props.element.enterprise.activitySector;
-        await getActivitySectorById(activitySectorId);
+        setTimeout(() => {
+            getActivitySectorById(activitySectorId);
+        }, 0o200);
+
     }
 })
 
