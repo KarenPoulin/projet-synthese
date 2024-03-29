@@ -684,7 +684,7 @@
                                 `https://api-4.fly.dev/candidates/${candidateId}` :
                                 'https://api-4.fly.dev/candidates';
 
-                            const method = editing.value ? 'put' : 'post';
+                            const method = editing.value ? 'patch' : 'post';
 
                             const response = await axios({
                                 method: method,
@@ -724,7 +724,7 @@
                                 `https://api-4.fly.dev/enterprises/${props.entrepriseId}` :
                                 'https://api-4.fly.dev/enterprises';
 
-                            const method = editing.value ? 'put' : 'post';
+                            const method = editing.value ? 'patch' : 'post';
 
                             const response = await axios({
                                 method: method,
