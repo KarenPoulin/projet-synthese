@@ -293,9 +293,18 @@
 </template>
 
 <script>
-    import { ref, reactive, computed, onMounted} from 'vue'
+    import {
+        ref,
+        reactive,
+        computed,
+        onMounted
+    } from 'vue'
     import axios from 'axios'
-    import {RouterLink, useRouter, useRoute} from 'vue-router'
+    import {
+        RouterLink,
+        useRouter,
+        useRoute
+    } from 'vue-router'
 
 
 
@@ -326,6 +335,7 @@
             const editing = ref(false);
             const showEnterpriseForm = ref(false);
             const isCandidat = computed(() => props.type === 'candidat')
+            const candidate = ref(null);
 
 
 
@@ -777,32 +787,27 @@
             };
 
             const fetchData = async (id, type) => {
-                if (props.type === 'entreprises' && props.entrepriseId) {
-                    editing.value = true;
-                    try {
-                        const response = await axios.get(
-                            `https://api-4.fly.dev/enterprises/${props.entrepriseId}`)
-                        const data = response.data
-                        Object.assign(formData, data);
-                    } catch (error) {
-                        console.error(error)
+                editing.value = true;
+                try {
+                    let url;
+                    if (type === 'entreprises') {
+                        url = `https://api-4.fly.dev/enterprises/${id}`;
+                    } else if (type === 'candidats') {
+                        url = `https://api-4.fly.dev/candidates/${id}`;
                     }
-                } else if (props.type === 'candidats' && props.candidateId) {
-                    editing.value = true
-                    try {
-                        const response = await axios.get(
-                            `https://api-4.fly.dev/candidates/${props.candidateId}`)
-                        const data = response.data
-                        Object.assign(formData, data);
-                    } catch (error) {
-                        console.error(error)
+                    const response = await axios.get(url);
+                    const data = response.data;
+                    if (type === 'candidats' && data) {
+                        candidate.value = data;
+                        formData.fullName = `${data.firstName} ${data.lastName}`;
+                        formData.provinceId = data.province._id;
                     }
+                    formData.provinceId = data.province._id;
+                    Object.assign(formData, data);
+                } catch (error) {
+                    console.error(error);
                 }
-            }
-
-
-
-
+            };
 
             onMounted(() => {
                 id.value = route.params.id;
@@ -811,43 +816,28 @@
                 console.log(type);
 
                 // IL Y A UN ID
-/*              if (id.value) {
+                if (id.value) {
                     if (type === 'entreprises') {
                         showEnterpriseForm.value = true;
-                        fetchData(id.value, entreprise);
-                    };
-                    if (type === 'candidat') {
+                        fetchData(id.value, type);
+                    } else if (type === 'candidats') {
                         showEnterpriseForm.value = false;
-                    };
-
-
+                        fetchData(id.value, type);
+                    }
+                }
                 // PAS DE ID
                 else {
                     if (type === 'entreprises') {
                         showEnterpriseForm.value = true;
-                    };
-                    if (type === 'candidat') {
+                    } else if (type === 'candidats') {
                         showEnterpriseForm.value = false;
-                    };
-                };
-            } */
-                fetchData();
-
-
-                if (type === 'entreprises') {
-                    showEnterpriseForm.value = true;
-                };
-                if (type === 'candidat') {
-                    showEnterpriseForm.value = false;
-                };
-
+                    }
+                }
                 fetchProvinces();
-
-
             });
 
-
             return {
+                candidate,
                 formData,
                 editing,
                 fieldsError,
