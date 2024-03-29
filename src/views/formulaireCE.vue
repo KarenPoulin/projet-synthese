@@ -698,7 +698,7 @@
                             });
                             if (response.status === 201) {
 
-                                router.push('/app/Candidats');
+                                router.back();
                             }
                             console.log(response);
                         } catch (error) {
@@ -744,7 +744,7 @@
                             console.log(response);
                             if (response.status === 201) {
 
-                                router.push('/app/Entreprises');
+                                router.back();
                             }
 
                             if (!response.data._id) {
