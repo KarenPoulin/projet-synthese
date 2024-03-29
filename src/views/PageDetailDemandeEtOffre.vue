@@ -1,6 +1,7 @@
 <template>
 
   <template v-if="isFicheDetailDemandeDeStage && demandeDeStageResult || offreDeStagesResult">
+    <!-- Entete -->
     <div class="mb-10"
       :class="{'border-l-8 border-yellow-600': isFicheDetailDemandeDeStage, 'border-l-8 border-red-800': !isFicheDetailDemandeDeStage}">
       <p v-if="isFicheDetailDemandeDeStage" class="text-neutral-500 text-md font-semibold ml-5">Demande de stage</p>
@@ -11,9 +12,33 @@
         class="bg-white inline-block text-neutral-500 font-semibold text-xl text-center p-3 ml-5">
         {{ offreDeStagesResult.enterprise.name }}</h2>
     </div>
-    <div class="text-right mb-10">
-            <button @click="goToEditForm" type="button" class="bg-yellow-600 p-3 text-white rounded-lg">Modifier</button>  
-        </div>
+    
+    <!-- Icones -->
+   <div class="text-right font-extrabold">
+      <i class="ficheDetaillee__icône-consulter fa fa-check fa-lg ml-2 mr-2 text-green-400" aria-hidden="true"></i>
+      <i class="fa-solid fa-pen-to-square text-blue-900 text-lg ml-2 mr-2" type="button" @click="goToEditForm"></i>
+      <i class="ficheDetaillee__icône-supprimer fas fa-trash fa-lg ml-2 mr-2 text-red-500" @click="ouvrirModalSuppression"></i>
+      <modalSuppression
+        v-if="modalSuppressionVisible && isFicheDetailDemandeDeStage"
+        :modalSuppressionVisible="modalSuppressionVisible"
+        @suppressionAnnulee="suppressionAnnulee"
+        @confirmationSuppression="suppressionConfirmer(demandeDeStageResult._id)"
+        :title="demandeDeStageResult?.title"
+        :firstName="demandeDeStageResult?.candidate.firstName"
+        :lastName="demandeDeStageResult?.candidate.lastName"
+        />
+        <modalSuppression
+        v-if="modalSuppressionVisible && !isFicheDetailDemandeDeStage"
+        :modalSuppressionVisible="modalSuppressionVisible"
+        @suppressionAnnulee="suppressionAnnulee"
+        @confirmationSuppression="suppressionConfirmer(offreDeStagesResult._id)"
+        :title="offreDeStagesResult?.title"
+        :firstName="offreDeStagesResult?.enterprise.activitySector"
+        :lastName="offreDeStagesResult?.enterprise.name"
+        />
+   </div>
+
+    <!-- Fiche -->
     <div class="bg-white p-8 lg:p-16 rounded-xl">
       <h3 v-if="isFicheDetailDemandeDeStage" class="text-3xl md:text-4xl font-bold mb-5 lg:mb-10"
         :class="{'text-yellow-600': isFicheDetailDemandeDeStage }">
@@ -63,6 +88,9 @@
     </div>
   </template>
 
+  <div v-else>
+  Chargement en cours ...
+  </div>
 
 </template>
 
@@ -70,11 +98,13 @@
   import modalSuppression from "@/components/modalSuppression.vue";
   import { useRouter, useRoute} from "vue-router";
   import { onMounted, ref } from "vue";
-  import { computed } from "vue";
   import { useDemandesDeStages } from "@/composables/demandeDeStage";
   import { useOffreDeStages } from "@/composables/offreDeStage";
+  import axios from 'axios';
 
-    const {
+
+  // Initialisation des variables
+  const {
     demandeDeStageResult,
     getDemandeDeStagesById
   } = useDemandesDeStages();
@@ -91,23 +121,7 @@
   const router = useRouter()
   const route = useRoute();
     
-    const goToEditForm = () => {
-    let id;
-    let type;
-    
-    if (isFicheDetailDemandeDeStage.value) {
-      id = demandeDeStageId;
-      type = 'request';
-    } else {
-      id = offreDeStageId;
-      type = 'offer';
-    }
-    
-    router.push({ name: 'formulairedo', params: { type: type, id: id } })
-  }
-  
   // Configuration affichage des informations detailler selon l'identifiant
-
   onMounted(async () => {
     const urlString = window.location.href;
 
@@ -125,19 +139,50 @@
     }
   });
 
-  // Configuration Modal de suppression
+  // Configuration icone editer pour formulaire edition
+  const goToEditForm = () => {
+    let id;
+    let type;
+    
+    if (isFicheDetailDemandeDeStage.value) {
+      id = demandeDeStageId;
+      type = 'request';
+    } else {
+      id = offreDeStageId;
+      type = 'offer';
+    }
+    router.push({ name: 'formulairedo', params: { type: type, id: id } })
+  }
+
+  // Configuration icone supprimer pour modal de suppression
   const modalSuppressionVisible = ref(false);
 
-  const toggleModalSuppression = () =>
+  const ouvrirModalSuppression = () => {
     modalSuppressionVisible.value = !modalSuppressionVisible.value;
+    console.log(modalSuppressionVisible.value)
+  };
 
-  const suppressionAnnulee = () => {
-    console.log("Suppresion annuler");
+  const fermerModalSuppression = () => {
     modalSuppressionVisible.value = false;
   };
 
-  const suppressionComfirmer = () => {
-    console.log("Suppression confirmer");
-    modalSuppressionVisible.value = false;
-  }; 
+  const suppressionAnnulee = () => {
+    fermerModalSuppression();
+  };
+
+  const suppressionConfirmer = async(id) => {
+    try {
+      const url = isFicheDetailDemandeDeStage ? 'https://api-4.fly.dev/internship-requests' : 'https://api-4.fly.dev/internship-offers';
+      const response = await axios.delete(`${url}/${id}`);
+      console.log(response.data); 
+      console.log(`L'entrée avec l'ID ${id} a été supprimée.`);
+    } catch (error) {
+      console.error(`Erreur lors de la suppression de l'entrée avec l'ID ${id}:`, error);
+    }
+    console.log("Supprimer l'entrée avec ID:");
+    fermerModalSuppression();
+
+    router.push('/app/demandesdestages');
+  };
+  
 </script>
