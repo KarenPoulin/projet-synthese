@@ -50,10 +50,10 @@
 
 
         <!-- Bouton "Ajouter une entreprise" -->
-        <RouterLink to="/app/formulaireentreprise" class="inline-block">
-          <button @click="setActiveButton('company')" :class="[
+        
+          <button @click="goToFormCE('entreprises')" :class="[
           'ripple inline-block rounded px-2 py-1 text-center text-[10px] xl:text-xs font-medium leading-6 shadow transition focus:outline-none border border-blue-400',
-          activeButton === 'company' ? 'bg-blue-50 text-blue-400 hover:bg-blue-50' : 'bg-white text-blue-400 hover:bg-blue-50'
+          activeButton === 'entreprises' ? 'bg-blue-50 text-blue-400 hover:bg-blue-50' : 'bg-white text-blue-400 hover:bg-blue-50'
         ]">
             <svg class="mr-1 inline-block h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6">
@@ -61,14 +61,14 @@
             </svg>
             Ajouter une entreprise
           </button>
-        </RouterLink>
+      
 
         <!-- Bouton "Ajouter un candidat" -->
 
-        <RouterLink to="/app/formulairecandidat" class="inline-block">
-          <button @click="setActiveButton('candidate')" :class="[
+       
+          <button @click="goToFormCE('candidats')" :class="[
           'ripple inline-block rounded px-2 py-1 text-center text-[10px] xl:text-xs font-medium leading-6 shadow transition focus:outline-none border border-fuchsia-800',
-          activeButton === 'candidate' ? 'bg-fuchsia-100 text-fuchsia-800 hover:bg-fuchsia-100' : 'bg-white text-fuchsia-800 hover:bg-fuchsia-50'
+          activeButton === 'candidats' ? 'bg-fuchsia-100 text-fuchsia-800 hover:bg-fuchsia-100' : 'bg-white text-fuchsia-800 hover:bg-fuchsia-50'
         ]">
             <svg class="mr-1 inline-block h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6">
@@ -76,7 +76,7 @@
             </svg>
             Ajouter un candidat
           </button>
-        </RouterLink>
+       
       </nav>
 
 
@@ -120,10 +120,10 @@
           </button>
 
           <!-- Bouton "Ajouter une entreprise" -->
-          <RouterLink to="/app/formulaireentreprise" class="inline-block">
-            <button @click="setActiveButton('company')" :class="[
+          
+            <button @click="goToFormCE('entreprises')" :class="[
       'ripple inline-block rounded px-2 py-1 text-center text-xs font-medium leading-6 shadow transition focus:outline-none border border-blue-400 w-full',
-      activeButton === 'company'
+      activeButton === 'entreprises'
         ? 'bg-blue-50 text-blue-400 hover:bg-blue-50'
         : 'bg-white text-blue-400 hover:bg-blue-50',]">
               <svg class="mr-1 inline-block h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -132,14 +132,14 @@
               </svg>
               Ajouter une entreprise
             </button>
-          </RouterLink>
+          
 
           <!-- Bouton "Ajouter un candidat" -->
 
-          <RouterLink to="/app/formulairecandidat" class="inline-block">
-            <button @click="setActiveButton('candidate')" :class="[
+          
+            <button @click="goToFormCE('candidats')" :class="[
       'ripple inline-block rounded px-2 py-1 text-center text-xs font-medium leading-6 shadow transition focus:outline-none border border-fuchsia-800 w-full',
-      activeButton === 'candidate'
+      activeButton === 'candidats'
         ? 'bg-fuchsia-100 text-fuchsia-800 hover:bg-fuchsia-100'
         : 'bg-white text-fuchsia-800 hover:bg-fuchsia-50',]">
               <svg class="mr-1 inline-block h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -148,7 +148,7 @@
               </svg>
               Ajouter un candidat
             </button>
-          </RouterLink>
+          
         </nav>
   </header>
 </template>
@@ -166,6 +166,11 @@ const router = useRouter();
 const goToFormDO = type => {
   setActiveButton(type);
   router.push({ name: 'formulairedo', params: { type } })
+}
+
+const goToFormCE =type => {
+  setActiveButton(type);
+  router.push({ name: 'formulaireCE', params: { type } })
 }
 
 //Ajout dun etat local pour un bouton actif
