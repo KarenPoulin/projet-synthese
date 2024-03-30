@@ -229,6 +229,7 @@ const formatDate = (dateString) => {
       const response = await axios.delete(`${url}/${id}`);
       console.log(response.data); 
       console.log(`L'entrée avec l'ID ${id} a été supprimée.`);
+      alert(`Suppression confirmé !`);
     } catch (error) {
       console.error(`Erreur lors de la suppression de l'entrée avec l'ID ${id}:`, error);
     }
