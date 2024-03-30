@@ -305,9 +305,9 @@
         useRouter,
         useRoute
     } from 'vue-router';
-    import {
+    /*import {
         createSnacbar
-    } from 'vue3-snackbar';
+    } from 'vue3-snackbar';*/
 
 
 
@@ -341,9 +341,9 @@
             const showEnterpriseForm = ref(false);
             const isCandidat = computed(() => props.type === 'candidat')
             const candidate = ref(null);
-            const {
+            /*const {
                 showSnackbar
-            } = createSnackbar();
+            } = createSnackbar();*/
 
 
 
@@ -733,11 +733,11 @@
                                 }
                             });
                             if (response.status === 201) {
-                                const message = editing.value ? "Candidat modifié" : "candidat ajoutée";
+                               /* const message = editing.value ? "Candidat modifié" : "candidat ajoutée";
                                 showSnackbar(message, {
                                     duration: 3000,
                                     position: 'bottom',
-                                });
+                                });*/
 
 
                                 router.back();
@@ -785,11 +785,11 @@
 
                             console.log(response);
                             if (response.status === 201) {
-                                const message = editing.value ? "Entreprise modifié" : "Entreprise ajoutée";
+                                /**const message = editing.value ? "Entreprise modifié" : "Entreprise ajoutée";
                                 showSnackbar(message, {
                                     duration: 3000,
                                     position: 'bottom',
-                                });
+                                });*/
 
                                 router.back();
                             }
