@@ -2,10 +2,18 @@
   <div class="modal-container">
     <div class="modal-content">
       <p>Voulez-vous vraiment supprimer cette entrée ?</p>
-      <div class="donnees">
-        <h4>{{ title }}</h4>
-        <h4>{{ firstName }} {{ lastName }}</h4>
-      </div>
+
+        <div class="donnees" v-if="isFicheDetailDemandeDeStage">
+          <h4>Titre du stage : {{ titleDuStage }}</h4>
+          <h4>Prénom: {{ prenomDuStagiaire }}</h4>
+          <h4>Nom: {{ monDuStagiaire }}</h4>
+        </div>
+
+        <div class="donnees" v-if="!isFicheDetailDemandeDeStage" >
+          <h4>Titre de l'offre de stage : {{ titleDeOffre }}</h4>
+          <h4>Nom de l'entreprise : {{ nomDeEntreprise }}</h4>
+        </div>
+        
       <div class="button-container">
         <button class="cancel-button" @click="annulerSuppression">Annuler</button>
         <button class="delete-button" @click="confirmerSuppression">Supprimer</button>
@@ -17,11 +25,20 @@
 <script setup>
 import { defineProps, defineEmits } from 'vue';
 
-const { title, firstName, lastName, modalSuppressionVisible } = defineProps({
+const { titleDuStage, 
+        prenomDuStagiaire,
+        monDuStagiaire, 
+        titleDeOffre,
+        nomDeEntreprise, 
+        modalSuppressionVisible,
+        isFicheDetailDemandeDeStage } = defineProps({
+  titleDuStage: String,
+  prenomDuStagiaire: String,
+  monDuStagiaire: String,
+  titleDeOffre: String,
+  nomDeEntreprise: String,
   modalSuppressionVisible: Boolean,
-  title: String,
-  firstName: String,
-  lastName: String
+  isFicheDetailDemandeDeStage: Boolean
 });
 
 const emits = defineEmits(['suppressionAnnulee', 'confirmationSuppression']);
@@ -57,6 +74,7 @@ const confirmerSuppression = () => {
 
 .donnees {
   margin-bottom: 20px;
+  margin-top: 50px;
 }
 
 .button-container {
