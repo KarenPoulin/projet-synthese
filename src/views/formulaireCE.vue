@@ -6,13 +6,13 @@
                     <h1 class=" text-lg font-bold text-neutral-500 mb-9">
                         {{ editing ? '' :' Ajouter un Candidat'  }}</h1>
                     <div v-if="editing">
-                        
-                            <div class="titre_modifer">
-                                <p class="text-neutral-500">Candidat</p>
-                                <h1 class="text-neutral-500">{{ candidate.firstName }} {{ candidate.lastName }}</h1>
-                                <p class="poste text-neutral-500">{{ candidate.skills }}</p>
-                            </div>
-                        
+
+                        <div class="titre_modifer">
+                            <p class="text-neutral-500">Candidat</p>
+                            <h1 class="text-neutral-500">{{ candidate.firstName }} {{ candidate.lastName }}</h1>
+                            <p class="poste text-neutral-500">{{ candidate.skills }}</p>
+                        </div>
+
                     </div>
                 </div>
                 <form @submit.prevent="submitForm">
@@ -580,6 +580,25 @@
                 return postalCodeRegex.test(postalCode)
             };
 
+            // Fonction pour décoder une image encodée en base64
+            const decodeBase64Image = (base64Image) => {
+                const matches = base64Image.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
+
+                if (matches.length !== 3) {
+                    throw new Error('Invalid input string');
+                }
+
+                return {
+                    type: matches[1],
+                    data: Buffer.from(matches[2], 'base64')
+                };
+            };
+
+            // Fonction pour encoder une image en base64
+            const encodeBase64Image = (imageBuffer) => {
+                return `data:image/png;base64,${imageBuffer.toString('base64')}`;
+            };
+
 
 
 
@@ -654,6 +673,15 @@
 
             const submitForm = async () => {
                 validateForm();
+              /**  Décode de l'image
+            const decodedImage = decodeBase64Image(formData.image);
+            console.log(decodedImage.type); // Type de l'image
+            console.log(decodedImage.data); // Données de l'image sous forme de Buffer
+
+            // Encodage de l'image
+            const encodedImage = encodeBase64Image(decodedImage.data);
+            console.log(encodedImage); // Image encodée en base64*/
+
 
                 const selectedProvince = provinces.value.find(province => province._id === formData.provinceId);
 
@@ -787,6 +815,7 @@
             };
 
             const fetchData = async (id, type) => {
+                
                 editing.value = true;
                 try {
                     let url;
@@ -864,7 +893,9 @@
                 provinces,
                 showEnterpriseForm,
                 resetValidationErrors,
-                fetchData
+                fetchData,
+                encodeBase64Image,
+                decodeBase64Image
 
             };
         }
