@@ -298,13 +298,16 @@
         reactive,
         computed,
         onMounted
-    } from 'vue'
-    import axios from 'axios'
+    } from 'vue';
+    import axios from 'axios';
     import {
         RouterLink,
         useRouter,
         useRoute
-    } from 'vue-router'
+    } from 'vue-router';
+    import {
+        createSnacbar
+    } from 'vue3-snackbar';
 
 
 
@@ -328,6 +331,8 @@
 
 
 
+
+
         setup(props) {
             const router = useRouter();
             const route = useRoute();
@@ -336,6 +341,9 @@
             const showEnterpriseForm = ref(false);
             const isCandidat = computed(() => props.type === 'candidat')
             const candidate = ref(null);
+            const {
+                showSnackbar
+            } = createSnackbar();
 
 
 
@@ -673,7 +681,7 @@
 
             const submitForm = async () => {
                 validateForm();
-              /**  Décode de l'image
+                /**  Décode de l'image
             const decodedImage = decodeBase64Image(formData.image);
             console.log(decodedImage.type); // Type de l'image
             console.log(decodedImage.data); // Données de l'image sous forme de Buffer
@@ -725,6 +733,12 @@
                                 }
                             });
                             if (response.status === 201) {
+                                const message = editing.value ? "Candidat modifié" : "candidat ajoutée";
+                                showSnackbar(message, {
+                                    duration: 3000,
+                                    position: 'bottom',
+                                });
+
 
                                 router.back();
                             }
@@ -771,6 +785,11 @@
 
                             console.log(response);
                             if (response.status === 201) {
+                                const message = editing.value ? "Entreprise modifié" : "Entreprise ajoutée";
+                                showSnackbar(message, {
+                                    duration: 3000,
+                                    position: 'bottom',
+                                });
 
                                 router.back();
                             }
@@ -815,7 +834,7 @@
             };
 
             const fetchData = async (id, type) => {
-                
+
                 editing.value = true;
                 try {
                     let url;
