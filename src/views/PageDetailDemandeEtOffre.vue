@@ -16,26 +16,19 @@
     <!-- Icones -->
    <div class="text-right font-extrabold mb-5">
       <i class="ficheDetaillee__icône-consulter fa fa-check fa-2xl mr-2 text-green-400 cursor-pointer" aria-hidden="true"></i>
-      <i class="fa-solid fa-pen-to-square text-blue-900 text-2xl ml-2 mr-2 cursor-pointer" @click="goToEditForm"></i>
+      <i class="fa-solid fa-pen-to-square fa-2xl ml-2 mr-2 text-blue-900 cursor-pointer" @click="goToEditForm"></i>
       <i class="ficheDetaillee__icône-supprimer fas fa-trash fa-2xl ml-2 text-red-700 cursor-pointer" @click="ouvrirModalSuppression"></i>
       <modalSuppression
-        v-if="modalSuppressionVisible && isFicheDetailDemandeDeStage"
+        v-if="modalSuppressionVisible"
+        :isFicheDetailDemandeDeStage="isFicheDetailDemandeDeStage"
         :modalSuppressionVisible="modalSuppressionVisible"
         @suppressionAnnulee="suppressionAnnulee"
-        @confirmationSuppression="suppressionConfirmer(demandeDeStageResult._id)"
-        :title="demandeDeStageResult?.title"
-        :firstName="demandeDeStageResult?.candidate.firstName"
-        :lastName="demandeDeStageResult?.candidate.lastName"
-        />
-        <modalSuppression
-        v-if="modalSuppressionVisible && !isFicheDetailDemandeDeStage"
-        :modalSuppressionVisible="modalSuppressionVisible"
-        @suppressionAnnulee="suppressionAnnulee"
-        @confirmationSuppression="suppressionConfirmer(offreDeStagesResult._id)"
-        :title="offreDeStagesResult?.title"
-        :firstName="offreDeStagesResult?.enterprise.activitySector"
-        :lastName="offreDeStagesResult?.enterprise.name"
-        />
+        @confirmationSuppression="isFicheDetailDemandeDeStage ? suppressionConfirmer(demandeDeStageResult._id) : suppressionConfirmer(offreDeStagesResult._id)"
+        :titleDuStage="isFicheDetailDemandeDeStage ? demandeDeStageResult?.title : 'Titre du stage inconnu'"
+        :prenomDuStagiaire="isFicheDetailDemandeDeStage ? demandeDeStageResult?.candidate?.firstName : 'Prenom du candidat inconnu'"
+        :monDuStagiaire="isFicheDetailDemandeDeStage ? demandeDeStageResult?.candidate?.lastName : 'Nom du candidat inconnu'"
+        :titleDeOffre="!isFicheDetailDemandeDeStage ? offreDeStagesResult?.title : 'Titre de loffre de stage inconnu'"
+        :nomDeEntreprise="!isFicheDetailDemandeDeStage ? offreDeStagesResult?.enterprise.name : 'Nom de entreprise inconnu'"/>
    </div>
 
     <!-- Fiche -->
@@ -236,6 +229,7 @@ const formatDate = (dateString) => {
       const response = await axios.delete(`${url}/${id}`);
       console.log(response.data); 
       console.log(`L'entrée avec l'ID ${id} a été supprimée.`);
+      alert(`Suppression confirmé !`);
     } catch (error) {
       console.error(`Erreur lors de la suppression de l'entrée avec l'ID ${id}:`, error);
     }
