@@ -10,8 +10,12 @@
       :class="{ 'border-l-4 pl-2 my-5 border-yellow-600': isRequest, ' border-l-4 pl-2 my-5 border-red-800': !isRequest }">
       <p class=" text-base font-bold text-neutral-500">
         {{ isRequest ? 'Demande de stage' : 'Offre de stage' }}</p>
-      <p class="text-4xl font-bold text-neutral-500">Titre</p>
-      <p class="font-extrabold  text-neutral-500 bg-white p-2 m-1 w-fit rounded" v-if="!isRequest">Entreprise</p>
+      <p class="text-4xl font-bold text-neutral-500" v-if="isRequest && !isAdding">  {{ dataToSendToAPI.title }}</p>
+      <p class="font-extrabold text-neutral-500 bg-white p-2 m-1 w-fit rounded" v-if="!isRequest && !isAdding">
+  {{  dataToSendToAPI.enterpriseName }}
+</p>
+
+
     </div>
     <!-- FORMULAIRE  -->
     <form class="m-[25px]">
@@ -355,12 +359,25 @@ onMounted(async () => {
     const response = await axios.get(`https://api-4.fly.dev/internship-requests/${id.value}`);
 
     const data = response.data;
-    if (data.candidate) {
+      if (data.candidate) {
       selectedCandidate.value = data.candidate;
       dataToSendToAPI.candidateName = `${data.candidate.firstName} ${data.candidate.lastName}`;
       dataToSendToAPI.city = data.candidate.city;
+      dataToSendToAPI.province = data.candidate.province
     } else {
       console.error('Candidate data is null or undefined');
+    } 
+
+    if (data.province) {
+      selectedProvince.value = data.province;
+      dataToSendToAPI.province = data.province._id;
+    } else {
+      console.error('Province data is missing in the API response');
+    }
+
+    if (data.internshipType) {
+      selectedInternshipType.value = data.internshipType;
+      dataToSendToAPI.internshipType = data.internshipType._id;
     }
 
     Object.assign(dataToSendToAPI, {
@@ -369,6 +386,7 @@ onMounted(async () => {
       startDate: new Date(data.startDate).toISOString().slice(0, 10),
       endDate: new Date(data.endDate).toISOString().slice(0, 10),
       weeklyWorkHours: data.weeklyWorkHours,
+      province: data.province._id,
       paid: data.paid,
       additionalInformation: data.additionalInformation,
       isActive: true
@@ -377,12 +395,7 @@ onMounted(async () => {
 
     dataToSendToAPI.candidateName = `${data.candidate.firstName} ${data.candidate.lastName}`;
     dataToSendToAPI.city = data.candidate.city;
-    dataToSendToAPI.province = data.province._id;
     dataToSendToAPI.skills = data.skills.join(', '); 
-
-
-    dataToSendToAPI.province = data.province._id;
-    dataToSendToAPI.internshipType = data.internshipType._id;
 
   } catch (error) {
     console.error('Error fetching request data:', error);
@@ -399,12 +412,32 @@ onMounted(async () => {
   try {
     const response = await axios.get(`https://api-4.fly.dev/internship-offers/${id.value}`);
 
-    const data = response.data;
-    selectedEnterprise.value = data.enterprise
+    const data = response.data
+    if (data.enterprise) {
+  selectedEnterprise.value = data.enterprise;
+  dataToSendToAPI.enterprise = data.enterprise._id;
+  dataToSendToAPI.enterpriseName = data.enterprise.name;
+  dataToSendToAPI.description = data.enterprise.description; // Utiliser la description de l'entreprise
+} else {
+  console.error('Enterprise data is null or undefined');
+}
+
+
+    if (data.province) {
+      selectedProvince.value = data.province;
+      dataToSendToAPI.province = data.province._id;
+    } else {
+      console.error('Province data is missing in the API response');
+    }
+
+    if (data.internshipType) {
+      selectedInternshipType.value = data.internshipType;
+      dataToSendToAPI.internshipType = data.internshipType._id;
+    }
+
     // Pré-remplir les champs de base
     Object.assign(dataToSendToAPI, {
       title: data.title,
-      description: dataToSendToAPI.description,
       startDate: new Date(data.startDate).toISOString().slice(0, 10),
       endDate: new Date(data.endDate).toISOString().slice(0, 10),
       weeklyWorkHours: data.weeklyWorkHours,
@@ -773,7 +806,7 @@ const handleDataOffer = async () => {
       startDate: new Date(dataToSendToAPI.startDate).toISOString(),
       endDate: new Date(dataToSendToAPI.endDate).toISOString(),
       weeklyWorkHours: dataToSendToAPI.weeklyWorkHours,
-      salary:dataToSendToAPI.weeklyWorkHours,
+      salary:0,
       province:  selectedEnterprise.value.province,
       requiredSkills: dataToSendToAPI.requiredSkills,
       internshipType: selectedInternshipType.value,
