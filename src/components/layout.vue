@@ -2,7 +2,7 @@
 <template>
   <div class="bg-neutral-100 flex flex-row min-h-screen">
 
-    <div class="flex flex-shrink-0 w-12 sm:w-20 lg:w-48 xl:w-80 bg-gray-800 text-white min-h-screen">
+    <div class="flex flex-shrink-0 w-12 sm:w-20 lg:w-48 xl:w-64 bg-gray-800 text-white min-h-screen">
       <Sidebar />
     </div>
 
@@ -14,7 +14,7 @@
       </div>
 
 
-      <main class="pt-6 lg:pt-24 px-4 xl:px-16 max-[400px]:max-w-[350px] mx-auto w-full">
+      <main class="pt-6 lg:pt-24 px-4 xl:px-12 max-[400px]:max-w-[350px] mx-auto w-full">
         <RouterView />
       </main>
     </div>

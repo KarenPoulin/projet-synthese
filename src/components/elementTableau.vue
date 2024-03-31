@@ -1,8 +1,8 @@
 <template>
 
-    <tr v-if="element" class="border-b-4 border-neutral-200">
+    <tr v-if="element" class="border-b-2 xl:border-b-4 border-neutral-200">
         <td>
-            <div class="my-5 pl-4 flex flex-row items-center border-l-4"
+            <div class="my-5 mr-0.5 pl-2 flex flex-row items-center border-l-2 xl:border-l-4"
                 :class="{
                     'border-neutral-500': !isTableauDeBord && !element.isActive,
                     'border-yellow-600-active': !isTableauDeBord && isDemandes && element.isActive,
@@ -11,8 +11,8 @@
                     'border-red-800/[0.85]': isTableauDeBord && !isDemandes,
                 }">
                 <template v-if="isTableauDeBord">
-                    <div v-if="isDemandes" class="p-3 bg-yellow-600/[.5] rounded-lg">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor"
+                    <div v-if="isDemandes" class="p-1 md:p-2 bg-yellow-600/[.5] rounded-lg">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor"
                             class="bi bi-mortarboard-fill text-yellow-800" viewBox="0 0 16 16">
                             <path
                                 d="M8.211 2.047a.5.5 0 0 0-.422 0l-7.5 3.5a.5.5 0 0 0 .025.917l7.5 3a.5.5 0 0 0 .372 0L14 7.14V13a1 1 0 0 0-1 1v2h3v-2a1 1 0 0 0-1-1V6.739l.686-.275a.5.5 0 0 0 .025-.917z" />
@@ -20,8 +20,8 @@
                                 d="M4.176 9.032a.5.5 0 0 0-.656.327l-.5 1.7a.5.5 0 0 0 .294.605l4.5 1.8a.5.5 0 0 0 .372 0l4.5-1.8a.5.5 0 0 0 .294-.605l-.5-1.7a.5.5 0 0 0-.656-.327L8 10.466z" />
                         </svg>
                     </div>
-                    <div v-if="!isDemandes" class="p-3 bg-red-800/[0.85] rounded-lg">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor"
+                    <div v-if="!isDemandes" class="p-1 md:p-2 bg-red-800/[0.85] rounded-lg">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor"
                             class="bi bi-briefcase-fill text-red-300" viewBox="0 0 16 16">
                             <path
                                 d="M6.5 1A1.5 1.5 0 0 0 5 2.5V3H1.5A1.5 1.5 0 0 0 0 4.5v1.384l7.614 2.03a1.5 1.5 0 0 0 .772 0L16 5.884V4.5A1.5 1.5 0 0 0 14.5 3H11v-.5A1.5 1.5 0 0 0 9.5 1zm0 1h3a.5.5 0 0 1 .5.5V3H6v-.5a.5.5 0 0 1 .5-.5" />
@@ -31,8 +31,8 @@
                     </div>
                 </template>
                 <template v-else>
-                    <div v-if="isDemandes && element.isActive" class="p-3 bg-yellow-600/[.5] rounded-lg">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor"
+                    <div v-if="isDemandes && element.isActive" class="p-1 md:p-2 bg-yellow-600/[.5] rounded-lg">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor"
                             class="bi bi-mortarboard-fill text-yellow-800" viewBox="0 0 16 16">
                             <path
                                 d="M8.211 2.047a.5.5 0 0 0-.422 0l-7.5 3.5a.5.5 0 0 0 .025.917l7.5 3a.5.5 0 0 0 .372 0L14 7.14V13a1 1 0 0 0-1 1v2h3v-2a1 1 0 0 0-1-1V6.739l.686-.275a.5.5 0 0 0 .025-.917z" />
@@ -40,8 +40,8 @@
                                 d="M4.176 9.032a.5.5 0 0 0-.656.327l-.5 1.7a.5.5 0 0 0 .294.605l4.5 1.8a.5.5 0 0 0 .372 0l4.5-1.8a.5.5 0 0 0 .294-.605l-.5-1.7a.5.5 0 0 0-.656-.327L8 10.466z" />
                         </svg>
                     </div>
-                    <div v-if="!isDemandes && element.isActive" class="p-3 bg-red-800/[0.85] rounded-lg">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor"
+                    <div v-if="!isDemandes && element.isActive" class="p-2 bg-red-800/[0.85] rounded-lg">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor"
                             class="bi bi-briefcase-fill text-red-300" viewBox="0 0 16 16">
                             <path
                                 d="M6.5 1A1.5 1.5 0 0 0 5 2.5V3H1.5A1.5 1.5 0 0 0 0 4.5v1.384l7.614 2.03a1.5 1.5 0 0 0 .772 0L16 5.884V4.5A1.5 1.5 0 0 0 14.5 3H11v-.5A1.5 1.5 0 0 0 9.5 1zm0 1h3a.5.5 0 0 1 .5.5V3H6v-.5a.5.5 0 0 1 .5-.5" />
@@ -49,8 +49,8 @@
                                 d="M0 12.5A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5V6.85L8.129 8.947a.5.5 0 0 1-.258 0L0 6.85z" />
                         </svg>
                     </div>
-                    <div v-if="isDemandes && !element.isActive" class="p-3 bg-neutral-500 rounded-lg">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor"
+                    <div v-if="isDemandes && !element.isActive" class="p-1 md:p-2 bg-neutral-500 rounded-lg">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor"
                             class="bi bi-mortarboard-fill text-neutral-900" viewBox="0 0 16 16">
                             <path
                                 d="M8.211 2.047a.5.5 0 0 0-.422 0l-7.5 3.5a.5.5 0 0 0 .025.917l7.5 3a.5.5 0 0 0 .372 0L14 7.14V13a1 1 0 0 0-1 1v2h3v-2a1 1 0 0 0-1-1V6.739l.686-.275a.5.5 0 0 0 .025-.917z" />
@@ -58,8 +58,8 @@
                                 d="M4.176 9.032a.5.5 0 0 0-.656.327l-.5 1.7a.5.5 0 0 0 .294.605l4.5 1.8a.5.5 0 0 0 .372 0l4.5-1.8a.5.5 0 0 0 .294-.605l-.5-1.7a.5.5 0 0 0-.656-.327L8 10.466z" />
                         </svg>
                     </div>
-                    <div v-if="!isDemandes && !element.isActive" class="p-3 bg-neutral-500 rounded-lg">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor"
+                    <div v-if="!isDemandes && !element.isActive" class="p-1 md:p-2 bg-neutral-500 rounded-lg">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor"
                             class="bi bi-briefcase-fill text-neutral-900" viewBox="0 0 16 16">
                             <path
                                 d="M6.5 1A1.5 1.5 0 0 0 5 2.5V3H1.5A1.5 1.5 0 0 0 0 4.5v1.384l7.614 2.03a1.5 1.5 0 0 0 .772 0L16 5.884V4.5A1.5 1.5 0 0 0 14.5 3H11v-.5A1.5 1.5 0 0 0 9.5 1zm0 1h3a.5.5 0 0 1 .5.5V3H6v-.5a.5.5 0 0 1 .5-.5" />
@@ -70,33 +70,33 @@
                 </template>
                
                 <div class="ml-3 flex flex-col">
-                    <p class="text-sm font-bold" :class="{'text-red-700': !isTableauDeBord && !element.isActive}">{{isDemandes ? "Intégrateur Web" : element.title }}</p>
-                    <p class="text-sm">{{ isDemandes ? element.candidate.firstName + ' ' + element.candidate.lastName : element.enterprise.name }}</p>
+                    <p class="text-[8px] sm:text-[9px] md:text-[10px]: lg:text-[11px] xl:text-xs font-bold" :class="{'text-red-700': !isTableauDeBord && !element.isActive}">{{isDemandes ? "Intégrateur Web" : element.title }}</p>
+                    <p class="text-[8px] sm:text-[9px] md:text-[10px]: lg:text-[11px] xl:text-xs">{{ isDemandes ? element.candidate.firstName + ' ' + element.candidate.lastName : element.enterprise.name }}</p>
                 </div>
             </div>
         </td>
         <td v-if="isDemandes && isTableauDeBord">
-            <p class="my-5 text-sm">Cégep de Trois-Rivières </p>
+            <p class="my-5 mr-0.5 text-[8px] sm:text-[9px] md:text-[10px]: lg:text-[11px] xl:text-xs">Cégep de Trois-Rivières </p>
         </td>
         <td v-if="!isDemandes && isTableauDeBord">
-            <p class="my-5 text-sm">Trois-Rivières</p>
+            <p class="my-5 mr-0.5 text-[8px] sm:text-[9px] md:text-[10px]: lg:text-[11px] xl:text-xs">Trois-Rivières</p>
         </td>
         <td v-if="!isTableauDeBord && !isDemandes && activitySectorResult">
-            <p class="my-5 text-sm">{{ activitySectorResult.value }}</p>
+            <p class="my-5 mr-0.5 text-[8px] sm:text-[9px] md:text-[10px]: lg:text-[11px] xl:text-xs">{{ activitySectorResult.value }}</p>
         </td>
         <td v-if="!isTableauDeBord && isDemandes">
-            <p class="my-5 text-sm">Nouvelles technologies</p>
+            <p class="my-5 mr-0.5 text-[8px] sm:text-[9px] md:text-[10px]: lg:text-[11px] xl:text-xs">Nouvelles technologies</p>
         </td>
         <td v-if="!isTableauDeBord">
-            <p class="my-5 text-sm">Mauricie</p>
+            <p class="my-5 mr-0.5 text-[8px] sm:text-[9px] md:text-[10px]: lg:text-[11px] xl:text-xs">Mauricie</p>
         </td>
         <td>
-            <p class="my-5 text-sm">{{ isDemandes ? "2022-03-02" : formatDate(element.startDate) }}</p>
+            <p class="my-5 text-[8px] sm:text-[9px] md:text-[10px]: lg:text-[11px] xl:text-xs">{{ isDemandes ? "2022-03-02" : formatDate(element.startDate) }}</p>
         </td>
         <td>
             <div class="my-5 flex flex-row items-center justify-between">
                 <button v-if="isTableauDeBord" @click="activateIntership(element._id, isDemandes)"
-                    class="mr-4 py-2 px-3 bg-green-200/[.6] hover:bg-green-200 focus:bg-green-200 text-green-500 text-sm font-medium rounded-lg">Accepter</button>
+                    class="mr-1 py-1.5 px-2.5 bg-green-200/[.6] hover:bg-green-200 focus:bg-green-200 text-green-500 text-[8px] sm:text-[9px] md:text-[10px] lg:text-xs font-medium rounded-lg">Accepter</button>
                 <div class="flex flex-row justify-between">
                     <RouterLink v-if="element.candidate" :to="{name:'pagedetaildemandedestage', params:{id: element._id}}">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
@@ -192,20 +192,6 @@ function activateIntership(id) {
         });
 
 }
-
-/* const goToEditForm = () => {
-    let id;
-    let type;
-    
-    if (isFicheDetailDemandeDeStage.value) {
-      id = demandeDeStageId;
-      type = 'request';
-    } else {
-      id = offreDeStageId;
-      type = 'offer';
-    }
-    router.push({ name: 'formulairedo', params: { type: type, id: id } })
-  } */
 
 const goToEditForm = () => {
         let id;

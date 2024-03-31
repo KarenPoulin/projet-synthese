@@ -1,5 +1,5 @@
 <template>
-  <h1 class="text-5xl font-bold mb-14 text-neutral-500">Offres de stage</h1>
+  <h1 class="text-2xl sm:text-4xl xl:text-5xl font-bold mb-14 text-neutral-500">Offres de stage</h1>
   <div class="flex">
     <button class="my-3 bg-red-800 text-white px-4 py-2  rounded-lg hover:bg-red-900" @click="goToFormDO('offer')">Ajouter
       une offre</button>

@@ -14,7 +14,7 @@
                     active-class="active">
                     <img src="../assets/icons/sidebar-danshboard-24.png" alt="Icon 1" class="h-4 w-4 sm:h-6 sm:w-6 lg:mr-4 xl:mr-8 object-contain">
                     <!-- Icône du bouton -->
-                    <span class="link-text hidden lg:block text-xs xl:text-base">Tableau de bord</span>
+                    <span class="link-text hidden lg:block text-xs xl:text-sm">Tableau de bord</span>
                     <span class="indicator w-0 h-full bg-transparent transition-all duration-300"></span>
                     <!-- Effet de survol -->
                 </router-link>
@@ -26,7 +26,7 @@
                     active-class="active">
                     <img src="../assets/icons/sidebar-request-24.png" alt="Icon 2" class="h-4 w-4 sm:h-6 sm:w-6 lg:mr-4 xl:mr-8 object-contain">
                     <!-- Icône du bouton -->
-                    <span class="link-text hidden lg:block text-xs xl:text-base">Demandes de stages</span>
+                    <span class="link-text hidden lg:block text-xs xl:text-sm">Demandes de stages</span>
                     <span class="indicator w-0 h-full bg-transparent transition-all duration-300"></span>
                     <!-- Effet de survol -->
                 </router-link>
@@ -38,7 +38,7 @@
                     active-class="active">
                     <img src="../assets/icons/sidebar-offer.png" alt="Icon 3" class="h-4 w-4 sm:h-6 sm:w-6 lg:mr-4 xl:mr-8 object-contain">
                     <!-- Icône du bouton -->
-                    <span class="link-text hidden lg:block text-xs xl:text-base">Offres de stages</span>
+                    <span class="link-text hidden lg:block text-xs xl:text-sm">Offres de stages</span>
                     <span class="indicator w-0 h-full bg-transparent transition-all duration-300"></span>
                     <!-- Effet de survol -->
                 </router-link>
@@ -50,7 +50,7 @@
                     active-class="active">
                     <img src="../assets/icons/sidebar-candidate-24.png" alt="Icon 4" class="h-4 w-4 sm:h-6 sm:w-6 lg:mr-4 xl:mr-8 object-contain">
                     <!-- Icône du bouton -->
-                    <span class="link-text hidden lg:block text-xs xl:text-base">Candidats</span>
+                    <span class="link-text hidden lg:block text-xs xl:text-sm">Candidats</span>
                     <span class="indicator w-0 h-full bg-transparent transition-all duration-300"></span>
                     <!-- Effet de survol -->
                 </router-link>
@@ -62,7 +62,7 @@
                     active-class="active">
                     <img src="../assets/icons/sidebar-enterprise-24.png" alt="Icon 5" class="h-4 w-4 sm:h-6 sm:w-6 lg:mr-4 xl:mr-8 object-contain">
                     <!-- Icône du bouton -->
-                    <span class="link-text hidden lg:block text-xs xl:text-base">Entreprises</span>
+                    <span class="link-text hidden lg:block text-xs xl:text-sm">Entreprises</span>
                     <span class="indicator w-0 h-full bg-transparent transition-all duration-300"></span>
                     <!-- Effet de survol -->
                 </router-link>
