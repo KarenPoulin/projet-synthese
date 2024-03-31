@@ -334,30 +334,45 @@ const { allIntershipTypesResults, getAllIntershipTypes } = useIntershipTypes();
 
 
 onMounted(async () => {
-  //lorsqu'on passera un id en param passer le tout ici  
   const id = route.params.id;
+
+  // Basculer isAdding sur false si un ID est passé en paramètre
+  isAdding.value = !id;
 
   if (props.isRequest) {
     await getAllCandidates();
-    console.log(allCandidatesResults);
     await getAllActivitySectors();
-    console.log(allActivitySectorsResults);
     await getAllProvinces();
-    console.log(allProvincesResults);
     await getAllIntershipTypes();
-    console.log(allIntershipTypesResults);
 
+    // Récupérer les données de la demande existante si on est en mode modification
+    if (!isAdding.value) {
+      try {
+        const response = await axios.get(`https://api-4.fly.dev/internship-requests/${id}`);
+        // Pré-remplir le formulaire avec les données existantes
+        Object.assign(dataToSendToAPI, response.data);
+      } catch (error) {
+        console.error('Error fetching request data:', error);
+      }
+    }
   } else {
     await getAllEnterprises();
-    console.log(allEnterprisesResults);
     await getAllActivitySectors();
-    console.log(allActivitySectorsResults);
     await getAllProvinces();
-    console.log(allProvincesResults);
     await getAllIntershipTypes();
-    console.log(allIntershipTypesResults);
+
+    // Récupérer les données de l'offre existante si on est en mode modification
+    if (!isAdding.value) {
+      try {
+        const response = await axios.get(`https://api-4.fly.dev/internship-offers/${id}`);
+        // Pré-remplir le formulaire avec les données existantes
+        Object.assign(dataToSendToAPI, response.data);
+      } catch (error) {
+        console.error('Error fetching offer data:', error);
+      }
+    }
   }
-})
+});
 
 
 // REQUÊTE POUR ENVOYER LES DONNÉES À L'API
@@ -624,16 +639,21 @@ const submitForm = () => {
 };
 
 // Fonction pour envoyer les données du formulaire à l'api 
+// Fonction pour envoyer les données du formulaire à l'api 
 const sendRequest = async (formData) => {
   try {
-    const url = props.isRequest ? 'https://api-4.fly.dev/internship-requests' : 'https://api-4.fly.dev/internship-offers';
-    const response = await axios.post(url, formData);
+    const baseUrl = 'https://api-4.fly.dev';
+    const url = props.isRequest ? `${baseUrl}/internship-requests` : `${baseUrl}/internship-offers`;
+    const response = isAdding.value
+      ? await axios.post(url, formData)
+      : await axios.patch(`${url}/${id}`, formData);
     console.log('Response:', response.data);
     router.push(props.isRequest ? '/app/demandesdestages' : '/app/offresdestages');
   } catch (error) {
     console.error('Error:', error);
   }
-}
+};
+
 
 
 //Données à envoyer pour les demandes 
