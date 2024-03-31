@@ -116,7 +116,7 @@
                                 d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7" />
                         </svg>
                     </RouterLink>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" @click="goToEditForm"
                         class="bi bi-pencil-square mx-2.5 text-yellow-600 hover:text-yellow-900 focus:text-yellow-900"
                         viewBox="0 0 16 16">
                         <path
@@ -137,7 +137,7 @@
 
 <script setup>
 import { onMounted, ref } from 'vue';
-import { RouterLink } from 'vue-router';
+import { RouterLink, useRouter } from 'vue-router';
 import axios from 'axios';
 import { useActivitySector } from '@/composables/secteurActivites';
 
@@ -148,6 +148,7 @@ const props = defineProps({
     element: Object
 })
 
+const router = useRouter()
 let isOffer = ref(false);
 
 const { activitySectorResult, getActivitySectorById } = useActivitySector();
@@ -191,6 +192,42 @@ function activateIntership(id) {
         });
 
 }
+
+/* const goToEditForm = () => {
+    let id;
+    let type;
+    
+    if (isFicheDetailDemandeDeStage.value) {
+      id = demandeDeStageId;
+      type = 'request';
+    } else {
+      id = offreDeStageId;
+      type = 'offer';
+    }
+    router.push({ name: 'formulairedo', params: { type: type, id: id } })
+  } */
+
+const goToEditForm = () => {
+        let id;
+        let type;
+
+        if (!isOffer) {
+            id = props.element._id;
+            type = 'request';
+        } else {
+            id = props.element._id;
+            type = 'offer';
+        }
+
+        router.push({
+            name: 'formulairedo',
+            params: {
+                type: type,
+                id: id,
+                
+            }
+        })
+    }
 
 
 onMounted(async () => {
