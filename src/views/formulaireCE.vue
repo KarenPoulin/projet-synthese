@@ -717,7 +717,7 @@
 
                         try {
                             const url = editing.value ?
-                                `https://api-4.fly.dev/candidates/${candidateId}` :
+                                `https://api-4.fly.dev/candidates/${props.candidateId}` :
                                 'https://api-4.fly.dev/candidates';
 
                             const method = editing.value ? 'patch' : 'post';
