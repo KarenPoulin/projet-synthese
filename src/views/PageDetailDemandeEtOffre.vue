@@ -15,9 +15,9 @@
     
     <!-- Icones -->
    <div class="text-right font-extrabold mb-5">
-      <i class="ficheDetaillee__icône-consulter fa fa-check fa-2xl mr-2 text-green-400 cursor-pointer" aria-hidden="true"></i>
-      <i class="fa-solid fa-pen-to-square fa-2xl ml-2 mr-2 text-blue-900 cursor-pointer" @click="goToEditForm"></i>
-      <i class="ficheDetaillee__icône-supprimer fas fa-trash fa-2xl ml-2 text-red-700 cursor-pointer" @click="ouvrirModalSuppression"></i>
+     <i class="ficheDetaillee__icône-consulter fa fa-check custom-icon-size mr-3 text-green-400 cursor-pointer" aria-hidden="true"></i>
+     <i class="fa-solid fa-pen-to-square custom-icon-size ml-3 mr-3 text-blue-900 cursor-pointer" @click="goToEditForm"></i>
+     <i class="ficheDetaillee__icône-supprimer fas fa-trash custom-icon-size ml-3 text-red-700 cursor-pointer" @click="ouvrirModalSuppression"></i>
       <modalSuppression
         v-if="modalSuppressionVisible"
         :isFicheDetailDemandeDeStage="isFicheDetailDemandeDeStage"
@@ -32,7 +32,7 @@
    </div>
 
     <!-- Fiche -->
-    <div class="bg-white p-8 lg:p-16 rounded-xl">
+    <div class="bg-white p-8 lg:p-16 rounded-xl h-auto">
       <h3 v-if="isFicheDetailDemandeDeStage" class="text-3xl md:text-4xl font-bold mb-5 lg:mb-10"
         :class="{'text-teal-500': isFicheDetailDemandeDeStage }">
         {{ demandeDeStageResult.candidate.firstName + ' ' + demandeDeStageResult.candidate.lastName }}</h3>
@@ -126,7 +126,18 @@
         cumque aut commodi unde quod mollitia laudantium vitae iure eaque, voluptas rem nesciunt labore, culpa illum
         accusamus dicta dolor illo ducimus deserunt excepturi. Vitae totam nulla ullam sunt vero iusto, non molestiae
         autem placeat alias modi, quod minus error sed impedit adipisci repudiandae facilis a mollitia quam officiis
-        aperiam nisi?</p>
+        aperiam nisi?
+      </p>
+      <button
+        v-if="isFicheDetailDemandeDeStage"
+        type="button"
+        class="text-white focus:ring-4 
+        focus:outline-none focus:ring-blue-300  bg-teal-500 mt-20 text-xl
+        font-medium rounded-lg px-5 py-2.5 
+        text-center inline-flex items-center me-2">
+        <i class="fa-solid fa-cloud-arrow-down mr-2"></i>
+        <span class="font-semibold">Télécharger le C.V.</span>
+      </button>
     </div>
   </template>
 
@@ -240,3 +251,9 @@ const formatDate = (dateString) => {
   };
   
 </script>
+
+<style scoped>
+.custom-icon-size {
+  font-size: 24px; /* Vous pouvez ajuster cette valeur selon vos besoins */
+}
+</style>

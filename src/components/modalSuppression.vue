@@ -1,42 +1,43 @@
 <template>
-  <div class="modal-container" v-show="modalSuppressionVisible">
-    <div class="modal-content">
+  <div class="fixed inset-0 flex items-center justify-center modal-container z-50 bg-transparent" style="background-color: rgba(0, 0, 0, 0.75);">
+    <div class="modal-content bg-white p-8 rounded-lg shadow-lg max-w-md">
       <div class="donnees" v-if="isFicheDetailDemandeDeStage">
-        <p>Voulez-vous vraiment supprimer cette demande de stage ?</p>
-        <dl>
-          <div>
-            <dt>Titre du stage </dt>
+        <p class="text-red-600 text-xl mb-6">Voulez-vous vraiment supprimer <br> cette demande de stage ?</p>
+        <dl class="mb-6">
+          <div class="mb-4">
+            <dt class="font-bold text-gray-600">Titre du stage</dt>
             <dd>{{ titleDuStage }}</dd>
           </div>
-          <div>
-            <dt>Prénom du stagiaire </dt>
+          <div class="mb-4">
+            <dt class="font-bold text-gray-600">Prénom du stagiaire</dt>
             <dd>{{ prenomDuStagiaire }}</dd>
           </div>
           <div>
-            <dt>Nom du stagiaire </dt>
+            <dt class="font-bold text-gray-600">Nom du stagiaire</dt>
             <dd>{{ monDuStagiaire }}</dd>
           </div>
         </dl>
       </div>
 
       <div class="donnees" v-else>
-        <p>Voulez-vous vraiment supprimer cette offre de stage ?</p>
-        <dl>
-          <div>
-            <dt>Titre de l'offre </dt>
+        <p class="text-red-600 text-xl mb-6">Voulez-vous vraiment supprimer cette offre de stage ?</p>
+        <dl class="mb-6">
+          <div class="mb-4">
+            <dt class="font-bold text-gray-600">Titre de l'offre</dt>
             <dd>{{ titleDeOffre }}</dd>
           </div>
           <div>
-            <dt>Nom de l'entreprise </dt>
+            <dt class="font-bold text-gray-600">Nom de l'entreprise</dt>
             <dd>{{ nomDeEntreprise }}</dd>
           </div>
         </dl>
       </div>
       
-      <div class="button-container">
-        <button class="cancel-button" @click="annulerSuppression">Annuler</button>
-        <button class="delete-button" @click="confirmerSuppression">Supprimer</button>
-      </div>
+      <div class="flex justify-end gap-5 mt-15 button-container">
+    <button class="cancel-button bg-transparent border-none text-gray-700 hover:bg-gray-200 hover:text-gray-600 px-4 py-2 rounded-md text-base transition-colors duration-300" @click="annulerSuppression">Annuler</button>
+    <button class="delete-button bg-red-800 text-white hover:bg-red-900 px-4 py-2 rounded-md text-base transition-colors duration-300" @click="confirmerSuppression">Supprimer</button>
+  </div>
+  
     </div>
   </div>
 </template>
@@ -72,93 +73,3 @@ const confirmerSuppression = () => {
   emits('confirmationSuppression');
 };
 </script>
-
-<style scoped>
-.modal-container {
-  font-family: 'Open Sans', sans-serif;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 999; /* Assure que la modal soit au premier plan */
-}
-
-.modal-content {
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.3);
-  max-width: 90%; /* Réduire la largeur du modal */
-  width: auto; /* Ajuster la largeur automatiquement */
-  margin: 0 auto; /* Ajouter une marge automatique horizontale */
-}
-
-.section-title {
-  font-size: 1.5rem;
-  margin-bottom: 20px;
-  color: #333;
-}
-
-.donnees p {
-  margin-bottom: 30px;
-  color: rgb(153 27 27);
-  font-size: 20px;
-}
-
-.donnees dl {
-  margin-bottom: 20px;
-}
-
-.donnees dl div {
-  margin-bottom: 10px;
-}
-
-.donnees dt {
-  font-weight: bold;
-  color: #666;
-}
-
-.donnees dd {
-  margin-left: 10px;
-  color: #333;
-}
-
-.button-container {
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-  margin-top: 20px;
-}
-
-.cancel-button,
-.delete-button {
-  background-color: transparent;
-  border: none;
-  color: #333;
-  padding: 10px 20px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.cancel-button:hover,
-.delete-button:hover {
-  background-color: #eee;
-  color: #555;
-}
-
-.delete-button {
-  background-color: rgb(153 27 27);
-  color: white;
-}
-
-.delete-button:hover {
-  background-color: rgb(153 27 27);
-}
-</style>
