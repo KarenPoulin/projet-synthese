@@ -21,8 +21,8 @@
             <div class="text-center xl:text-left xl:ml-6">
                 <h1 class="text-xl xl:text-xl font-bold mb-2">{{ enterprise.name }}</h1>
                 <p class="text-xs">{{ enterprise.address }}</p>
-                <p class="text-xs mb-5">Trois-Rivières G9A 4H7</p>
-                <p class="text-xs">Téléphone : 819 373-2235</p>
+                <p class="text-xs mb-5">{{ enterprise.city }} {{ enterprise.postalCode }}</p>
+                <p class="text-xs">Téléphone : {{ enterprise.phone }}</p>
                 <p class="text-xs">Télécopieur : 819 373-8805</p>
             </div>
         </div>
