@@ -818,8 +818,8 @@
                 formData.image = '';
                 formData.contact = '';
                 formData.activitySector = {
-                    _id: '65f8df6040965a2e23d73271',
-                    value: 'Technologies',
+                    _id: '',
+                    value: '',
                 };
                 formData.website = '';
             }
