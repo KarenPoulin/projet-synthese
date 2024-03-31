@@ -2,14 +2,14 @@
     <div>
         <div v-if="!showEnterpriseForm">
             <div class="p-4">
-                <div class="flex justify-between items-center mb-4 border-l-4 border-neutral-500">
-                    <h1 class=" text-lg font-bold text-neutral-500 mb-9">
+                <div class="flex  items-center mb-4  ">
+                    <h1 class=" text-4xl font-bold text-neutral-500 pl-2 border-l-4 border-fuchsia-800 mb-9 ">
                         {{ editing ? '' :' Ajouter un Candidat'  }}</h1>
                     <div v-if="editing">
 
-                        <div class="titre_modifer">
+                        <div class=" pl-2 border-l-4 border-fuchsia-800 mb-9">
                             <p class="text-neutral-500">Candidat</p>
-                            <h1 class="text-neutral-500">{{ candidate.firstName }} {{ candidate.lastName }}</h1>
+                            <h1 class="text-neutral-500  text-4xl font-bold">{{ candidate.firstName }} {{ candidate.lastName }}</h1>
                             <p class="poste text-neutral-500">{{ candidate.skills }}</p>
                         </div>
 
@@ -147,15 +147,16 @@
 
         <div v-else>
             <div class="p-4">
-                <div class="flex justify-between items-center mb-4">
-                    <h1 class="titre_barre text-lg font-bold text-neutral-500 mb-9">
+                <div class="flex  items-center mb-4">
+                    <h1 class="text-4xl font-bold text-neutral-500 pl-2 border-l-4 border-fuchsia-800 mb-9">
                         {{ editing ? '' : 'Ajouter une entreprise' }}</h1>
                     <div v-if="editing">
                         <div class="titre_barre-modifier">
-                            <div class="titre_modifer">
+                            <img src="/src/assets/img/enterprises.png" alt="candidat" class="w-20">
+                            <div class=" pl-2 border-l-4 border-fuchsia-800 mb-9">
                                 <p class="text-neutral-500">Entreprise</p>
-                                <h1 class="text-neutral-500">{{ formData.name }}</h1>
-                                <p class="poste text-neutral-500">{{ formData.image }}</p>
+                                <h1 class="text-neutral-500 text-4xl">{{ formData.name }}</h1>
+                                
                             </div>
                         </div>
                     </div>
@@ -947,8 +948,9 @@
     }
 
     .titre_barre-modifier {
-        position: relative;
-        padding-left: 10px;
+        display: flex;
+        flex-direction: row;
+
     }
 
     .titre_barre-modifier::before {
