@@ -170,7 +170,8 @@ const goToFormDO = type => {
 
 const goToFormCE =type => {
   setActiveButton(type);
-  router.push({ name: 'formulaireCE', params: { type } })
+  const newUrl = router.resolve({ name: 'formulaireCE', params: { type } }).href;
+  window.location.assign(newUrl);
 }
 
 //Ajout dun etat local pour un bouton actif
