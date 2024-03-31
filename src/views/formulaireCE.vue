@@ -697,6 +697,7 @@
                     throw new Error('Province non trouvée');
                 }
                 if (isFormValid.value) {
+
                     const formattedPostalCode = formatPostalCode(formData.postalCode);
                     const formPayload = {
                         description: formData.description,
@@ -710,6 +711,10 @@
                         },
                         postalCode: formattedPostalCode,
                     };
+                    if (editing.value) {
+                        formPayload._id = props[`${isCandidat.value ? 'candidate' : 'entreprise'}Id`];
+                    }
+
 
                     if (isCandidat.value) {
                         const [firstName, lastName] = formData.fullName.split(' ');
@@ -733,11 +738,11 @@
                                 }
                             });
                             if (response.status === 201) {
-                               /* const message = editing.value ? "Candidat modifié" : "candidat ajoutée";
-                                showSnackbar(message, {
-                                    duration: 3000,
-                                    position: 'bottom',
-                                });*/
+                                /* const message = editing.value ? "Candidat modifié" : "candidat ajoutée";
+                                 showSnackbar(message, {
+                                     duration: 3000,
+                                     position: 'bottom',
+                                 });*/
 
 
                                 router.back();
