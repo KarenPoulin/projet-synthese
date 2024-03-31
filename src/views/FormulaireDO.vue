@@ -61,7 +61,7 @@
         <div class="py-2">
           <div v-if="isRequest && isAdding" class="border-l-4 border-gray-800 pl-2 m-2">
             <label for="candidateName" class="text-sm font-bold text-neutral-500  block">Nom et prénom</label>
-            <select id="title" v-model="dataToSendToAPI.candidateName" @change="handleCandidateChange" type="text"
+            <select id="candidateName" v-model="dataToSendToAPI.candidateName" @change="handleCandidateChange" type="text"
               class="border border-gray-300 p-2 w-full rounded focus:bg-white"
               :class="{ 'hover:bg-yellow-100': isRequest, 'hover:bg-red-100': !isRequest }">
               <option v-for="candidate in allCandidatesResults" :key="candidate._id" :value="candidate._id">{{
@@ -77,7 +77,7 @@
         <!-- CHAMP CANDIDAT POUR LES DEMANDES EN MODIFICATION -->
         <div v-if="isRequest && !isAdding" class="border-l-4 border-gray-800 pl-2 m-2">
           <label for="candidateName" class="text-sm font-bold text-neutral-500  block">Candidat</label>
-          <input id="title" class="border border-gray-300 p-2 w-full rounded focus:bg-white">
+          <input id="candidateName"  v-model="dataToSendToAPI.candidateName" class="border border-gray-300 p-2 w-full rounded focus:bg-white" :disabled="!isAdding">
         </div>
 
         <!-- CHAMP PRÉSENTATION POUR LES DEMANDES  -->
@@ -330,49 +330,107 @@ const { allActivitySectorsResults, getAllActivitySectors } = useActivitySectors(
 const { allProvincesResults, getAllProvinces } = useProvinces();
 const { allIntershipTypesResults, getAllIntershipTypes } = useIntershipTypes();
 
-// si on veut réutiliser l'id partout dans le code déclarer une variable ici 
 
+
+const id = ref(null); 
 
 onMounted(async () => {
-  const id = route.params.id;
 
-  // Basculer isAdding sur false si un ID est passé en paramètre
-  isAdding.value = !id;
+  id.value = route.params.id;
+
+
+  isAdding.value = !id.value;
+
+
+  await getAllActivitySectors();
+  await getAllProvinces();
+  await getAllIntershipTypes();
 
   if (props.isRequest) {
     await getAllCandidates();
-    await getAllActivitySectors();
-    await getAllProvinces();
-    await getAllIntershipTypes();
 
-    // Récupérer les données de la demande existante si on est en mode modification
+
     if (!isAdding.value) {
-      try {
-        const response = await axios.get(`https://api-4.fly.dev/internship-requests/${id}`);
-        // Pré-remplir le formulaire avec les données existantes
-        Object.assign(dataToSendToAPI, response.data);
-      } catch (error) {
-        console.error('Error fetching request data:', error);
-      }
+  try {
+    const response = await axios.get(`https://api-4.fly.dev/internship-requests/${id.value}`);
+
+    const data = response.data;
+    if (data.candidate) {
+      selectedCandidate.value = data.candidate;
+      dataToSendToAPI.candidateName = `${data.candidate.firstName} ${data.candidate.lastName}`;
+      dataToSendToAPI.city = data.candidate.city;
+    } else {
+      console.error('Candidate data is null or undefined');
     }
+
+    Object.assign(dataToSendToAPI, {
+      title: data.title,
+      description: data.description,
+      startDate: new Date(data.startDate).toISOString().slice(0, 10),
+      endDate: new Date(data.endDate).toISOString().slice(0, 10),
+      weeklyWorkHours: data.weeklyWorkHours,
+      paid: data.paid,
+      additionalInformation: data.additionalInformation,
+      isActive: true
+    });
+
+
+    dataToSendToAPI.candidateName = `${data.candidate.firstName} ${data.candidate.lastName}`;
+    dataToSendToAPI.city = data.candidate.city;
+    dataToSendToAPI.province = data.province._id;
+    dataToSendToAPI.skills = data.skills.join(', '); 
+
+
+    dataToSendToAPI.province = data.province._id;
+    dataToSendToAPI.internshipType = data.internshipType._id;
+
+  } catch (error) {
+    console.error('Error fetching request data:', error);
+  }
+}
+
+
   } else {
+    // Fetch additional data specific to offers
     await getAllEnterprises();
-    await getAllActivitySectors();
-    await getAllProvinces();
-    await getAllIntershipTypes();
 
-    // Récupérer les données de l'offre existante si on est en mode modification
+    // Fetch the existing offer data if in edit mode
     if (!isAdding.value) {
-      try {
-        const response = await axios.get(`https://api-4.fly.dev/internship-offers/${id}`);
-        // Pré-remplir le formulaire avec les données existantes
-        Object.assign(dataToSendToAPI, response.data);
-      } catch (error) {
-        console.error('Error fetching offer data:', error);
-      }
-    }
+  try {
+    const response = await axios.get(`https://api-4.fly.dev/internship-offers/${id.value}`);
+
+    const data = response.data;
+    selectedEnterprise.value = data.enterprise
+    // Pré-remplir les champs de base
+    Object.assign(dataToSendToAPI, {
+      title: data.title,
+      description: dataToSendToAPI.description,
+      startDate: new Date(data.startDate).toISOString().slice(0, 10),
+      endDate: new Date(data.endDate).toISOString().slice(0, 10),
+      weeklyWorkHours: data.weeklyWorkHours,
+      salary: data.salary,
+      paid: data.paid,
+      additionalInformation: data.additionalInformation,
+      isActive:true
+    });
+
+    // Pré-remplir les champs spécifiques
+    dataToSendToAPI.enterprise = data.enterprise._id;
+    dataToSendToAPI.requiredSkills = data.requiredSkills.join(', '); // Convertir le tableau en chaîne de caractères
+
+    // Pré-remplir les champs de sélection (sélectionner l'ID correspondant)
+    dataToSendToAPI.province = data.province._id;
+    dataToSendToAPI.internshipType = data.internshipType._id;
+
+  } catch (error) {
+    console.error('Error fetching offer data:', error);
+  }
+}
+
   }
 });
+
+
 
 
 // REQUÊTE POUR ENVOYER LES DONNÉES À L'API
@@ -476,7 +534,7 @@ function validateSelect(select, field) {
 
 
 // Fonction pour valider les champs de type date
-function validateDate(input, field) {
+  function validateDate(input, field) {
   const selectedDate = new Date(input);
   const startDate = new Date(dataToSendToAPI.startDate);
   const currentDate = new Date();
@@ -638,15 +696,16 @@ const submitForm = () => {
 
 };
 
-// Fonction pour envoyer les données du formulaire à l'api 
+
 // Fonction pour envoyer les données du formulaire à l'api 
 const sendRequest = async (formData) => {
   try {
     const baseUrl = 'https://api-4.fly.dev';
+    // Utiliser id.value pour accéder à l'ID actuel
     const url = props.isRequest ? `${baseUrl}/internship-requests` : `${baseUrl}/internship-offers`;
     const response = isAdding.value
       ? await axios.post(url, formData)
-      : await axios.patch(`${url}/${id}`, formData);
+      : await axios.patch(`${url}/${id.value}`, formData); // Utiliser id.value ici
     console.log('Response:', response.data);
     router.push(props.isRequest ? '/app/demandesdestages' : '/app/offresdestages');
   } catch (error) {
