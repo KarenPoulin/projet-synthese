@@ -15,9 +15,9 @@
     
     <!-- Icones -->
    <div class="text-right font-extrabold mb-5">
-     <i class="ficheDetaillee__icône-consulter fa fa-check custom-icon-size mr-3 text-green-400 cursor-pointer" aria-hidden="true"></i>
-     <i class="fa-solid fa-pen-to-square custom-icon-size ml-3 mr-3 text-blue-900 cursor-pointer" @click="goToEditForm"></i>
-     <i class="ficheDetaillee__icône-supprimer fas fa-trash custom-icon-size ml-3 text-red-700 cursor-pointer" @click="ouvrirModalSuppression"></i>
+     <i class="ficheDetaillee__icône-consulter fa fa-check text-2xl mr-3 text-green-400 cursor-pointer" aria-hidden="true"></i>
+     <i class="fa-solid fa-pen-to-square text-2xl ml-3 mr-3 text-blue-900 cursor-pointer" @click="goToEditForm"></i>
+     <i class="ficheDetaillee__icône-supprimer fas fa-trash text-2xl ml-3 text-red-700 cursor-pointer" @click="ouvrirModalSuppression"></i>
       <modalSuppression
         v-if="modalSuppressionVisible"
         :isFicheDetailDemandeDeStage="isFicheDetailDemandeDeStage"
@@ -25,10 +25,10 @@
         @suppressionAnnulee="suppressionAnnulee"
         @confirmationSuppression="isFicheDetailDemandeDeStage ? suppressionConfirmer(demandeDeStageResult._id) : suppressionConfirmer(offreDeStagesResult._id)"
         :titleDuStage="isFicheDetailDemandeDeStage ? demandeDeStageResult?.title : 'Titre du stage inconnu'"
-        :prenomDuStagiaire="isFicheDetailDemandeDeStage ? demandeDeStageResult?.candidate?.firstName : 'Prenom du candidat inconnu'"
-        :monDuStagiaire="isFicheDetailDemandeDeStage ? demandeDeStageResult?.candidate?.lastName : 'Nom du candidat inconnu'"
-        :titleDeOffre="!isFicheDetailDemandeDeStage ? offreDeStagesResult?.title : 'Titre de loffre de stage inconnu'"
-        :nomDeEntreprise="!isFicheDetailDemandeDeStage ? offreDeStagesResult?.enterprise.name : 'Nom de entreprise inconnu'"/>
+        :prenomDuStagiaire="isFicheDetailDemandeDeStage ? demandeDeStageResult?.candidate?.firstName : 'Prénom du candidat ou de la candidate inconnu'"
+        :nomDuStagiaire="isFicheDetailDemandeDeStage ? demandeDeStageResult?.candidate?.lastName : 'Nom du candidat ou de la candidate inconnu'"
+        :titleDeOffre="!isFicheDetailDemandeDeStage ? offreDeStagesResult?.title : 'Titre de l\'offre de stage inconnu'"
+        :nomDeEntreprise="!isFicheDetailDemandeDeStage ? offreDeStagesResult?.enterprise.name : 'Nom de l\'entreprise inconnue'"/>
    </div>
 
     <!-- Fiche -->
@@ -174,7 +174,7 @@
   const router = useRouter()
   const route = useRoute();
     
-  // Configuration affichage des informations detailler selon l'identifiant
+  // Configuration affichage des informations detaillées selon l'identifiant
   onMounted(async () => {
     const urlString = window.location.href;
 
@@ -251,9 +251,3 @@ const formatDate = (dateString) => {
   };
   
 </script>
-
-<style scoped>
-.custom-icon-size {
-  font-size: 24px; /* Vous pouvez ajuster cette valeur selon vos besoins */
-}
-</style>

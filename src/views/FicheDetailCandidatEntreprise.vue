@@ -1,6 +1,7 @@
 <template>
 
     <template v-if="isCandidate && candidateResult || enterpriseResult">
+        <!-- Entete -->
         <div class="flex mb-10">
             <div>
                 <img v-if="!isCandidate" src="../assets/img/enterprises.png" alt="logo-entreprises" class="w-40 mr-5">
@@ -16,10 +17,23 @@
                     Développeur Front-End</h2>
             </div>
         </div>
-        <div class="text-right mb-10">
-            <button @click="goToEditForm" type="button"
-                class="bg-fuchsia-800 p-3 text-white rounded-lg">Modifier</button>
+
+        <!-- Icones -->
+        <div class="text-right font-extrabold mb-5">
+            <i class="ficheDetaillee__icône-consulter fa fa-check text-2xl mr-3 text-green-400 cursor-pointer" aria-hidden="true"></i>
+            <i class="fa-solid fa-pen-to-square text-2xl ml-3 mr-3 text-blue-900 cursor-pointer" @click="goToEditForm"></i>
+            <i class="ficheDetaillee__icône-supprimer fas fa-trash text-2xl ml-3 text-red-700 cursor-pointer" @click="ouvrirModalSuppression"></i>
+            <modalSuppression
+                v-if="modalSuppressionVisible"
+                :isCandidate="isCandidate"
+                :modalSuppressionVisible="modalSuppressionVisible"
+                @suppressionAnnulee="suppressionAnnulee"
+                @confirmationSuppression="isCandidate ? suppressionConfirmer(candidateResult._id) : suppressionConfirmer(enterpriseResult._id)"
+                :prenomCandidate="isCandidate ? candidateResult?.firstName : 'Prénom du candidat ou de la candidate inconnu'"
+                :nomCandidate="isCandidate ? candidateResult?.lastName : 'Nom du candidat ou de la candidate inconnu'"
+                :nomDeEntreprise="!isCandidate ? enterpriseResult?.name : 'Nom de l\'entreprise inconnue'"/>
         </div>
+
         <div class="bg-white p-8 lg:p-16 rounded-xl">
             <h3 class="text-3xl md:text-4xl font-bold mb-5 lg:mb-10"
                 :class="{'text-blue-400': !isCandidate, 'text-fuchsia-800': isCandidate}">Courte présentation</h3>
@@ -78,52 +92,15 @@
 </template>
 
 <script setup>
-    import {
-        onMounted,
-        ref
-    } from 'vue';
-    import {
-        useRoute
-    } from 'vue-router';
-    import {
-        useRouter
-    } from 'vue-router'
-    import {
-        useCandidate
-    } from '@/composables/candidats';
-    import {
-        useEnterprise
-    } from '@/composables/entreprises';
+    import modalSuppression from '@/components/modalSuppression.vue';
+    import { onMounted, ref } from 'vue';
+    import { useRouter, useRoute } from 'vue-router';
+    import { useCandidate } from '@/composables/candidats';
+    import { useEnterprise } from '@/composables/entreprises';
+    import axios from 'axios';
 
-    const router = useRouter()
 
-    const goToEditForm = () => {
-        let id;
-        let type;
-
-        if (isCandidate.value) {
-            id = candidateId;
-            type = 'candidats';
-        } else {
-            id = enterpriseId;
-            type = 'entreprises';
-        }
-
-        router.push({
-            name: 'formulaireCE',
-            params: {
-                type: type,
-                id: id,
-                
-            }
-        })
-    }
-
-    const route = useRoute();
-    
-
-    const isCandidate = ref(true);
-
+    // Initialisation des variables
     const {
         candidateResult,
         getCandidateById
@@ -136,20 +113,13 @@
     } = useEnterprise();
     let enterpriseId = ref(null);
 
+    const isCandidate = ref(true);
+
+    const router = useRouter()
+    const route = useRoute();
+
+    // Configuration affichage des informations detaillées selon l'identifiant
     onMounted(async () => {
-        
-        if (route.name === 'fichedetailcandidat') {
-            isCandidate.value = true
-            candidateId.value = route.params.id
-            candidateResult.value = await getCandidateById(route.params.id)
-        } else if (route.name === 'fichedetailentreprise') {
-            isCandidate.value = false
-            enterpriseId.value = route.params.id
-            enterpriseResult.value = await getEnterpriseById(route.params.id)
-        }
-
-
-        // aller valider si candidat ou entreprise dans l'url
         const urlString = window.location.href;
 
         if (urlString.includes('candidat')) {
@@ -164,8 +134,53 @@
             await getEnterpriseById(enterpriseId);
             console.log(enterpriseResult);
         }
-
-
-       
     });
+
+    // Configuration icone editer pour formulaire edition
+    const goToEditForm = () => {
+        let id;
+        let type;
+
+        if (isCandidate.value) {
+            id = candidateId;
+            type = 'candidats';
+        } else {
+            id = enterpriseId;
+            type = 'entreprises';
+        }
+        router.push({ name: 'formulaireCE', params: { type: type, id: id } })
+    }
+
+    // Configuration icone supprimer pour modal de suppression
+    const modalSuppressionVisible = ref(false);
+    
+    const ouvrirModalSuppression = () => {
+    modalSuppressionVisible.value = !modalSuppressionVisible.value;
+    console.log(modalSuppressionVisible.value)
+    };
+
+    const fermerModalSuppression = () => {
+    modalSuppressionVisible.value = false;
+    };
+
+    const suppressionAnnulee = () => {
+    fermerModalSuppression();
+    };
+
+    const suppressionConfirmer = async(id) => {
+    try {
+        const url = isCandidate ? 'https://api-4.fly.dev/candidates' : 'https://api-4.fly.dev/enterprises';
+        const response = await axios.delete(`${url}/${id}`);
+        console.log(response.data); 
+        console.log(`L'entrée avec l'ID ${id} a été supprimée.`);
+        alert(`Suppression confirmé !`);
+    } catch (error) {
+        console.error(`Erreur lors de la suppression de l'entrée avec l'ID ${id}:`, error);
+    }
+    console.log("Supprimer l'entrée avec ID:");
+    fermerModalSuppression();
+
+    router.push('/app/candidats');
+    };
+
 </script>
