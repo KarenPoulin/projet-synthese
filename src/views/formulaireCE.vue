@@ -149,12 +149,12 @@
         <div v-else>
             <div class="p-4">
                 <div class="flex  items-center mb-4">
-                    <h1 class="text-4xl font-bold text-neutral-500 pl-2 border-l-4 border-fuchsia-800 mb-9">
+                    <h1 class="text-4xl font-bold text-neutral-500 pl-2 border-l-4 border-blue-400 mb-9">
                         {{ editing ? '' : 'Ajouter une entreprise' }}</h1>
                     <div v-if="editing">
                         <div class="titre_barre-modifier">
                             <img src="/src/assets/img/enterprises.png" alt="candidat" class="w-20">
-                            <div class=" pl-2 border-l-4 border-fuchsia-800 mb-9">
+                            <div class=" pl-2 border-l-4 border-blue-400 mb-9">
                                 <p class="text-neutral-500">Entreprise</p>
                                 <h1 class="text-neutral-500 text-4xl">{{ formData.name }}</h1>
 
@@ -203,7 +203,7 @@
                     <div class="block_info-perso my-9">
                         <div class="mb-4">
                             <label for="description" class="block mb-4">
-                                <h2 class="text-teal-500 text-lg font-bold">Courte présentation</h2>
+                                <h2 class="text-blue-400 text-lg font-bold">Courte présentation</h2>
                             </label>
                             <textarea id="description" v-model="formData.description" @input="validateDescription"
                                 class="block  w-full border-gray-300 rounded-md p-2"></textarea>
@@ -216,7 +216,7 @@
                                 class="w-full border-gray-300 rounded-md p-2">
                             <span v-if="fieldsError.contact" class="text-red-500">{{ fieldsError.contact }}</span>
                         </div>
-                        <h3 class="  my-8 text-teal-500  font-bold">Information de contact</h3>
+                        <h3 class="  my-8 text-blue-400  font-bold">Information de contact</h3>
                         <div class="block_info-perso-all">
                             <div class="block_info-perso-adresse">
                                 <div class="mb-4 input_barre-modifier">
