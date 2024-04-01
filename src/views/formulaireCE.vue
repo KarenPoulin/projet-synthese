@@ -9,7 +9,8 @@
 
                         <div class=" pl-2 border-l-4 border-fuchsia-800 mb-9">
                             <p class="text-neutral-500">Candidat</p>
-                            <h1 class="text-neutral-500  text-4xl font-bold">{{ candidate.firstName }} {{ candidate.lastName }}</h1>
+                            <h1 class="text-neutral-500  text-4xl font-bold">{{ candidate.firstName }}
+                                {{ candidate.lastName }}</h1>
                             <p class="poste text-neutral-500">{{ candidate.skills }}</p>
                         </div>
 
@@ -156,7 +157,7 @@
                             <div class=" pl-2 border-l-4 border-fuchsia-800 mb-9">
                                 <p class="text-neutral-500">Entreprise</p>
                                 <h1 class="text-neutral-500 text-4xl">{{ formData.name }}</h1>
-                                
+
                             </div>
                         </div>
                     </div>
@@ -342,6 +343,8 @@
             const showEnterpriseForm = ref(false);
             const isCandidat = computed(() => props.type === 'candidat')
             const candidate = ref(null);
+            const entrepriseId = ref(props.entrepriseId);
+            const candidateId = ref(props.candidateId);
             /*const {
                 showSnackbar
             } = createSnackbar();*/
@@ -538,8 +541,8 @@
 
 
             const formatPostalCode = (postalCode) => {
-                const formattedPostalCode = postalCode.trim().toUpperCase();
-                return formattedPostalCode.substring(0, 3) + " " + formattedPostalCode.substring(3);
+                const cleanedPostalCode = postalCode.replace(/\s/g, '').toUpperCase();
+                return cleanedPostalCode.substring(0, 3) + " " + cleanedPostalCode.substring(3);
             };
 
             const validatePostalCode = () => {
@@ -551,6 +554,12 @@
                     return;
                 }
                 fieldsError.postalCode = "";
+            };
+
+            const isPostalCodeValid = (postalCode) => {
+                const cleanedPostalCode = postalCode.replace(/\s/g, '');
+                const postalCodeRegex = /^[A-Za-z]\d[A-Za-z]\d[A-Za-z]\d$/;
+                return postalCodeRegex.test(cleanedPostalCode);
             };
 
             const validateName = () => {
@@ -584,10 +593,7 @@
                 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
                 return emailRegex.test(email)
             };
-            const isPostalCodeValid = (postalCode) => {
-                const postalCodeRegex = /^[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d$/
-                return postalCodeRegex.test(postalCode)
-            };
+
 
             // Fonction pour décoder une image encodée en base64
             const decodeBase64Image = (base64Image) => {
@@ -723,10 +729,10 @@
 
                         try {
                             const url = editing.value ?
-                                `https://api-4.fly.dev/candidates/${props.candidateId}` :
+                                `https://api-4.fly.dev/candidates/${id.value}` :
                                 'https://api-4.fly.dev/candidates';
 
-                            const method = editing.value ? 'patch' : 'post';
+                            const method = editing.value ? 'PATCH' : 'post';
 
                             const response = await axios({
                                 method: method,
@@ -769,10 +775,10 @@
                             }
 
                             const url = editing.value ?
-                                `https://api-4.fly.dev/enterprises/${props.entrepriseId}` :
+                                `https://api-4.fly.dev/enterprises/${id.value}` :
                                 'https://api-4.fly.dev/enterprises';
 
-                            const method = editing.value ? 'patch' : 'post';
+                            const method = editing.value ? 'PATCH' : 'post';
 
                             const response = await axios({
                                 method: method,
@@ -873,9 +879,12 @@
                 if (id.value) {
                     if (type === 'entreprises') {
                         showEnterpriseForm.value = true;
+                        props.entrepriseId = id.value;
                         fetchData(id.value, type);
                     } else if (type === 'candidats') {
+                       
                         showEnterpriseForm.value = false;
+                        props.candidateId = id.value;
                         fetchData(id.value, type);
                     }
                 }
@@ -920,7 +929,9 @@
                 resetValidationErrors,
                 fetchData,
                 encodeBase64Image,
-                decodeBase64Image
+                decodeBase64Image,
+                entrepriseId,
+                candidateId
 
             };
         }
@@ -931,8 +942,6 @@
 
 
 <style scoped>
-   
-
     .titre_barre-modifier {
         display: flex;
         flex-direction: row;
