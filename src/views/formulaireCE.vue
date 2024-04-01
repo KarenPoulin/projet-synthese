@@ -745,7 +745,7 @@
                                     skills: skillsArray,
                                 }
                             });
-                            if (response.status === 201) {
+                            if (response.status === 201 || response.status === 200) {
                                 /* const message = editing.value ? "Candidat modifié" : "candidat ajoutée";
                                  showSnackbar(message, {
                                      duration: 3000,
@@ -797,7 +797,7 @@
                             });
 
                             console.log(response);
-                            if (response.status === 201) {
+                            if (response.status === 201 || response.status === 200) {
                                 /**const message = editing.value ? "Entreprise modifié" : "Entreprise ajoutée";
                                 showSnackbar(message, {
                                     duration: 3000,
