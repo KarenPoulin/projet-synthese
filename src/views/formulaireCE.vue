@@ -11,7 +11,7 @@
                             <p class="text-neutral-500">Candidat</p>
                             <h1 class="text-neutral-500  text-4xl font-bold">{{ candidate.firstName }}
                                 {{ candidate.lastName }}</h1>
-                                <p class="text-xs mb-3 text-neutral-500">Développeur Front-End</p>
+                            <p class="text-xs mb-3 text-neutral-500">Développeur Front-End</p>
                         </div>
 
                     </div>
@@ -874,6 +874,10 @@
                         formData.provinceId = data.province._id;
                     }
                     formData.provinceId = data.province._id;
+                 
+                    if (type === 'entreprises'){
+                        formData.contact = "Irene Deschamps";
+                    }
                     Object.assign(formData, data);
                 } catch (error) {
                     console.error(error);
