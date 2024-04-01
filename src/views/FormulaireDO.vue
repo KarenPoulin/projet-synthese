@@ -447,9 +447,9 @@ onMounted(async () => {
         const data = response.data
         if (data.enterprise) {
           selectedEnterprise.value = data.enterprise;
-          dataToSendToAPI.enterprise = data.enterprise._id;
           dataToSendToAPI.enterpriseName = data.enterprise.name;
-          dataToSendToAPI.description = data.enterprise.description; // Utiliser la description de l'entreprise
+          dataToSendToAPI.description = data.enterprise.description; 
+          dataToSendToAPI.province = data.enterprise.province
         } else {
           console.error('Enterprise data is null or undefined');
         }
@@ -461,7 +461,7 @@ onMounted(async () => {
         } else {
           console.error('Province data is missing in the API response');
         }
-
+        
         if (data.internshipType) {
           selectedInternshipType.value = data.internshipType;
           dataToSendToAPI.internshipType = data.internshipType._id;
@@ -473,19 +473,13 @@ onMounted(async () => {
           startDate: new Date(data.startDate).toISOString().slice(0, 10),
           endDate: new Date(data.endDate).toISOString().slice(0, 10),
           weeklyWorkHours: data.weeklyWorkHours,
+          province: data.province._id,
           salary: data.salary,
           paid: data.paid,
-          additionalInformation: data.additionalInformation,
           isActive: true
         });
 
-        // Pré-remplir les champs spécifiques
-        dataToSendToAPI.enterprise = data.enterprise._id;
-        dataToSendToAPI.requiredSkills = data.requiredSkills.join(', '); // Convertir le tableau en chaîne de caractères
-
-        // Pré-remplir les champs de sélection (sélectionner l'ID correspondant)
-        dataToSendToAPI.province = data.province._id;
-        dataToSendToAPI.internshipType = data.internshipType._id;
+        dataToSendToAPI.requiredSkills = data.requiredSkills.join(', '); 
 
       } catch (error) {
         console.error('Error fetching offer data:', error);
@@ -766,17 +760,18 @@ const submitForm = () => {
 const sendRequest = async (formData) => {
   try {
     const baseUrl = 'https://api-4.fly.dev';
-    // Utiliser id.value pour accéder à l'ID actuel
+
     const url = props.isRequest ? `${baseUrl}/internship-requests` : `${baseUrl}/internship-offers`;
     const response = isAdding.value
       ? await axios.post(url, formData)
-      : await axios.patch(`${url}/${id.value}`, formData); // Utiliser id.value ici
+      : await axios.patch(`${url}/${id.value}`, formData); 
     console.log('Response:', response.data);
     router.push(props.isRequest ? '/app/demandesdestages' : '/app/offresdestages');
   } catch (error) {
     console.error('Error:', error);
   }
 };
+
 
 
 
@@ -839,7 +834,7 @@ const handleDataOffer = async () => {
       endDate: new Date(dataToSendToAPI.endDate).toISOString(),
       weeklyWorkHours: dataToSendToAPI.weeklyWorkHours,
       salary: 0,
-      province: selectedEnterprise.value.province,
+      province: isAdding.value ? selectedEnterprise.value.province : selectedProvince.value,
       requiredSkills: dataToSendToAPI.requiredSkills,
       internshipType: selectedInternshipType.value,
       paid: dataToSendToAPI.paid,
