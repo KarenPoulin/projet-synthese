@@ -965,16 +965,7 @@
 
     }
 
-    .titre_barre-modifier::before {
-        content: "";
-        position: absolute;
-        top: 50%;
-        left: 0;
-        transform: translateY(-50%);
-        width: 4px;
-        height: 100px;
-        background-color: rgb(1, 26, 56);
-    }
+   
 
     .input_barre-modifier {
         position: relative;
