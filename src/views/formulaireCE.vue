@@ -53,14 +53,14 @@
                     <div class="block_info-perso my-9">
                         <div class="mb-4">
                             <label for="description" class="block mb-4">
-                                <h2 class="text-teal-500 text-lg font-bold">Courte présentation</h2>
+                                <h2 class="text-fuchsia-800 text-lg font-bold">Courte présentation</h2>
                             </label>
                             <textarea id="description" v-model="formData.description" @input="validateDescription"
                                 class="block  w-full border-gray-300 rounded-md p-2"></textarea>
                             <span v-if="fieldsError.description "
                                 class="text-red-500">{{ fieldsError.description }}</span>
                         </div>
-                        <h3 class="  my-8 text-teal-500  font-bold">Information personnelle</h3>
+                        <h3 class="  my-8 text-fuchsia-800  font-bold">Informations personnelles</h3>
                         <div class="block_info-perso-all">
                             <div class="block_info-perso-adresse">
                                 <div class="mb-4 input_barre-modifier">
@@ -171,7 +171,7 @@
                         </router-link>
 
                         <button type="submit" @click="submitForm"
-                            class="btn-primary focus:outline-none text-white bg-fuchsia-800  hover:bg-fuchsia-900 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 inline-flex">
+                            class="btn-primary focus:outline-none text-white bg-blue-400  hover:bg-blue-900 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 inline-flex">
 
                             <svg class="w-6 h-6 text-gray-100 dark:text-white" aria-hidden="true"
                                 xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
@@ -277,7 +277,7 @@
                                 @click="cancelForm">Annuler</button>
                         </router-link>
                         <button type="submit" @click="submitForm"
-                            class="btn-primary focus:outline-none text-white bg-fuchsia-800  hover:bg-fuchsia-900 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 inline-flex">
+                            class="btn-primary focus:outline-none text-white bg-blue-400  hover:bg-blue-900 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 inline-flex">
                             <svg class="w-6 h-6 text-gray-100 dark:text-white" aria-hidden="true"
                                 xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
                                 viewBox="0 0 24 24">
