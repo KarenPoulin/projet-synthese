@@ -931,21 +931,7 @@
 
 
 <style scoped>
-    .titre_barre {
-        position: relative;
-        padding-left: 10px;
-    }
-
-    .titre_barre::before {
-        content: "";
-        position: absolute;
-        top: 50%;
-        left: 0;
-        transform: translateY(-50%);
-        width: 4px;
-        height: 20px;
-        background-color: rgb(1, 26, 56);
-    }
+   
 
     .titre_barre-modifier {
         display: flex;
