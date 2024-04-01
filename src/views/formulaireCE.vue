@@ -11,7 +11,7 @@
                             <p class="text-neutral-500">Candidat</p>
                             <h1 class="text-neutral-500  text-4xl font-bold">{{ candidate.firstName }}
                                 {{ candidate.lastName }}</h1>
-                            <p class="poste text-neutral-500">{{ candidate.skills }}</p>
+                                <p class="text-xs mb-3 text-neutral-500">Développeur Front-End</p>
                         </div>
 
                     </div>
@@ -467,9 +467,18 @@
                     fieldsError.skills = errorMessage.max250Characters;
                     return;
                 }
+
+                // Vérifiez si les compétences sont séparées par une virgule suivie d'un espace
+                const skillsArray = skillsTrimmed.split(', ');
+                const validSkills = skillsArray.every(skill => skill.trim().length > 0);
+
+                if (!validSkills) {
+                    fieldsError.skills = "Les compétences doivent être séparées par une virgule suivie d'un espace";
+                    return;
+                }
+
                 fieldsError.skills = "";
             };
-
 
             const validateDescription = () => {
                 const descriptionTrimmed = formData.description.trim()
@@ -726,7 +735,7 @@
 
                     if (isCandidat.value || mCandidat.value === true) {
                         const [firstName, lastName] = formData.fullName.split(' ');
-                        const skillsArray = formData.skills.split(',').map(skill => skill.trim());
+                        const skillsArray = formData.skills.split(', ').map(skill => skill.trim());
 
                         try {
                             const url = editing.value ?
@@ -753,7 +762,7 @@
                                  });*/
 
 
-                                 router.push('/app/Candidats');
+                                router.push('/app/Candidats');
                             }
                             console.log(response);
                         } catch (error) {
@@ -847,7 +856,7 @@
             };
 
             const fetchData = async (id, type) => {
-               
+
 
                 editing.value = true;
                 try {
@@ -884,10 +893,10 @@
                         props.entrepriseId = id.value;
                         fetchData(id.value, type);
                     } else if (type === 'candidats') {
-                       
+
                         showEnterpriseForm.value = false;
                         props.candidateId = id.value;
-                         mCandidat.value = true;
+                        mCandidat.value = true;
                         fetchData(id.value, type);
                     }
                 }
