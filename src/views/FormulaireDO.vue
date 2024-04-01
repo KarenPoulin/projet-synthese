@@ -1,5 +1,6 @@
 <template>
   <div class="bg-neutral-100 w-full">
+    <div v-if="isLoading" class="text-4xl font-bold text-neutral-500 ">Chargement en cours...</div>
     <!-- ENTÊTE -->
     <!-- ENTÊTE POUR LES AJOUTS  -->
     <h1 v-if="isAdding" class="text-4xl font-bold text-neutral-500 "
@@ -18,6 +19,7 @@
 
     </div>
     <!-- FORMULAIRE  -->
+
     <form class="m-[25px]">
       <!-- BOUTONS D'ACTION -->
       <div>
@@ -28,6 +30,7 @@
             :class="isRequest ? 'bg-yellow-600 text-white px-4 py-2 m-1 rounded-lg hover:bg-yellow-700' : 'bg-red-800 text-white px-4 py-2 m-1 rounded-lg hover:bg-red-900'"
             @click="submitForm"><i class="fa-solid fa-floppy-disk p-1"></i>{{ isAdding ? 'Sauvegarder' : 'Mettre à jour'
             }}</button>
+                
         </div>
         <div>
 
@@ -102,7 +105,7 @@
 
         <!-- CHAMP DESCRIPTION DES TÂCHES POUR LES OFFRES  -->
         <div class="py-2">
-          <div v-if="!isRequest" class="grid grid-cols-1  pl-2 m-2">
+          <div v-if="!isRequest" class="grid grid-cols-1  pl-2">
             <p class="text-4xl font-bold text-red-800 py-2">Description des tâches</p>
             <textarea id="description" v-model="dataToSendToAPI.description"
               @change="validateInput(dataToSendToAPI.description, 'description')"
@@ -114,7 +117,7 @@
         </div>
 
         <!-- CHAMP PROGRAMME DE FORMATION  POUR LES DEMANDES ET OFFRES  -->
-        <div class="grid grid-cols-2 gap-4">
+        <div v-if="isRequest" class="grid grid-cols-2 gap-4">
           <div class="py-2">
             <div class="border-l-4 border-gray-800 pl-2 m-2">
               <label for="programme" class="text-sm font-bold text-neutral-500 block">Programme de formation</label>
@@ -187,6 +190,17 @@
             </div>
           </div>
         </div>
+        
+           <!-- CHAMP PROGRAMME DE FORMATION POUR LES OFFRES -->
+        <div  v-if="!isRequest"  class="border-l-4 border-gray-800 pl-2 m-2">
+              <label for="programme" class="text-sm font-bold text-neutral-500 block">Programme de formation</label>
+              <input id="programme" v-model="dataToSendToAPI.programme"
+                @input="validateInput(dataToSendToAPI.programme, 'programme')" type="text"
+                class="border border-gray-300 p-2 w-full rounded mt-1   focus:bg-white"
+                :class="{ 'hover:bg-yellow-100': isRequest, 'hover:bg-red-100': !isRequest }">
+              <span v-if="fieldsToValidate.programme !== ''" class="text-xs font-semibold text-red-700 p-2">{{
+      fieldsToValidate.programme }}</span>
+            </div>
 
         <!-- CHAMP EXIGENCES POUR LES OFFRES -->
         <div class="py-2">
@@ -358,6 +372,9 @@ let isAdding = ref(true);
 //Variable pour utliser dans les routes et configurer avec un paramèteres
 const route = useRoute();
 
+//Variable pour gérer le temps de réponse ou d'envoi de/à l'api
+let isLoading = ref(false);
+
 
 // UTILISATION DES COMPOSABLES POUR L'AFFICHAGE DES DONNÉES VENANT DE L'API OU LEUR ENVOI À L'API //
 const { allCandidatesResults, getAllCandidates } = useAllCandidates();
@@ -383,10 +400,12 @@ onMounted(async () => {
   await getAllIntershipTypes();
 
   if (props.isRequest) {
+
     await getAllCandidates();
 
 
     if (!isAdding.value) {
+      isLoading.value = true;
       try {
         const response = await axios.get(`https://api-4.fly.dev/internship-requests/${id.value}`);
 
@@ -432,6 +451,7 @@ onMounted(async () => {
       } catch (error) {
         console.error('Error fetching request data:', error);
       }
+      isLoading.value = false;
     }
 
 
@@ -441,6 +461,7 @@ onMounted(async () => {
 
     // Fetch the existing offer data if in edit mode
     if (!isAdding.value) {
+      isLoading.value = true;
       try {
         const response = await axios.get(`https://api-4.fly.dev/internship-offers/${id.value}`);
 
@@ -484,7 +505,9 @@ onMounted(async () => {
       } catch (error) {
         console.error('Error fetching offer data:', error);
       }
+      isLoading.value = false;
     }
+
 
   }
 });
@@ -738,15 +761,18 @@ const handleEnterpriseChange = (event) => {
 
 //Fonction pour soumettre la demande ou l'offre au click sur le bouton Sauvegarder
 const submitForm = () => {
+
   event.preventDefault();
   validateForm();
 
   if (isFormValid) {
+    isLoading.value = true;
     if (props.isRequest) {
       handleDataRequest();
     } else {
       handleDataOffer();
     }
+    isLoading.value = false;
     console.log("Form submitted successfully");
 
   } else {
