@@ -343,8 +343,9 @@
             const showEnterpriseForm = ref(false);
             const isCandidat = computed(() => props.type === 'candidat')
             const candidate = ref(null);
-            const entrepriseId = ref(props.entrepriseId);
-            const candidateId = ref(props.candidateId);
+            const entrepriseId = ref(null);
+            const candidateId = ref(null);
+            const mCandidat = ref(null);
             /*const {
                 showSnackbar
             } = createSnackbar();*/
@@ -723,7 +724,7 @@
                     }
 
 
-                    if (isCandidat.value) {
+                    if (isCandidat.value || mCandidat === true) {
                         const [firstName, lastName] = formData.fullName.split(' ');
                         const skillsArray = formData.skills.split(',').map(skill => skill.trim());
 
@@ -846,6 +847,7 @@
             };
 
             const fetchData = async (id, type) => {
+               
 
                 editing.value = true;
                 try {
@@ -885,6 +887,7 @@
                        
                         showEnterpriseForm.value = false;
                         props.candidateId = id.value;
+                         mCandidat = true;
                         fetchData(id.value, type);
                     }
                 }
@@ -931,7 +934,8 @@
                 encodeBase64Image,
                 decodeBase64Image,
                 entrepriseId,
-                candidateId
+                candidateId,
+                mCandidat
 
             };
         }
