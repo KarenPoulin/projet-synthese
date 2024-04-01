@@ -724,7 +724,7 @@
                     }
 
 
-                    if (isCandidat.value || mCandidat === true) {
+                    if (isCandidat.value || mCandidat.value === true) {
                         const [firstName, lastName] = formData.fullName.split(' ');
                         const skillsArray = formData.skills.split(',').map(skill => skill.trim());
 
@@ -753,7 +753,7 @@
                                  });*/
 
 
-                                router.back();
+                                 router.push('/app/Candidats');
                             }
                             console.log(response);
                         } catch (error) {
@@ -804,7 +804,7 @@
                                     position: 'bottom',
                                 });*/
 
-                                router.back();
+                                router.push('/app/Entreprises');
                             }
 
                             if (!response.data._id) {
@@ -887,7 +887,7 @@
                        
                         showEnterpriseForm.value = false;
                         props.candidateId = id.value;
-                         mCandidat = true;
+                         mCandidat.value = true;
                         fetchData(id.value, type);
                     }
                 }
