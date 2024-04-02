@@ -23,12 +23,7 @@
         :isFicheDetailDemandeDeStage="isFicheDetailDemandeDeStage"
         :modalSuppressionVisible="modalSuppressionVisible"
         @suppressionAnnulee="suppressionAnnulee"
-        @confirmationSuppression="isFicheDetailDemandeDeStage ? suppressionConfirmer(demandeDeStageResult._id) : suppressionConfirmer(offreDeStagesResult._id)"
-        :titleDuStage="isFicheDetailDemandeDeStage ? demandeDeStageResult?.title : 'Titre du stage inconnu'"
-        :prenomDuStagiaire="isFicheDetailDemandeDeStage ? demandeDeStageResult?.candidate?.firstName : 'Prénom du candidat ou de la candidate inconnu'"
-        :nomDuStagiaire="isFicheDetailDemandeDeStage ? demandeDeStageResult?.candidate?.lastName : 'Nom du candidat ou de la candidate inconnu'"
-        :titleDeOffre="!isFicheDetailDemandeDeStage ? offreDeStagesResult?.title : 'Titre de l\'offre de stage inconnu'"
-        :nomDeEntreprise="!isFicheDetailDemandeDeStage ? offreDeStagesResult?.enterprise.name : 'Nom de l\'entreprise inconnue'"/>
+        @confirmationSuppression="isFicheDetailDemandeDeStage ? suppressionConfirmer(demandeDeStageResult._id) : suppressionConfirmer(offreDeStagesResult._id)"/>
    </div>
 
     <!-- Fiche -->

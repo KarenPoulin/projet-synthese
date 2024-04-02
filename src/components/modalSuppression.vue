@@ -4,7 +4,7 @@
     style="background-color: rgba(0, 0, 0, 0.75)"
   >
     <div class="modal-content bg-white p-8 rounded-lg shadow-lg max-w-md text-center">
-      <!-- Message d'acceuil du modal -->
+      <!-- Message d'accueil du modal -->
       <div class="donnees">
         <p v-if="isFicheDetailDemandeDeStage" class="text-red-600 text-xl mb-6">
           Voulez-vous vraiment supprimer cette demande de stage ?
@@ -28,7 +28,7 @@
           Voulez-vous vraiment supprimer cette offre de stage ?
         </p>
 
-        <div class="flex justify-end gap-5 mt-15 button-container">
+        <div class="flex justify-center gap-5 mt-15 button-container">
           <button
             class="cancel-button bg-transparent border-none text-gray-700 hover:bg-gray-200 hover:text-gray-600 px-4 py-2 rounded-md text-base transition-colors duration-300"
             @click="annulerSuppression"
@@ -51,26 +51,10 @@
 import { defineProps, defineEmits } from "vue";
 
 const {
-  titleDuStage,
-  prenomDuStagiaire,
-  nomDuStagiaire,
-  prenomCandidate,
-  nomCandidate,
-  etablissementEnseignement,
-  titleDeOffre,
-  nomDeEntreprise,
   modalSuppressionVisible,
   isCandidate,
   isFicheDetailDemandeDeStage,
 } = defineProps({
-  titleDuStage: String,
-  prenomDuStagiaire: String,
-  nomDuStagiaire: String,
-  prenomCandidate: String,
-  nomCandidate: String,
-  etablissementEnseignement: String,
-  titleDeOffre: String,
-  nomDeEntreprise: String,
   modalSuppressionVisible: Boolean,
   isCandidate: Boolean,
   isFicheDetailDemandeDeStage: Boolean,

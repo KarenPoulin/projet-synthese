@@ -28,10 +28,7 @@
                 :isCandidate="isCandidate"
                 :modalSuppressionVisible="modalSuppressionVisible"
                 @suppressionAnnulee="suppressionAnnulee"
-                @confirmationSuppression="isCandidate ? suppressionConfirmer(candidateResult._id) : suppressionConfirmer(enterpriseResult._id)"
-                :prenomCandidate="isCandidate ? candidateResult?.firstName : 'Prénom du candidat ou de la candidate inconnu'"
-                :nomCandidate="isCandidate ? candidateResult?.lastName : 'Nom du candidat ou de la candidate inconnu'"
-                :nomDeEntreprise="!isCandidate ? enterpriseResult?.name : 'Nom de l\'entreprise inconnue'"/>
+                @confirmationSuppression="isCandidate ? suppressionConfirmer(candidateResult._id) : suppressionConfirmer(enterpriseResult._id)"/>
         </div>
 
         <!-- Fiche -->
