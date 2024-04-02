@@ -153,8 +153,8 @@
                         {{ editing ? '' : 'Ajouter une entreprise' }}</h1>
                     <div v-if="editing">
                         <div class="titre_barre-modifier">
-                            <img src="/src/assets/img/enterprises.png" alt="candidat" class="w-25 h-auto">
-                            <div class=" pl-2 border-l-4 border-blue-400 mb-9">
+                            <img src="/src/assets/img/enterprises.png" alt="candidat" class="logo ">
+                            <div class=" pl-2 border-l-4 border-blue-400">
                                 <p class="text-neutral-500">Entreprise</p>
                                 <h1 class="text-neutral-500 text-4xl">{{ formData.name }}</h1>
 
@@ -962,7 +962,15 @@
     .titre_barre-modifier {
         display: flex;
         flex-direction: row;
+        align-items: center;
+        justify-content: center;
 
+    }
+
+    .logo{
+        width: 100px;
+        height: auto;
+        margin-right: 1rem;
     }
 
    
