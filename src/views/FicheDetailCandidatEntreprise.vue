@@ -27,6 +27,7 @@
                 v-if="modalSuppressionVisible"
                 :isCandidate="isCandidate"
                 :modalSuppressionVisible="modalSuppressionVisible"
+                :elementASupprimer="elementASupprimer"
                 @suppressionAnnulee="suppressionAnnulee"
                 @confirmationSuppression="isCandidate ? suppressionConfirmer(candidateResult._id) : suppressionConfirmer(enterpriseResult._id)"/>
         </div>
@@ -112,6 +113,7 @@
     let enterpriseId = ref(null);
 
     const isCandidate = ref(true);
+    let elementASupprimer = ref(null);
 
     const router = useRouter()
     const route = useRoute();
@@ -122,12 +124,14 @@
 
         if (urlString.includes('candidat')) {
             isCandidate.value = true;
+            elementASupprimer.value = 'candidates';
             candidateId = route.params.id;
             await getCandidateById(candidateId);
             console.log(candidateResult);
 
         } else if (urlString.includes('entreprise')) {
             isCandidate.value = false;
+            elementASupprimer.value = 'enterprises';
             enterpriseId = route.params.id;
             await getEnterpriseById(enterpriseId);
             console.log(enterpriseResult);

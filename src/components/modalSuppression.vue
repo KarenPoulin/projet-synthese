@@ -6,25 +6,23 @@
     <div class="modal-content bg-white p-8 rounded-lg shadow-lg max-w-md text-center">
       <!-- Message d'accueil du modal -->
       <div class="donnees">
-        <p v-if="isFicheDetailDemandeDeStage" class="text-red-600 text-xl mb-6">
+        <p v-if="elementASupprimer === 'intership-requests'" class="text-red-600 text-xl mb-6">
           Voulez-vous vraiment supprimer cette demande de stage ?
         </p>
 
-        <p
-          v-else-if="isCandidate && !isFicheDetailDemandeDeStage"
+        <p v-if="elementASupprimer === 'candidates'"
           class="text-red-600 text-xl mb-6"
         >
           Voulez-vous vraiment supprimer ce candidat ou cette candidate ?
         </p>
 
-        <p
-          v-else-if="!isFicheDetailDemandeDeStage && !isCandidate"
+        <p v-if="elementASupprimer === 'enterprises'"
           class="text-red-600 text-xl mb-6"
         >
           Voulez-vous vraiment supprimer cette entreprise ?
         </p>
 
-        <p v-else class="text-red-600 text-xl mb-6">
+        <p v-if="elementASupprimer === 'intership-offers'" class="text-red-600 text-xl mb-6">
           Voulez-vous vraiment supprimer cette offre de stage ?
         </p>
 
@@ -48,17 +46,24 @@
 </template>
 
 <script setup>
-import { defineProps, defineEmits } from "vue";
+import { defineProps, defineEmits, onMounted } from "vue";
 
 const {
   modalSuppressionVisible,
   isCandidate,
   isFicheDetailDemandeDeStage,
+  elementASupprimer
 } = defineProps({
   modalSuppressionVisible: Boolean,
   isCandidate: Boolean,
   isFicheDetailDemandeDeStage: Boolean,
+  elementASupprimer: String
 });
+
+onMounted(() => {
+  console.log('isCandidate', isCandidate, 'isFicheDetailDemandeDeStage', isFicheDetailDemandeDeStage);
+  console.log('elementASupprimer:', elementASupprimer);
+})
 
 const emits = defineEmits(["suppressionAnnulee", "confirmationSuppression"]);
 

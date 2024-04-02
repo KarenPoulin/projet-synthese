@@ -22,6 +22,7 @@
         v-if="modalSuppressionVisible"
         :isFicheDetailDemandeDeStage="isFicheDetailDemandeDeStage"
         :modalSuppressionVisible="modalSuppressionVisible"
+        :elementASupprimer="elementASupprimer"
         @suppressionAnnulee="suppressionAnnulee"
         @confirmationSuppression="isFicheDetailDemandeDeStage ? suppressionConfirmer(demandeDeStageResult._id) : suppressionConfirmer(offreDeStagesResult._id)"/>
    </div>
@@ -157,6 +158,7 @@
   let offreDeStageId = ref(null);
 
   const isFicheDetailDemandeDeStage = ref(true);
+  let elementASupprimer = ref(null);
 
   const router = useRouter()
   const route = useRoute();
@@ -167,12 +169,14 @@
 
     if (urlString.includes("pagedetaildemandedestage")) {
       isFicheDetailDemandeDeStage.value = true;
+      elementASupprimer.value = 'intership-requests';
       demandeDeStageId = route.params.id;
       await getDemandeDeStagesById(demandeDeStageId);
       console.log(demandeDeStageResult);
 
     } else if (urlString.includes("pagedetailoffredestage")) {
       isFicheDetailDemandeDeStage.value = false;
+      elementASupprimer.value = 'intership-offers';
       offreDeStageId = route.params.id;
       await getOffreDeStageById(offreDeStageId);
       console.log(offreDeStagesResult);
