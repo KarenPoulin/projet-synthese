@@ -20,9 +20,9 @@
 
         <!-- Icônes -->
         <div class="text-right font-extrabold mb-5">
-            <i class="ficheDetaillee__icône-consulter fa fa-check text-2xl md:text-4xl mr-3 text-green-400 cursor-pointer" aria-hidden="true"></i>
-            <i class="fa-solid fa-pen-to-square text-2xl md:text-4xp ml-3 mr-3 text-blue-900 cursor-pointer" @click="goToEditForm"></i>
-            <i class="ficheDetaillee__icône-supprimer fas fa-trash text-2xl md:text-4xl ml-3 text-red-700 cursor-pointer" @click="ouvrirModalSuppression"></i>
+            <i class="ficheDetaillee__icône-consulter fa fa-check text-2xl md:text-4xl mr-3 text-green-400 hover:text-green-500 cursor-pointer" aria-hidden="true"></i>
+            <i class="fa-solid fa-pen-to-square text-2xl md:text-4xl ml-3 mr-3 text-blue-800 hover:text-blue-900 cursor-pointer" @click="goToEditForm"></i>
+            <i class="ficheDetaillee__icône-supprimer fas fa-trash text-2xl md:text-4xl ml-3 text-red-700 hover:text-red-800 cursor-pointer" @click="ouvrirModalSuppression"></i>
             <modalSuppression
                 v-if="modalSuppressionVisible"
                 :isCandidate="isCandidate"
