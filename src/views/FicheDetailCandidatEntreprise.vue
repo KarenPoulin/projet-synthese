@@ -96,6 +96,7 @@
     import { useRouter, useRoute } from 'vue-router';
     import { useCandidate } from '@/composables/candidats';
     import { useEnterprise } from '@/composables/entreprises';
+    import { useDeleteElement } from '@/composables/suppression';
     import axios from 'axios';
 
 
@@ -111,6 +112,8 @@
         getEnterpriseById
     } = useEnterprise();
     let enterpriseId = ref(null);
+
+    const {deleteElement} = useDeleteElement();
 
     const isCandidate = ref(true);
     let elementASupprimer = ref(null);
@@ -170,7 +173,8 @@
     };
 
     const suppressionConfirmer = async(id) => {
-    try {
+        deleteElement(elementASupprimer.value ,id);
+/*     try {
         const url = isCandidate ? 'https://api-4.fly.dev/candidates' : 'https://api-4.fly.dev/enterprises';
         const response = await axios.delete(`${url}/${id}`);
         console.log(response.data); 
@@ -178,7 +182,7 @@
         alert(`Suppression confirmé !`);
     } catch (error) {
         console.error(`Erreur lors de la suppression de l'entrée avec l'ID ${id}:`, error);
-    }
+    } */
     console.log("Supprimer l'entrée avec ID:");
     fermerModalSuppression();
 
