@@ -1,7 +1,7 @@
 <template>
 
     <template v-if="isCandidate && candidateResult || enterpriseResult">
-        <!-- Entete -->
+        <!-- En-tête -->
         <div class="flex mb-10">
             <div>
                 <img v-if="!isCandidate" src="../assets/img/enterprises.png" alt="logo-entreprises" class="w-40 mr-5">
@@ -18,7 +18,7 @@
             </div>
         </div>
 
-        <!-- Icones -->
+        <!-- Icônes -->
         <div class="text-right font-extrabold mb-5">
             <i class="ficheDetaillee__icône-consulter fa fa-check text-2xl mr-3 text-green-400 cursor-pointer" aria-hidden="true"></i>
             <i class="fa-solid fa-pen-to-square text-2xl ml-3 mr-3 text-blue-900 cursor-pointer" @click="goToEditForm"></i>
@@ -34,6 +34,7 @@
                 :nomDeEntreprise="!isCandidate ? enterpriseResult?.name : 'Nom de l\'entreprise inconnue'"/>
         </div>
 
+        <!-- Fiche -->
         <div class="bg-white p-8 lg:p-16 rounded-xl">
             <h3 class="text-3xl md:text-4xl font-bold mb-5 lg:mb-10"
                 :class="{'text-blue-400': !isCandidate, 'text-fuchsia-800': isCandidate}">Courte présentation</h3>
@@ -118,7 +119,7 @@
     const router = useRouter()
     const route = useRoute();
 
-    // Configuration affichage des informations detaillées selon l'identifiant
+    // Configuration de l'affichage des informations detaillées selon l'identifiant
     onMounted(async () => {
         const urlString = window.location.href;
 
@@ -136,7 +137,7 @@
         }
     });
 
-    // Configuration icone editer pour formulaire edition
+    // Configuration de l'icône pour modifier un formulaire
     const goToEditForm = () => {
         let id;
         let type;
@@ -151,7 +152,7 @@
         router.push({ name: 'formulaireCE', params: { type: type, id: id } })
     }
 
-    // Configuration icone supprimer pour modal de suppression
+    // Configuration de l'icône pour supprimer un formulaire
     const modalSuppressionVisible = ref(false);
     
     const ouvrirModalSuppression = () => {
