@@ -5,7 +5,7 @@
       une offre</button>
   </div>
 
-  <div class="mt-4 px-10 py-16 bg-white rounded-lg">
+  <div class="mt-4 px-4 py-6 lg:px-10 lg:py-16 bg-white rounded-lg">
     <table v-if="allOffreDeStagesResults" class="w-full mb-10">
         <EnteteTableau :isDemandes="false" :isTableauDeBord="false" />
         <template v-for="offreDeStage in allOffreDeStagesResults" :key="offreDeStage._id">

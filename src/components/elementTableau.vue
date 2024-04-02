@@ -70,33 +70,33 @@
                 </template>
                
                 <div class="ml-3 flex flex-col">
-                    <p class="text-[8px] sm:text-[9px] md:text-[10px]: lg:text-[11px] xl:text-xs font-bold" :class="{'text-red-700': !isTableauDeBord && !element.isActive}">{{isDemandes ? "Intégrateur Web" : element.title }}</p>
-                    <p class="text-[8px] sm:text-[9px] md:text-[10px]: lg:text-[11px] xl:text-xs">{{ isDemandes ? element.candidate.firstName + ' ' + element.candidate.lastName : element.enterprise.name }}</p>
+                    <p class="text-huit sm:text-neuf md:text-dix lg:text-onze xl:text-xs font-bold" :class="{'text-red-700': !isTableauDeBord && !element.isActive}">{{isDemandes ? "Intégrateur Web" : element.title }}</p>
+                    <p class="text-huit sm:text-neuf md:text-dix lg:text-onze xl:text-xs">{{ isDemandes ? element.candidate.firstName + ' ' + element.candidate.lastName : element.enterprise.name }}</p>
                 </div>
             </div>
         </td>
         <td v-if="isDemandes && isTableauDeBord">
-            <p class="my-5 mr-0.5 text-[8px] sm:text-[9px] md:text-[10px]: lg:text-[11px] xl:text-xs">Cégep de Trois-Rivières </p>
+            <p class="my-5 mr-0.5 text-huit sm:text-neuf md:text-dix lg:text-onze xl:text-xs">Cégep de Trois-Rivières </p>
         </td>
         <td v-if="!isDemandes && isTableauDeBord">
-            <p class="my-5 mr-0.5 text-[8px] sm:text-[9px] md:text-[10px]: lg:text-[11px] xl:text-xs">Trois-Rivières</p>
+            <p class="my-5 mr-0.5 text-huit sm:text-neuf md:text-dix lg:text-onze xl:text-xs">Trois-Rivières</p>
         </td>
         <td v-if="!isTableauDeBord && !isDemandes && activitySectorResult">
-            <p class="my-5 mr-0.5 text-[8px] sm:text-[9px] md:text-[10px]: lg:text-[11px] xl:text-xs">{{ activitySectorResult.value }}</p>
+            <p class="my-5 mr-0.5 text-huit sm:text-neuf md:text-dix lg:text-onze xl:text-xs">{{ activitySectorResult.value }}</p>
         </td>
         <td v-if="!isTableauDeBord && isDemandes">
-            <p class="my-5 mr-0.5 text-[8px] sm:text-[9px] md:text-[10px]: lg:text-[11px] xl:text-xs">Nouvelles technologies</p>
+            <p class="my-5 mr-0.5 text-huit sm:text-neuf md:text-dix lg:text-onze xl:text-xs">Nouvelles technologies</p>
         </td>
         <td v-if="!isTableauDeBord">
-            <p class="my-5 mr-0.5 text-[8px] sm:text-[9px] md:text-[10px]: lg:text-[11px] xl:text-xs">Mauricie</p>
+            <p class="my-5 mr-0.5 text-huit sm:text-neuf md:text-dix lg:text-onze xl:text-xs">Mauricie</p>
         </td>
         <td>
-            <p class="my-5 text-[8px] sm:text-[9px] md:text-[10px]: lg:text-[11px] xl:text-xs">{{ isDemandes ? "2022-03-02" : formatDate(element.startDate) }}</p>
+            <p class="my-5 text-huit sm:text-neuf md:text-dix lg:text-onze xl:text-xs">{{ isDemandes ? "2022-03-02" : formatDate(element.startDate) }}</p>
         </td>
         <td>
             <div class="my-5 flex flex-row items-center justify-between">
                 <button v-if="isTableauDeBord" @click="activateIntership(element._id, isDemandes)"
-                    class="mr-1 py-1 lg:py-1.5 px-2 lg:px-2.5 bg-green-200/[.6] hover:bg-green-200 focus:bg-green-200 text-green-500 text-[8px] sm:text-[9px] md:text-[10px] lg:text-xs font-medium rounded-lg">Accepter</button>
+                    class="mr-1 py-1 lg:py-1.5 px-2 lg:px-2.5 bg-green-200/[.6] hover:bg-green-200 focus:bg-green-200 text-green-500 text-huit sm:text-neuf md:text-dix lg:text-xs font-medium rounded-lg">Accepter</button>
                 <div class="flex flex-row justify-between">
                     <RouterLink v-if="element.candidate" :to="{name:'pagedetaildemandedestage', params:{id: element._id}}">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"

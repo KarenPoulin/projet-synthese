@@ -62,27 +62,27 @@
     </div>
 
 
-    <div v-if="allDemandeDeStagesResults" class="mt-4 mb-16 px-10 py-16 bg-white rounded-lg">
+    <div v-if="allDemandeDeStagesResults" class="mt-4 mb-16 px-4 py-6 lg:px-10 lg:py-16 bg-white rounded-lg">
         <div class="mb-16">
             <h2 class="text-lg font-bold">Dernières <span class="text-yellow-600">demandes</span> de stage</h2>
             <p class="text-sm text-red-700">En attente de validation</p>
         </div>
-        <table class="w-full mb-10">
+        <table class="w-full">
             <EnteteTableau :isDemandes="true" :isTableauDeBord="true" />
-            <template v-for="demandeDeStage in demandeDeStageIsNotActive" :key="demandeDeStage._id">
+            <template v-for="demandeDeStage in demandeDeStageIsNotActive.slice(0, 5)" :key="demandeDeStage._id">
                 <ElementTableau :element="demandeDeStage" :isDemandes="true" :isTableauDeBord="true" />
             </template>
         </table>
     </div>
 
-    <div v-if="allOffreDeStagesResults" class="mt-4 px-10 py-16 bg-white rounded-lg">
+    <div v-if="allOffreDeStagesResults" class="mt-4 px-4 py-6 lg:px-10 lg:py-16 bg-white rounded-lg">
         <div class="mb-16">
             <h2 class="text-lg font-bold">Dernières <span class="text-red-700">offres</span> de stage</h2>
             <p class="text-sm text-red-700">En attente de validation</p>
         </div>
-        <table class="w-full mb-10">
+        <table class="w-full">
             <EnteteTableau :isDemandes="false" :isTableauDeBord="true" />
-            <template v-for="offreDeStage in offreDeStagesIsNotActive" :key="offreDeStage._id">
+            <template v-for="offreDeStage in offreDeStagesIsNotActive.slice(0, 5)" :key="offreDeStage._id">
                 <ElementTableau :element="offreDeStage" :isDemandes="false" :isTableauDeBord="true" />
             </template>
         </table>

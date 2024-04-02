@@ -6,7 +6,7 @@
     </button>
   </div>
 
-  <div class="mt-4 px-10 py-16 bg-white rounded-lg">
+  <div class="mt-4 px-4 py-6 lg:px-10 lg:py-16 bg-white rounded-lg">
     <table v-if="allDemandeDeStagesResults" class="w-full mb-10">
         <EnteteTableau :isDemandes="true" :isTableauDeBord="false" />
         <template v-for="demandeDeStage in allDemandeDeStagesResults" :key="demandeDeStage._id">
