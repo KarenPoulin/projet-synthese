@@ -26,8 +26,8 @@
       <nav class="hidden lg:flex lg:flex-row gap-2 mb-1 ">
         <!-- Bouton "Ajouter une offre de stage" -->
         <button @click="goToFormDO('offer')" :class="[
-          'ripple inline-block rounded px-2 py-1 text-center text-[10px] xl:text-xs font-medium leading-6 shadow transition hover:shadow-lg focus:outline-none border',
-          activeButton === 'offer' ? 'bg-red-50 text-red-800 border-red-800' : 'bg-white text-red-800 border-red-800 hover:bg-red-50'
+          'ripple inline-block rounded px-2 lg:px-1 py-1 text-center text-[10px] xl:text-xs font-small leading-6 shadow transition hover:shadow-lg focus:outline-none border',
+          activeButton === 'offer' ? 'bg-red-50 text-red-800 border-red-800' : 'bg-white text-red-800 border-red-800 hover:bg-red-50 '
         ]">
           <svg class="mr-1 inline-block h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
@@ -38,7 +38,7 @@
 
         <!-- Bouton "Ajouter une demande de stage" -->
         <button @click="goToFormDO('request')" :class="[
-          'ripple inline-block rounded px-2 py-1 text-center text-[10px] xl:text-xs font-medium leading-6 shadow transition focus:outline-none border border-yellow-600',
+          'ripple inline-block rounded px-2 py-1 text-center text-[10px] xl:text-xs font-small leading-6 shadow transition focus:outline-none border border-yellow-600',
           activeButton === 'request' ? 'bg-yellow-50 text-yellow-600 hover:bg-yellow-50' : 'bg-white text-yellow-600 hover:bg-yellow-50'
         ]">
           <svg class="mr-1 inline-block h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -52,7 +52,7 @@
         <!-- Bouton "Ajouter une entreprise" -->
         
           <button @click="goToFormCE('entreprises')" :class="[
-          'ripple inline-block rounded px-2 py-1 text-center text-[10px] xl:text-xs font-medium leading-6 shadow transition focus:outline-none border border-blue-400',
+          'ripple inline-block rounded px-2 py-1 text-center text-[10px] xl:text-xs font-small leading-6 shadow transition focus:outline-none border border-blue-400',
           activeButton === 'entreprises' ? 'bg-blue-50 text-blue-400 hover:bg-blue-50' : 'bg-white text-blue-400 hover:bg-blue-50'
         ]">
             <svg class="mr-1 inline-block h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -67,7 +67,7 @@
 
        
           <button @click="goToFormCE('candidats')" :class="[
-          'ripple inline-block rounded px-2 py-1 text-center text-[10px] xl:text-xs font-medium leading-6 shadow transition focus:outline-none border border-fuchsia-800',
+          'ripple inline-block rounded px-2 py-1 text-center text-[10px] xl:text-xs font-small leading-6 shadow transition focus:outline-none border border-fuchsia-800',
           activeButton === 'candidats' ? 'bg-fuchsia-100 text-fuchsia-800 hover:bg-fuchsia-100' : 'bg-white text-fuchsia-800 hover:bg-fuchsia-50'
         ]">
             <svg class="mr-1 inline-block h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -85,12 +85,13 @@
         <!-- Icône utilisateur -->
 
         <div>
-          <p class="text-xs text-black font-semibold">{{ adminStore.state.nomEtPrenom }}</p>
-          <p class="text-xs text-gray-400 font-semibold">Admin</p>
+          <p class="text-[9px] md:text-xs text-black font-medium">{{ adminStore.state.nomEtPrenom }}</p>
+          <p class="text-[9px] md:text-xs text-gray-400 font-medium">Admin</p>
 
         </div>
-        <img src="../assets/icons/candidate-48.png" alt="Photo de profil" class="h-8 w-8 rounded-full bg-gray-300" />
+        <img src="../assets/icons/candidate-48.png" alt="Photo de profil" class="h-6 w-6 md:h-10 md:w-10 rounded-full bg-gray-300 object-cover" />
       </div>
+      
     </div>
     <nav v-if="mobNavbar" class="flex lg:hidden flex-col gap-2 pl-2 pr-5 transition-all duration-300 max-w-xs mx-auto sm:mr-auto">
           <!-- Bouton "Ajouter une offre de stage" -->
@@ -158,6 +159,7 @@ import { RouterLink } from 'vue-router'
 import { useRouter } from 'vue-router'
 import { useAdminStore } from '@/stores/admin';
 import { ref } from 'vue';
+
 
 const adminStore = useAdminStore();
 
