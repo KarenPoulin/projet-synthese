@@ -11,7 +11,7 @@
                             <p class="text-neutral-500">Candidat</p>
                             <h1 class="text-neutral-500  text-4xl font-bold">{{ candidate.firstName }}
                                 {{ candidate.lastName }}</h1>
-                            <p class="poste text-neutral-500">{{ candidate.skills }}</p>
+                            <p class="text-s mb-3 text-neutral-500 bg-white mt-4">Développeur Front-End</p>
                         </div>
 
                     </div>
@@ -53,14 +53,14 @@
                     <div class="block_info-perso my-9">
                         <div class="mb-4">
                             <label for="description" class="block mb-4">
-                                <h2 class="text-teal-500 text-lg font-bold">Courte présentation</h2>
+                                <h2 class="text-fuchsia-800 text-lg font-bold">Courte présentation</h2>
                             </label>
                             <textarea id="description" v-model="formData.description" @input="validateDescription"
                                 class="block  w-full border-gray-300 rounded-md p-2"></textarea>
                             <span v-if="fieldsError.description "
                                 class="text-red-500">{{ fieldsError.description }}</span>
                         </div>
-                        <h3 class="  my-8 text-teal-500  font-bold">Information personnelle</h3>
+                        <h3 class="  my-8 text-fuchsia-800  font-bold">Informations personnelles</h3>
                         <div class="block_info-perso-all">
                             <div class="block_info-perso-adresse">
                                 <div class="mb-4 input_barre-modifier">
@@ -149,12 +149,12 @@
         <div v-else>
             <div class="p-4">
                 <div class="flex  items-center mb-4">
-                    <h1 class="text-4xl font-bold text-neutral-500 pl-2 border-l-4 border-fuchsia-800 mb-9">
+                    <h1 class="text-4xl font-bold text-neutral-500 pl-2 border-l-4 border-blue-400 mb-9">
                         {{ editing ? '' : 'Ajouter une entreprise' }}</h1>
                     <div v-if="editing">
                         <div class="titre_barre-modifier">
                             <img src="/src/assets/img/enterprises.png" alt="candidat" class="w-20">
-                            <div class=" pl-2 border-l-4 border-fuchsia-800 mb-9">
+                            <div class=" pl-2 border-l-4 border-blue-400 mb-9">
                                 <p class="text-neutral-500">Entreprise</p>
                                 <h1 class="text-neutral-500 text-4xl">{{ formData.name }}</h1>
 
@@ -171,7 +171,7 @@
                         </router-link>
 
                         <button type="submit" @click="submitForm"
-                            class="btn-primary focus:outline-none text-white bg-fuchsia-800  hover:bg-fuchsia-900 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 inline-flex">
+                            class="btn-primary focus:outline-none text-white bg-blue-400  hover:bg-blue-900 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 inline-flex">
 
                             <svg class="w-6 h-6 text-gray-100 dark:text-white" aria-hidden="true"
                                 xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
@@ -203,7 +203,7 @@
                     <div class="block_info-perso my-9">
                         <div class="mb-4">
                             <label for="description" class="block mb-4">
-                                <h2 class="text-teal-500 text-lg font-bold">Courte présentation</h2>
+                                <h2 class="text-blue-400 text-lg font-bold">Courte présentation</h2>
                             </label>
                             <textarea id="description" v-model="formData.description" @input="validateDescription"
                                 class="block  w-full border-gray-300 rounded-md p-2"></textarea>
@@ -216,7 +216,7 @@
                                 class="w-full border-gray-300 rounded-md p-2">
                             <span v-if="fieldsError.contact" class="text-red-500">{{ fieldsError.contact }}</span>
                         </div>
-                        <h3 class="  my-8 text-teal-500  font-bold">Information de contact</h3>
+                        <h3 class="  my-8 text-blue-400  font-bold">Information de contact</h3>
                         <div class="block_info-perso-all">
                             <div class="block_info-perso-adresse">
                                 <div class="mb-4 input_barre-modifier">
@@ -277,7 +277,7 @@
                                 @click="cancelForm">Annuler</button>
                         </router-link>
                         <button type="submit" @click="submitForm"
-                            class="btn-primary focus:outline-none text-white bg-fuchsia-800  hover:bg-fuchsia-900 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 inline-flex">
+                            class="btn-primary focus:outline-none text-white bg-blue-400  hover:bg-blue-900 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 inline-flex">
                             <svg class="w-6 h-6 text-gray-100 dark:text-white" aria-hidden="true"
                                 xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
                                 viewBox="0 0 24 24">
@@ -467,9 +467,18 @@
                     fieldsError.skills = errorMessage.max250Characters;
                     return;
                 }
+
+                // Vérifiez si les compétences sont séparées par une virgule suivie d'un espace
+                const skillsArray = skillsTrimmed.split(', ');
+                const validSkills = skillsArray.every(skill => skill.trim().length > 0);
+
+                if (!validSkills) {
+                    fieldsError.skills = "Les compétences doivent être séparées par une virgule suivie d'un espace";
+                    return;
+                }
+
                 fieldsError.skills = "";
             };
-
 
             const validateDescription = () => {
                 const descriptionTrimmed = formData.description.trim()
@@ -724,9 +733,9 @@
                     }
 
 
-                    if (isCandidat.value || mCandidat === true) {
+                    if (isCandidat.value || mCandidat.value === true) {
                         const [firstName, lastName] = formData.fullName.split(' ');
-                        const skillsArray = formData.skills.split(',').map(skill => skill.trim());
+                        const skillsArray = formData.skills.split(', ').map(skill => skill.trim());
 
                         try {
                             const url = editing.value ?
@@ -745,7 +754,7 @@
                                     skills: skillsArray,
                                 }
                             });
-                            if (response.status === 201) {
+                            if (response.status === 201 || response.status === 200) {
                                 /* const message = editing.value ? "Candidat modifié" : "candidat ajoutée";
                                  showSnackbar(message, {
                                      duration: 3000,
@@ -753,7 +762,7 @@
                                  });*/
 
 
-                                router.back();
+                                router.push('/app/Candidats');
                             }
                             console.log(response);
                         } catch (error) {
@@ -797,14 +806,14 @@
                             });
 
                             console.log(response);
-                            if (response.status === 201) {
+                            if (response.status === 201 || response.status === 200) {
                                 /**const message = editing.value ? "Entreprise modifié" : "Entreprise ajoutée";
                                 showSnackbar(message, {
                                     duration: 3000,
                                     position: 'bottom',
                                 });*/
 
-                                router.back();
+                                router.push('/app/Entreprises');
                             }
 
                             if (!response.data._id) {
@@ -847,7 +856,7 @@
             };
 
             const fetchData = async (id, type) => {
-               
+
 
                 editing.value = true;
                 try {
@@ -865,6 +874,10 @@
                         formData.provinceId = data.province._id;
                     }
                     formData.provinceId = data.province._id;
+                 
+                    if (type === 'entreprises'){
+                        formData.contact = "Irene Deschamps";
+                    }
                     Object.assign(formData, data);
                 } catch (error) {
                     console.error(error);
@@ -884,10 +897,10 @@
                         props.entrepriseId = id.value;
                         fetchData(id.value, type);
                     } else if (type === 'candidats') {
-                       
+
                         showEnterpriseForm.value = false;
                         props.candidateId = id.value;
-                         mCandidat = true;
+                        mCandidat.value = true;
                         fetchData(id.value, type);
                     }
                 }
@@ -952,16 +965,7 @@
 
     }
 
-    .titre_barre-modifier::before {
-        content: "";
-        position: absolute;
-        top: 50%;
-        left: 0;
-        transform: translateY(-50%);
-        width: 4px;
-        height: 100px;
-        background-color: rgb(1, 26, 56);
-    }
+   
 
     .input_barre-modifier {
         position: relative;
