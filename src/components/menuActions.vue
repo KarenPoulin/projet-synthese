@@ -81,16 +81,8 @@
 
 
       <!-- Carte utilisateur -->
-      <div class="flex md:flex-row items-center gap-2 p-2">
-        <!-- Icône utilisateur -->
+      <carteUtilisateur />
 
-        <div>
-          <p class="text-[9px] md:text-xs text-black font-medium">{{ adminStore.state.nomEtPrenom }}</p>
-          <p class="text-[9px] md:text-xs text-gray-400 font-medium">Admin</p>
-
-        </div>
-        <img src="../assets/icons/candidate-48.png" alt="Photo de profil" class="h-6 w-6 md:h-10 md:w-10 rounded-full bg-gray-300 object-cover" />
-      </div>
       
     </div>
     <nav v-if="mobNavbar" class="flex lg:hidden flex-col gap-2 pl-2 pr-5 transition-all duration-300 max-w-xs mx-auto sm:mr-auto">
@@ -159,6 +151,7 @@ import { RouterLink } from 'vue-router'
 import { useRouter } from 'vue-router'
 import { useAdminStore } from '@/stores/admin';
 import { ref } from 'vue';
+import carteUtilisateur from './carteUtilisateur.vue';
 
 
 const adminStore = useAdminStore();
