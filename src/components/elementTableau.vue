@@ -10,6 +10,8 @@
                     'border-yellow-600': isTableauDeBord && isDemandes,
                     'border-red-800/[0.85]': isTableauDeBord && !isDemandes,
                 }">
+
+                <!-- ICÔNES DEMANDE OU OFFRE, ACTIVE ET INACTIVE -->
                 <template v-if="isTableauDeBord">
                     <div v-if="isDemandes" class="p-1 md:p-2 w-6 lg:w-8 xl:w-10 h-6 lg:h-8 xl:h-10 bg-yellow-600/[.5] rounded-lg">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
@@ -93,6 +95,8 @@
         <td>
             <p class="my-5 text-huit sm:text-neuf md:text-dix lg:text-onze xl:text-xs">{{ isDemandes ? "2022-03-02" : formatDate(element.startDate) }}</p>
         </td>
+
+        <!-- ICÔNES BOUTONS D'ACTIONS -->
         <td>
             <div class="my-5 flex flex-row items-center justify-between">
                 <button v-if="isTableauDeBord" @click="activateIntership(intershipType ,element._id,)"
@@ -129,12 +133,8 @@
                         <path
                             d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0" />
                     </svg>
-                    <modalSuppression
-                    v-if="modalSuppressionVisible"
-                    :modalSuppressionVisible="modalSuppressionVisible"
-                    :elementASupprimer="intershipType" 
-                    @suppressionAnnulee="suppressionAnnulee"
-                    @confirmationSuppression="confirmationSuppression"/>
+                    <modalSuppression v-if="modalSuppressionVisible" :modalSuppressionVisible="modalSuppressionVisible"
+                        :elementASupprimer="intershipType" @suppressionAnnulee="suppressionAnnulee" @confirmationSuppression="confirmationSuppression"/>
                 </div>
             </div>
         </td>
@@ -144,12 +144,10 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import { RouterLink, useRouter } from 'vue-router';
-import axios from 'axios';
 import { useActivitySector } from '@/composables/secteurActivites';
 import { useActivateIntership } from '@/composables/activerStage';
 import modalSuppression from "@/components/modalSuppression.vue";
 import suppressionDesDonnees from '../composables/suppressionDesDonnees'
-
 
 
 const props = defineProps({
@@ -157,18 +155,19 @@ const props = defineProps({
     isTableauDeBord: Boolean,
     element: Object
 })
+
+
 const router = useRouter()
 let isOffer = ref(false);
 let intershipType = ref(null);
 let elementASupprimer = ref(null);
-
-const { activitySectorResult, getActivitySectorById } = useActivitySector();
 let activitySectorId = ref(null);
 
+const { activitySectorResult, getActivitySectorById } = useActivitySector();
 const {activateIntership} = useActivateIntership();
 const { suppression } = suppressionDesDonnees();
 
-/* Format de date 'année-mois-jours' */
+/* Format de date 'année-mois-jour' */
 const formatDate = (dateString) => {
     const date = new Date(dateString);
 
@@ -220,6 +219,7 @@ onMounted(async () => {
     }
 })
 
+
 const modalSuppressionVisible = ref(false);
 
 const ouvrirModalSuppression = () => {
@@ -243,13 +243,13 @@ const confirmationSuppression = () => {
         fermerModalSuppression();
         setTimeout(() => {
                 window.location.reload();
-        }, 3000);
+        }, 1000);
     } else {
         suppression(props.element._id, elementASupprimer.value = "internship-offers");
         fermerModalSuppression();
         setTimeout(() => {
             window.location.reload();
-        }, 3000);
+        }, 1000);
     }
 };
 

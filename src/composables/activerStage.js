@@ -15,10 +15,10 @@ export function useActivateIntership() {
         .then(res => {
             console.log('PATCH requête réussie');
             console.log('Réponse:', res.data);
-            // Timeout a enlever quand tout sera fini
+            
             setTimeout(() => {
                 window.location.reload();
-            }, 3000);
+            }, 1000);
         })
         .catch(error => {
             console.error('Erreur:', error)
