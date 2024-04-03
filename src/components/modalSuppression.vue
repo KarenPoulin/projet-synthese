@@ -50,20 +50,12 @@ import { defineProps, defineEmits, onMounted } from "vue";
 
 const {
   modalSuppressionVisible,
-  isCandidate,
-  isFicheDetailDemandeDeStage,
   elementASupprimer
 } = defineProps({
   modalSuppressionVisible: Boolean,
-  isCandidate: Boolean,
-  isFicheDetailDemandeDeStage: Boolean,
   elementASupprimer: String
 });
 
-onMounted(() => {
-  console.log('isCandidate', isCandidate, 'isFicheDetailDemandeDeStage', isFicheDetailDemandeDeStage);
-  console.log('elementASupprimer:', elementASupprimer);
-})
 
 const emits = defineEmits(["suppressionAnnulee", "confirmationSuppression"]);
 

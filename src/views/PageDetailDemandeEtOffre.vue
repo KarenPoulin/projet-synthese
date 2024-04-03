@@ -20,11 +20,10 @@
      <i class="ficheDetaillee__icône-supprimer fas fa-trash text-2xl md:text-4xl ml-3 text-red-700 hover:text-red-800 cursor-pointer" @click="ouvrirModalSuppression"></i>
       <modalSuppression
         v-if="modalSuppressionVisible"
-        :isFicheDetailDemandeDeStage="isFicheDetailDemandeDeStage"
         :modalSuppressionVisible="modalSuppressionVisible"
         :elementASupprimer="elementASupprimer"
         @suppressionAnnulee="suppressionAnnulee"
-        @confirmationSuppression="isFicheDetailDemandeDeStage ? suppressionConfirmer(demandeDeStageResult._id) : suppressionConfirmer(offreDeStagesResult._id)"/>
+        @confirmationSuppression="confirmationSuppression"/>
    </div>
 
     <!-- Fiche -->
@@ -137,12 +136,11 @@
 
 <script setup>
   import modalSuppression from "@/components/modalSuppression.vue";
+  import suppressionDesDonnees from '../composables/suppressionDesDonnees'
   import { useRouter, useRoute} from "vue-router";
   import { onMounted, ref } from "vue";
   import { useDemandesDeStages } from "@/composables/demandeDeStage";
   import { useOffreDeStages } from "@/composables/offreDeStage";
-  import axios from 'axios';
-
 
   // Initialisation des variables
   const {
@@ -156,6 +154,8 @@
     getOffreDeStageById
   } = useOffreDeStages();
   let offreDeStageId = ref(null);
+
+  const { suppression } = suppressionDesDonnees();
 
   const isFicheDetailDemandeDeStage = ref(true);
   let elementASupprimer = ref(null);
@@ -225,20 +225,16 @@ const formatDate = (dateString) => {
     fermerModalSuppression();
   };
 
-  const suppressionConfirmer = async(id) => {
-    try {
-      const url = isFicheDetailDemandeDeStage ? 'https://api-4.fly.dev/internship-requests' : 'https://api-4.fly.dev/internship-offers';
-      const response = await axios.delete(`${url}/${id}`);
-      console.log(response.data); 
-      console.log(`L'entrée avec l'ID ${id} a été supprimée.`);
-      alert(`Suppression confirmé !`);
-    } catch (error) {
-      console.error(`Erreur lors de la suppression de l'entrée avec l'ID ${id}:`, error);
+  const confirmationSuppression = () => {
+    if(isFicheDetailDemandeDeStage){
+      suppression(demandeDeStageResult._id, elementASupprimer.value = 'intership-requests' )
+      fermerModalSuppression();
+      router.push('/app/demandesdestages');
     }
-    console.log("Supprimer l'entrée avec ID:");
-    fermerModalSuppression();
-
-    router.push('/app/demandesdestages');
-  };
-  
+    else if(!isFicheDetailDemandeDeStage){
+      suppression(offreDeStagesResult._id, elementASupprimer.value = 'intership-offers' )
+      fermerModalSuppression();
+      router.push('/app/offresdestages');
+    }
+  }
 </script>

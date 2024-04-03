@@ -124,11 +124,17 @@
                         <path fill-rule="evenodd"
                             d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z" />
                     </svg>
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" @click="ouvrirModalSuppression"
                         class="bi bi-trash-fill w-3 lg:w-4 h-3 lg:h-4 text-red-800 hover:text-red-950 focus:text-red-950" viewBox="0 0 16 16">
                         <path
                             d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0" />
                     </svg>
+                    <modalSuppression
+                    v-if="modalSuppressionVisible"
+                    :modalSuppressionVisible="modalSuppressionVisible"
+                    :elementASupprimer="elementASupprimer" 
+                    @suppressionAnnulee="suppressionAnnulee"
+                    @confirmationSuppression="confirmationSuppression"/>
                 </div>
             </div>
         </td>
@@ -140,6 +146,7 @@ import { onMounted, ref } from 'vue';
 import { RouterLink, useRouter } from 'vue-router';
 import axios from 'axios';
 import { useActivitySector } from '@/composables/secteurActivites';
+import modalSuppression from "@/components/modalSuppression.vue";
 
 
 const props = defineProps({
@@ -219,17 +226,48 @@ const goToEditForm = () => {
 onMounted(async () => {
     if (props.isDemandes) {
         isOffer = false;
+        elementASupprimer.value = 'intership-requests';
     } else {
         isOffer = true;
+        elementASupprimer.value = 'intership-offers';
     }
     if (props.element.enterprise) {
         activitySectorId = props.element.enterprise.activitySector;
+        console.log(activitySectorId)
         setTimeout(() => {
             getActivitySectorById(activitySectorId);
         }, 0o200);
 
     }
 })
+
+const modalSuppressionVisible = ref(false);
+let elementASupprimer = ref(null);
+
+const ouvrirModalSuppression = () => {
+  modalSuppressionVisible.value = !modalSuppressionVisible.value;
+  console.log("Ouverture du modal de suppression");
+  console.log(modalSuppressionVisible.value)
+};
+
+const fermerModalSuppression = () => {
+  modalSuppressionVisible.value = false;
+};
+
+const suppressionAnnulee = () => {
+  fermerModalSuppression();
+};
+
+const confirmationSuppression = () => {
+    
+    if (props.isDemandes) {
+        suppression(props.element._id, elementASupprimer.value = "internship-requests");
+        fermerModalSuppression();
+    } else {
+        suppression(props.element._id, elementASupprimer.value = "internship-offers");
+        fermerModalSuppression();
+    }
+};
 
 </script>
 
