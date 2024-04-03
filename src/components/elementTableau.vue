@@ -146,6 +146,7 @@ import { onMounted, ref } from 'vue';
 import { RouterLink, useRouter } from 'vue-router';
 import axios from 'axios';
 import { useActivitySector } from '@/composables/secteurActivites';
+import { useActivateIntership } from '@/composables/activerStage';
 import modalSuppression from "@/components/modalSuppression.vue";
 
 
