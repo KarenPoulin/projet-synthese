@@ -132,7 +132,7 @@
                     <modalSuppression
                     v-if="modalSuppressionVisible"
                     :modalSuppressionVisible="modalSuppressionVisible"
-                    :elementASupprimer="elementASupprimer" 
+                    :elementASupprimer="intershipType" 
                     @suppressionAnnulee="suppressionAnnulee"
                     @confirmationSuppression="confirmationSuppression"/>
                 </div>
@@ -158,6 +158,7 @@ const props = defineProps({
 const router = useRouter()
 let isOffer = ref(false);
 let intershipType = ref(null);
+let elementASupprimer = ref(null);
 
 const { activitySectorResult, getActivitySectorById } = useActivitySector();
 let activitySectorId = ref(null);
@@ -218,7 +219,6 @@ onMounted(async () => {
 })
 
 const modalSuppressionVisible = ref(false);
-let elementASupprimer = ref(null);
 
 const ouvrirModalSuppression = () => {
   modalSuppressionVisible.value = !modalSuppressionVisible.value;
