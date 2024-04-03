@@ -1,9 +1,9 @@
 <template>
   <div class="bg-neutral-100 w-full">
-    <div v-if="isLoading" class="text-4xl font-bold text-neutral-500 ">Chargement en cours...</div>
+    <div v-if="isLoading" class="text-lg  md:text-xl xl:text-4xl  font-bold text-neutral-500">Chargement en cours...</div>
     <!-- ENTÊTE -->
     <!-- ENTÊTE POUR LES AJOUTS DES DEMANDES ET OFFRES  -->
-    <h1 v-if="isAdding" class="text-4xl font-bold text-neutral-500 "
+    <h1 v-if="isAdding" class="text-lg  md:text-xl xl:text-4xl   font-bold text-neutral-500 "
       :class="{ 'border-l-4 pl-2 my-5 border-yellow-600': isRequest, 'border-l-4 pl-2 my-5 border-red-800': !isRequest }">
       {{ isRequest ? 'Ajouter une demande de stage' : 'Ajouter une offre de stage' }}</h1>
     <!-- ENTÊTE POUR LES MODIFICATIONS DES DEMANDES ET OFFRES -->
@@ -11,21 +11,21 @@
       :class="{ 'border-l-4 pl-2 my-5 border-yellow-600': isRequest, ' border-l-4 pl-2 my-5 border-red-800': !isRequest }">
       <p class=" text-base font-bold text-neutral-500">
         {{ isRequest ? 'Demande de stage' : 'Offre de stage' }}</p>
-      <p class="text-4xl font-bold text-neutral-500" v-if="!isAdding"> {{ dataToSendToAPI.title }}</p>
+      <p class="text-4xl font-bold text-neutral-500" v-if="!isAdding">{{ dataToSendToAPI.title }}</p>
       <p class="font-extrabold text-neutral-500 bg-white p-2 m-1 w-fit rounded" v-if="!isRequest && !isAdding">
         {{ dataToSendToAPI.enterpriseName }}
       </p>
-
+    
     </div>
     <!-- FORMULAIRE  -->
     <form class="m-[25px]">
       <!-- BOUTONS D'ACTION -->
       <div>
         <div class="flex justify-end items-center px-2">
-          <button class="bg-neutral-300 text-white px-4 py-2 m-1 rounded-lg hover:bg-neutral-400"
-            @click="resetForm(isRequest)">Annuler</button>
-          <button
-            :class="isRequest ? 'bg-yellow-600 text-white px-4 py-2 m-1 rounded-lg hover:bg-yellow-700' : 'bg-red-800 text-white px-4 py-2 m-1 rounded-lg hover:bg-red-900'"
+          <button class="bg-neutral-300 text-white text-sm  md:text-md xl:text-lg  px-2 py-1 m-1  md:px-4 md:py-2  rounded-lg hover:bg-neutral-400"
+            @click="resetForm">Annuler</button>
+            <button
+            :class="isRequest ? 'bg-yellow-600 text-white text-sm  md:text-md xl:text-lg  px-2 py-1 m-1  md:px-4 md:py-2 rounded-lg hover:bg-yellow-700' : 'bg-red-800 text-white text-sm  md:text-md xl:text-lg  px-2 py-1 m-1  md:px-4 md:py-2 rounded-lg  hover:bg-red-900'"
             @click="submitForm"><i class="fa-solid fa-floppy-disk p-1"></i>{{ isAdding ? 'Sauvegarder' : 'Mettre à jour'
             }}</button>
         </div>
@@ -33,7 +33,7 @@
 
           <!-- CHAMP TITRE POUR LES DEMANDES ET OFFRES -->
           <div v-if="isAdding" class="flex items-baseline mt-5">
-            <label for="title" class="text-base text-center font-bold text-neutral-500 block mr-4">Titre: </label>
+            <label for="title" class="text-sm md:text-base text-center font-bold text-neutral-500 block mr-4">Titre: </label>
             <input id="title" v-model="dataToSendToAPI.title" @input="validateInput(dataToSendToAPI.title, 'title')"
               type="text" class="border border-gray-300 p-2 w-full rounded focus:bg-white"
               :class="{ 'hover:bg-yellow-100': isRequest, 'hover:bg-red-100': !isRequest }">
@@ -45,7 +45,7 @@
         <!-- CHAMP ENTREPRISE POUR LES OFFRES  -->
         <div v-if="!isRequest && isAdding">
           <div class="flex items-baseline mt-5">
-            <label for="enterprise" class="text-base font-bold text-neutral-500 block mr-4">Entreprise: </label>
+            <label for="enterprise" class="text-sm md:text-base font-bold text-neutral-500 block mr-4">Entreprise: </label>
             <select id="enterprise" v-model="dataToSendToAPI.enterprise" @change="handleEnterpriseChange" type="text"
               class="border border-gray-300 p-2 w-full rounded  focus:bg-white"
               :class="{ 'hover:bg-yellow-100': isRequest, 'hover:bg-red-100': !isRequest }">
@@ -63,23 +63,21 @@
       <div class="bg-white p-10 mt-10">
         <div class="py-2">
           <div v-if="isRequest && isAdding" class="pl-2 m-2">
-            <label for="candidateName" class="text-sm font-bold text-neutral-500  block">Nom et prénom</label>
+            <label for="candidateName" class="text-sm md:text-base font-bold text-neutral-500  block">Nom et prénom</label>
             <select id="candidateName" v-model="dataToSendToAPI.candidateName" @change="handleCandidateChange"
               type="text" class="border border-gray-300 p-2 w-full rounded focus:bg-white"
               :class="{ 'hover:bg-yellow-100': isRequest, 'hover:bg-red-100': !isRequest }">
               <option v-for="candidate in allCandidatesResults" :key="candidate._id" :value="candidate._id">{{
       candidate.firstName }} {{ candidate.lastName }}</option>
             </select>
-            <span v-if="fieldsToValidate.candidateName !== ''" class="p-2 text-xs font-semibold text-red-700">{{
-      fieldsToValidate.candidateName
-    }}</span>
+            <span v-if="fieldsToValidate.candidateName !== ''" class="p-2 text-xs font-semibold text-red-700">  {{ fieldsToValidate.candidateName }} </span>
           </div>
         </div>
 
         <!-- CHAMP CANDIDAT POUR LES DEMANDES EN MODIFICATION -->
         <div class="py-2">
           <div v-if="isRequest && !isAdding" class="pl-2 m-2">
-            <label for="candidateName" class="text-sm font-bold text-neutral-500  block">Candidat</label>
+            <label for="candidateName" class="text-sm md:text-base font-bold text-neutral-500  block">Candidat</label>
             <input id="candidateName" v-model="dataToSendToAPI.candidateName"
               class="border border-gray-300 p-2 w-full rounded focus:bg-white" :disabled="!isAdding">
           </div>
@@ -87,8 +85,8 @@
 
         <!-- CHAMP PRÉSENTATION POUR LES DEMANDES  -->
         <div class="py-2">
-          <div v-if="isRequest" class="grid grid-cols-1 pl-2 m-2">
-            <label for="description" class="text-sm font-bold text-neutral-500  block">Présentation</label>
+          <div v-if="isRequest" class="grid grid-cols-1  pl-2 m-2">
+            <label for="description" class="text-sm md:text-base font-bold text-neutral-500  block">Présentation</label>
             <textarea id="description" v-if="isRequest" v-model="dataToSendToAPI.description"
               @change="validateInput(dataToSendToAPI.description, 'description')"
               class="border border-gray-300 p-2 w-full rounded  focus:bg-white"
@@ -101,7 +99,7 @@
         <!-- CHAMP DESCRIPTION DES TÂCHES POUR LES OFFRES  -->
         <div class="py-2">
           <div v-if="!isRequest" class="grid grid-cols-1  pl-2">
-            <p class="text-4xl font-bold text-red-800 py-2">Description des tâches</p>
+            <p class="xl:text-4xl text-lg font-bold text-red-800 py-2">Description des tâches</p>
             <textarea id="description" v-model="dataToSendToAPI.description"
               @change="validateInput(dataToSendToAPI.description, 'description')"
               class="border border-gray-300 p-2 w-full rounded  focus:bg-white"
@@ -112,10 +110,10 @@
         </div>
 
         <!-- CHAMP PROGRAMME DE FORMATION  POUR LES DEMANDES ET OFFRES  -->
-        <div v-if="isRequest" class="grid grid-cols-2 gap-4">
+        <div v-if="isRequest" class="grid grid-cols-1 xl:grid xl:grid-cols-2 xl:gap-4">
           <div class="py-2">
             <div class="border-l-4 border-gray-800 pl-2 m-2">
-              <label for="programme" class="text-sm font-bold text-neutral-500 block">Programme de formation</label>
+              <label for="programme" class="text-sm md:text-base font-bold text-neutral-500 block">Programme de formation</label>
               <input id="programme" v-model="dataToSendToAPI.programme"
                 @input="validateInput(dataToSendToAPI.programme, 'programme')" type="text"
                 class="border border-gray-300 p-2 w-full rounded mt-1   focus:bg-white"
@@ -128,7 +126,7 @@
           <!-- CHAMP ÉTABLISSEMENT  POUR LES DEMANDES  -->
           <div class="py-2">
             <div v-if="isRequest" class="border-l-4 border-gray-800 pl-2 m-2">
-              <label for="etablissement" class="text-sm font-bold text-neutral-500 block">Établissement
+              <label for="etablissement" class="text-sm md:text-base font-bold text-neutral-500 block">Établissement
                 scolaire</label>
               <input id="etablissement" v-model="dataToSendToAPI.etablissement"
                 @input="validateInput(dataToSendToAPI.etablissement, 'etablissement')" type="text"
@@ -142,7 +140,7 @@
           <!-- CHAMP SECTEUR D'ACTIVITÉS POUR LES DEMANDES -->
           <div class="py-2">
             <div v-if="isRequest" class="border-l-4 border-gray-800 pl-2 m-2">
-              <label for="activitySector" class="text-sm font-bold text-neutral-500 block ml-3   focus:bg-white"
+              <label for="activitySector" class="text-sm md:text-base font-bold text-neutral-500 block ml-3   focus:bg-white"
                 :class="{ 'hover:bg-teal-100': isRequest, 'hover:bg-red-100': !isRequest }">Secteur
                 d'activité</label>
               <select id="activitySector" v-model="dataToSendToAPI.activitySector"
@@ -160,7 +158,7 @@
           <!-- CHAMP VILLE POUR LES DEMANDES -->
           <div class="py-2">
             <div v-if="isRequest" class="border-l-4 border-gray-800 pl-2 m-2">
-              <label for="city" class="text-sm font-bold text-neutral-500 block">Ville</label>
+              <label for="city" class="text-sm md:text-base font-bold text-neutral-500 block">Ville</label>
               <input id="city" v-model="dataToSendToAPI.city" @input="validateInput(dataToSendToAPI.city, 'city')"
                 type="text" class="border border-gray-300 p-2 w-full rounded mt-1  focus:bg-white"
                 :class="{ 'hover:bg-yellow-100': isRequest, 'hover:bg-red-100': !isRequest }">
@@ -172,7 +170,7 @@
           <!-- CHAMP PROVINCES POUR LES DEMANDES -->
           <div class="py-2">
             <div v-if="isRequest" class="border-l-4 border-gray-800 pl-2 m-2">
-              <label for="province" class="text-sm font-bold text-neutral-500 block">Province</label>
+              <label for="province" class="text-sm md:text-base font-bold text-neutral-500 block">Province</label>
               <select id="province" v-model="dataToSendToAPI.province" @change="handleProvinceChange" type="text"
                 class="border border-gray-300 p-2 w-full rounded mt-1 focus:bg-white"
                 :class="{ 'hover:bg-yellow-100': isRequest, 'hover:bg-red-100': !isRequest }">
@@ -187,7 +185,7 @@
 
         <!-- CHAMP PROGRAMME DE FORMATION POUR LES OFFRES -->
         <div v-if="!isRequest" class="border-l-4 border-gray-800 pl-2 m-2">
-          <label for="programme" class="text-sm font-bold text-neutral-500 block">Programme de formation</label>
+          <label for="programme" class="text-sm md:text-base font-bold text-neutral-500 block">Programme de formation</label>
           <input id="programme" v-model="dataToSendToAPI.programme"
             @input="validateInput(dataToSendToAPI.programme, 'programme')" type="text"
             class="border border-gray-300 p-2 w-full rounded mt-1   focus:bg-white"
@@ -199,7 +197,7 @@
         <!-- CHAMP EXIGENCES POUR LES OFFRES -->
         <div class="py-2">
           <div v-if="!isRequest" class="grid grid-cols-1 border-l-4 border-gray-800 pl-2 m-2">
-            <label for="requiredSkills" class="text-sm font-bold text-neutral-500 block">Exigences</label>
+            <label for="requiredSkills" class="text-sm md:text-base font-bold text-neutral-500 block">Exigences</label>
             <textarea id="requiredSkills" v-model="dataToSendToAPI.requiredSkills"
               @change="validateInput(dataToSendToAPI.requiredSkills, 'requiredSkills')"
               class="border border-gray-300 p-2 w-full rounded  focus:bg-white"
@@ -212,7 +210,7 @@
         <!-- CHAMP COMPÉTENCES POUR LES DEMANDES -->
         <div class="py-2">
           <div v-if="isRequest" class="grid grid-cols-1 border-l-4 border-gray-800 pl-2 m-2">
-            <label for="skills" class="text-sm font-bold text-neutral-500 block">Compétences</label>
+            <label for="skills" class="text-sm md:text-base font-bold text-neutral-500 block">Compétences</label>
             <textarea id="skills" v-if="isRequest" v-model="dataToSendToAPI.skills"
               @change="validateInput(dataToSendToAPI.skills, 'skills')"
               class="border border-gray-300 p-2 w-full rounded  focus:bg-white"
@@ -227,10 +225,10 @@
           Information sur le stage</p>
 
         <!-- CHAMP TYPE DE STAGE  POUR LES DEMANDES ET LES OFFRES -->
-        <div class="grid grid-cols-2 gap-4 items-baseline">
+        <div class="grid grid-cols-1 xl:grid xl:grid-cols-2 xl:gap-4 ">
           <div class="py-2">
             <div class="border-l-4 border-gray-800 pl-2 m-2">
-              <label for="internshipType" class="text-sm font-bold text-neutral-500 block">Type de stage</label>
+              <label for="internshipType" class="text-sm md:text-base font-bold text-neutral-500 block">Type de stage</label>
               <select id="internshipType" v-model="dataToSendToAPI.internshipType" @change="handleInternshipTypeChange"
                 type="text" class="border border-gray-300 p-2 w-full rounded mt-1 focus:bg-white"
                 :class="{ 'hover:bg-yellow-100': isRequest, 'hover:bg-red-100': !isRequest }">
@@ -245,7 +243,7 @@
           <!-- CHAMP DATE DE DÉBUT  POUR LES DEMANDES ET LES OFFRES -->
           <div class="py-2">
             <div class="border-l-4 border-gray-800 pl-2 m-2">
-              <label for="startDate" class="text-sm font-bold text-neutral-500 block">Date de début</label>
+              <label for="startDate" class="text-sm md:text-base font-bold text-neutral-500 block">Date de début</label>
               <input id="startDate" v-model="dataToSendToAPI.startDate"
                 @input="validateDate(dataToSendToAPI.startDate, 'startDate')" type="date"
                 class="border border-gray-300 p-2 w-full rounded mt-1    focus:bg-white"
@@ -257,7 +255,7 @@
 
           <!-- CHAMP NOMBRE D'HEURES PAR SEMAINES LES DEMANDES ET LES OFFRES -->
           <div class="border-l-4 border-gray-800 pl-2 m-2">
-            <label for="weeklyWorkHours" class="text-sm font-bold text-neutral-500 block">Nombre d'heures par
+            <label for="weeklyWorkHours" class="text-sm md:text-base font-bold text-neutral-500 block">Nombre d'heures par
               semaine</label>
             <input id="weeklyWorkHours" v-model="dataToSendToAPI.weeklyWorkHours"
               @input="validateNumber(dataToSendToAPI.weeklyWorkHours, 'weeklyWorkHours')" type="number"
@@ -270,7 +268,7 @@
           <!-- CHAMP DATE DE FIN POUR LES DEMANDES ET LES OFFRES -->
           <div class="py-2">
             <div class="border-l-4 border-gray-800 pl-2 m-2">
-              <label for="endDate" class="text-sm font-bold text-neutral-500 block">Date de fin</label>
+              <label for="endDate" class="text-sm md:text-base font-bold text-neutral-500 block">Date de fin</label>
               <input id="endDate" v-model="dataToSendToAPI.endDate"
                 @input="validateDate(dataToSendToAPI.endDate, 'endDate')" type="date"
                 class="border border-gray-300 p-2 w-full rounded mt-1    focus:bg-white"
@@ -284,7 +282,7 @@
         <!-- CHAMP RÉNUMÉRATION POUR LES DEMANDES ET LES OFFRES -->
         <div class="py-2">
           <div class="border-l-4 border-gray-800 pl-2 m-2">
-            <label class="text-sm font-bold text-neutral-500 block mb-2">Rémunération</label>
+            <label class="text-sm md:text-base font-bold text-neutral-500 block mb-2">Rémunération</label>
             <input id="discretionary" v-model="dataToSendToAPI.paid"
               @change="validatePaid(dataToSendToAPI.paid, 'paid')" value="DISCRETIONARY" type="radio"
               class="mr-2 ml-3 rounded " :class="{ 'hover:bg-yellow-100': isRequest, 'hover:bg-red-100': !isRequest }">
@@ -305,7 +303,7 @@
         <!-- CHAMP INFORMATION SUPPLÉMENTAIRES POUR LES DEMANDES ET LES OFFRES -->
         <div class="py-2">
           <div class="m-2">
-            <label for="additionalInformation" class="text-sm font-bold"
+            <label for="additionalInformation" class="text-sm md:text-base font-bold"
               :class="isRequest ? ' text-yellow-600' : 'text-red-800'">Information supplémentaire</label>
             <textarea id="additionalInformation" v-model="dataToSendToAPI.additionalInformation"
               @change="validateInput(dataToSendToAPI.additionalInformation, 'additionalInformation')"
@@ -317,7 +315,7 @@
         </div>
 
         <!-- SECTION TÉLÉCHARGEMENT POUR LES DEMANDES  -->
-        <div v-if="isRequest" class="m-2  flex justify-between items-center">
+        <div v-if="isRequest" class=" hidden md:m-2 md:flex justify-between items-center">
           <div class="w-1/2 flex items-center">
             <input class="h-10 border border-gray-300 py-3 w-full rounded  hover:bg-yellow-100  focus:bg-white">
             <button
@@ -330,15 +328,16 @@
 
         <!-- BOUTONS D'ACTION  -->
         <div class="flex justify-end my-5 pb-10">
-          <button class="bg-neutral-300 text-white px-4 py-2 m-1 rounded-lg hover:bg-neutral-400"
+          <button class="bg-neutral-300 text-white text-sm  md:text-md xl:text-lg  px-2 py-1 m-1  md:px-4 md:py-2 rounded-lg hover:bg-neutral-400"
             @click="resetForm">Annuler</button>
-          <button
-            :class="isRequest ? 'bg-yellow-600 text-white px-4 py-2 m-1 rounded-lg hover:bg-yellow-700' : 'bg-red-800 text-white px-4 py-2 m-1 rounded-lg hover:bg-red-900'"
+            <button
+            :class="isRequest ? 'bg-yellow-600 text-white text-sm  md:text-md xl:text-lg  px-2 py-1 m-1  md:px-4 md:py-2 rounded-lg hover:bg-yellow-700' : 'bg-red-800 text-white text-sm  md:text-md xl:text-lg  px-2 py-1 m-1  md:px-4 md:py-2 rounded-lg  hover:bg-red-900'"
             @click="submitForm"><i class="fa-solid fa-floppy-disk p-1"></i>{{ isAdding ? 'Sauvegarder' : 'Mettre à jour'
             }}</button>
         </div>
       </div>
     </form>
+
   </div>
 </template>
 
