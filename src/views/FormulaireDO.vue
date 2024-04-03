@@ -322,7 +322,7 @@
               class="h-10 bg-neutral-300 text-white px-4 py-1 rounded hover:bg-neutral-400 text-center">Parcourir</button>
           </div>
           <button v-if="!isAdding"
-            class="bg-yellow-600 text-white p-2 m-1 rounded-lg hover:bg-yellow-700  focus:bg-white"><i
+            class="bg-yellow-600 text-white  text-sm  md:text-md xl:text-lg  px-2 py-1 m-1  md:px-4 md:py-2 rounded-lg hover:bg-yellow-700  focus:bg-white"><i
               class="fa-solid fa-cloud-arrow-down p-1"></i>Télécharger le C.V. </button>
         </div>
 
@@ -555,7 +555,6 @@ const validateForm = () => {
     for (let key in fieldsToValidate) {
       fieldsToValidate[key] = '';
     }
-    console.log('The form is valid!')
   }
 };
 
@@ -637,7 +636,6 @@ onMounted(async () => {
       isLoading.value = true;
       try {
         const response = await axios.get(`https://api-4.fly.dev/internship-offers/${id.value}`);
-
         const data = response.data
         if (data.enterprise) {
           selectedEnterprise.value = data.enterprise;
@@ -647,7 +645,6 @@ onMounted(async () => {
         } else {
           console.error('Enterprise data is null or undefined');
         }
-
 
         if (data.province) {
           selectedProvince.value = data.province;
@@ -660,7 +657,6 @@ onMounted(async () => {
           selectedInternshipType.value = data.internshipType;
           dataToSendToAPI.internshipType = data.internshipType._id;
         }
-
 
         Object.assign(dataToSendToAPI, {
           title: data.title,
@@ -756,7 +752,6 @@ const submitForm = () => {
     } else {
       handleDataOffer();
     }
-    console.log("Form submitted successfully");
   } else {
     console.error("Form is invalid");
   }
@@ -808,7 +803,6 @@ const handleDataRequest = async () => {
       isActive: !isAdding.value
     };
     await sendRequest(formDataRequest);
-    console.log(formDataRequest);
   } else {
     console.error('Selected candidate is not valid');
   }
@@ -845,7 +839,6 @@ const handleDataOffer = async () => {
       isActive: !isAdding.value
     };
     await sendRequest(formDataOffer);
-    console.log(formDataOffer);
   } else {
     console.error('Selected enterprise is not valid');
   }
@@ -854,7 +847,6 @@ const handleDataOffer = async () => {
 
 // Fonction pour réinitialiser le formulaire
 const resetForm = () => {
-  dataToSendToAPI.additionalInformation = '';
   for (let key in dataToSendToAPI) {
     dataToSendToAPI[key] = '';
   }
