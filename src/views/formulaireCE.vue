@@ -307,9 +307,6 @@
         useRouter,
         useRoute
     } from 'vue-router';
-    /*import {
-        createSnacbar
-    } from 'vue3-snackbar';*/
 
 
 
@@ -346,13 +343,12 @@
             const entrepriseId = ref(null);
             const candidateId = ref(null);
             const mCandidat = ref(null);
-            /*const {
-                showSnackbar
-            } = createSnackbar();*/
+          
 
 
 
 
+            
             const formData = reactive({
                 fullName: '',
                 description: '',
@@ -377,6 +373,7 @@
 
 
 
+            
             const errorMessage = reactive({
                 empty: 'Le champ ne peut pas être vide',
                 minCharacters: 'Le champ doit avoir au moins 2 caractères',
@@ -399,6 +396,7 @@
             })
 
 
+            
             const fieldsError = reactive({
                 fullName: '',
                 skills: '',
@@ -416,6 +414,7 @@
 
 
 
+            // Fonction pour annuler le formulaire
             const resetValidationErrors = () => {
                 for (let keyValue in fieldsError) {
                     if (fieldsError.hasOwnProperty(keyValue)) {
@@ -426,6 +425,7 @@
 
 
 
+            // Fonction pour valider un champ de texte
             const validateString = (input, field) => {
                 if (input.trim() === "") {
                     fieldsError[field] = errorMessage.empty;
@@ -442,6 +442,7 @@
                 fieldsError[field] = "";
             }
 
+            // Fonction pour valider un nom complet
             const validateFullName = () => {
                 const fullNameTrimmed = formData.fullName.trim()
                 const fullNameWords = fullNameTrimmed.split(' ')
@@ -456,6 +457,7 @@
                 fieldsError.fullName = "";
             };
 
+            // Fonction pour valider les compétences
             const validateSkills = () => {
                 if (typeof formData.skills !== 'string') {
                     fieldsError.skills = errorMessage.string;
@@ -468,7 +470,7 @@
                     return;
                 }
 
-                // Vérifiez si les compétences sont séparées par une virgule suivie d'un espace
+                
                 const skillsArray = skillsTrimmed.split(', ');
                 const validSkills = skillsArray.every(skill => skill.trim().length > 0);
 
@@ -480,6 +482,7 @@
                 fieldsError.skills = "";
             };
 
+            // Fonction pour valider une description
             const validateDescription = () => {
                 const descriptionTrimmed = formData.description.trim()
                 if (descriptionTrimmed.length < 3 || descriptionTrimmed.length > 250) {
@@ -489,6 +492,7 @@
                 fieldsError.description = "";
             };
 
+            // Fonction pour valider une adresse
             const validateAddress = () => {
                 const addressTrimmed = formData.address.trim()
                 if (!addressTrimmed) {
@@ -504,6 +508,7 @@
                 fieldsError.address = "";
             };
 
+            // Fonction pour valider un numéro de téléphone
             const validatePhone = () => {
                 const phoneTrimmed = formData.phone.trim()
                 const phoneRegex = /^\d{3}-\d{3}-\d{4}$/
@@ -517,6 +522,7 @@
                 fieldsError.phone = "";
             };
 
+            // Fonction pour valider une ville
             const validateCity = () => {
                 const cityTrimmed = formData.city.trim()
                 if (!cityTrimmed) {
@@ -530,6 +536,7 @@
                 fieldsError.city = "";
             };
 
+            // Fonction pour valider un courriel
             const validateEmail = () => {
                 if (!formData.email.trim()) {
                     fieldsError.email = errorMessage.empty;
@@ -541,6 +548,7 @@
                 fieldsError.email = "";
             };
 
+            // Fonction pour valider une province
             const validateProvince = () => {
                 if (!formData.provinceId) {
                     fieldsError.province = 'Veuillez sélectionner une province.'
@@ -550,11 +558,14 @@
             };
 
 
+            // Fonction pour formater un code postal
             const formatPostalCode = (postalCode) => {
                 const cleanedPostalCode = postalCode.replace(/\s/g, '').toUpperCase();
                 return cleanedPostalCode.substring(0, 3) + " " + cleanedPostalCode.substring(3);
             };
 
+
+            // Fonction pour valider un code postal
             const validatePostalCode = () => {
                 if (!formData.postalCode.trim()) {
                     fieldsError.postalCode = errorMessage.empty;
@@ -566,12 +577,14 @@
                 fieldsError.postalCode = "";
             };
 
+            // Fonction pour valider un code postal
             const isPostalCodeValid = (postalCode) => {
                 const cleanedPostalCode = postalCode.replace(/\s/g, '');
                 const postalCodeRegex = /^[A-Za-z]\d[A-Za-z]\d[A-Za-z]\d$/;
                 return postalCodeRegex.test(cleanedPostalCode);
             };
 
+            //validation Name
             const validateName = () => {
                 const nameTrimmed = formData.name.trim()
                 if (nameTrimmed.length < 3 || nameTrimmed.length > 50) {
@@ -581,6 +594,7 @@
                 fieldsError.name = "";
             };
 
+            //validation Contact
             const validateContact = () => {
                 const contactTrimmed = formData.contact.trim()
                 if (contactTrimmed.length < 3 || contactTrimmed.length > 50) {
@@ -590,6 +604,7 @@
                 fieldsError.contact = "";
             };
 
+            //validation Logo
             const validateLogo = () => {
                 const logoTrimmed = formData.image.trim()
                 if (!logoTrimmed) {
@@ -605,7 +620,7 @@
             };
 
 
-            // Fonction pour décoder une image encodée en base64
+            // Fonction pour décoder une image en base64
             const decodeBase64Image = (base64Image) => {
                 const matches = base64Image.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
 
@@ -630,6 +645,7 @@
 
             let isFormValid = ref(false);
 
+            // Fonction pour valider le formulaire
             const validateForm = () => {
 
                 validateDescription();
@@ -696,14 +712,12 @@
                 }
             }
 
+            // Fonction pour soumettre le formulaire
             const submitForm = async () => {
                 validateForm();
-                /**  Décode de l'image
-            const decodedImage = decodeBase64Image(formData.image);
-            console.log(decodedImage.type); // Type de l'image
-            console.log(decodedImage.data); // Données de l'image sous forme de Buffer
+               
 
-            // Encodage de l'image
+            /* Encodage de l'image
             const encodedImage = encodeBase64Image(decodedImage.data);
             console.log(encodedImage); // Image encodée en base64*/
 
@@ -755,12 +769,7 @@
                                 }
                             });
                             if (response.status === 201 || response.status === 200) {
-                                /* const message = editing.value ? "Candidat modifié" : "candidat ajoutée";
-                                 showSnackbar(message, {
-                                     duration: 3000,
-                                     position: 'bottom',
-                                 });*/
-
+                              
 
                                 router.push('/app/Candidats');
                             }
@@ -807,12 +816,7 @@
 
                             console.log(response);
                             if (response.status === 201 || response.status === 200) {
-                                /**const message = editing.value ? "Entreprise modifié" : "Entreprise ajoutée";
-                                showSnackbar(message, {
-                                    duration: 3000,
-                                    position: 'bottom',
-                                });*/
-
+                               
                                 router.push('/app/Entreprises');
                             }
 
@@ -845,6 +849,7 @@
                 };
                 formData.website = '';
             }
+            // Fonction pour récupérer les provinces
             const provinces = ref([])
             const fetchProvinces = async () => {
                 try {
@@ -855,7 +860,12 @@
                 }
             };
 
+            // Fonction pour récupérer les données d'une entreprise ou d'un candidat
             const fetchData = async (id, type) => {
+                 /* Décode de l'image
+            const decodedImage = decodeBase64Image(formData.image);
+            console.log(decodedImage.type); // Type de l'image
+            console.log(decodedImage.data); // Données de l'image sous forme de Buffer */
 
 
                 editing.value = true;
