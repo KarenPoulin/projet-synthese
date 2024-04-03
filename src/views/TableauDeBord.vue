@@ -1,5 +1,14 @@
 <template>
-
+    <div  class="mb-12 w-full flex flex-col lg:flex-row gap-y-2 gap-x-2 justify-between">
+        <div class="w-full lg:w-2/3 gap-x-2 gap-y-2 flex flex-col sm:flex-row">
+            <carteCompteurSimple :type="intershipRequests1"/>
+            <carteCompteurSimple :type="intershipOffers1"/>
+        </div>
+        <div class="flex flex-row w-full lg:w-1/3 lg:max-w-1/3 rounded-lg">
+            <carteCompteurSimple :type="candidates1"/>
+            <carteCompteurSimple :type="enterprises1"/>
+        </div>
+    </div>
 
     <div v-if="intershipRequestsCount && intershipOffersCount && candidatesCount && enterprisesCount" class="mb-12 w-full flex flex-col lg:flex-row gap-y-2 gap-x-2 justify-between">
         <div class="w-full lg:w-2/3 gap-x-2 gap-y-2 flex flex-col sm:flex-row">
@@ -61,32 +70,44 @@
         </div>
     </div>
 
-
-    <div v-if="allDemandeDeStagesResults" class="mt-4 mb-16 px-4 py-6 lg:px-10 lg:py-16 bg-white rounded-lg">
-        <div class="mb-16">
-            <h2 class="text-lg font-bold">Dernières <span class="text-yellow-600">demandes</span> de stage</h2>
-            <p class="text-sm text-red-700">En attente de validation</p>
+    <template v-if="allDemandeDeStagesResults">
+        <div class="mt-4 mb-16 px-4 py-6 lg:px-10 lg:py-16 bg-white rounded-lg">
+            <div class="mb-16">
+                <h2 class="text-lg font-bold">Dernières <span class="text-yellow-600">demandes</span> de stage</h2>
+                <p class="text-sm text-red-700">En attente de validation</p>
+            </div>
+            <table class="w-full">
+                <EnteteTableau :isDemandes="true" :isTableauDeBord="true" />
+                <template v-for="demandeDeStage in demandeDeStageIsNotActive.slice(0, 5)" :key="demandeDeStage._id">
+                    <ElementTableau :element="demandeDeStage" :isDemandes="true" :isTableauDeBord="true" />
+                </template>
+            </table>
         </div>
-        <table class="w-full">
-            <EnteteTableau :isDemandes="true" :isTableauDeBord="true" />
-            <template v-for="demandeDeStage in demandeDeStageIsNotActive.slice(0, 5)" :key="demandeDeStage._id">
-                <ElementTableau :element="demandeDeStage" :isDemandes="true" :isTableauDeBord="true" />
-            </template>
-        </table>
-    </div>
+    </template>
+    <template v-else>
+        <p class="text-xs">Chargement des demandes inactives...</p>
+    </template>
 
-    <div v-if="allOffreDeStagesResults" class="mt-4 px-4 py-6 lg:px-10 lg:py-16 bg-white rounded-lg">
-        <div class="mb-16">
-            <h2 class="text-lg font-bold">Dernières <span class="text-red-700">offres</span> de stage</h2>
-            <p class="text-sm text-red-700">En attente de validation</p>
+
+    <template v-if="allOffreDeStagesResults">
+        <div class="mt-4 px-4 py-6 lg:px-10 lg:py-16 bg-white rounded-lg">
+            <div class="mb-16">
+                <h2 class="text-lg font-bold">Dernières <span class="text-red-700">offres</span> de stage</h2>
+                <p class="text-sm text-red-700">En attente de validation</p>
+            </div>
+            <table class="w-full">
+                <EnteteTableau :isDemandes="false" :isTableauDeBord="true" />
+                <template v-for="offreDeStage in offreDeStagesIsNotActive.slice(0, 5)" :key="offreDeStage._id">
+                    <ElementTableau :element="offreDeStage" :isDemandes="false" :isTableauDeBord="true" />
+                </template>
+            </table>
         </div>
-        <table class="w-full">
-            <EnteteTableau :isDemandes="false" :isTableauDeBord="true" />
-            <template v-for="offreDeStage in offreDeStagesIsNotActive.slice(0, 5)" :key="offreDeStage._id">
-                <ElementTableau :element="offreDeStage" :isDemandes="false" :isTableauDeBord="true" />
-            </template>
-        </table>
-    </div>
+    </template>
+    <template v-else>
+        <p class="text-xs">Chargement des offres inactives...</p>
+    </template>
+
+
 </template>
 
 <script setup>
@@ -96,6 +117,7 @@ import { useAllDemandeDeStages } from '@/composables/demandeDeStage';
 import { useAllOffreDeStages } from '@/composables/offreDeStage';
 import ElementTableau from '../components/elementTableau.vue'
 import EnteteTableau from '../components/enteteTableau.vue'
+import carteCompteurSimple from '@/components/carteCompteurSimple.vue';
 
 const { allDemandeDeStagesResults, getAllDemandeDeStages } = useAllDemandeDeStages();
 const { allOffreDeStagesResults, getAllOffreDeStages } = useAllOffreDeStages();
@@ -104,6 +126,7 @@ let intershipRequestsCount = ref(null);
 let intershipOffersCount = ref(null);
 let candidatesCount = ref(null);
 let enterprisesCount = ref(null);
+
 let demandeDeStageIsNotActive = reactive([]);
 let offreDeStagesIsNotActive = reactive([]);
 
@@ -112,6 +135,11 @@ const intershipRequests = "internship-requests/";
 const intershipOffers = "internship-offers/";
 const candidates = "candidates/";
 const enterprises = "enterprises/";
+
+const intershipRequests1 = "internship-requests";
+const intershipOffers1 = "internship-offers";
+const candidates1 = "candidates";
+const enterprises1 = "enterprises";
 
 
 const getDataCount = async (endpoint, variable) => {
@@ -126,9 +154,14 @@ const getDataCount = async (endpoint, variable) => {
 
 onMounted(async () => {
     await getAllDemandeDeStages();
+    console.log(allDemandeDeStagesResults);
     await getAllOffreDeStages();
+    console.log(allOffreDeStagesResults);
     demandeDeStageIsNotActive = allDemandeDeStagesResults.filter(request => !request.isActive);
+    console.log(demandeDeStageIsNotActive);
     offreDeStagesIsNotActive = allOffreDeStagesResults.filter(offer => !offer.isActive);
+    console.log(offreDeStagesIsNotActive);
+
     getDataCount(intershipRequests, intershipRequestsCount);
     getDataCount(intershipOffers, intershipOffersCount);
     getDataCount(candidates, candidatesCount);
