@@ -11,7 +11,7 @@
       :class="{ 'border-l-4 pl-2 my-5 border-yellow-600': isRequest, ' border-l-4 pl-2 my-5 border-red-800': !isRequest }">
       <p class=" text-base font-bold text-neutral-500">
         {{ isRequest ? 'Demande de stage' : 'Offre de stage' }}</p>
-      <p class="text-4xl font-bold text-neutral-500" v-if="!isAdding">{{ dataToSendToAPI.title }}</p>
+      <p class="text-lg  md:text-xl xl:text-4xl  font-bold text-neutral-500" v-if="!isAdding">{{ dataToSendToAPI.title }}</p>
       <p class="font-extrabold text-neutral-500 bg-white p-2 m-1 w-fit rounded" v-if="!isRequest && !isAdding">
         {{ dataToSendToAPI.enterpriseName }}
       </p>
