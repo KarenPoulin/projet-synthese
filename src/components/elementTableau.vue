@@ -213,7 +213,6 @@ onMounted(async () => {
     }
     if (props.element.enterprise) {
         activitySectorId = props.element.enterprise.activitySector;
-        console.log(activitySectorId)
         setTimeout(() => {
             getActivitySectorById(activitySectorId);
         }, 0o200);

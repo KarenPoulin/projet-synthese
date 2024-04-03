@@ -4,18 +4,40 @@ import axios from 'axios';
 const baseUrl = "https://api-4.fly.dev/";
 
 // https://api-4.fly.dev/internship-requests
+
 export function useAllDemandeDeStages() {
     const allDemandeDeStagesResults = reactive([]);
 
-    const getAllDemandeDeStages = () => {
-        return axios.get(`${baseUrl}internship-requests`)
-        .then((res) => allDemandeDeStagesResults.push(...res.data))
-        .catch((error) => console.log(error))
+    const getAllDemandeDeStages = async () => {
+        try {
+            const res = await axios.get(`${baseUrl}internship-requests`);
+            allDemandeDeStagesResults.push(...res.data)
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     return {
         allDemandeDeStagesResults,
         getAllDemandeDeStages
+    }
+}
+
+export function useAllDemandeDeStagesInactive() {
+    let allDemandeDeStagesInactiveResults = reactive([]);
+
+    const getAllDemandeDeStagesInactive = async () => {
+        try {
+            const res = await axios.get(`${baseUrl}internship-requests`);
+            allDemandeDeStagesInactiveResults.push(...res.data.filter(request => !request.isActive))
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    return {
+        allDemandeDeStagesInactiveResults,
+        getAllDemandeDeStagesInactive
     }
 }
 
