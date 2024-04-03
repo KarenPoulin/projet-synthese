@@ -400,7 +400,6 @@ const dataToSendToAPI = reactive({
   endDate: '',
   paid: '',
   additionalInformation: '',
-  selectedCandidateId: '',
 });
 
 
@@ -440,9 +439,6 @@ const fieldsToValidate = reactive({
   endDate: '',
   paid: '',
   additionalInformation: '',
-  selectedCandidateId: '',
-  selectedProvinceId: '',
-  selectedInternshipTypeId: ''
 });
 
 
@@ -695,6 +691,7 @@ const handleCandidateChange = (event) => {
   const selectedCandidateObj = allCandidatesResults.find(candidate => candidate._id === selectedCandidateId);
 
   if (selectedCandidateObj) {
+    validateSelect(selectedCandidateId, 'candidateName');
     selectedCandidate.value = selectedCandidateObj;
   } else {
     console.error('Candidate not found in allCandidatesResults');
@@ -708,6 +705,7 @@ const handleProvinceChange = (event) => {
   const selectedProvinceObj = allProvincesResults.find(province => province._id === selectedProvinceId);
 
   if (selectedProvinceObj) {
+    validateSelect(selectedProvinceId, 'province');
     selectedProvince.value = selectedProvinceObj;
   } else {
     console.error('Province not found in allProvincesResults');
@@ -721,6 +719,7 @@ const handleInternshipTypeChange = (event) => {
   const selectedInternshipTypeObj = allIntershipTypesResults.find(type => type._id === selectedInternshipTypeId);
 
   if (selectedInternshipTypeObj) {
+    validateSelect(selectedInternshipTypeId, 'internshipType');
     selectedInternshipType.value = selectedInternshipTypeObj;
   } else {
     console.error('Intershiptype not found in allIntershipTypesResults');
@@ -735,6 +734,7 @@ const handleEnterpriseChange = (event) => {
 
   if (selectedEnterpriseObj) {
     selectedEnterprise.value = selectedEnterpriseObj;
+    validateSelect(selectedEnterpriseId, 'enterprise');
     console.log(selectedEnterpriseObj)
   } else {
     console.error('Enterprise not found in allEnterprisesResults');
