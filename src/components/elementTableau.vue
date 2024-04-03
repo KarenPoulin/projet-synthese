@@ -148,6 +148,8 @@ import axios from 'axios';
 import { useActivitySector } from '@/composables/secteurActivites';
 import { useActivateIntership } from '@/composables/activerStage';
 import modalSuppression from "@/components/modalSuppression.vue";
+import suppressionDesDonnees from '../composables/suppressionDesDonnees'
+
 
 
 const props = defineProps({
@@ -164,6 +166,7 @@ const { activitySectorResult, getActivitySectorById } = useActivitySector();
 let activitySectorId = ref(null);
 
 const {activateIntership} = useActivateIntership();
+const { suppression } = suppressionDesDonnees();
 
 /* Format de date 'année-mois-jours' */
 const formatDate = (dateString) => {
@@ -239,9 +242,15 @@ const confirmationSuppression = () => {
     if (props.isDemandes) {
         suppression(props.element._id, elementASupprimer.value = "internship-requests");
         fermerModalSuppression();
+        setTimeout(() => {
+                window.location.reload();
+        }, 3000);
     } else {
         suppression(props.element._id, elementASupprimer.value = "internship-offers");
         fermerModalSuppression();
+        setTimeout(() => {
+            window.location.reload();
+        }, 3000);
     }
 };
 
