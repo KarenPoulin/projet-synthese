@@ -95,7 +95,7 @@
         </td>
         <td>
             <div class="my-5 flex flex-row items-center justify-between">
-                <button v-if="isTableauDeBord" @click="activateIntership(element._id, isDemandes)"
+                <button v-if="isTableauDeBord" @click="activateIntership(intershipType ,element._id,)"
                     class="mr-1 py-1 lg:py-1.5 px-2 lg:px-2.5 bg-green-200/[.6] hover:bg-green-200 focus:bg-green-200 text-green-500 text-huit sm:text-neuf md:text-dix lg:text-xs font-medium rounded-lg">Accepter</button>
                 <div class="flex flex-row justify-between">
                     <RouterLink v-if="element.candidate" :to="{name:'pagedetaildemandedestage', params:{id: element._id}}">
@@ -156,10 +156,12 @@ const props = defineProps({
 })
 const router = useRouter()
 let isOffer = ref(false);
+let intershipType = ref(null);
 
 const { activitySectorResult, getActivitySectorById } = useActivitySector();
 let activitySectorId = ref(null);
 
+const {activateIntership} = useActivateIntership();
 
 /* Format de date 'année-mois-jours' */
 const formatDate = (dateString) => {
@@ -172,33 +174,6 @@ const formatDate = (dateString) => {
     return `${year}-${month}-${day}`;
 };
 
-
-function activateIntership(id) {
-    const baseUrl = 'https://api-4.fly.dev/';
-    let patchUrl = '';
-    if (!isOffer) {
-        patchUrl = `${baseUrl}internship-requests/${id}`;
-    } else {
-        patchUrl = `${baseUrl}internship-offers/${id}`;
-    }
-    const patchData = {
-        "isActive": true
-    }
-
-    axios.patch(patchUrl, patchData)
-        .then(res => {
-            console.log('PATCH requête réussie');
-            console.log('Réponse:', res.data);
-            // Timeout a enlever quand tout sera fini
-            setTimeout(() => {
-                window.location.reload();
-            }, 3000);
-        })
-        .catch(error => {
-            console.error('Erreur:', error)
-        });
-
-}
 
 const goToEditForm = () => {
         let id;
@@ -226,10 +201,10 @@ const goToEditForm = () => {
 onMounted(async () => {
     if (props.isDemandes) {
         isOffer = false;
-        elementASupprimer.value = 'intership-requests';
+        intershipType = 'internship-requests';
     } else {
         isOffer = true;
-        elementASupprimer.value = 'intership-offers';
+        intershipType = 'internship-offers';
     }
     if (props.element.enterprise) {
         activitySectorId = props.element.enterprise.activitySector;

@@ -6,7 +6,7 @@
     <div class="modal-content bg-white p-8 rounded-lg shadow-lg max-w-md text-center">
       <!-- Message d'accueil du modal -->
       <div class="donnees">
-        <p v-if="elementASupprimer === 'intership-requests'" class="text-red-600 text-xl mb-6">
+        <p v-if="elementASupprimer === 'internship-requests'" class="text-red-600 text-xl mb-6">
           Voulez-vous vraiment supprimer cette demande de stage ?
         </p>
 
@@ -22,7 +22,7 @@
           Voulez-vous vraiment supprimer cette entreprise ?
         </p>
 
-        <p v-if="elementASupprimer === 'intership-offers'" class="text-red-600 text-xl mb-6">
+        <p v-if="elementASupprimer === 'internship-offers'" class="text-red-600 text-xl mb-6">
           Voulez-vous vraiment supprimer cette offre de stage ?
         </p>
 

@@ -549,7 +549,6 @@ const validateForm = () => {
   fieldsToValidate.paid = validatePaid(dataToSendToAPI.paid, 'paid');
   fieldsToValidate.additionalInformation = validateInput(dataToSendToAPI.additionalInformation, 'additionalInformation');
   fieldsToValidate.enterprise = validateSelect(dataToSendToAPI.enterprise, 'enterprise');
-  fieldsToValidate.description = validateInput(dataToSendToAPI.description, 'description');
   fieldsToValidate.requiredSkills = validateInput(dataToSendToAPI.requiredSkills, 'requiredSkills');
 
   isFormValid.value = Object.values(fieldsToValidate).every(value => value === '');
@@ -589,7 +588,8 @@ onMounted(async () => {
           selectedCandidate.value = data.candidate;
           dataToSendToAPI.candidateName = `${data.candidate.firstName} ${data.candidate.lastName}`;
           dataToSendToAPI.city = data.candidate.city;
-          dataToSendToAPI.province = data.candidate.province
+          dataToSendToAPI.province = data.candidate.province;
+      
         } else {
           console.error('Candidate data is null or undefined');
         }
@@ -615,7 +615,7 @@ onMounted(async () => {
           province: data.province._id,
           paid: data.paid,
           additionalInformation: data.additionalInformation,
-          isActive: true
+
         });
 
         dataToSendToAPI.candidateName = `${data.candidate.firstName} ${data.candidate.lastName}`;
@@ -671,7 +671,7 @@ onMounted(async () => {
           province: data.province._id,
           salary: data.salary,
           paid: data.paid,
-          isActive: true
+
         });
 
         dataToSendToAPI.requiredSkills = data.requiredSkills.join(', ');
@@ -758,7 +758,6 @@ const submitForm = () => {
       handleDataOffer();
     }
     console.log("Form submitted successfully");
-
   } else {
     console.error("Form is invalid");
   }
@@ -769,7 +768,6 @@ const submitForm = () => {
 const sendRequest = async (formData) => {
   try {
     const baseUrl = 'https://api-4.fly.dev';
-
     const url = props.isRequest ? `${baseUrl}/internship-requests` : `${baseUrl}/internship-offers`;
     const response = isAdding.value
       ? await axios.post(url, formData)
@@ -808,7 +806,7 @@ const handleDataRequest = async () => {
       province: selectedProvince.value,
       internshipType: selectedInternshipType.value,
       additionalInformation: dataToSendToAPI.additionalInformation,
-      isActive: false
+      isActive: !isAdding.value
     };
     await sendRequest(formDataRequest);
     console.log(formDataRequest);
@@ -845,7 +843,7 @@ const handleDataOffer = async () => {
       requiredSkills: dataToSendToAPI.requiredSkills,
       internshipType: selectedInternshipType.value,
       paid: dataToSendToAPI.paid,
-      isActive: false
+      isActive: !isAdding.value
     };
     await sendRequest(formDataOffer);
     console.log(formDataOffer);

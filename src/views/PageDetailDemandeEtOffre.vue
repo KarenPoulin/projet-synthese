@@ -15,7 +15,7 @@
     
     <!-- Icônes -->
    <div class="text-right font-extrabold mb-5">
-     <i class="ficheDetaillee__icône-consulter fa fa-check text-2xl md:text-4xl mr-3 text-green-400 hover:text-green-500 cursor-pointer" aria-hidden="true"></i>
+     <i class="ficheDetaillee__icône-consulter fa fa-check text-2xl md:text-4xl mr-3 text-green-400 hover:text-green-500 cursor-pointer" aria-hidden="true" @click="activateIntership(elementASupprimer, elementId)"></i>
      <i class="fa-solid fa-pen-to-square text-2xl md:text-4xl ml-3 mr-3 text-blue-800 hover:text-blue-900 cursor-pointer" @click="goToEditForm"></i>
      <i class="ficheDetaillee__icône-supprimer fas fa-trash text-2xl md:text-4xl ml-3 text-red-700 hover:text-red-800 cursor-pointer" @click="ouvrirModalSuppression"></i>
       <modalSuppression
@@ -141,6 +141,9 @@
   import { onMounted, ref } from "vue";
   import { useDemandesDeStages } from "@/composables/demandeDeStage";
   import { useOffreDeStages } from "@/composables/offreDeStage";
+  import { useActivateIntership } from '@/composables/activerStage';
+  import axios from 'axios';
+
 
   // Initialisation des variables
   const {
@@ -148,6 +151,7 @@
     getDemandeDeStagesById
   } = useDemandesDeStages();
   let demandeDeStageId = ref(null);
+  let elementId = ref(null);
 
   const {
     offreDeStagesResult,
@@ -160,25 +164,29 @@
   const isFicheDetailDemandeDeStage = ref(true);
   let elementASupprimer = ref(null);
 
+  const {activateIntership} = useActivateIntership();
+
   const router = useRouter()
   const route = useRoute();
     
   // Configuration de l'affichage des informations detaillées selon l'identifiant
   onMounted(async () => {
     const urlString = window.location.href;
+    elementId = route.params.id;
+    console.log(elementId);
 
     if (urlString.includes("pagedetaildemandedestage")) {
       isFicheDetailDemandeDeStage.value = true;
-      elementASupprimer.value = 'intership-requests';
-      demandeDeStageId = route.params.id;
-      await getDemandeDeStagesById(demandeDeStageId);
+      elementASupprimer.value = 'internship-requests';
+/*       demandeDeStageId = route.params.id; */
+      await getDemandeDeStagesById(elementId);
       console.log(demandeDeStageResult);
 
     } else if (urlString.includes("pagedetailoffredestage")) {
       isFicheDetailDemandeDeStage.value = false;
-      elementASupprimer.value = 'intership-offers';
-      offreDeStageId = route.params.id;
-      await getOffreDeStageById(offreDeStageId);
+      elementASupprimer.value = 'internship-offers';
+/*       offreDeStageId = route.params.id; */
+      await getOffreDeStageById(elementId);
       console.log(offreDeStagesResult);
     }
   });
@@ -189,10 +197,10 @@
     let type;
     
     if (isFicheDetailDemandeDeStage.value) {
-      id = demandeDeStageId;
+      id = elementId;
       type = 'request';
     } else {
-      id = offreDeStageId;
+      id = elementId;
       type = 'offer';
     }
     router.push({ name: 'formulairedo', params: { type: type, id: id } })
