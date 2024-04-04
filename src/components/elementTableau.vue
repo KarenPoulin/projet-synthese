@@ -160,7 +160,6 @@ const props = defineProps({
 const router = useRouter()
 let isOffer = ref(false);
 let intershipType = ref(null);
-let elementASupprimer = ref(null);
 let activitySectorId = ref(null);
 
 const { activitySectorResult, getActivitySectorById } = useActivitySector();
