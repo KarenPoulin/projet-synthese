@@ -174,7 +174,7 @@
     const confirmationSuppression = async () => {
         await suppression(elementId, elementASupprimer.value)
         fermerModalSuppression();
-        if(isCandidate.value) {
+        if(elementASupprimer.value === 'candidates') {
             router.push('/app/candidats');
         } else {
             router.push('/app/entreprises');

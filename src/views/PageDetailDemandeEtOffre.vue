@@ -175,12 +175,14 @@
     if (urlString.includes("pagedetaildemandedestage")) {
       isFicheDetailDemandeDeStage.value = true;
       elementASupprimer.value = 'internship-requests';
+      console.log(elementASupprimer.value);
       await getDemandeDeStagesById(elementId);
       console.log(demandeDeStageResult);
 
     } else if (urlString.includes("pagedetailoffredestage")) {
       isFicheDetailDemandeDeStage.value = false;
       elementASupprimer.value = 'internship-offers';
+      console.log(elementASupprimer.value);
       await getOffreDeStageById(elementId);
       console.log(offreDeStagesResult);
     }
@@ -228,16 +230,24 @@ const formatDate = (dateString) => {
     fermerModalSuppression();
   };
 
-  const confirmationSuppression = () => {
-    if(isFicheDetailDemandeDeStage){
-      suppression(elementId, elementASupprimer.value = 'internship-requests' )
+  const confirmationSuppression = async () => {
+    await suppression(elementId, elementASupprimer.value)
+    fermerModalSuppression();
+    if (elementASupprimer.value === 'internship-requests') {
+      router.push('/app/demandesdestages');
+    } else {
+      router.push('/app/offresdestages');
+    }
+
+/*     if(isFicheDetailDemandeDeStage){
+      await suppression(elementId, elementASupprimer.value)
       fermerModalSuppression();
       router.push('/app/demandesdestages');
     }
     else if(!isFicheDetailDemandeDeStage){
-      suppression(elementId, elementASupprimer.value = 'internship-offers' )
+      suppression(elementId, elementASupprimer.value)
       fermerModalSuppression();
       router.push('/app/offresdestages');
-    }
+    } */
   }
 </script>
