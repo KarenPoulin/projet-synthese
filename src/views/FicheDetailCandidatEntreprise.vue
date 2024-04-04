@@ -127,12 +127,14 @@
         if (urlString.includes('candidat')) {
             isCandidate.value = true;
             elementASupprimer.value = 'candidates';
+            console.log(elementASupprimer.value);
             await getCandidateById(elementId);
             console.log(candidateResult);
 
         } else if (urlString.includes('entreprise')) {
             isCandidate.value = false;
             elementASupprimer.value = 'enterprises';
+            console.log(elementASupprimer.value);
             await getEnterpriseById(elementId);
             console.log(enterpriseResult);
         }
@@ -169,17 +171,14 @@
     fermerModalSuppression();
     };
 
-    const confirmationSuppression = () => {
-    if(isCandidate){
-      suppression(elementId, elementASupprimer.value = 'candidates' )
-      fermerModalSuppression();
-      router.push('/app/candidats');
-    }
-    else if(!isCandidate){
-      suppression(elementId, elementASupprimer.value = 'enterprises' )
-      fermerModalSuppression();
-      router.push('/app/entreprises');
-    }
+    const confirmationSuppression = async () => {
+        await suppression(elementId, elementASupprimer.value)
+        fermerModalSuppression();
+        if(isCandidate.value) {
+            router.push('/app/candidats');
+        } else {
+            router.push('/app/entreprises');
+        }
 };
 
 </script>
