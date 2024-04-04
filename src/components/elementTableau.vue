@@ -206,11 +206,9 @@ onMounted(async () => {
     if (props.isDemandes) {
         isOffer = false;
         intershipType.value = 'internship-requests';
-        console.log(intershipType);
     } else {
         isOffer = true;
         intershipType.value = 'internship-offers';
-        console.log(intershipType);
     }
     if (props.element.enterprise) {
         activitySectorId = props.element.enterprise.activitySector;
@@ -226,8 +224,6 @@ const modalSuppressionVisible = ref(false);
 
 const ouvrirModalSuppression = () => {
   modalSuppressionVisible.value = !modalSuppressionVisible.value;
-  console.log("Ouverture du modal de suppression");
-  console.log(modalSuppressionVisible.value)
 };
 
 const fermerModalSuppression = () => {
@@ -239,7 +235,6 @@ const suppressionAnnulee = () => {
 };
 
 const confirmationSuppression = async () => {
-    console.log(props.element._id, intershipType.value);
     await suppression(props.element._id, intershipType.value);
     fermerModalSuppression();
     setTimeout(() => {

@@ -29,6 +29,5 @@
 
   onMounted(async () => {
     await getAllCandidates();
-    console.log(allCandidatesResults);
   })
   </script>

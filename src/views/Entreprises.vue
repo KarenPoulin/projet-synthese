@@ -30,7 +30,6 @@ const router = useRouter()
 
 onMounted(async () => {
   await getAllEnterprises();
-  console.log(allEnterprisesResults);
 })
 
   

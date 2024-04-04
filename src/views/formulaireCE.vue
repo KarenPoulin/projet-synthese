@@ -676,11 +676,9 @@
                     ) {
                         isFormValid.value = true;
                         console.log(isFormValid.value);
-                        console.log("candidate form valid");
                     } else {
                         isFormValid.value = false;
                         console.log(isFormValid.value);
-                        console.log("candidate form invalid");
                     }
 
                 } else {
@@ -703,11 +701,9 @@
                     ) {
                         isFormValid.value = true;
                         console.log(isFormValid.value);
-                        console.log("enterprise form valid");
                     } else {
                         isFormValid.value = false;
                         console.log(isFormValid.value);
-                        console.log("enterprise form invalid");
                     }
                 }
             }
@@ -773,7 +769,7 @@
 
                                 router.push('/app/Candidats');
                             }
-                            console.log(response);
+                            /* console.log(response); */
                         } catch (error) {
                             console.error(error);
                         }
@@ -814,7 +810,7 @@
                                 }
                             });
 
-                            console.log(response);
+                            /* console.log(response); */
                             if (response.status === 201 || response.status === 200) {
                                
                                 router.push('/app/Entreprises');
@@ -896,9 +892,7 @@
 
             onMounted(() => {
                 id.value = route.params.id;
-                console.log(id.value);
                 const type = router.currentRoute.value.params.type;
-                console.log(type);
 
                 // IL Y A UN ID
                 if (id.value) {

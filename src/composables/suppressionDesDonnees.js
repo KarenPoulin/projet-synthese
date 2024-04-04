@@ -5,7 +5,6 @@ export default function suppressionDesDonnees() {
     try {
       const url = `https://api-4.fly.dev/${endpoint}/${id}`;
       const response = await axios.delete(url);
-      console.log(response.data);
       alert(`Suppression confirmée !`);
     } catch (error) {
       console.error(`Erreur lors de la suppression de l'entrée avec l'ID ${id}:`, error);
