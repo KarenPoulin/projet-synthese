@@ -117,21 +117,16 @@
     onMounted(async () => {
         const urlString = window.location.href;
         elementId = route.params.id;
-        console.log(elementId);
 
         if (urlString.includes('candidat')) {
             isCandidate.value = true;
             elementASupprimer.value = 'candidates';
-            console.log(elementASupprimer.value);
             await getCandidateById(elementId);
-            console.log(candidateResult);
 
         } else if (urlString.includes('entreprise')) {
             isCandidate.value = false;
             elementASupprimer.value = 'enterprises';
-            console.log(elementASupprimer.value);
             await getEnterpriseById(elementId);
-            console.log(enterpriseResult);
         }
     });
 
@@ -155,7 +150,6 @@
     
     const ouvrirModalSuppression = () => {
     modalSuppressionVisible.value = !modalSuppressionVisible.value;
-    console.log(modalSuppressionVisible.value)
     };
 
     const fermerModalSuppression = () => {

@@ -147,16 +147,12 @@
 </template>
 
 <script setup>
-import { RouterLink } from 'vue-router'
 import { useRouter } from 'vue-router'
-import { useAdminStore } from '@/stores/admin';
 import { ref } from 'vue';
 import carteUtilisateur from './carteUtilisateur.vue';
 
 
-const adminStore = useAdminStore();
-
-// Fonction pour émettre les routes dynamiques vers le formulaireDO selon si c'est une offre ou un demande
+// Fonction pour émettre les routes dynamiques vers le formulaireDO selon si c'est une offre ou une demande
 const router = useRouter();
 const goToFormDO = type => {
   setActiveButton(type);
@@ -169,7 +165,7 @@ const goToFormCE =type => {
   window.location.assign(newUrl);
 }
 
-//Ajout dun etat local pour un bouton actif
+// Ajout d'un état local pour un bouton actif
 const activeButton = ref('');
 
 const setActiveButton = (button) => {
