@@ -235,12 +235,12 @@ const formatDate = (dateString) => {
 
   const confirmationSuppression = () => {
     if(isFicheDetailDemandeDeStage){
-      suppression(demandeDeStageResult._id, elementASupprimer.value = 'internship-requests' )
+      suppression(elementId, elementASupprimer.value = 'internship-requests' )
       fermerModalSuppression();
       router.push('/app/demandesdestages');
     }
     else if(!isFicheDetailDemandeDeStage){
-      suppression(offreDeStagesResult._id, elementASupprimer.value = 'internship-offers' )
+      suppression(elementId, elementASupprimer.value = 'internship-offers' )
       fermerModalSuppression();
       router.push('/app/offresdestages');
     }
