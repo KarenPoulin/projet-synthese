@@ -75,7 +75,8 @@
         <div>
           <div class="border-l-8 border-neutral-500 mb-8">
             <h5 class="text-lg font-bold text-neutral-500 mb-3 ml-2">Type de stage</h5>
-            <p class="text-neutral-500 text-sm ml-2">{{ isFicheDetailDemandeDeStage ? demandeDeStageResult.internshipType.value : offreDeStagesResult.internshipType.value }}</p>
+            <p v-if="isFicheDetailDemandeDeStage" class="text-neutral-500 text-sm ml-2">{{ demandeDeStageResult.internshipType.value === 'FULL' ? 'Temps plein' : 'Temps partiel'}}</p>
+            <p v-if="!isFicheDetailDemandeDeStage" class="text-neutral-500 text-sm ml-2">{{ offreDeStagesResult.internshipType.value === 'FULL' ? 'Temps plein' : 'Temps partiel' }}</p>
           </div>
           <div class="border-l-8 border-neutral-500 mb-8">
             <h5 class="text-lg font-bold text-neutral-500 mb-3 ml-2">Nombre d'heures par semaine</h5>
@@ -84,7 +85,7 @@
           <div class="border-l-8 border-neutral-500">
             <h5 class="text-lg font-bold text-neutral-500 mb-3 ml-2">Rémunération</h5>
             <p v-if="isFicheDetailDemandeDeStage" class="text-neutral-500 text-sm ml-2">À la discrétion de l'entreprise</p>
-            <p v-if="!isFicheDetailDemandeDeStage" class="text-neutral-500 text-sm ml-2">{{ offreDeStagesResult.paid }}</p>
+            <p v-if="!isFicheDetailDemandeDeStage" class="text-neutral-500 text-sm ml-2">{{ formatPaidStatus(offreDeStagesResult.paid )}}</p>
           </div>
         </div>
         <div>
@@ -199,6 +200,15 @@ const formatDate = (dateString) => {
     const day = ('0' + date.getDate()).slice(-2);
 
     return `${year}-${month}-${day}`;
+};
+
+const formatPaidStatus = (paidStatus) => {
+    switch (paidStatus) {
+        case 'DISCRETIONARY': return 'À discuter';
+        case 'PAID': return 'Rémunéré';
+        case 'UNPAID': return 'Non-rémunéré';
+        default: return 'Indisponible';
+    }
 };
 
   // Configuration de l'icône pour supprimer un formulaire
