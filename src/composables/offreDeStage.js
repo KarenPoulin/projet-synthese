@@ -22,14 +22,14 @@ export function useAllOffreDeStages() {
         getAllOffreDeStages
     }
 }
-
+// https://api-4.fly.dev/internship-offers?isActive=false
 export function useAllOffreDeStagesInactive() {
     const allOffreDeStagesInactiveResults = reactive([]);
 
     const getAllOffreDeStagesInactive = async () => {
         try {
-            const res = await axios.get(`${baseUrl}internship-offers`);
-            allOffreDeStagesInactiveResults.push(...res.data.filter(request => !request.isActive));
+            const res = await axios.get(`${baseUrl}internship-offers?isActive=false`);
+            allOffreDeStagesInactiveResults.push(...res.data);
         } catch (error) {
             console.log(error);
         }

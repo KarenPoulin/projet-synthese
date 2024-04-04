@@ -28,8 +28,8 @@ export function useAllDemandeDeStagesInactive() {
 
     const getAllDemandeDeStagesInactive = async () => {
         try {
-            const res = await axios.get(`${baseUrl}internship-requests`);
-            allDemandeDeStagesInactiveResults.push(...res.data.filter(request => !request.isActive))
+            const res = await axios.get(`${baseUrl}internship-requests?isActive=false`);
+            allDemandeDeStagesInactiveResults.push(...res.data)
         } catch (error) {
             console.log(error);
         }
