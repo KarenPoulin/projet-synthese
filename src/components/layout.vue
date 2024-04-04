@@ -22,7 +22,7 @@
 </template>
 
 <script setup>
-import { RouterLink, RouterView } from 'vue-router'
+import { RouterView } from 'vue-router'
 import Sidebar from './sidebar.vue';
 import MenuActions from './menuActions.vue'
 

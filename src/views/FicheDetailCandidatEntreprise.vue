@@ -25,11 +25,10 @@
             <i class="ficheDetaillee__icône-supprimer fas fa-trash text-2xl md:text-4xl ml-3 text-red-700 hover:text-red-800 cursor-pointer" @click="ouvrirModalSuppression"></i>
             <modalSuppression
                 v-if="modalSuppressionVisible"
-                :isCandidate="isCandidate"
                 :modalSuppressionVisible="modalSuppressionVisible"
                 :elementASupprimer="elementASupprimer"
                 @suppressionAnnulee="suppressionAnnulee"
-                @confirmationSuppression="isCandidate ? suppressionConfirmer(candidateResult._id) : suppressionConfirmer(enterpriseResult._id)"/>
+                @confirmationSuppression="confirmationSuppression"/>
         </div>
 
         <!-- Fiche -->
@@ -96,8 +95,7 @@
     import { useRouter, useRoute } from 'vue-router';
     import { useCandidate } from '@/composables/candidats';
     import { useEnterprise } from '@/composables/entreprises';
-    import { useDeleteElement } from '@/composables/suppression';
-    import axios from 'axios';
+    import suppressionDesDonnees from '../composables/suppressionDesDonnees'
 
 
     // Initialisation des variables
@@ -105,15 +103,14 @@
         candidateResult,
         getCandidateById
     } = useCandidate();
-    let candidateId = ref(null);
+    let elementId = ref(null);
 
     const {
         enterpriseResult,
         getEnterpriseById
     } = useEnterprise();
-    let enterpriseId = ref(null);
 
-    const {deleteElement} = useDeleteElement();
+    const { suppression } = suppressionDesDonnees();
 
     const isCandidate = ref(true);
     let elementASupprimer = ref(null);
@@ -124,19 +121,19 @@
     // Configuration de l'affichage des informations detaillées selon l'identifiant
     onMounted(async () => {
         const urlString = window.location.href;
+        elementId = route.params.id;
+        console.log(elementId);
 
         if (urlString.includes('candidat')) {
             isCandidate.value = true;
             elementASupprimer.value = 'candidates';
-            candidateId = route.params.id;
-            await getCandidateById(candidateId);
+            await getCandidateById(elementId);
             console.log(candidateResult);
 
         } else if (urlString.includes('entreprise')) {
             isCandidate.value = false;
             elementASupprimer.value = 'enterprises';
-            enterpriseId = route.params.id;
-            await getEnterpriseById(enterpriseId);
+            await getEnterpriseById(elementId);
             console.log(enterpriseResult);
         }
     });
@@ -147,10 +144,10 @@
         let type;
 
         if (isCandidate.value) {
-            id = candidateId;
+            id = elementId;
             type = 'candidats';
         } else {
-            id = enterpriseId;
+            id = elementId;
             type = 'entreprises';
         }
         router.push({ name: 'formulaireCE', params: { type: type, id: id } })
@@ -172,21 +169,17 @@
     fermerModalSuppression();
     };
 
-    const suppressionConfirmer = async(id) => {
-        deleteElement(elementASupprimer.value ,id);
-/*     try {
-        const url = isCandidate ? 'https://api-4.fly.dev/candidates' : 'https://api-4.fly.dev/enterprises';
-        const response = await axios.delete(`${url}/${id}`);
-        console.log(response.data); 
-        console.log(`L'entrée avec l'ID ${id} a été supprimée.`);
-        alert(`Suppression confirmé !`);
-    } catch (error) {
-        console.error(`Erreur lors de la suppression de l'entrée avec l'ID ${id}:`, error);
-    } */
-    console.log("Supprimer l'entrée avec ID:");
-    fermerModalSuppression();
-
-    router.push('/app/candidats');
-    };
+    const confirmationSuppression = () => {
+    if(isCandidate){
+      suppression(elementId, elementASupprimer.value = 'candidates' )
+      fermerModalSuppression();
+      router.push('/app/candidats');
+    }
+    else if(!isCandidate){
+      suppression(elementId, elementASupprimer.value = 'enterprises' )
+      fermerModalSuppression();
+      router.push('/app/entreprises');
+    }
+};
 
 </script>

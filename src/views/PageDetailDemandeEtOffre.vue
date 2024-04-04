@@ -142,7 +142,6 @@
   import { useDemandesDeStages } from "@/composables/demandeDeStage";
   import { useOffreDeStages } from "@/composables/offreDeStage";
   import { useActivateIntership } from '@/composables/activerStage';
-  import axios from 'axios';
 
 
   // Initialisation des variables
@@ -150,14 +149,12 @@
     demandeDeStageResult,
     getDemandeDeStagesById
   } = useDemandesDeStages();
-  let demandeDeStageId = ref(null);
   let elementId = ref(null);
 
   const {
     offreDeStagesResult,
     getOffreDeStageById
   } = useOffreDeStages();
-  let offreDeStageId = ref(null);
 
   const { suppression } = suppressionDesDonnees();
 
@@ -178,14 +175,12 @@
     if (urlString.includes("pagedetaildemandedestage")) {
       isFicheDetailDemandeDeStage.value = true;
       elementASupprimer.value = 'internship-requests';
-/*       demandeDeStageId = route.params.id; */
       await getDemandeDeStagesById(elementId);
       console.log(demandeDeStageResult);
 
     } else if (urlString.includes("pagedetailoffredestage")) {
       isFicheDetailDemandeDeStage.value = false;
       elementASupprimer.value = 'internship-offers';
-/*       offreDeStageId = route.params.id; */
       await getOffreDeStageById(elementId);
       console.log(offreDeStagesResult);
     }

@@ -46,7 +46,7 @@
 </template>
 
 <script setup>
-import { defineProps, defineEmits, onMounted } from "vue";
+import { defineProps, defineEmits } from "vue";
 
 const {
   modalSuppressionVisible,
