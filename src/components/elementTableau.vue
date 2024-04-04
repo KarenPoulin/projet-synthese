@@ -205,10 +205,12 @@ const goToEditForm = () => {
 onMounted(async () => {
     if (props.isDemandes) {
         isOffer = false;
-        intershipType = 'internship-requests';
+        intershipType.value = 'internship-requests';
+        console.log(intershipType);
     } else {
         isOffer = true;
-        intershipType = 'internship-offers';
+        intershipType.value = 'internship-offers';
+        console.log(intershipType);
     }
     if (props.element.enterprise) {
         activitySectorId = props.element.enterprise.activitySector;
@@ -236,21 +238,13 @@ const suppressionAnnulee = () => {
   fermerModalSuppression();
 };
 
-const confirmationSuppression = () => {
-    
-    if (props.isDemandes) {
-        suppression(props.element._id, elementASupprimer.value = "internship-requests");
-        fermerModalSuppression();
-        setTimeout(() => {
-                window.location.reload();
-        }, 1000);
-    } else {
-        suppression(props.element._id, elementASupprimer.value = "internship-offers");
-        fermerModalSuppression();
-        setTimeout(() => {
+const confirmationSuppression = async () => {
+    console.log(props.element._id, intershipType.value);
+    await suppression(props.element._id, intershipType.value);
+    fermerModalSuppression();
+    setTimeout(() => {
             window.location.reload();
-        }, 1000);
-    }
+    }, 1000);
 };
 
 </script>
