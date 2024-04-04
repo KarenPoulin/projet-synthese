@@ -1,165 +1,173 @@
 <template>
 
     <template v-if="isCandidate && candidateResult || enterpriseResult">
-        <div class="flex mb-20">
+        <!-- En-tête -->
+        <div class="flex mb-10">
             <div>
-                <img v-if="!isCandidate" src="../assets/img/enterprises.png" alt="logo-entreprises" class="w-40">
+                <img v-if="!isCandidate" src="../assets/img/enterprises.png" alt="logo-entreprises" class="w-40 mr-5">
             </div>
-            <div :class="{'titre_barre': isCandidate, 'titre_barre3': !isCandidate}">
-                <p v-if="isCandidate" class="text-neutral-500 text-sm font-semibold">Candidat</p>
-                <p v-if="!isCandidate" class="text-neutral-500 text-sm font-semibold">Entreprise</p>
-                <h1 class='text-neutral-500 text-3xl font-bold mb-5'>{{ isCandidate ? candidateResult.firstName + ' ' + candidateResult.lastName : enterpriseResult.name }}</h1>
-                <h2 v-if="isCandidate"class="bg-white text-neutral-500 font-semibold text-lg w-60 text-center p-2">Développeur Front-End</h2>
+            <div :class="{'border-l-8 border-fuchsia-800': isCandidate, 'border-l-8 border-blue-400': !isCandidate}">
+                <p v-if="isCandidate" class="text-neutral-500 text-md font-semibold ml-5">Candidat</p>
+                <p v-if="!isCandidate" class="text-neutral-500 text-md font-semibold ml-5">Entreprise</p>
+                <h1 class='text-neutral-500 text-4xl font-bold mb-5 ml-5'>
+                    {{ isCandidate ? candidateResult.firstName + ' ' + candidateResult.lastName : enterpriseResult.name }}
+                </h1>
+                <h2 v-if="isCandidate"
+                    class="bg-white text-neutral-500 font-semibold text-xl inline-block text-center p-2 ml-5">
+                    Développeur Front-End</h2>
             </div>
         </div>
-        <div class="bg-white p-16 rounded-xl">
-            <h3 class="text-3xl font-bold mb-10" :class="{'text-blue-400': !isCandidate, 'text-fuchsia-800': isCandidate}">Courte présentation</h3>
-            <p class="text-neutral-500 text-sm mb-14">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus quidem,
-                nam reprehenderit hic dolores iste minima laboriosam. Nam maiores hic blanditiis necessitatibus
-                suscipit, quod minima nostrum perspiciatis, odit iusto quas! Quasi magni veniam, repudiandae minus
-                similique nihil facere voluptatum beatae ducimus neque et culpa id, deleniti dicta, dolorem saepe ab
-                itaque dolorum! Magni a quae voluptatem illum, minima dolorem eum labore asperiores neque impedit
-                suscipit amet esse nostrum delectus excepturi.</p>
-            <h4 v-if="!isCandidate" class="text-md text-blue-400 font-bold mb-5">Personne contact</h4>
-            <p v-if="!isCandidate" class="text-xl font-bold text-neutral-500 mb-8">Pierre Boivin</p>
-            <h4 class="text-md font-bold mb-10" :class="{'text-blue-400': !isCandidate, 'text-fuchsia-800': isCandidate}">Informations personnelles</h4>
-            <div class="grid grid-cols-2">
+
+        <!-- Icônes -->
+        <div class="text-right font-extrabold mb-5">
+            <i class="ficheDetaillee__icône-consulter fa fa-check text-2xl mr-3 text-green-400 hover:text-green-500 cursor-pointer" aria-hidden="true"></i>
+            <i class="fa-solid fa-pen-to-square text-2xl ml-3 mr-3 text-blue-800 hover:text-blue-900 cursor-pointer" @click="goToEditForm"></i>
+            <i class="ficheDetaillee__icône-supprimer fas fa-trash text-2xl ml-3 text-red-700 hover:text-red-800 cursor-pointer" @click="ouvrirModalSuppression"></i>
+            <modalSuppression
+                v-if="modalSuppressionVisible"
+                :modalSuppressionVisible="modalSuppressionVisible"
+                :elementASupprimer="elementASupprimer"
+                @suppressionAnnulee="suppressionAnnulee"
+                @confirmationSuppression="confirmationSuppression"/>
+        </div>
+
+        <!-- Fiche -->
+        <div class="bg-white p-8 lg:p-16 rounded-xl">
+            <h3 class="text-3xl md:text-4xl font-bold mb-5 lg:mb-10"
+                :class="{'text-blue-400': !isCandidate, 'text-fuchsia-800': isCandidate}">Courte présentation</h3>
+            <p v-if="isCandidate"class="text-neutral-500 text-md mb-14">{{ candidateResult.description }}</p>
+            <p v-if="!isCandidate"class="text-neutral-500 text-md mb-14">{{ enterpriseResult.description }}</p>
+            <h4 v-if="!isCandidate" class="text-lg text-blue-400 font-bold mb-5">Personne contact</h4>
+            <p v-if="!isCandidate" class="text-2xl font-bold text-neutral-500 mb-8">Pierre Boivin</p>
+            <h4 class="text-lg font-bold mb-10"
+                :class="{'text-blue-400': !isCandidate, 'text-fuchsia-800': isCandidate}">Informations personnelles</h4>
+            <div class="grid grid-cols-1 md:grid-cols-2 md:gap-5">
                 <div>
-                    <div class="titre_barre2 mb-5">                                                          
-                        <h5 class="text-md font-bold text-neutral-500 mb-3">Adresse</h5>
-                        <p class='text-neutral-500 text-sm'>{{ isCandidate ? candidateResult.address : enterpriseResult.address }}</p>
+                    <div class="border-l-8 border-neutral-500 mb-5">
+                        <h5 class="text-lg font-bold text-neutral-500 mb-3 ml-2">Adresse</h5>
+                        <p class='text-neutral-500 text-sm ml-2'>
+                            {{ isCandidate ? candidateResult.address : enterpriseResult.address }}</p>
                     </div>
-                    <div class="titre_barre2 mb-5">
-                        <h5 class="text-md font-bold text-neutral-500 mb-3">Ville</h5>
-                        <p class='text-neutral-500 text-sm'>{{ isCandidate ? candidateResult.city : enterpriseResult.city }}</p>
+                    <div class="border-l-8 border-neutral-500 mb-5">
+                        <h5 class="text-lg font-bold text-neutral-500 mb-3 ml-2">Ville</h5>
+                        <p class='text-neutral-500 text-sm ml-2'>
+                            {{ isCandidate ? candidateResult.city : enterpriseResult.city }}</p>
                     </div>
-                    <div class="titre_barre2 mb-5">
-                        <h5 class="text-md font-bold text-neutral-500 mb-3">Province</h5>
-                        <p class='text-neutral-500 text-sm'>{{ isCandidate ? candidateResult.province.value : enterpriseResult.province.value }}</p>
+                    <div class="border-l-8 border-neutral-500 mb-5">
+                        <h5 class="text-lg font-bold text-neutral-500 mb-3 ml-2">Province</h5>
+                        <p class='text-neutral-500 text-sm ml-2'>
+                            {{ isCandidate ? candidateResult.province.value : enterpriseResult.province.value }}</p>
                     </div>
-                    <div class="titre_barre2">
-                        <h5 class="text-md font-bold text-neutral-500 mb-3">Code postal</h5>
-                        <p class='text-neutral-500 text-sm'>{{ isCandidate ? candidateResult.postalCode : enterpriseResult.postalCode }}</p>
+                    <div class="border-l-8 border-neutral-500 mb-5 md:mb-0">
+                        <h5 class="text-lg font-bold text-neutral-500 mb-3 ml-2">Code postal</h5>
+                        <p class='text-neutral-500 text-sm ml-2'>
+                            {{ isCandidate ? candidateResult.postalCode : enterpriseResult.postalCode }}</p>
                     </div>
                 </div>
                 <div>
-                    <div class="titre_barre2 mb-5">
-                        <h5 class="text-md font-bold text-neutral-500 mb-3">Téléphone</h5>
-                        <p class='text-neutral-500 text-sm'>{{ isCandidate ? candidateResult.phone : enterpriseResult.phone }}</p>
+                    <div class="border-l-8 border-neutral-500 mb-5">
+                        <h5 class="text-lg font-bold text-neutral-500 mb-3 ml-2">Téléphone</h5>
+                        <p class='text-neutral-500 text-sm ml-2'>
+                            {{ isCandidate ? candidateResult.phone : enterpriseResult.phone }}</p>
                     </div>
-                    <div class="titre_barre2">
-                        <h5 class="text-md font-bold text-neutral-500 mb-3">Courriel</h5>
-                        <p class='text-neutral-500 text-sm'>{{ isCandidate ? candidateResult.email : enterpriseResult.email }}</p>
+                    <div class="border-l-8 border-neutral-500">
+                        <h5 class="text-lg font-bold text-neutral-500 mb-3 ml-2">Courriel</h5>
+                        <p class='text-neutral-500 text-sm ml-2'>
+                            {{ isCandidate ? candidateResult.email : enterpriseResult.email }}</p>
                     </div>
                 </div>
             </div>
         </div>
     </template>
     <template v-else>
-        <p>Loading...</p>
+        <p>En chargement ...</p>
     </template>
 </template>
 
 <script setup>
-    import {
-        onMounted,
-        ref
-    } from 'vue';
-    import {
-        useRoute
-    } from 'vue-router';
-    import {
-        useCandidate
-    } from '@/composables/candidats';
-    import {
-        useEnterprise
-    } from '@/composables/entreprises';
+    import modalSuppression from '@/components/modalSuppression.vue';
+    import { onMounted, ref } from 'vue';
+    import { useRouter, useRoute } from 'vue-router';
+    import { useCandidate } from '@/composables/candidats';
+    import { useEnterprise } from '@/composables/entreprises';
+    import suppressionDesDonnees from '../composables/suppressionDesDonnees'
 
-    const route = useRoute();
 
-    const isCandidate = ref(true);
-
+    // Initialisation des variables
     const {
         candidateResult,
         getCandidateById
     } = useCandidate();
-    let candidateId = ref(null);
+    let elementId = ref(null);
 
     const {
         enterpriseResult,
         getEnterpriseById
     } = useEnterprise();
-    let enterpriseId = ref(null);
 
+    const { suppression } = suppressionDesDonnees();
+
+    const isCandidate = ref(true);
+    let elementASupprimer = ref(null);
+
+    const router = useRouter()
+    const route = useRoute();
+
+    // Configuration de l'affichage des informations detaillées selon l'identifiant
     onMounted(async () => {
-
-        // aller valider si candidat ou entreprise dans l'url
         const urlString = window.location.href;
+        elementId = route.params.id;
 
         if (urlString.includes('candidat')) {
             isCandidate.value = true;
-            candidateId = route.params.id;
-            await getCandidateById(candidateId);
-            console.log(candidateResult);
+            elementASupprimer.value = 'candidates';
+            await getCandidateById(elementId);
 
         } else if (urlString.includes('entreprise')) {
             isCandidate.value = false;
-            enterpriseId = route.params.id;
-            await getEnterpriseById(enterpriseId);
-            console.log(enterpriseResult);
+            elementASupprimer.value = 'enterprises';
+            await getEnterpriseById(elementId);
         }
-
-
     });
+
+    // Configuration de l'icône pour modifier un formulaire
+    const goToEditForm = () => {
+        let id;
+        let type;
+
+        if (isCandidate.value) {
+            id = elementId;
+            type = 'candidats';
+        } else {
+            id = elementId;
+            type = 'entreprises';
+        }
+        router.push({ name: 'formulaireCE', params: { type: type, id: id } })
+    }
+
+    // Configuration de l'icône pour supprimer un formulaire
+    const modalSuppressionVisible = ref(false);
+    
+    const ouvrirModalSuppression = () => {
+    modalSuppressionVisible.value = !modalSuppressionVisible.value;
+    };
+
+    const fermerModalSuppression = () => {
+    modalSuppressionVisible.value = false;
+    };
+
+    const suppressionAnnulee = () => {
+    fermerModalSuppression();
+    };
+
+    const confirmationSuppression = async () => {
+        await suppression(elementId, elementASupprimer.value)
+        fermerModalSuppression();
+        if(elementASupprimer.value === 'candidates') {
+            router.push('/app/candidats');
+        } else {
+            router.push('/app/entreprises');
+        }
+};
+
 </script>
-
-<style scoped>
-    .titre_barre {
-        position: relative;
-        padding-left: 24px;
-    }
-
-    .titre_barre::before {
-        content: "";
-        position: absolute;
-        top: 50%;
-        left: 0;
-        transform: translateY(-50%);
-        width: 8px;
-        height: 120px;
-        background-color: rgb(134, 25, 143);
-    }
-
-    .titre_barre2 {
-        position: relative;
-        padding-left: 16px;
-    }
-
-    .titre_barre2::before {
-        content: "";
-        position: absolute;
-        top: 50%;
-        left: 0;
-        transform: translateY(-50%);
-        width: 8px;
-        height: 55px;
-        background-color: rgb(115, 115, 115);
-    }
-
-    .titre_barre3 {
-        position: relative;
-        padding-left: 24px;
-        margin-left: 36px;
-    }
-
-    .titre_barre3::before {
-        content: "";
-        position: absolute;
-        top: 50%;
-        left: 0;
-        transform: translateY(-50%);
-        width: 8px;
-        height: 100px;
-        background-color: rgb(118, 169, 250);
-    }
-</style>

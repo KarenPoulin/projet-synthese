@@ -6,12 +6,12 @@ import DemandesDeStages from '../views/DemandesDeStages.vue'
 import OffresDeStages from '../views/OffresDeStages.vue'
 import Candidats from '../views/Candidats.vue'
 import Entreprises from '../views/Entreprises.vue'
-import formulaireCandidat from '../views/formulaireCandidat.vue'
+
 import FormulaireDO from '../views/FormulaireDO.vue'
 import Erreur from '../views/Erreur.vue'
 import FicheDetailCandidatEntreprise from '@/views/FicheDetailCandidatEntreprise.vue'
 import PageDetailDemandeEtOffre from '@/views/PageDetailDemandeEtOffre.vue'
-import FormulaireEntreprise from '@/views/formulaireEntreprise.vue'
+
 import FormulaireCE from '@/views/formulaireCE.vue'
 
 
@@ -45,21 +45,22 @@ const router = createRouter({
         {
           path: 'candidats',
           name: 'candidats',
-          component: Candidats
+          component: Candidats,
         },
         {
           path: 'entreprises',
           name: 'entreprises',
-          component: Entreprises
+          component: Entreprises,          
         },
+       
         {
-          path: 'formulaireCE/:type',
+          path: 'formulaireCE/:type/:id?',
           name: 'formulaireCE',
           component: FormulaireCE,
           props: true
         },
         {
-          path: 'formulairedo/:type',
+          path: 'formulairedo/:type/:id?',
           name: 'formulairedo',
           component: FormulaireDO,
           props: route => ({ isRequest: route.params.type === 'request' })

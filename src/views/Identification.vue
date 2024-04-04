@@ -1,14 +1,16 @@
 <template>
   <main class="xl:h-screen xl:overflow-hidden">
+    <!-- En-tête -->
     <div>
       <h1><img src="/src/assets/img/logo.png" alt="logo" class="h-24"></h1>
     </div>
+    <!-- Contenu -->
     <div class="flex flex-col xl:flex-row">
       <div class="xl:w-1/2">
         <img src="/src/assets/img/home-students.png" alt="home-students" class="w-full h-auto">
       </div>
       <div class="xl:w-1/2 bg-gray-200 flex">
-        <div class="p-12 xl:p-16 2xl:p-24 my-auto">
+        <div class="p-12 xl:p-16 2xl:p-24">
           <h2 class="text-5xl lg:text-7xl mb-5">Identification</h2>
           <p class="md:w-5/6 lg:w-3/4 mb-10 xl:mb-20">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eveniet maiores neque eum quia! Quisquam, nisi voluptate.</p>
           <form @submit.prevent="acceder">
@@ -73,7 +75,6 @@ const validerCourriel = () => {
     courrielValid.value = true;
   }
 
-  console.log("Adresse courriel valide", courrielValid.value);
 }
 
 
@@ -90,6 +91,7 @@ const acceder = () => {
   }
 
   useAdminStore().setNomEtPrenom(nomEtPrenom.value);
+  useAdminStore().setCourriel(courriel.value);
 
   router.push('/app/tableaudebord');
 }

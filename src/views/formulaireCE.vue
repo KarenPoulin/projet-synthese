@@ -1,110 +1,115 @@
 <template>
     <div>
-        <div v-if="!entrepriseId">
+        <div v-if="!showEnterpriseForm">
             <div class="p-4">
-                <div class="flex justify-between items-center mb-4">
-                    <h1 class="titre_barre text-lg font-bold text-neutral-500 mb-9">
-                        {{ editing ? '' : 'Ajouter un Candidat' }}</h1>
+                <div class="flex  items-center mb-4  ">
+                    <h1 class=" text-4xl font-bold text-neutral-500 pl-2 border-l-4 border-fuchsia-800 mb-9 ">
+                        {{ editing ? '' :' Ajouter un Candidat'  }}</h1>
                     <div v-if="editing">
-                        <div class="titre_barre-modifier">
-                            <div class="titre_modifer">
-                                <p class="text-neutral-500">Candidat</p>
-                                <h1 class="text-neutral-500">{{ candidate.firstName }} {{ candidate.lastName }}</h1>
-                                <p class="poste text-neutral-500">{{ candidate.position }}</p>
-                            </div>
+
+                        <div class=" pl-2 border-l-4 border-fuchsia-800 mb-9">
+                            <p class="text-neutral-500">Candidat</p>
+                            <h1 class="text-neutral-500  text-4xl font-bold">{{ candidate.firstName }}
+                                {{ candidate.lastName }}</h1>
+                            <p class="text-s mb-3 text-neutral-500 bg-white mt-4">Développeur Front-End</p>
                         </div>
+
                     </div>
                 </div>
                 <form @submit.prevent="submitForm">
                     <div class="flex justify-end my-10">
-                        <RouterLink to="/app/Candidats">
+                        <router-link to="/app/Candidats">
                             <button type="button"
                                 class="btn-secondary mr-2 text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
                                 @click="cancelForm">Annuler</button>
-                        </RouterLink>
-                        <router-link to="/app/candidats">
-                            <button type="submit"
-                                class="btn-primary focus:outline-none text-white bg-fuchsia-800  hover:bg-fuchsia-900 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 inline-flex"
-                                :disabled="!isFormValid">
-                                <svg class="w-6 h-6 text-gray-100 dark:text-white" aria-hidden="true"
-                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path fill-rule="evenodd"
-                                        d="M8 10V7a4 4 0 1 1 8 0v3h1a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h1Zm2-3a2 2 0 1 1 4 0v3h-4V7Zm2 6a1 1 0 0 1 1 1v3a1 1 0 1 1-2 0v-3a1 1 0 0 1 1-1Z"
-                                        clip-rule="evenodd" />
-                                </svg>
-                                {{ editing ? 'Mettre à jour' : 'Sauvegarder' }}</button>
                         </router-link>
+
+                        <button type="submit" 
+                            class="btn-primary focus:outline-none text-white bg-fuchsia-800  hover:bg-fuchsia-900 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 inline-flex">
+
+                            <svg class="w-6 h-6 text-gray-100 dark:text-white" aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                                viewBox="0 0 24 24">
+                                <path fill-rule="evenodd"
+                                    d="M8 10V7a4 4 0 1 1 8 0v3h1a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h1Zm2-3a2 2 0 1 1 4 0v3h-4V7Zm2 6a1 1 0 0 1 1 1v3a1 1 0 1 1-2 0v-3a1 1 0 0 1 1-1Z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                            {{ editing ? 'Mettre à jour' : 'Sauvegarder' }}</button>
+
                     </div>
 
                     <div class="nom_poste mb-4">
                         <label for="fullName" class="block mb-1  text-neutral-500 font-bold">Nom et prénom </label>
-                        <input type="text" id="fullName" v-model="form.fullName" @input="validateFullName"
+                        <input type="text" id="fullName" v-model="formData.fullName" @input="validateFullName"
                             class="w-full border-gray-300 rounded-md p-2">
-                        <span class="text-red-500">{{ fullNameError }}</span>
+                        <span v-if="fieldsError.fullName" class="text-red-500">{{ fieldsError.fullName }}</span>
                     </div>
                     <div class="nom_poste mb-4">
-                        <label for="position" class="block mb-1  text-neutral-500 font-bold">Poste</label>
-                        <input type="text" id="position" v-model="form.position" @input="validatePosition"
+                        <label for="skills" class="block mb-1  text-neutral-500 font-bold">Poste</label>
+                        <input type="text" id="skills" v-model="formData.skills" @input="validateSkills"
                             class="w-full border-gray-300 rounded-md p-2">
-                        <span class="text-red-500">{{ positionError }}</span>
+                        <span v-if="fieldsError.skills" class="text-red-500">{{ fieldsError.skills}}</span>
                     </div>
                     <div class="block_info-perso my-9">
                         <div class="mb-4">
                             <label for="description" class="block mb-4">
-                                <h2 class="text-teal-500 text-lg font-bold">Courte présentation</h2>
+                                <h2 class="text-fuchsia-800 text-lg font-bold">Courte présentation</h2>
                             </label>
-                            <textarea id="description" v-model="form.description" @input="validateDescription"
+                            <textarea id="description" v-model="formData.description" @input="validateDescription"
                                 class="block  w-full border-gray-300 rounded-md p-2"></textarea>
-                            <span class="text-red-500">{{ descriptionError }}</span>
+                            <span v-if="fieldsError.description "
+                                class="text-red-500">{{ fieldsError.description }}</span>
                         </div>
-                        <h3 class="  my-8 text-teal-500  font-bold">Information personnelle</h3>
+                        <h3 class="  my-8 text-fuchsia-800  font-bold">Informations personnelles</h3>
                         <div class="block_info-perso-all">
                             <div class="block_info-perso-adresse">
                                 <div class="mb-4 input_barre-modifier">
                                     <label for="address" class="block mb-1 text-neutral-500 font-bold">Adresse</label>
-                                    <input type="text" id="address" v-model="form.address" @input="validateAddress"
+                                    <input type="text" id="address" v-model="formData.address" @input="validateAddress"
                                         class="w-full border-gray-300 rounded-md p-2">
-                                    <span v-if="!addressError" class="text-red-500">{{ addressError }}</span>
+                                    <span v-if="fieldsError.address"
+                                        class="text-red-500">{{ fieldsError.address }}</span>
                                 </div>
                                 <div class="mb-4 input_barre-modifier">
                                     <label for="city" class="block mb-1  text-neutral-500 font-bold">Ville</label>
-                                    <input type="text" id="city" v-model="form.city" @input="validateCity"
+                                    <input type="text" id="city" v-model="formData.city" @input="validateCity"
                                         class="w-full border-gray-300 rounded-md p-2">
-                                    <span v-if="!cityError" class="text-red-500">{{ cityError }}</span>
+                                    <span v-if="fieldsError.city " class="text-red-500">{{fieldsError.city }}</span>
                                 </div>
                                 <div class="mb-4 input_barre-modifier">
                                     <label for="province"
                                         class="block mb-1  text-neutral-500 font-bold">Province</label>
-                                    <select id="province" v-model="form.provinceId" @change="validateProvince"
+                                    <select id="province" v-model="formData.provinceId" @change="validateProvince"
                                         class="w-full border-gray-300 rounded-md p-2">
                                         <option value="" disabled selected>Choisissez une province</option>
                                         <option v-for="province in provinces" :value="province._id" :key="province._id">
                                             {{ province.value }}
                                         </option>
                                     </select>
-                                    <span v-if="!phoneError" class="text-red-500">{{ provinceError }}</span>
+                                    <span v-if="fieldsError.province"
+                                        class="text-red-500">{{ fieldsError.province }}</span>
                                 </div>
                                 <div class="mb-4 input_barre-modifier">
                                     <label for="postalCode" class="block mb-1  text-neutral-500 font-bold">Code
                                         postal</label>
-                                    <input type="text" id="postalCode" v-model="form.postalCode"
+                                    <input type="text" id="postalCode" v-model="formData.postalCode"
                                         @input="validatePostalCode" class="w-full border-gray-300 rounded-md p-2">
-                                    <span v-if="!postalCodeError" class="text-red-500">{{ postalCodeError }}</span>
+                                    <span v-if="fieldsError.postalCode"
+                                        class="text-red-500">{{ fieldsError.postalCode }}</span>
                                 </div>
                             </div>
                             <div class="block_info-perso-contact">
                                 <div class="mb-4 input_barre-modifier">
                                     <label for="phone" class="block mb-1  text-neutral-500 font-bold">Téléphone</label>
-                                    <input type="text" id="phone" v-model="form.phone" @input="validatePhone"
+                                    <input type="text" id="phone" v-model="formData.phone" @input="validatePhone"
                                         class="w-full border-gray-300 rounded-md p-2">
-                                    <span v-if="!phoneError" class="text-red-500">{{ phoneError }}</span>
+                                    <span v-if="fieldsError.phone" class="text-red-500">{{ fieldsError.phone}}</span>
                                 </div>
                                 <div class="mb-4 input_barre-modifier">
                                     <label for="email" class="block mb-1  text-neutral-500 font-bold">Courriel</label>
-                                    <input type="email" id="email" v-model="form.email" @input="validateEmail"
+                                    <input type="email" id="email" v-model="formData.email" @input="validateEmail"
                                         class="w-full border-gray-300 rounded-md p-2">
-                                    <span v-if="!emailError" class="text-red-500">{{ emailError }}</span>
+                                    <span v-if="fieldsError.email" class="text-red-500">{{ fieldsError.email }}</span>
                                 </div>
                             </div>
                         </div>
@@ -115,34 +120,44 @@
                                 class="btn-secondary mr-2 text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
                                 @click="cancelForm">Annuler</button>
                         </router-link>
-                        <router-link to="/app/candidats">
-                            <button type="submit"
-                                class="btn-primary focus:outline-none text-white bg-fuchsia-800  hover:bg-fuchsia-900 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 inline-flex"
-                                :disabled="!isFormValid">
-                                <svg class="w-6 h-6 text-gray-100 dark:text-white" aria-hidden="true"
-                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path fill-rule="evenodd"
-                                        d="M8 10V7a4 4 0 1 1 8 0v3h1a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h1Zm2-3a2 2 0 1 1 4 0v3h-4V7Zm2 6a1 1 0 0 1 1 1v3a1 1 0 1 1-2 0v-3a1 1 0 0 1 1-1Z"
-                                        clip-rule="evenodd" />
-                                </svg>
-                                {{ editing ? 'Mettre à jour' : 'Sauvegarder' }}</button>
-                        </router-link>
+
+                        <button type="submit" 
+                            class="btn-primary focus:outline-none text-white bg-fuchsia-800  hover:bg-fuchsia-900 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 inline-flex">
+
+                            <svg class="w-6 h-6 text-gray-100 dark:text-white" aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                                viewBox="0 0 24 24">
+                                <path fill-rule="evenodd"
+                                    d="M8 10V7a4 4 0 1 1 8 0v3h1a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h1Zm2-3a2 2 0 1 1 4 0v3h-4V7Zm2 6a1 1 0 0 1 1 1v3a1 1 0 1 1-2 0v-3a1 1 0 0 1 1-1Z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                            {{ editing ? 'Mettre à jour' : 'Sauvegarder' }}</button>
+
                     </div>
                 </form>
             </div>
         </div>
+
+
+
+
+
+
+
+
+
         <div v-else>
             <div class="p-4">
-                <div class="flex justify-between items-center mb-4">
-                    <h1 class="titre_barre text-lg font-bold text-neutral-500 mb-9">
+                <div class="flex  items-center mb-4">
+                    <h1 class="text-4xl font-bold text-neutral-500 pl-2 border-l-4 border-blue-400 mb-9">
                         {{ editing ? '' : 'Ajouter une entreprise' }}</h1>
                     <div v-if="editing">
                         <div class="titre_barre-modifier">
-                            <div class="titre_modifer">
+                            <img src="/src/assets/img/enterprises.png" alt="candidat" class="logo ">
+                            <div class=" pl-2 border-l-4 border-blue-400">
                                 <p class="text-neutral-500">Entreprise</p>
-                                <h1 class="text-neutral-500">{{ form.name }}</h1>
-                                <p class="poste text-neutral-500">{{ form.image }}</p>
+                                <h1 class="text-neutral-500 text-4xl">{{ formData.name }}</h1>
+
                             </div>
                         </div>
                     </div>
@@ -154,104 +169,103 @@
                                 class="btn-secondary mr-2 text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
                                 @click="cancelForm">Annuler</button>
                         </router-link>
-                        <router-link to="/app/Entreprises">
-                            <button type="submit"
-                                class="btn-primary focus:outline-none text-white bg-fuchsia-800  hover:bg-fuchsia-900 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 inline-flex"
-                                :disabled="!isFormValid">
-                                <svg class="w-6 h-6 text-gray-100 dark:text-white" aria-hidden="true"
-                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path fill-rule="evenodd"
-                                        d="M8 10V7a4 4 0 1 1 8 0v3h1a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h1Zm2-3a2 2 0 1 1 4 0v3h-4V7Zm2 6a1 1 0 0 1 1 1v3a1 1 0 1 1-2 0v-3a1 1 0 0 1 1-1Z"
-                                        clip-rule="evenodd" />
-                                </svg>
-                                {{ editing ? 'Mettre à jour' : 'Sauvegarder' }}</button>
-                        </router-link>
-                    </div>
 
+                        <button type="submit" 
+                            class="btn-primary focus:outline-none text-white bg-blue-400  hover:bg-blue-900 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 inline-flex">
+
+                            <svg class="w-6 h-6 text-gray-100 dark:text-white" aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                                viewBox="0 0 24 24">
+                                <path fill-rule="evenodd"
+                                    d="M8 10V7a4 4 0 1 1 8 0v3h1a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h1Zm2-3a2 2 0 1 1 4 0v3h-4V7Zm2 6a1 1 0 0 1 1 1v3a1 1 0 1 1-2 0v-3a1 1 0 0 1 1-1Z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                            {{ editing ? 'Mettre à jour' : 'Sauvegarder' }}</button>
+                    </div>
                     <div class="nom_poste mb-4">
                         <label for="name" class="block mb-1  text-neutral-500 font-bold">Nom </label>
-                        <input type="text" id="name" v-model="form.name" @input="validateName"
+                        <input type="text" id="name" v-model="formData.name" @input="validateName"
                             class="w-full border-gray-300 rounded-md p-2">
-                        <span class="text-red-500">{{ nameError }}</span>
+                        <span v-if="fieldsError.name" class="text-red-500">{{ fieldsError.name}}</span>
                     </div>
                     <div class="nom_poste mb-4">
                         <label for="image" class="block mb-1 text-neutral-500 font-bold">Logo</label>
                         <div class="flex items-center">
-
-                            <input type="text " id="image" v-model="form.image" @input="validateLogo"
+                            <input type="text " id="image" v-model="formData.image" @input="validateLogo"
                                 class="w-full border-gray-300 rounded-md p-2">
                             <label for="image"
                                 class="cursor-pointer bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center">
                                 Parcourir
                             </label>
-
                         </div>
-                        <span class="text-red-500">{{ logoError }}</span>
+                        <span v-if="fieldsError.logo" class="text-red-500">{{ fieldsError.logo }}</span>
                     </div>
-
                     <div class="block_info-perso my-9">
                         <div class="mb-4">
                             <label for="description" class="block mb-4">
-                                <h2 class="text-teal-500 text-lg font-bold">Courte présentation</h2>
+                                <h2 class="text-blue-400 text-lg font-bold">Courte présentation</h2>
                             </label>
-                            <textarea id="description" v-model="form.description" @input="validateDescription"
+                            <textarea id="description" v-model="formData.description" @input="validateDescription"
                                 class="block  w-full border-gray-300 rounded-md p-2"></textarea>
-                            <span class="text-red-500">{{ descriptionError }}</span>
+                            <span v-if="fieldsError.description"
+                                class="text-red-500">{{ fieldsError.description }}</span>
                         </div>
                         <div class="mb-4 input_barre-modifier">
                             <label for="contact" class="block mb-1 text-neutral-500 font-bold">Personne Contact</label>
-                            <input type="text" id="contact" v-model="form.contact" @input="validateName"
+                            <input type="text" id="contact" v-model="formData.contact" @input="validateContact"
                                 class="w-full border-gray-300 rounded-md p-2">
-                            <span v-if="!nameError" class="text-red-500">{{ nameError }}</span>
+                            <span v-if="fieldsError.contact" class="text-red-500">{{ fieldsError.contact }}</span>
                         </div>
-                        <h3 class="  my-8 text-teal-500  font-bold">Information de contact</h3>
+                        <h3 class="  my-8 text-blue-400  font-bold">Information de contact</h3>
                         <div class="block_info-perso-all">
                             <div class="block_info-perso-adresse">
                                 <div class="mb-4 input_barre-modifier">
                                     <label for="address" class="block mb-1 text-neutral-500 font-bold">Adresse</label>
-                                    <input type="text" id="address" v-model="form.address" @input="validateAddress"
+                                    <input type="text" id="address" v-model="formData.address" @input="validateAddress"
                                         class="w-full border-gray-300 rounded-md p-2">
-                                    <span v-if="!addressError" class="text-red-500">{{ addressError }}</span>
+                                    <span v-if="fieldsError.address"
+                                        class="text-red-500">{{ fieldsError.address }}</span>
                                 </div>
                                 <div class="mb-4 input_barre-modifier">
                                     <label for="city" class="block mb-1  text-neutral-500 font-bold">Ville</label>
-                                    <input type="text" id="city" v-model="form.city" @input="validateCity"
+                                    <input type="text" id="city" v-model="formData.city" @input="validateCity"
                                         class="w-full border-gray-300 rounded-md p-2">
-                                    <span v-if="!cityError" class="text-red-500">{{ cityError }}</span>
+                                    <span v-if="fieldsError.city" class="text-red-500">{{ fieldsError.city }}</span>
                                 </div>
                                 <div class="mb-4 input_barre-modifier">
                                     <label for="province"
                                         class="block mb-1  text-neutral-500 font-bold">Province</label>
-                                    <select id="province" v-model="form.provinceId" @change="validateProvince"
+                                    <select id="province" v-model="formData.provinceId" @change="validateProvince"
                                         class="w-full border-gray-300 rounded-md p-2">
                                         <option value="" disabled selected>Choisissez une province</option>
                                         <option v-for="province in provinces" :value="province._id" :key="province._id">
                                             {{ province.value }}
                                         </option>
                                     </select>
-                                    <span v-if="!provinceError" class="text-red-500">{{ provinceError }}</span>
+                                    <span v-if="fieldsError.province"
+                                        class="text-red-500">{{ fieldsError.province }}</span>
                                 </div>
                                 <div class="mb-4 input_barre-modifier">
                                     <label for="postalCode" class="block mb-1  text-neutral-500 font-bold">Code
                                         postal</label>
-                                    <input type="text" id="postalCode" v-model="form.postalCode"
+                                    <input type="text" id="postalCode" v-model="formData.postalCode"
                                         @input="validatePostalCode" class="w-full border-gray-300 rounded-md p-2">
-                                    <span v-if="!postalCodeError" class="text-red-500">{{postalCodeError }}</span>
+                                    <span v-if="fieldsError.postalCode"
+                                        class="text-red-500">{{ fieldsError.postalCode }}</span>
                                 </div>
                             </div>
                             <div class="block_info-perso-contact">
                                 <div class="mb-4 input_barre-modifier">
                                     <label for="phone" class="block mb-1  text-neutral-500 font-bold">Téléphone</label>
-                                    <input type="text" id="phone" v-model="form.phone" @input="validatePhone"
+                                    <input type="text" id="phone" v-model="formData.phone" @input="validatePhone"
                                         class="w-full border-gray-300 rounded-md p-2">
-                                    <span v-if="!phoneError" class="text-red-500">{{ phoneError }}</span>
+                                    <span v-if="fieldsError.phone" class="text-red-500">{{ fieldsError.phone }}</span>
                                 </div>
                                 <div class="mb-4 input_barre-modifier">
                                     <label for="email" class="block mb-1  text-neutral-500 font-bold">Courriel</label>
-                                    <input type="email" id="email" v-model="form.email" @input="validateEmail"
+                                    <input type="email" id="email" v-model="formData.email" @input="validateEmail"
                                         class="w-full border-gray-300 rounded-md p-2">
-                                    <span v-if="!emailError" class="text-red-500">{{ emailError }}</span>
+                                    <span v-if="fieldsError.email" class="text-red-500">{{ fieldsError.email }}</span>
                                 </div>
                             </div>
                         </div>
@@ -262,67 +276,130 @@
                                 class="btn-secondary mr-2 text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
                                 @click="cancelForm">Annuler</button>
                         </router-link>
-                        <router-link to="/app/Entreprises">
-
-                            <button type="submit"
-                                class="btn-primary focus:outline-none text-white bg-fuchsia-800  hover:bg-fuchsia-900 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 inline-flex"
-                                :disabled="!isFormValid">
-                                <svg class="w-6 h-6 text-gray-100 dark:text-white" aria-hidden="true"
-                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path fill-rule="evenodd"
-                                        d="M8 10V7a4 4 0 1 1 8 0v3h1a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h1Zm2-3a2 2 0 1 1 4 0v3h-4V7Zm2 6a1 1 0 0 1 1 1v3a1 1 0 1 1-2 0v-3a1 1 0 0 1 1-1Z"
-                                        clip-rule="evenodd" />
-                                </svg>
-                                {{ editing ? 'Mettre à jour' : 'Sauvegarder' }}
-                            </button>
-                        </router-link>
+                        <button type="submit" 
+                            class="btn-primary focus:outline-none text-white bg-blue-400  hover:bg-blue-900 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 inline-flex">
+                            <svg class="w-6 h-6 text-gray-100 dark:text-white" aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                                viewBox="0 0 24 24">
+                                <path fill-rule="evenodd"
+                                    d="M8 10V7a4 4 0 1 1 8 0v3h1a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h1Zm2-3a2 2 0 1 1 4 0v3h-4V7Zm2 6a1 1 0 0 1 1 1v3a1 1 0 1 1-2 0v-3a1 1 0 0 1 1-1Z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                            {{ editing ? 'Mettre à jour' : 'Sauvegarder' }}
+                        </button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
-
-
 </template>
 
 <script>
     import {
-        reactive,
         ref,
+        reactive,
         computed,
         onMounted
-    } from 'vue'
-    import axios from 'axios'
+    } from 'vue';
+    import axios from 'axios';
+    import {
+        RouterLink,
+        useRouter,
+        useRoute
+    } from 'vue-router';
+
+
+
 
     export default {
-        props: ['type', 'enterpriseId', 'candidateId', 'editing'],
+        props: {
+            type: {
+                type: String,
+                required: true
+            },
+
+            candidateId: {
+                type: String,
+                required: false
+            },
+            entrepriseId: {
+                type: String,
+                required: false
+            }
+        },
+
+
+
+
+
         setup(props) {
+            const router = useRouter();
+            const route = useRoute();
+            const id = ref(null);
+            const editing = ref(false);
+            const showEnterpriseForm = ref(false);
             const isCandidat = computed(() => props.type === 'candidat')
+            const candidate = ref(null);
+            const entrepriseId = ref(null);
+            const candidateId = ref(null);
+            const mCandidat = ref(null);
+          
+
+
+
+
+            
             const formData = reactive({
                 fullName: '',
-                position: '',
                 description: '',
                 address: '',
                 phone: '',
                 city: '',
                 email: '',
                 provinceId: '',
+                provinceValue: '',
                 postalCode: '',
                 skills: [],
                 name: '',
-                image: '',
+                image: 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8HwQACgAB/1TD9R8AAAAASUVORK5CYII=',
                 contact: '',
                 activitySector: {
+
                     _id: '65f8df6040965a2e23d73271',
                     value: 'Technologies',
                 },
-                website: ''
+                website: 'test.com',
+            });
+
+
+
+            
+            const errorMessage = reactive({
+                empty: 'Le champ ne peut pas être vide',
+                minCharacters: 'Le champ doit avoir au moins 2 caractères',
+                max50Characters: 'Le champ doit avoir entre 3 et 50 caractères',
+                max250Characters: 'Le champ doit avoir entre 3 et 50 caractères',
+                maxCharacters: 'Le champ ne peut pas dépasser 500 caractères',
+                twoStrings: 'Le champ doit avoir au moins un prénom et un nom',
+                option: 'Le champ doit avoir une option valide',
+                date: 'Le champ doit avoir une date valide.',
+                pastDate: 'La date ne doit pas être dans le passé.',
+                endDate: 'La date de fin ne peut pas être avant la date de début.',
+                number: 'Le champ doit avoir une nombre positif valide.',
+                radio: 'Le champ doit avoir au moins un choix.',
+                letterOnly: 'Le champ doit comporter que des lettres minuscule ou majuscules.',
+                maxHours: 'Le nombre d\'heures maximum est de 40.',
+                string: 'Les compétences doivent être une chaîne de caractères.',
+                adressFormat: 'L\'adresse doit contenir à la fois un nombre et un mot.',
+                email: 'Veuillez entrer une adresse e-mail valide.',
+                postalCode: 'Veuillez entrer un code postal valide.'
             })
 
-            const errors = reactive({
+
+            
+            const fieldsError = reactive({
                 fullName: '',
-                position: '',
+                skills: '',
                 description: '',
                 address: '',
                 phone: '',
@@ -331,327 +408,445 @@
                 province: '',
                 postalCode: '',
                 name: '',
-                logo: ''
+                logo: '',
+                contact: ''
             })
 
-            const validateFullName = () => {
-                fullNameError.value = ''
-                const fullNameTrimmed = fullName.value.trim()
-                const fullNameWords = fullNameTrimmed.split(' ')
-                if (fullNameWords.length !== 2) {
-                    fullNameError.value = 'Le nom complet doit contenir exactement deux mots.'
-                    return false
-                }
-                if (fullNameTrimmed.length < 3 || fullNameTrimmed.length > 50) {
-                    fullNameError.value = 'Le nom complet doit contenir entre 3 et 50 caractères.'
-                    return false
-                }
-                return true
-            }
 
-            const validatePosition = () => {
-                positionError.value = ''
-                const positionTrimmed = position.value.trim()
-                if (positionTrimmed.length < 3 || positionTrimmed.length > 50) {
-                    positionError.value = 'Le poste doit contenir entre 3 et 50 caractères.'
-                    return false
-                }
-                return true
-            }
 
-            const validateDescription = () => {
-                descriptionError.value = ''
-                const descriptionTrimmed = description.value.trim()
-                if (descriptionTrimmed.length < 3 || descriptionTrimmed.length > 250) {
-                    descriptionError.value = 'La description doit contenir entre 3 et 250 caractères.'
-                    return false
+            // Fonction pour annuler le formulaire
+            const resetValidationErrors = () => {
+                for (let keyValue in fieldsError) {
+                    if (fieldsError.hasOwnProperty(keyValue)) {
+                        fieldsError[keyValue] = '';
+                    }
                 }
-                return true
-            }
-
-            const validateAddress = () => {
-                addressError.value = ''
-                const addressTrimmed = address.value.trim()
-                if (!addressTrimmed) {
-                    addressError.value = 'Veuillez entrer votre adresse.'
-                    return false
-                }
-                const containsNumber = /\d/.test(addressTrimmed)
-                const containsWord = /[a-zA-Z]/.test(addressTrimmed)
-                if (!containsNumber || !containsWord) {
-                    addressError.value = "L'adresse doit contenir à la fois un nombre et un mot."
-                    return false
-                }
-                return true
-            }
-
-            const validatePhone = () => {
-                phoneError.value = ''
-                const phoneTrimmed = phone.value.trim()
-                const phoneRegex = /^\d{3}-\d{3}-\d{4}$/
-                if (!phoneTrimmed) {
-                    phoneError.value = 'Veuillez entrer votre numéro de téléphone.'
-                    return false
-                } else if (!phoneRegex.test(phoneTrimmed)) {
-                    phoneError.value = 'Veuillez entrer un numéro de téléphone valide au format 514-555-5555.'
-                    return false
-                }
-                return true
-            }
-
-            const validateCity = () => {
-                cityError.value = ''
-                const cityTrimmed = city.value.trim()
-                if (!cityTrimmed) {
-                    cityError.value = 'Veuillez entrer votre ville.'
-                    return false
-                }
-                if (cityTrimmed.length < 3 || cityTrimmed.length > 50) {
-                    cityError.value = 'La ville doit contenir entre 3 et 50 caractères.'
-                    return false
-                }
-                return true
-            }
-
-            const validateEmail = () => {
-                emailError.value = ''
-                if (!email.value.trim()) {
-                    emailError.value = 'Veuillez entrer votre adresse e-mail.'
-                    return false
-                } else if (!isEmailValid(email.value)) {
-                    emailError.value = 'Veuillez entrer une adresse e-mail valide.'
-                    return false
-                }
-                return true
-            }
-
-            const validateProvince = () => {
-                provinceError.value = ''
-                if (!provinceId.value) {
-                    provinceError.value = 'Veuillez sélectionner une province.'
-                    return false
-                }
-                return true
-            }
-
-            const formatPostalCode = (postalCode) => {
-                const formattedPostalCode = postalCode.trim().toUpperCase();
-                return formattedPostalCode.substring(0, 3) + " " + formattedPostalCode.substring(3);
             };
 
+
+
+            // Fonction pour valider un champ de texte
+            const validateString = (input, field) => {
+                if (input.trim() === "") {
+                    fieldsError[field] = errorMessage.empty;
+                    return;
+                }
+                if (input.length < 3) {
+                    fieldsError[field] = errorMessage.minCharacters;
+                    return;
+                }
+                if (input.length > 50) {
+                    fieldsError[field] = errorMessage.max50Characters;
+                    return;
+                }
+                fieldsError[field] = "";
+            }
+
+            // Fonction pour valider un nom complet
+            const validateFullName = () => {
+                const fullNameTrimmed = formData.fullName.trim()
+                const fullNameWords = fullNameTrimmed.split(' ')
+                if (fullNameTrimmed.length < 3 || fullNameTrimmed.length > 50) {
+                    fieldsError.fullName = errorMessage.max50Characters;
+                    return;
+                }
+                if (fullNameWords.length !== 2) {
+                    fieldsError.fullName = errorMessage.twoStrings;
+                    return;
+                }
+                fieldsError.fullName = "";
+            };
+
+            // Fonction pour valider les compétences
+            const validateSkills = () => {
+                if (typeof formData.skills !== 'string') {
+                    fieldsError.skills = errorMessage.string;
+                    return;
+                }
+
+                const skillsTrimmed = formData.skills.trim();
+                if (skillsTrimmed.length < 3 || skillsTrimmed.length > 250) {
+                    fieldsError.skills = errorMessage.max250Characters;
+                    return;
+                }
+
+                
+                const skillsArray = skillsTrimmed.split(', ');
+                const validSkills = skillsArray.every(skill => skill.trim().length > 0);
+
+                if (!validSkills) {
+                    fieldsError.skills = "Les compétences doivent être séparées par une virgule suivie d'un espace";
+                    return;
+                }
+
+                fieldsError.skills = "";
+            };
+
+            // Fonction pour valider une description
+            const validateDescription = () => {
+                const descriptionTrimmed = formData.description.trim()
+                if (descriptionTrimmed.length < 3 || descriptionTrimmed.length > 250) {
+                    fieldsError.description = errorMessage.max250Characters;
+                    return;
+                }
+                fieldsError.description = "";
+            };
+
+            // Fonction pour valider une adresse
+            const validateAddress = () => {
+                const addressTrimmed = formData.address.trim()
+                if (!addressTrimmed) {
+                    fieldsError.address = errorMessage.empty;
+                    return;
+                }
+                const containsNumber = /\d/.test(addressTrimmed);
+                const containsWord = /[a-zA-Z]/.test(addressTrimmed);
+                if (!containsNumber || !containsWord) {
+                    fieldsError.address = errorMessage.adressFormat;
+                    return;
+                }
+                fieldsError.address = "";
+            };
+
+            // Fonction pour valider un numéro de téléphone
+            const validatePhone = () => {
+                const phoneTrimmed = formData.phone.trim()
+                const phoneRegex = /^\d{3}-\d{3}-\d{4}$/
+                if (!phoneTrimmed) {
+                    fieldsError.phone = errorMessage.empty;
+                    return;
+                } else if (!phoneRegex.test(phoneTrimmed)) {
+                    fieldsError.phone = 'Veuillez entrer un numéro de téléphone valide au format 514-555-5555.'
+                    return;
+                }
+                fieldsError.phone = "";
+            };
+
+            // Fonction pour valider une ville
+            const validateCity = () => {
+                const cityTrimmed = formData.city.trim()
+                if (!cityTrimmed) {
+                    fieldsError.city = errorMessage.empty;
+                    return;
+                }
+                if (cityTrimmed.length < 3 || cityTrimmed.length > 50) {
+                    fieldsError.city = errorMessage.max50Characters;
+                    return;
+                }
+                fieldsError.city = "";
+            };
+
+            // Fonction pour valider un courriel
+            const validateEmail = () => {
+                if (!formData.email.trim()) {
+                    fieldsError.email = errorMessage.empty;
+                    return;
+                } else if (!isEmailValid(formData.email)) {
+                    fieldsError.email = errorMessage.email;
+                    return;
+                }
+                fieldsError.email = "";
+            };
+
+            // Fonction pour valider une province
+            const validateProvince = () => {
+                if (!formData.provinceId) {
+                    fieldsError.province = 'Veuillez sélectionner une province.'
+                    return;
+                }
+                fieldsError.province = "";
+            };
+
+
+            // Fonction pour formater un code postal
+            const formatPostalCode = (postalCode) => {
+                const cleanedPostalCode = postalCode.replace(/\s/g, '').toUpperCase();
+                return cleanedPostalCode.substring(0, 3) + " " + cleanedPostalCode.substring(3);
+            };
+
+
+            // Fonction pour valider un code postal
             const validatePostalCode = () => {
-                postalCodeError.value = ''
-                if (!postalCode.value.trim()) {
-                    postalCodeError.value = 'Veuillez entrer votre code postal.'
-                    return false
-                } else if (!isPostalCodeValid(postalCode.value)) {
-                    postalCodeError.value = 'Veuillez entrer un code postal valide.'
-                    return false
+                if (!formData.postalCode.trim()) {
+                    fieldsError.postalCode = errorMessage.empty;
+                    return;
+                } else if (!isPostalCodeValid(formData.postalCode)) {
+                    fieldsError.postalCode = errorMessage.postalCode;
+                    return;
                 }
-                return true
-            }
+                fieldsError.postalCode = "";
+            };
 
+            // Fonction pour valider un code postal
+            const isPostalCodeValid = (postalCode) => {
+                const cleanedPostalCode = postalCode.replace(/\s/g, '');
+                const postalCodeRegex = /^[A-Za-z]\d[A-Za-z]\d[A-Za-z]\d$/;
+                return postalCodeRegex.test(cleanedPostalCode);
+            };
+
+            //validation Name
             const validateName = () => {
-                nameError.value = ''
-                const nameTrimmed = name.value.trim()
+                const nameTrimmed = formData.name.trim()
                 if (nameTrimmed.length < 3 || nameTrimmed.length > 50) {
-                    nameError.value = 'Le nom complet doit contenir entre 3 et 50 caractères.'
-                    return false
+                    fieldsError.name = errorMessage.max50Characters;
+                    return;
                 }
-                return true
-            }
+                fieldsError.name = "";
+            };
 
-            const validateLogo = () => {
-                logoError.value = ''
-                const logoTrimmed = image.value.trim()
-                const urlRegex = /^(ftp|http|https):\/\/[^ "]+$/
-                if (!urlRegex.test(logoTrimmed)) {
-                    logoError.value = 'Veuillez entrer une URL valide pour le logo.'
-                    return false
+            //validation Contact
+            const validateContact = () => {
+                const contactTrimmed = formData.contact.trim()
+                if (contactTrimmed.length < 3 || contactTrimmed.length > 50) {
+                    fieldsError.contact = errorMessage.max50Characters;
+                    return;
                 }
-                return true
-            }
+                fieldsError.contact = "";
+            };
+
+            //validation Logo
+            const validateLogo = () => {
+                const logoTrimmed = formData.image.trim()
+                if (!logoTrimmed) {
+                    fieldsError.logo = errorMessage.empty;
+                    return;
+                }
+                fieldsError.logo = "";
+            };
 
             const isEmailValid = (email) => {
                 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
                 return emailRegex.test(email)
-            }
+            };
 
-            const isPostalCodeValid = (postalCode) => {
-                const postalCodeRegex = /^[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d$/
-                return postalCodeRegex.test(postalCode)
-            }
 
-            const isFormValid = computed(() => {
-                if (isCandidat.value) {
-                    return (
-                        validateFullName() &&
-                        validatePosition() &&
-                        validateDescription() &&
-                        validateAddress() &&
-                        validatePhone() &&
-                        validateCity() &&
-                        validateEmail() &&
-                        validateProvince() &&
-                        validatePostalCode()
-                    )
-                } else {
-                    return (
-                        validateName() &&
-                        validateLogo() &&
-                        validateDescription() &&
-                        validateAddress() &&
-                        validatePhone() &&
-                        validateCity() &&
-                        validateEmail() &&
-                        validateProvince() &&
-                        validatePostalCode()
-                    )
+            // Fonction pour décoder une image en base64
+            const decodeBase64Image = (base64Image) => {
+                const matches = base64Image.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
+
+                if (matches.length !== 3) {
+                    throw new Error('Invalid input string');
                 }
-            })
+
+                return {
+                    type: matches[1],
+                    data: Buffer.from(matches[2], 'base64')
+                };
+            };
+
+            // Fonction pour encoder une image en base64
+            const encodeBase64Image = (imageBuffer) => {
+                return `data:image/png;base64,${imageBuffer.toString('base64')}`;
+            };
 
 
-            const submitForm = async () => {
-                if (isFormValid.value) {
-                    const formData = {
-                        description: description.value,
-                        email: email.value,
-                        address: address.value,
-                        phone: phone.value,
-                        city: city.value,
-                        province: {
-                            _id: provinceId.value,
-                            value: provinces.value.find((province) => province._id === provinceId.value)
-                                .value,
-                        },
-                        postalCode: formatPostalCode(postalCode.value),
+
+
+
+            let isFormValid = ref(false);
+
+            // Fonction pour valider le formulaire
+            const validateForm = () => {
+
+                validateDescription();
+                validateAddress();
+                validateCity();
+                validatePhone();
+                validateEmail();
+                validateProvince();
+                validatePostalCode();
+
+
+
+                if (!showEnterpriseForm.value) {
+                    validateFullName();
+                    validateSkills();
+
+
+                    if (
+                        fieldsError.fullName === "" &&
+                        fieldsError.skills === "" &&
+                        fieldsError.description === "" &&
+                        fieldsError.address === "" &&
+                        fieldsError.city === "" &&
+                        fieldsError.province === "" &&
+                        fieldsError.postalCode === "" &&
+                        fieldsError.phone === "" &&
+                        fieldsError.email === ""
+                    ) {
+                        isFormValid.value = true;
+                        console.log(isFormValid.value);
+                    } else {
+                        isFormValid.value = false;
+                        console.log(isFormValid.value);
                     }
 
-                    if (isCandidat.value) {
-                        const [firstName, lastName] = fullName.value.split(' ')
-                        formData.firstName = firstName
-                        formData.lastName = lastName
-                        formData.skills = skills.value
+                } else {
+                    validateName();
+                    validateContact();
+                    validateLogo();
+
+
+                    if (
+                        fieldsError.fullName === "" &&
+                        fieldsError.logo === "" &&
+                        fieldsError.contact === "" &&
+                        fieldsError.description === "" &&
+                        fieldsError.address === "" &&
+                        fieldsError.city === "" &&
+                        fieldsError.province === "" &&
+                        fieldsError.postalCode === "" &&
+                        fieldsError.phone === "" &&
+                        fieldsError.email === ""
+                    ) {
+                        isFormValid.value = true;
+                        console.log(isFormValid.value);
+                    } else {
+                        isFormValid.value = false;
+                        console.log(isFormValid.value);
+                    }
+                }
+            }
+
+            // Fonction pour soumettre le formulaire
+            const submitForm = async () => {
+                validateForm();
+               
+
+            /* Encodage de l'image
+            const encodedImage = encodeBase64Image(decodedImage.data);
+            console.log(encodedImage); // Image encodée en base64*/
+
+
+                const selectedProvince = provinces.value.find(province => province._id === formData.provinceId);
+
+                if (!selectedProvince) {
+                    throw new Error('Province non trouvée');
+                }
+                if (isFormValid.value) {
+
+                    const formattedPostalCode = formatPostalCode(formData.postalCode);
+                    const formPayload = {
+                        description: formData.description,
+                        email: formData.email,
+                        address: formData.address,
+                        phone: formData.phone,
+                        city: formData.city,
+                        province: {
+                            _id: formData.provinceId,
+                            value: selectedProvince.value
+                        },
+                        postalCode: formattedPostalCode,
+                    };
+                    if (editing.value) {
+                        formPayload._id = props[`${isCandidat.value ? 'candidate' : 'entreprise'}Id`];
+                    }
+
+
+                    if (isCandidat.value || mCandidat.value === true) {
+                        const [firstName, lastName] = formData.fullName.split(' ');
+                        const skillsArray = formData.skills.split(', ').map(skill => skill.trim());
 
                         try {
                             const url = editing.value ?
-                                `https://api-4.fly.dev/candidates/${props.candidateId}` :
+                                `https://api-4.fly.dev/candidates/${id.value}` :
                                 'https://api-4.fly.dev/candidates';
-                            const method = editing.value ? 'put' : 'post';
+
+                            const method = editing.value ? 'PATCH' : 'post';
+
                             const response = await axios({
                                 method: method,
                                 url: url,
-                                data: formData
+                                data: {
+                                    ...formPayload,
+                                    firstName: firstName,
+                                    lastName: lastName,
+                                    skills: skillsArray,
+                                }
                             });
-                            console.log(response)
+                            if (response.status === 201 || response.status === 200) {
+                              
+
+                                router.push('/app/Candidats');
+                            }
+                            /* console.log(response); */
                         } catch (error) {
-                            console.error(error)
+                            console.error(error);
                         }
                     } else {
-                        formData.name = name.value
-                        formData.image = image.value
-                        formData.contact = contact.value
-                        formData.activitySector = activitySector.value
-                        formData.website = website.value
-
                         try {
-                            let activitySector = null
+                            let activitySector = null;
                             const activitySectorsResponse = await axios.get(
                                 'https://api-4.fly.dev/activity-sectors');
                             const activitySectors = activitySectorsResponse.data;
                             activitySectors.forEach((activity) => {
-                                if (activity.value === activitySector.value) {
+                                if (activity.value === formData.activitySector.value) {
                                     activitySector = activity;
                                 }
                             });
+
                             if (!activitySector) {
                                 throw new Error('Secteur d\'activité non trouvé');
                             }
 
                             const url = editing.value ?
-                                `https://api-4.fly.dev/enterprises/${props.enterpriseId}` :
+                                `https://api-4.fly.dev/enterprises/${id.value}` :
                                 'https://api-4.fly.dev/enterprises';
-                            const method = editing.value ? 'put' : 'post';
+
+                            const method = editing.value ? 'PATCH' : 'post';
+
                             const response = await axios({
                                 method: method,
                                 url: url,
-                                data: formData
+                                data: {
+                                    ...formPayload,
+                                    name: formData.name,
+                                    image: formData.image,
+                                    activitySector: {
+                                        _id: activitySector._id,
+                                        value: formData.activitySector.value
+                                    },
+                                    website: formData.website,
+                                }
                             });
-                            console.log(response)
+
+                            /* console.log(response); */
+                            if (response.status === 201 || response.status === 200) {
+                               
+                                router.push('/app/Entreprises');
+                            }
+
+                            if (!response.data._id) {
+                                throw new Error('Échec de la soumission du formulaire');
+                            }
                         } catch (error) {
-                            console.error(error)
+                            console.error(error);
                         }
                     }
                 }
-            }
-
-            const fetchEnterprise = async (enterpriseId) => {
-                try {
-                    const response = await axios.get(`https://api-4.fly.dev/enterprises/${enterpriseId}`);
-                    const enterprise = response.data;
-
-                    formData.name = enterprise.name;
-                    formData.image = enterprise.image;
-                    formData.description = enterprise.description;
-                    formData.address = enterprise.address;
-                    formData.phone = enterprise.phone;
-                    formData.city = enterprise.city;
-                    formData.email = enterprise.email;
-                    formData.provinceId = enterprise.province._id;
-                    formData.postalCode = enterprise.postalCode;
-                    formData.website = enterprise.website;
-                    formData.activitySector = enterprise.activitySector;
-                } catch (error) {
-                    console.error(error);
-                }
-            }
-
-            const fetchCandidate = async (candidateId) => {
-                try {
-                    const response = await axios.get(`https://api-4.fly.dev/candidates/${candidateId}`);
-                    const candidate = response.data;
-
-                    console.log(candidate);
-
-                    form.fullName = `${candidate.firstName} ${candidate.lastName}`;
-                    form.description = candidate.description;
-                    form.address = candidate.address;
-                    form.phone = candidate.phone;
-                    form.city = candidate.city;
-                    form.email = candidate.email;
-                    form.provinceId = candidate.province._id;
-                    form.postalCode = candidate.postalCode;
-                    form.skills = candidate.skills;
-                } catch (error) {
-                    console.error(error);
-                }
-            }
-
-
+            };
 
             const cancelForm = () => {
-                fullName.value = ''
-                position.value = ''
-                description.value = ''
-                address.value = ''
-                phone.value = ''
-                city.value = ''
-                email.value = ''
-                provinceId.value = ''
-                postalCode.value = ''
-                skills.value = []
-                name.value = ''
-                image.value = ''
-                contact.value = ''
-                activitySector.value = {
-                    _id: '65f8df6040965a2e23d73271',
-                    value: 'Technologies',
-                }
-                website.value = ''
+                formData.fullName = '';
+                formData.skills = '';
+                formData.description = '';
+                formData.address = '';
+                formData.phone = '';
+                formData.city = '';
+                formData.email = '';
+                formData.provinceId = '';
+                formData.postalCode = '';
+                formData.name = '';
+                formData.image = '';
+                formData.contact = '';
+                formData.activitySector = {
+                    _id: '',
+                    value: '',
+                };
+                formData.website = '';
             }
-
-
-            const provinces = reactive([])
+            // Fonction pour récupérer les provinces
+            const provinces = ref([])
             const fetchProvinces = async () => {
                 try {
                     const response = await axios.get('https://api-4.fly.dev/provinces')
@@ -659,57 +854,84 @@
                 } catch (error) {
                     console.error(error)
                 }
-            }
+            };
 
+            // Fonction pour récupérer les données d'une entreprise ou d'un candidat
+            const fetchData = async (id, type) => {
+                 /* Décode de l'image
+            const decodedImage = decodeBase64Image(formData.image);
+            console.log(decodedImage.type); // Type de l'image
+            console.log(decodedImage.data); // Données de l'image sous forme de Buffer */
+
+
+                editing.value = true;
+                try {
+                    let url;
+                    if (type === 'entreprises') {
+                        url = `https://api-4.fly.dev/enterprises/${id}`;
+                    } else if (type === 'candidats') {
+                        url = `https://api-4.fly.dev/candidates/${id}`;
+                    }
+                    const response = await axios.get(url);
+                    const data = response.data;
+                    if (type === 'candidats' && data) {
+                        candidate.value = data;
+                        formData.fullName = `${data.firstName} ${data.lastName}`;
+                        formData.provinceId = data.province._id;
+                    }
+                    formData.provinceId = data.province._id;
+                 
+                    if (type === 'entreprises'){
+                        formData.contact = "Irene Deschamps";
+                    }
+                    Object.assign(formData, data);
+                } catch (error) {
+                    console.error(error);
+                }
+            };
 
             onMounted(() => {
-                fetchProvinces()
-                if (!isCandidat.value && props.enterpriseId) {
-                    fetchEnterprise(props.enterpriseId)
-                }
-                if (!isCandidat.value && props.candidateId) {
-                    fetchCandidate(props.candidateId);
-                }
-            })
+                id.value = route.params.id;
+                const type = router.currentRoute.value.params.type;
 
+                // IL Y A UN ID
+                if (id.value) {
+                    if (type === 'entreprises') {
+                        showEnterpriseForm.value = true;
+                        props.entrepriseId = id.value;
+                        fetchData(id.value, type);
+                    } else if (type === 'candidats') {
+
+                        showEnterpriseForm.value = false;
+                        props.candidateId = id.value;
+                        mCandidat.value = true;
+                        fetchData(id.value, type);
+                    }
+                }
+                // PAS DE ID
+                else {
+                    if (type === 'entreprises') {
+                        showEnterpriseForm.value = true;
+                    } else if (type === 'candidats') {
+                        showEnterpriseForm.value = false;
+                    }
+                }
+                fetchProvinces();
+            });
 
             return {
-                
-                fullName,
-                position,
-                description,
-                address,
-                phone,
-                city,
-                email,
-                provinceId,
-                postalCode,
-                skills,
-                name,
-                image,
-                contact,
-                activitySector,
-                website,
-                provinces,
-                isCandidat,
-                fullNameError,
-                positionError,
-                descriptionError,
-                addressError,
-                phoneError,
-                cityError,
-                emailError,
-                provinceError,
-                postalCodeError,
-                nameError,
-                logoError,
-                isFormValid,
+                candidate,
+                formData,
+                editing,
+                fieldsError,
+                errorMessage,
+                validateString,
                 isCandidat,
                 submitForm,
                 cancelForm,
                 formatPostalCode,
                 validateFullName,
-                validatePosition,
+                validateSkills,
                 validateDescription,
                 validateAddress,
                 validatePhone,
@@ -719,46 +941,43 @@
                 validatePostalCode,
                 validateName,
                 validateLogo,
-            }
-        },
-    }
+                validateContact,
+                validateForm,
+                isFormValid,
+                provinces,
+                showEnterpriseForm,
+                resetValidationErrors,
+                fetchData,
+                encodeBase64Image,
+                decodeBase64Image,
+                entrepriseId,
+                candidateId,
+                mCandidat
+
+            };
+        }
+    };
 </script>
 
 
 
 
 <style scoped>
-    .titre_barre {
-        position: relative;
-        padding-left: 10px;
-    }
-
-    .titre_barre::before {
-        content: "";
-        position: absolute;
-        top: 50%;
-        left: 0;
-        transform: translateY(-50%);
-        width: 4px;
-        height: 20px;
-        background-color: rgb(1, 26, 56);
-    }
-
     .titre_barre-modifier {
-        position: relative;
-        padding-left: 10px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+
     }
 
-    .titre_barre-modifier::before {
-        content: "";
-        position: absolute;
-        top: 50%;
-        left: 0;
-        transform: translateY(-50%);
-        width: 4px;
-        height: 100px;
-        background-color: rgb(1, 26, 56);
+    .logo{
+        width: 100px;
+        height: auto;
+        margin-right: 1rem;
     }
+
+   
 
     .input_barre-modifier {
         position: relative;

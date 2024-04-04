@@ -4,13 +4,17 @@ import axios from 'axios';
 const baseUrl = "https://api-4.fly.dev/";
 
 // https://api-4.fly.dev/internship-requests
+
 export function useAllDemandeDeStages() {
     const allDemandeDeStagesResults = reactive([]);
 
-    const getAllDemandeDeStages = () => {
-        return axios.get(`${baseUrl}internship-requests`)
-        .then((res) => allDemandeDeStagesResults.push(...res.data))
-        .catch((error) => console.log(error))
+    const getAllDemandeDeStages = async () => {
+        try {
+            const res = await axios.get(`${baseUrl}internship-requests`);
+            allDemandeDeStagesResults.push(...res.data)
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     return {
@@ -19,8 +23,26 @@ export function useAllDemandeDeStages() {
     }
 }
 
+export function useAllDemandeDeStagesInactive() {
+    let allDemandeDeStagesInactiveResults = reactive([]);
 
-// https://api-4.fly.dev/internship-requests/65f8e7c27e8a7a318bf937cf
+    const getAllDemandeDeStagesInactive = async () => {
+        try {
+            const res = await axios.get(`${baseUrl}internship-requests?isActive=false`);
+            allDemandeDeStagesInactiveResults.push(...res.data)
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    return {
+        allDemandeDeStagesInactiveResults,
+        getAllDemandeDeStagesInactive
+    }
+}
+
+
+// https://api-4.fly.dev/internship-requests/65fce770f433c3500b32f6be
 export function useDemandesDeStages() {
     const demandeDeStageResult = ref(null);
 
