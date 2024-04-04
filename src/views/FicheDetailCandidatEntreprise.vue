@@ -35,13 +35,8 @@
         <div class="bg-white p-8 lg:p-16 rounded-xl">
             <h3 class="text-3xl md:text-4xl font-bold mb-5 lg:mb-10"
                 :class="{'text-blue-400': !isCandidate, 'text-fuchsia-800': isCandidate}">Courte présentation</h3>
-            <p class="text-neutral-500 text-md mb-14">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus
-                quidem,
-                nam reprehenderit hic dolores iste minima laboriosam. Nam maiores hic blanditiis necessitatibus
-                suscipit, quod minima nostrum perspiciatis, odit iusto quas! Quasi magni veniam, repudiandae minus
-                similique nihil facere voluptatum beatae ducimus neque et culpa id, deleniti dicta, dolorem saepe ab
-                itaque dolorum! Magni a quae voluptatem illum, minima dolorem eum labore asperiores neque impedit
-                suscipit amet esse nostrum delectus excepturi.</p>
+            <p v-if="isCandidate"class="text-neutral-500 text-md mb-14">{{ candidateResult.description }}</p>
+            <p v-if="!isCandidate"class="text-neutral-500 text-md mb-14">{{ enterpriseResult.description }}</p>
             <h4 v-if="!isCandidate" class="text-lg text-blue-400 font-bold mb-5">Personne contact</h4>
             <p v-if="!isCandidate" class="text-2xl font-bold text-neutral-500 mb-8">Pierre Boivin</p>
             <h4 class="text-lg font-bold mb-10"

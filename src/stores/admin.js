@@ -4,6 +4,7 @@ export const useAdminStore = defineStore('admin', () => {
     
     const state = {
         nomEtPrenom: localStorage.getItem('nomEtPrenom') || '',
+        courriel: localStorage.getItem('courriel') || '',
     };
 
     const setNomEtPrenom = (nomEtPrenom) => {
@@ -12,8 +13,15 @@ export const useAdminStore = defineStore('admin', () => {
         localStorage.setItem('nomEtPrenom', nomEtPrenom);
     };
 
+    const setCourriel = (courriel) => {
+        state.courriel = courriel;
+
+        localStorage.setItem('courriel', courriel);
+    };
+
     return {
         state,
         setNomEtPrenom,
+        setCourriel,
     };
 });

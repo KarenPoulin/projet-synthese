@@ -5,7 +5,7 @@
 
        <div>
          <p class="text-[9px] md:text-xs text-black font-medium">{{ adminStore.state.nomEtPrenom }}</p>
-         <p class="text-[9px] md:text-xs text-gray-400 font-medium">Admin</p>
+         <p class="text-[9px] md:text-xs text-gray-400 font-medium">{{ adminStore.state.courriel }}</p>
 
 
        </div>
@@ -17,7 +17,6 @@
 
 <script setup>
 import { useAdminStore } from '@/stores/admin';
-import { ref } from 'vue';
 
 
 const adminStore = useAdminStore();

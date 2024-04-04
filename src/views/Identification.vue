@@ -90,6 +90,7 @@ const acceder = () => {
   }
 
   useAdminStore().setNomEtPrenom(nomEtPrenom.value);
+  useAdminStore().setCourriel(courriel.value);
 
   router.push('/app/tableaudebord');
 }

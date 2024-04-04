@@ -47,16 +47,7 @@
             <h5 v-if="isFicheDetailDemandeDeStage" class="text-lg font-bold text-neutral-500 mb-3 ml-2">Secteur d'activité</h5>
             <h5 v-if="!isFicheDetailDemandeDeStage" class="text-lg font-bold text-neutral-500 mb-3 ml-2">Exigences</h5>
             <p v-if="isFicheDetailDemandeDeStage" class="text-neutral-500 text-sm ml-2">Nouvelles technologies de l'information</p>
-            <p v-if="!isFicheDetailDemandeDeStage" class="text-neutral-500 mb-5 ml-2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Error a nostrum modi, maiores voluptates recusandae
-              odit dolorum iure exercitationem aperiam velit ipsam saepe. Ad praesentium sunt reprehenderit, perspiciatis
-              cumque aut commodi unde quod mollitia laudantium vitae iure eaque, voluptas rem nesciunt labore, culpa illum
-              accusamus dicta dolor illo ducimus deserunt excepturi. Vitae totam nulla ullam sunt vero iusto, non molestiae
-              autem placeat alias modi, quod minus error sed impedit adipisci repudiandae facilis a mollitia quam officiis
-              aperiam nisi?</p>
-              <p v-if="!isFicheDetailDemandeDeStage" class="text-neutral-500 ml-2">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Distinctio nisi laborum aliquid corrupti possimus
-                aliquam quia officia provident cupiditate dolorem perferendis iusto consequatur at animi molestiae natus, rerum
-                tenetur porro, sed ducimus? Perspiciatis, corporis animi quasi ex quam molestias! Alias quas architecto
-                provident officia ad, saepe laudantium suscipit eaque inventore nostrum ipsa esse beatae.</p>
+            <p v-if="!isFicheDetailDemandeDeStage" class="text-neutral-500 ml-2">{{ offreDeStagesResult.requiredSkills.slice(0,10) .join(', ') }}</p>
           </div>
           <div v-if="isFicheDetailDemandeDeStage" class="border-l-8 border-neutral-500">
             <h5 class="text-lg font-bold text-neutral-500 mb-3 ml-2">Compétences</h5>
@@ -73,7 +64,7 @@
             <p class="text-neutral-500 text-sm ml-2">{{ demandeDeStageResult.candidate.city }}</p>
           </div>
           <div v-if="isFicheDetailDemandeDeStage" class="border-l-8 border-neutral-500">
-            <h5 class="text-lg font-bold text-neutral-500 mb-3 ml-2">Région</h5>
+            <h5 class="text-lg font-bold text-neutral-500 mb-3 ml-2">Province</h5>
             <p class="text-neutral-500 text-sm ml-2">{{ demandeDeStageResult.province.value }}</p>
           </div>
         </div>
@@ -108,13 +99,14 @@
         </div>
       </div>
       <h4 class="text-lg font-bold mb-10" :class="{'text-yellow-600': isFicheDetailDemandeDeStage, 'text-red-800': !isFicheDetailDemandeDeStage }">Informations supplémentaires</h4>
-      <p class="text-neutral-500">Lorem ipsum dolor sit amet consectetur adipisicing elit. Error a nostrum modi, maiores voluptates recusandae
+      <p v-if="!isFicheDetailDemandeDeStage" class="text-neutral-500">Lorem ipsum dolor sit amet consectetur adipisicing elit. Error a nostrum modi, maiores voluptates recusandae
         odit dolorum iure exercitationem aperiam velit ipsam saepe. Ad praesentium sunt reprehenderit, perspiciatis
         cumque aut commodi unde quod mollitia laudantium vitae iure eaque, voluptas rem nesciunt labore, culpa illum
         accusamus dicta dolor illo ducimus deserunt excepturi. Vitae totam nulla ullam sunt vero iusto, non molestiae
         autem placeat alias modi, quod minus error sed impedit adipisci repudiandae facilis a mollitia quam officiis
         aperiam nisi?
       </p>
+      <p v-if="isFicheDetailDemandeDeStage" class="text-neutral-500">{{ demandeDeStageResult.additionalInformation }}</p>
       <button
         v-if="isFicheDetailDemandeDeStage"
         type="button"
